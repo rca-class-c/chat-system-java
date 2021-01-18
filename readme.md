@@ -1,3 +1,2 @@
-###Chat Application
-
-This is a full chat application with java
+### Java Chat
+## This is a chat using sockets
