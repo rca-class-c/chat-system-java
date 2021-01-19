@@ -61,7 +61,7 @@ public class ChatServer {
     }
  
     /**
-     * Stores username of the newly connected client.
+     * Stores username of the newly connected client will read.
      */
     void addUserName(String userName) {
         userNames.add(userName);
