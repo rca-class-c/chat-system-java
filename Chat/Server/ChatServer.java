@@ -25,6 +25,7 @@ public class ChatServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New user connected");
  
+             // passing socket and server to the userthread
                 UserThread newUser = new UserThread(socket, this);
                 userThreads.add(newUser);
                 newUser.start();
