@@ -32,6 +32,7 @@ public class UserThread extends Thread {
             server.addUserName(userName);
  
             String serverMessage = "New user connected: " + userName;
+         //passing message and user to exclude who is the sender
             server.broadcast(serverMessage, this);
  
             String clientMessage;
@@ -46,6 +47,7 @@ public class UserThread extends Thread {
             server.removeUser(userName, this);
             socket.close();
  
+          //passing message to remaining users that one has quitted
             serverMessage = userName + " has quitted.";
             server.broadcast(serverMessage, this);
  
