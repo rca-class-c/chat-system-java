@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/CHAT_LOCAL_DB-2021_01_21_11_21_09-dump.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/Chat/db-config.sql" dialect="GenericSQL" />
+  </component>
+</project>
