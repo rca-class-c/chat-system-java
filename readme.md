@@ -1,2 +1,2 @@
 ### Java Chat
-## This is a chat using sockets
+## This is a chatting using sockets
