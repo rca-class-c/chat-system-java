@@ -41,7 +41,6 @@ public class ChatServer {
         try {
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/chat_system_db",
                     "postgres", "Didier@2021");
-            //db connection;
             System.out.println("Connected to PostgreSQL database!");
             Statement statement = connection.createStatement();
             System.out.println("Reading users...");
