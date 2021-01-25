@@ -40,11 +40,12 @@ public class ChatServer {
     public static void main(String[] args) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/chat_system_db",
-                    "postgres", "postgres");
+                    "postgres", "Didier@2021");
             System.out.println("Connected to PostgreSQL database!");
             Statement statement = connection.createStatement();
             System.out.println("Reading users...");
             ResultSet resultSet = statement.executeQuery("SELECT * FROM public.users");
+            System.out.println(resultSet.getFetchSize());
             while (resultSet.next()) {
                 System.out.printf("/n", resultSet.getString("username"), resultSet.getString("email"));
             }
