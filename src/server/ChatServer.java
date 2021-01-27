@@ -55,10 +55,6 @@ public class ChatServer {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-//        if (args.length < 1) {
-//            System.out.println("Syntax: java ChatServer <port-number>");
-//            System.exit(0);
-//        }
         int port = 4000;
         ChatServer server = new ChatServer(port);
         server.execute();
