@@ -69,9 +69,7 @@ public class ChatClient {
                 break;
         }
 
-
         client.execute();
-
 
     }
 }

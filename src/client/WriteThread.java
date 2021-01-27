@@ -26,6 +26,7 @@ public class WriteThread extends Thread {
     }
     public void run() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("What would you like to be your username:");
         String userName =  scanner.nextLine();
         client.setUserName(userName);
         writer.println(userName);
