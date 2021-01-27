@@ -23,6 +23,9 @@ public class UserThread extends Thread {
 //            Scanner reader = new Scanner(System.in);
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
+
+
+            //ok now caught after the username is flushed server sets it good now
             printUsers();
             String userName = reader.readLine();
             server.addUserName(userName);
