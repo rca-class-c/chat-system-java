@@ -3,36 +3,29 @@ package models;
 import java.util.Objects;
 
 public class User {
+    public int userID;
     public String fname;
     public String lname;
     public String password;
     public String email;
     public String dob;
+    public String createAt;
+    public String updatedAt;
+    public String username;
+    public String gender;
+    public int categoryID;
+    public String status;
 
-    public User(String fname, String lname, String password, String email, String dob, String username) {
+    public User(String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status) {
         this.fname = fname;
         this.lname = lname;
         this.password = password;
         this.email = email;
         this.dob = dob;
         this.username = username;
-    }
-
-    public void getUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getEmail().equals(user.getEmail()) && getUsername().equals(user.getUsername());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getEmail(), getUsername());
+        this.gender = gender;
+        this.categoryID = categoryID;
+        this.status = status;
     }
 
     public String getFname() {
@@ -83,5 +76,39 @@ public class User {
         this.username = username;
     }
 
-    public  String username;
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
 }
