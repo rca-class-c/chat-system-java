@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+
+import config.Config;
 /**
  * This is the chat server program. Press Ctrl + C to terminate the program.
  *
@@ -37,29 +39,23 @@ public class ChatServer {
             ex.printStackTrace();
         }
     }
+    
     public static void main(String[] args) {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/chat_system_db",
-                    "postgres", "postgres");
-            System.out.println("Connected to PostgreSQL database!");
-            Statement statement = connection.createStatement();
-            System.out.println("Reading users...");
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM public.users");
-            while (resultSet.next()) {
-                System.out.printf("/n", resultSet.getString("username"), resultSet.getString("email"));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occurred");
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+     
+    	//connecting to the database
+        try (Connection conn = Config.getConnection()) {
+            
+            // print out a message
+            System.out.println(String.format("Connected to database %s "
+                    + "successfully.", conn.getCatalog()));
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
-//        if (args.length < 1) {
-//            System.out.println("Syntax: java ChatServer <port-number>");
-//            System.exit(0);
-//        }
-        int port = 4000;
+        
+        int port = 9500;
         ChatServer server = new ChatServer(port);
-        server.execute();
+        server.execute();	
+        
     }
     /**
      * Delivers a message from one user to others (broadcasting)
