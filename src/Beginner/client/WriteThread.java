@@ -24,18 +24,9 @@ public class WriteThread extends Thread {
             ex.printStackTrace();
         }
     }
-    public  String login(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("What would you like to be your username:");
-        String userName =  scanner.nextLine();
-        System.out.print("What would you like to be your username:");
-        String password =  scanner.nextLine();
-        writer.println(userName);
-       return password;
-    }
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        String userName = login();
+        String userName = "";
         String text;
         do {
             System.out.print("[" + userName + "]: ");

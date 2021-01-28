@@ -2,6 +2,7 @@ package client;
 
 import java.net.*;
 import java.io.*;
+import java.sql.*;
 import java.util.Scanner;
 
 /**
@@ -37,7 +38,47 @@ public class ChatClient {
         
         return this.userName;
     }
-    public static void main(String[] args) {
+    public static Connection connection(){
+        Connection connection = null;
+        try {
+             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/chat_system_db",
+                    "postgres", "Didier@2021");
+            //db connection;
+            System.out.println("Connected to PostgreSQL database!");
+            //a.getClass().getName();
+//            Statement statement = connection.createStatement();
+//            System.out.println("Reading users...");
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM public.users");
+//            System.out.println(resultSet.getFetchSize());
+//            while (resultSet.next()) {
+//                System.out.printf("/n", resultSet.getString("username"), resultSet.getString("email"));
+//            }
+        } catch (SQLException e) {
+            System.out.println("Error occurred");
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return connection;
+    }
+    public  static String login() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        ResultSet resultSet = null;
+        String userName  = "";
+        do {
+            System.out.print("Your username:");
+            userName = scanner.nextLine();
+            System.out.print("Your password:");
+            String password = scanner.nextLine();
+            Connection connection = connection();
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM public.users");
+            if (resultSet.getFetchSize() < 1) {
+                System.out.println("Invalid credentials");
+            }
+        }while(resultSet.getFetchSize() < 1);
+        return userName;
+    }
+    public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your host name");
 //        Scanner scanner = new Scanner(System.in);
@@ -56,6 +97,7 @@ public class ChatClient {
         switch (choice){
 
             case 1:
+                login();
                 System.out.println("Your choice is login");
                 break;
             case 2:

@@ -37,24 +37,27 @@ public class ChatServer {
             ex.printStackTrace();
         }
     }
-    public static void main(String[] args) {
+    public void connection(){
         try {
             Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/chat_system_db",
                     "postgres", "Didier@2021");
             //db connection;
             System.out.println("Connected to PostgreSQL database!");
-            Statement statement = connection.createStatement();
-            System.out.println("Reading users...");
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM public.users");
-            System.out.println(resultSet.getFetchSize());
-            while (resultSet.next()) {
-                System.out.printf("/n", resultSet.getString("username"), resultSet.getString("email"));
-            }
+//            Statement statement = connection.createStatement();
+//            System.out.println("Reading users...");
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM public.users");
+//            System.out.println(resultSet.getFetchSize());
+//            while (resultSet.next()) {
+//                System.out.printf("/n", resultSet.getString("username"), resultSet.getString("email"));
+//            }
         } catch (SQLException e) {
             System.out.println("Error occurred");
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    public static void main(String[] args) {
+
         int port = 4000;
         ChatServer server = new ChatServer(port);
         server.execute();
