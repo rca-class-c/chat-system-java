@@ -1,0 +1,39 @@
+package views;
+import utils.CommonMethod;
+import utils.ConsoleColor;
+import views.components.Component;
+
+import java.util.Scanner;
+
+public class View {
+    public static void loginView() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.pageTitleView("Login to your Account");
+
+
+        CommonMethod.addTabs(10, false);
+        System.out.print("Enter Your Username: ");
+        String username = scanner.nextLine();
+
+        CommonMethod.addTabs(10, false);
+        System.out.print("Enter your Password: ");
+        String password = scanner.nextLine();
+
+        if (username.equals("admin") && password.equals("admin@123")) {
+            CommonMethod.addTabs(10, true);
+            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print(" Successfully Logged In  ");
+            CommonMethod.resetColor();
+        } else {
+            CommonMethod.addTabs(10, true);
+            CommonMethod.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print("  Invalid Username or Password  ");
+            CommonMethod.resetColor();
+        }
+
+    }
+}
