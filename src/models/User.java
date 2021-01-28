@@ -18,6 +18,10 @@ public class User {
         this.username = username;
     }
 
+    public void getUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
