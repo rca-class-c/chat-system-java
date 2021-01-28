@@ -34,7 +34,7 @@ public class ChatClient {
         this.userName = userName;
     }
     String getUserName() {
-        
+
         return this.userName;
     }
     public static void main(String[] args) {
