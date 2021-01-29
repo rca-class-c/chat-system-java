@@ -1,2 +1,3 @@
 .idea
 chat_system.iml
+src/config/db.properties
