@@ -36,7 +36,7 @@ public class FileView {
 
 
             CommonMethod.addTabs(10, false);
-            System.out.print("Enter your the sender Id: ");
+            System.out.print("Enter The sender Id: ");
             int senderId = scanner.nextInt();
 
             CommonMethod.addTabs(10, true);
