@@ -1,10 +1,9 @@
 package services;
 
 import models.File;
-import repository.FileRepository;
+import repositories.FileRepository;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class FileService {
     private final FileRepository fileRepository = new FileRepository();
@@ -13,3 +12,5 @@ public class FileService {
         return fileRepository.save(file);
     }
 }
+
+
