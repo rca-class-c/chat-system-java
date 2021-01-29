@@ -1,5 +1,6 @@
 package config;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,7 +13,7 @@ public class Config {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
+        try (FileInputStream f = new FileInputStream("config/db.properties")) {
 
             // load the properties file
             Properties pros = new Properties();
