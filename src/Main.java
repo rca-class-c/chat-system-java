@@ -27,7 +27,9 @@ public class Main {
         CommonMethod.addTabs(10, false);
         System.out.println("2. Create an Account");
         CommonMethod.addTabs(10, false);
-        System.out.println("3. Quit");
+        System.out.println("3. Send a File");
+        CommonMethod.addTabs(10, false);
+        System.out.println("4. Quit");
         CommonMethod.addTabs(10, false);
         CommonMethod.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
         System.out.print("  ");
@@ -51,11 +53,17 @@ public class Main {
                             View.loginView();
                             break;
                         case 2:
-//                    createAccountView();
+                            View.createAccountView();
                             System.out.println(2);
-
                             break;
                         case 3:
+                            CommonMethod.resetColor();
+                            View.sendFileView();
+                            break;
+                        case 4:
+                            CommonMethod.addTabs(10, true);
+                            CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                            System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
                             break;
                         default:
