@@ -1,7 +1,9 @@
+
 import utils.ConsoleColor;
 import utils.CommonMethod;
 import views.View;
 import views.components.Component;
+
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
