@@ -1,7 +1,7 @@
 package services;
 
 import models.User;
-import models.AuthInput
+import models.AuthInput;
 import repositories.UserRepository;
 
 import java.sql.SQLException;
