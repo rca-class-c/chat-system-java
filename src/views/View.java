@@ -1,6 +1,7 @@
 package views;
 import controllers.FileController;
 import controllers.UserController;
+import models.AuthInput;
 import models.User;
 import org.postgresql.shaded.com.ongres.scram.common.ScramAttributes;
 import utils.CommonMethod;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class View {
 
-    public static void loginView() {
+    public static void loginView() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         Component.pageTitleView("Login to your Account");
@@ -24,20 +25,22 @@ public class View {
         CommonMethod.addTabs(10, false);
         System.out.print("Enter your Password: ");
         String password = scanner.nextLine();
-
-        if (username.equals("admin") && password.equals("admin@123")) {
-            CommonMethod.addTabs(10, true);
-            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print(" Successfully Logged In  ");
-            CommonMethod.resetColor();
-        } else {
-            CommonMethod.addTabs(10, true);
-            CommonMethod.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Invalid Username or Password  ");
-            CommonMethod.resetColor();
-        }
+        AuthInput input = new AuthInput(username,password);
+        UserController userController = new UserController();
+        userController.loginUser(input);
+//        if (username.equals("admin") && password.equals("admin@123")) {
+//            CommonMethod.addTabs(10, true);
+//            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+//            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+//            System.out.print(" Successfully Logged In  ");
+//            CommonMethod.resetColor();
+//        } else {
+//            CommonMethod.addTabs(10, true);
+//            CommonMethod.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+//            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+//            System.out.print("  Invalid Username or Password  ");
+//            CommonMethod.resetColor();
+//        }
     }
 
     public static void createAccountView() throws SQLException {

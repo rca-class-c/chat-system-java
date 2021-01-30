@@ -2,7 +2,6 @@ package repositories;
 
 import config.Config;
 import models.AuthInput;
-import models.File;
 import models.User;
 
 import java.sql.Connection;
@@ -36,8 +35,18 @@ public class UserRepository {
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users where username  = '%s' and  password = '%s';",input.getUsername(),input.getPassword());
+            String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
             ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            if(rs.getRow()<=0){
+                System.out.println("User Found!");
+            while(rs.next()){
+                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
+            }
+            }
+            else{
+                System.out.println("No users found");
+            }
         }
         catch ( Exception e ) {
 
@@ -46,5 +55,6 @@ public class UserRepository {
             System.exit(0);
       
          }
+        return null;
     }
 }
