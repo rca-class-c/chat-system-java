@@ -38,11 +38,12 @@ public class UserRepository {
             String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
-            if(rs.getRow()<=0){
+            if(rs.next()){
                 System.out.println("User Found!");
-            while(rs.next()){
                 System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
-            }
+//            while(rs.next()){
+//                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
+//            }
             }
             else{
                 System.out.println("No users found");
