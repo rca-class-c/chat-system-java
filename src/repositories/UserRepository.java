@@ -34,7 +34,7 @@ public class UserRepository {
     public User login(AuthInput input) throws SQLException{
         try{
             Connection connection = Config.getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users where username  = '%s' and  password = '%s';",input.getUsername(),input.getPassword());
             ResultSet rs = statement.executeQuery(query);
