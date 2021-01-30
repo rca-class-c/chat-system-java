@@ -1,9 +1,13 @@
 package views;
 import controllers.FileController;
+import controllers.UserController;
+import models.User;
+import org.postgresql.shaded.com.ongres.scram.common.ScramAttributes;
 import utils.CommonMethod;
 import utils.ConsoleColor;
 import views.components.Component;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class View {
@@ -36,7 +40,7 @@ public class View {
         }
     }
 
-    public static void createAccountView() {
+    public static void createAccountView() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         Component.pageTitleView("Create a new account");
@@ -70,7 +74,9 @@ public class View {
         CommonMethod.addTabs(10, false);
         System.out.print("Enter your Password: ");
         String password = scanner.nextLine();
-
+        User user = new User(firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
+        UserController userController = new UserController();
+        userController.saveUser(user);
 
         CommonMethod.addTabs(10, true);
         CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
