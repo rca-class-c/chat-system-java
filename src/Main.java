@@ -40,8 +40,7 @@ public class Main {
         System.out.print(" Choose an option: ");
         CommonMethod.resetColor();
 
-            do {
-                try {
+            do {try {
                     CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
 
                     Scanner scanner = new Scanner(System.in);
