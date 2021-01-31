@@ -93,6 +93,9 @@ public class View {
         FileView fileView = new FileView();
         fileView.sendFileView();
     }
-
+    public static void createGroupView() {
+        GroupView groupView= new GroupView();
+        groupView.createGroupView();
+    }
 
 }

@@ -59,6 +59,22 @@ CREATE TYPE public.status AS ENUM (
 
 ALTER TYPE public.status OWNER TO postgres;
 
+--
+-- Name: trigger_set_timestamp(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.trigger_set_timestamp() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.trigger_set_timestamp() OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -89,7 +105,9 @@ CREATE TABLE public.groups (
     group_id integer NOT NULL,
     group_name character varying(40) NOT NULL,
     description character varying(40) NOT NULL,
-    group_creator integer
+    group_creator integer,
+    created_at date DEFAULT now(),
+    updated_at date DEFAULT now()
 );
 
 
@@ -133,6 +151,20 @@ CREATE TABLE public.messages (
 
 
 ALTER TABLE public.messages OWNER TO postgres;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.messages ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Name: permissions; Type: TABLE; Schema: public; Owner: postgres
@@ -287,7 +319,8 @@ COPY public.files (id, url, file_name, file_type, file_size, file_size_type, sen
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.groups (group_id, group_name, description, group_creator) FROM stdin;
+COPY public.groups (group_id, group_name, description, group_creator, created_at, updated_at) FROM stdin;
+13	math	math	2	2021-01-31	2021-01-31
 \.
 
 
@@ -296,6 +329,10 @@ COPY public.groups (group_id, group_name, description, group_creator) FROM stdin
 --
 
 COPY public.messages (id, content, sender, user_receiver, group_receiver, original_message, sent_at) FROM stdin;
+1	hi\n	1	2	\N	1	2021-01-29
+2	hello	2	1	\N	1	2021-01-29
+3	how are you	1	2	\N	2	2021-01-29
+4	hi	3	1	\N	1	2021-01-29
 \.
 
 
@@ -348,7 +385,14 @@ COPY public.users (user_id, first_name, last_name, username, email, gender, pass
 -- Name: groups_groupid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.groups_groupid_seq', 1, false);
+SELECT pg_catalog.setval('public.groups_groupid_seq', 13, true);
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.messages_id_seq', 4, true);
 
 
 --
@@ -442,6 +486,13 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: groups set_timestamp; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.groups FOR EACH ROW EXECUTE FUNCTION public.trigger_set_timestamp();
 
 
 --
