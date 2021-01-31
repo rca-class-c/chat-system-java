@@ -13,9 +13,8 @@ public class File {
     public Date createdAt;
     public FileStatusEnum status;
 
-    public File() {
+    public File() { }
 
-    }
     public File(String fileName, String fileType, int fileSize, String fileSizeType, int senderId) {
         this.fileName = fileName;
         this.fileType = fileType;
