@@ -3,6 +3,7 @@ import controllers.FileController;
 import controllers.UserController;
 import models.AuthInput;
 import models.User;
+import controllers.login;
 import org.postgresql.shaded.com.ongres.scram.common.ScramAttributes;
 import utils.CommonMethod;
 import utils.ConsoleColor;
@@ -13,13 +14,13 @@ import java.util.Scanner;
 
 public class View {
 
-    public static void loginView() throws SQLException {
+    public static void loginView() throws SQLException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
         Component.pageTitleView("Login to your Account");
 
         CommonMethod.addTabs(10, false);
-        System.out.print("Enter Your Username: ");
+        System.out.print("Enter Your Email: ");
         String username = scanner.nextLine();
 
         CommonMethod.addTabs(10, false);
@@ -27,20 +28,9 @@ public class View {
         String password = scanner.nextLine();
         AuthInput input = new AuthInput(username,password);
         UserController userController = new UserController();
-        userController.loginUser(input);
-//        if (username.equals("admin") && password.equals("admin@123")) {
-//            CommonMethod.addTabs(10, true);
-//            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-//            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-//            System.out.print(" Successfully Logged In  ");
-//            CommonMethod.resetColor();
-//        } else {
-//            CommonMethod.addTabs(10, true);
-//            CommonMethod.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-//            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-//            System.out.print("  Invalid Username or Password  ");
-//            CommonMethod.resetColor();
-//        }
+//        userController.loginUser(input);
+        login.login(username,password);
+
     }
 
     public static void createAccountView() throws SQLException {

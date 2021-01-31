@@ -74,7 +74,7 @@ public class Main {
                             CommonMethod.resetColor();
                     }
                 }
-                 catch (InputMismatchException | SQLException e) {
+                 catch (InputMismatchException | SQLException | ClassNotFoundException e) {
                     CommonMethod.addTabs(10, false);
                     CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                     System.out.print("Only numbers allowed: ");
