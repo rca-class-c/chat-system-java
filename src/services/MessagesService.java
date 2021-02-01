@@ -4,8 +4,10 @@ import models.Messages;
 import repositories.MessagesRepository;
 import utils.*;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public class MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
@@ -16,5 +18,8 @@ public class MessagesService {
 
     public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
         return messagesRepository.getGroupMessages(messages);
+    }
+    public Set<ResultSet> viewUserNotifications(int user_id) throws Exception{
+        return messagesRepository.getNotifications(user_id);
     }
 }

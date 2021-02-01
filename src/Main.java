@@ -2,6 +2,7 @@
 import utils.ConsoleColor;
 import utils.CommonMethod;
 import views.View;
+import views.MessagesView;
 import views.components.Component;
 
 
@@ -19,6 +20,7 @@ public class Main {
     }
 
     static void landingView() {
+    	MessagesView messages = new MessagesView();
         int action = -1;
 
         appNav();
@@ -30,7 +32,9 @@ public class Main {
         CommonMethod.addTabs(10, false);
         System.out.println("3. Send a File");
         CommonMethod.addTabs(10, false);
-        System.out.println("4. Quit");
+        System.out.println("4. View Notifications");
+        CommonMethod.addTabs(10, false);
+        System.out.println("5. Quit");
         CommonMethod.addTabs(10, false);
         CommonMethod.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
         System.out.print("  ");
@@ -62,6 +66,10 @@ public class Main {
                             View.sendFileView();
                             break;
                         case 4:
+                            CommonMethod.resetColor();						
+                            messages.printNotifications();
+                            break;    
+                        case 5:
                             CommonMethod.addTabs(10, true);
                             CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.println("SYSTEM CLOSED !");
@@ -75,10 +83,16 @@ public class Main {
                             CommonMethod.resetColor();
                     }
                 }
-                 catch (InputMismatchException | SQLException e) {
+                 catch ( SQLException e) {
                     CommonMethod.addTabs(10, false);
                     CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                     System.out.print("Only numbers allowed: ");
+                    CommonMethod.resetColor();
+                }
+                catch (Exception e) {
+                    CommonMethod.addTabs(10, false);
+                    CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                    System.out.print("There was an error getting notification!");
                     CommonMethod.resetColor();
                 }
             } while (action == -1);
