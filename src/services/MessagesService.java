@@ -17,4 +17,12 @@ public class MessagesService {
     public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
         return messagesRepository.getGroupMessages(messages);
     }
+
+    public void sendInGroup(Messages messages) throws SQLException{
+        messagesRepository.sendGroupMessage(messages);
+    }
+
+    public void sendDirectly(Messages messages) throws SQLException{
+        messagesRepository.sendDirectMessage(messages);
+    }
 }
