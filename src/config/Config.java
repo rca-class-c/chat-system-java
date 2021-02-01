@@ -10,6 +10,8 @@ import java.util.Properties;
 
 public class Config {
 
+    public static String API_URL = "http://localhost:8000";
+
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 

@@ -1,6 +1,9 @@
 package utils;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommonMethod {
     /**
@@ -43,4 +46,14 @@ public class CommonMethod {
 
     }
 
+    public static Map<String, String> mapRequestString(String string) {
+        System.out.println("jksdjksd");
+        Map<String, String> map = new HashMap<String, String>();
+        String[] parameters = string.split("&");
+        for (String parameter: parameters) {
+            String[] mapping = parameter.split("=");
+            map.put(mapping[0], mapping[1]);
+        }
+        return map;
+    }
 }
