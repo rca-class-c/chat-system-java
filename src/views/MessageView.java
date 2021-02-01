@@ -30,10 +30,10 @@ public class MessageView {
             CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
 
             CommonMethod.resetColor();
-            Messages messages = new Messages(name, 1, 2,2);
+//            Messages messages = new Messages(name, 1, 2,2);
 
 
-            this.message.sendInGroup(messages);
+//            this.message.sendInGroup(messages);
 
 
         }
