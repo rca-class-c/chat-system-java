@@ -5,6 +5,7 @@ import views.View;
 import views.components.Component;
 
 
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -74,7 +75,7 @@ public class Main {
                             CommonMethod.resetColor();
                     }
                 }
-                 catch (InputMismatchException e) {
+                 catch (InputMismatchException | SQLException e) {
                     CommonMethod.addTabs(10, false);
                     CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                     System.out.print("Only numbers allowed: ");
