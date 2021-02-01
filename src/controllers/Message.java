@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Messages;
+import repositories.MessagesRepository;
 import services.MessagesService;
 import utils.*;
 
@@ -16,6 +17,14 @@ public class Message {
 
     public List<GroupMessage> displayGroupMessages(Messages messages) throws SQLException {
         return this.messagesService.viewGroupMessages(messages);
+    }
+
+    public void sendInGroup(Messages messages) throws SQLException{
+        messagesService.sendInGroup(messages);
+    }
+
+    public void sendDirectly(Messages messages) throws SQLException{
+        messagesService.sendDirectly(messages);
     }
 
 }
