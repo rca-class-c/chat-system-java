@@ -24,12 +24,12 @@ public class Message {
         return messagesService.viewUserNotifications(user_id);
     }
 
-    public void sendInGroup(Messages messages) throws SQLException{
-        messagesService.sendInGroup(messages);
-    }
-
-    public void sendDirectly(Messages messages) throws SQLException{
-        messagesService.sendDirectly(messages);
-    }
+//    public void sendInGroup(Messages messages) throws SQLException{
+//        messagesService.sendInGroup(messages);
+//    }
+//
+//    public void sendDirectly(Messages messages) throws SQLException{
+//        messagesService.sendDirectly(messages);
+//    }
 
 }

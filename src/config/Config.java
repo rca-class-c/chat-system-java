@@ -10,12 +10,14 @@ import java.util.Properties;
 
 public class Config {
 
-    public static String API_URL = "http://localhost:8000";
+    public static int PORT = 8000;
+    public static String API_URL = "http://localhost:" + PORT;
+
 
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
+        try (FileInputStream f = new FileInputStream("config/db.properties")) {
 
             // load the properties file
             Properties pros = new Properties();

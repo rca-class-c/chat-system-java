@@ -3,7 +3,6 @@ import controllers.FileController;
 import controllers.UserController;
 import models.AuthInput;
 import models.User;
-import org.postgresql.shaded.com.ongres.scram.common.ScramAttributes;
 import utils.CommonMethod;
 import utils.ConsoleColor;
 import views.components.Component;

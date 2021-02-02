@@ -47,7 +47,6 @@ public class CommonMethod {
     }
 
     public static Map<String, String> mapRequestString(String string) {
-        System.out.println("jksdjksd");
         Map<String, String> map = new HashMap<String, String>();
         String[] parameters = string.split("&");
         for (String parameter: parameters) {

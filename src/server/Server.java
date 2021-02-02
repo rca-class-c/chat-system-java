@@ -20,6 +20,7 @@ public class Server {
             router.useRoute(HttpMethod.GET, "/");
             router.useRoute(HttpMethod.POST, "/api/register");
             router.useRoute(HttpMethod.POST, "/api/files");
+            router.useRoute(HttpMethod.GET, "/api/messages");
 
             server.setExecutor(null); // creates a default executor
             server.start();

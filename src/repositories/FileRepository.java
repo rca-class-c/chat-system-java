@@ -9,26 +9,27 @@ import java.sql.Statement;
 
 public class FileRepository {
 
-    public File save(File file) throws SQLException {
+    public String save(File file) {
       try {
 
           Connection connection = Config.getConnection();
           Statement statement = connection.createStatement();
 
-          String query = String.format("INSERT INTO files(url, file_name, file_type, file_size, file_size_type, sender_id) VALUES (" +
-                  "%s, %s, %s, %s, %s, %d);", file.getUrl(), file.getFileName(), file.getFileType(), file.getFileSize(), file.getFileSizeType(), file.getSenderId());
-
-
+          String query = String.format("INSERT INTO files(url, file_name, file_type, file_size, file_size_type, sender_id) VALUES ('SDFAsdfa', " +
+                  "'%s', '%s', '%s', '%s', %d);", file.getFileName(), file.getFileType(), file.getFileSize(), file.getFileSizeType(), file.getSenderId());
 
           int i = statement.executeUpdate(query);
-          System.out.println("Rows inserted: "+i);
+
+          if (i > 0) {
+              return "File Saved Successfully";
+          }
 
           statement.close();
           connection.close();
       } catch (SQLException e) {
-        System.out.println(e.getMessage());
+        e.printStackTrace();
       }
-        return file;
+        return "";
     }
 
 

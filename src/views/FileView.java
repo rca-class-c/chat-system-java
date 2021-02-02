@@ -53,9 +53,9 @@ public class FileView {
             File file = new File(fileName, fileType, fileSize, fileSizeType, senderId);
 //            this.fileController.saveFile(file);
 
-            String input ="userName=Pankaj&name=djksaf";
+            String input ="username=Pankaj&name=djksaf";
 
-            System.out.println(CommonMethod.mapRequestString(input));
+            CommonMethod.mapRequestString(input);
 
             sendPOST(Config.API_URL + "/api/files", input, "Mozilla/5.0");
 //            System.out.println(this.fileController.saveFile(file));

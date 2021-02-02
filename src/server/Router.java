@@ -22,11 +22,10 @@ public class Router {
     public HttpContext useRoute(HttpMethod API_METHOD, String path) {
         return this.getServer().createContext(path, (exchange -> {
             if (API_METHOD.toString().equals(exchange.getRequestMethod())) {
-                String respText = path +  "" + API_METHOD;
+                String respText = path +  " METHOD YAWE : " + API_METHOD;
                 CommonMethod.useColor(ConsoleColor.BoldColor.YELLOW_BOLD);
 
                 StringBuffer me = getRequestBody(exchange);
-                System.out.println(me);
 
                 System.out.println("REQUEST: " + API_METHOD +  " \"" + path + "\" " + 200);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, respText.getBytes().length);

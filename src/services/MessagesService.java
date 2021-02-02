@@ -19,8 +19,9 @@ public class MessagesService {
     public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
         return messagesRepository.getGroupMessages(messages);
     }
-    public Set<ResultSet> viewUserNotifications(int user_id) throws Exception{
+    public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
+    }
 
     public void sendInGroup(Messages messages) throws SQLException{
         messagesRepository.sendGroupMessage(messages);

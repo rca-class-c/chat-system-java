@@ -11,7 +11,7 @@ public class FileController {
 
     private final FileService fileService = new FileService();
 
-    public File saveFile(File file) throws SQLException {
+    public String saveFile(File file) throws SQLException {
         return this.fileService.saveItem(file);
     }
 
