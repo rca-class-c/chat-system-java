@@ -14,6 +14,8 @@ import java.util.Scanner;
 public class View {
 
     public static void loginView() throws SQLException {
+        UserController userControl = new UserController();
+        System.out.println("this is data"+userControl.getAllUser());
         Scanner scanner = new Scanner(System.in);
 
         Component.pageTitleView("Login to your Account");
@@ -27,7 +29,8 @@ public class View {
         String password = scanner.nextLine();
         AuthInput input = new AuthInput(username,password);
         UserController userController = new UserController();
-        userController.loginUser(input);
+       User newUser =  userController.loginUser(input);
+       System.out.println(newUser.username);
 //        if (username.equals("admin") && password.equals("admin@123")) {
 //            CommonMethod.addTabs(10, true);
 //            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);

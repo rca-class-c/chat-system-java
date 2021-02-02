@@ -21,5 +21,12 @@ public class MessagesService {
     }
     public Set<ResultSet> viewUserNotifications(int user_id) throws Exception{
         return messagesRepository.getNotifications(user_id);
+
+    public void sendInGroup(Messages messages) throws SQLException{
+        messagesRepository.sendGroupMessage(messages);
+    }
+
+    public void sendDirectly(Messages messages) throws SQLException{
+        messagesRepository.sendDirectMessage(messages);
     }
 }

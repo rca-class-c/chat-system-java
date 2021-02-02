@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.ArrayList;
 
 public class UserRepository {
     public User save(User user) throws SQLException {
@@ -40,10 +42,15 @@ public class UserRepository {
             System.out.println("Reading users ....");
             if(rs.next()){
                 System.out.println("User Found!");
+                User returnUser =  new User(rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"));
                 System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
 //            while(rs.next()){
 //                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
 //            }
+                return returnUser;
             }
             else{
                 System.out.println("No users found");
@@ -58,4 +65,72 @@ public class UserRepository {
          }
         return null;
     }
+
+
+    public List<User> getAllUsers() throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM users   ");
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            List<User> users=new ArrayList<User>();
+            while(rs.next()){
+                System.out.println("User Found!");
+                users.add(new User(rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status")));
+                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
+
+                return users;
+            }
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+
+    public User getUserById(int userID) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' "+userID);
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            if(rs.next()){
+                System.out.println("User Found!");
+                User returnUser =  new User(rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"));
+                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
+
+                return returnUser;
+            }
+            else{
+                System.out.println("No users found");
+            }
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+
 }
+
+

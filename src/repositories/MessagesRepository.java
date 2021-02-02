@@ -12,7 +12,7 @@ import java.util.Date;
 public class MessagesRepository {
 
 
-    //View Messages
+    //-------------------------------View Messages-----------------------------------------
 
     public List<DirectMessage> getDirectMessages(Messages messages) throws SQLException {
         List<DirectMessage> allMessagesDM = new ArrayList<>();
@@ -90,4 +90,36 @@ public class MessagesRepository {
         conn.close();
 		return notis;
 	}
+=======
+
+    //-------------------------------sending messages--------------------------
+    //sending group message
+    public static int sendGroupMessage(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
+        Connection conn = Config.getConnection();
+        PreparedStatement statement=conn.prepareStatement(sql);
+        statement.setString(1, message.getContext());
+        statement.setInt(2, message.getSender());
+       // statement.setInt(3, message.getGroup_receiver());
+        statement.setDate(4, (java.sql.Date) message.getSent_at());
+        boolean rowInsert= statement.executeUpdate()>1;
+        statement.close();
+        conn.close();
+        return 0;
+    }
+
+   //sending a direct message
+    public static int sendDirectMessage(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
+        Connection conn = Config.getConnection();
+        PreparedStatement statement=conn.prepareStatement(sql);
+        statement.setString(1, message.getContext());
+        statement.setInt(2, message.getSender());
+        statement.setInt(3, message.getUser_receiver() );
+        statement.setDate(4, (java.sql.Date) message.getSent_at());
+        boolean rowInsert= statement.executeUpdate()>1;
+        statement.close();
+        conn.close();
+        return 0;
+    }
 }

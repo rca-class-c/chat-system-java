@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Messages;
+import repositories.MessagesRepository;
 import services.MessagesService;
 import utils.*;
 
@@ -21,6 +22,14 @@ public class Message {
     }
     public Set<ResultSet> displayUserNotifications(int user_id) throws Exception{
         return messagesService.viewUserNotifications(user_id);
+    }
+
+    public void sendInGroup(Messages messages) throws SQLException{
+        messagesService.sendInGroup(messages);
+    }
+
+    public void sendDirectly(Messages messages) throws SQLException{
+        messagesService.sendDirectly(messages);
     }
 
 }
