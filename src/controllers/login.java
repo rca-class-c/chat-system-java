@@ -11,7 +11,7 @@ public class login {
         Connection conn=Config.getConnection();
         int ok=0;
 
-        final  String query="SELECT email,pass_word from users WHERE email=? OR pass_word=?";
+        final  String query="SELECT email,pass_word,username from users WHERE email=? OR pass_word=?";
         PreparedStatement preparedStatement= conn.prepareStatement(query);
         preparedStatement.setString(1,email);
         preparedStatement.setString(2,password);
@@ -19,8 +19,9 @@ public class login {
 if (resultSet.next()){
     String email1=resultSet.getString("email");
             String  pass1=resultSet.getString("pass_word");
+    String name=resultSet.getString("username");
             if(email1.equals(email)&&pass1.equals(password)){
-                System.out.println("Hello user: "+email1);
+                System.out.println("Hello "+name);
                 ok=1;
             }
             else if(!email1.equals(email)){
