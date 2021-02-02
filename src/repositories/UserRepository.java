@@ -72,20 +72,18 @@ public class UserRepository {
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users   ");
+            String query = String.format("SELECT * FROM users");
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();
             while(rs.next()){
-                System.out.println("User Found!");
                 users.add(new User(rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status")));
-                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
-
-                return users;
+               // System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
             }
+            return users;
         }
         catch ( Exception e ) {
 
