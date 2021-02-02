@@ -5,6 +5,7 @@ import views.View;
 import views.components.Component;
 
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -30,7 +31,9 @@ public class Main {
         CommonMethod.addTabs(10, false);
         System.out.println("3. Send a File");
         CommonMethod.addTabs(10, false);
-        System.out.println("4. Quit");
+        System.out.println("4. send Invitations");
+        CommonMethod.addTabs(10, false);
+        System.out.println("5. Quit");
         CommonMethod.addTabs(10, false);
         CommonMethod.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
         System.out.print("  ");
@@ -61,6 +64,10 @@ public class Main {
                             View.sendFileView();
                             break;
                         case 4:
+
+                            View.sendInvitations();
+
+                        case 5:
                             CommonMethod.addTabs(10, true);
                             CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.println("SYSTEM CLOSED !");
@@ -74,7 +81,7 @@ public class Main {
                             CommonMethod.resetColor();
                     }
                 }
-                 catch (InputMismatchException | SQLException | ClassNotFoundException e) {
+                 catch (InputMismatchException | SQLException | ClassNotFoundException | MessagingException e) {
                     CommonMethod.addTabs(10, false);
                     CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                     System.out.print("Only numbers allowed: ");

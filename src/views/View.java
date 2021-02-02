@@ -1,6 +1,7 @@
 package views;
 import controllers.FileController;
 import controllers.UserController;
+import controllers.sendInvitations;
 import models.AuthInput;
 import models.User;
 import controllers.login;
@@ -9,6 +10,7 @@ import utils.CommonMethod;
 import utils.ConsoleColor;
 import views.components.Component;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -83,6 +85,22 @@ public class View {
         FileView fileView = new FileView();
         fileView.sendFileView();
     }
+    public  static  void sendInvitations() throws ClassNotFoundException, MessagingException, SQLException {
+        Scanner scanner = new Scanner(System.in);
+
+        Component.pageTitleView("Send Invitations");
+
+
+        CommonMethod.addTabs(10, false);
+        System.out.print("Enter your Email: ");
+        String email = scanner.nextLine();
+
+        CommonMethod.addTabs(10, false);
+        System.out.print("Enter your Password: ");
+        String password = scanner.nextLine();
+        sendInvitations.sendingInvitations(email,password);
+    }
+
     public static void createGroupView() {
         GroupView groupView= new GroupView();
         groupView.createGroupView();
