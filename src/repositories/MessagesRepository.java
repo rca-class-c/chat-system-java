@@ -80,7 +80,7 @@ public class MessagesRepository {
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContext());
         statement.setInt(2, message.getSender());
-//        statement.setInt(3, message.getGroup_receiver());
+       // statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();

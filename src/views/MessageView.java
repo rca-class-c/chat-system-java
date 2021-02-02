@@ -31,8 +31,8 @@ public class MessageView {
 
             CommonMethod.resetColor();
 //            Messages messages = new Messages(name, 1, 2,2);
-
-
+//
+//
 //            this.message.sendInGroup(messages);
 
 
