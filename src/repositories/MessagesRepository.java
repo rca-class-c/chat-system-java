@@ -71,6 +71,26 @@ public class MessagesRepository {
         conn.close();
         return allMessagesGrp;
     }
+    public Set<ResultSet> getNotifications(int user_id)throws Exception{
+		Set<ResultSet>  notis = new HashSet<ResultSet>();
+		Connection conn = Config.getConnection();
+        Statement statement = conn.createStatement();
+		ResultSet gr;
+		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
+		ResultSet grm = null;
+		while(gr.next()) {				
+				grm = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+				notis.add(grm);
+		}
+		ResultSet rs;
+		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
+		notis.add(rs);
+		
+		statement.close();
+        conn.close();
+		return notis;
+	}
+=======
 
     //-------------------------------sending messages--------------------------
     //sending group message
