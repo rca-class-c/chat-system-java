@@ -15,7 +15,7 @@ public class Config {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        try (FileInputStream f = new FileInputStream("config/db.properties")) {
+        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
 
             // load the properties file
             Properties pros = new Properties();
