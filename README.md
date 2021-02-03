@@ -3,7 +3,7 @@ Consider this new Project structure which has the source folder with the postgre
 
 ### Details
 
-This current version of the repo has a file structure implemented as per System Architecture @Masengesho designed last time in class,
+This current version of the repo has a file structure implemented as per System Architecture [@Masengesho](https://github.com/donatien2020) suggested,
 There is a sample for File Management of the messaging group:
 Here are simple details
 
@@ -22,9 +22,8 @@ Also Make sure you run the Main class in src folder
 ### Note
 remember to choose sdk while running this projects in you local machines ide. it gave me headache
 
-
 Credentials
 ```
- username: admin
- password: admin@123
+ username: Didien
+ password: hello123
 ```

@@ -45,7 +45,10 @@ public class FileView {
 
             CommonMethod.resetColor();
             File file = new File(fileName, fileType, fileSize, fileSizeType, senderId);
+
+
             System.out.println(this.fileController.saveFile(file));
+
 
         }
         catch (Exception e) {

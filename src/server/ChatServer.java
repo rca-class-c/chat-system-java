@@ -52,7 +52,7 @@ public class ChatServer {
             System.out.println(ex.getMessage());
         }
         
-        int port = 9500;
+        int port = 6900;
         ChatServer server = new ChatServer(port);
         server.execute();	
         
