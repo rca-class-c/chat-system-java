@@ -23,14 +23,15 @@ public class Token {
 
     private TreeMap<String,String> payload;
     private final String secretKey = "V3uZKw7RPYW85FNTwiqm8JjZ9ep/jn2bZ8xy0vl8S+1OmHjJoCSNbXLl+hb8ulmnUTkxaPtBcYKM/60PjoMyPw==";
-
+    private final String subject;
 
     /**
      * Token controller
      *
      * @param payload Data to be included in the jwt token
      */
-    public Token(TreeMap<String,String> payload){
+    public Token(String subject,TreeMap<String,String> payload){
+        this.subject = subject;
         this.payload = payload;
     }
 
@@ -60,7 +61,7 @@ public class Token {
         byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
 
         jwtToken = Jwts.builder()
-                .setSubject("Ntwari liberi")
+                .setSubject(this.subject)
                 .setAudience("Auth")
                 .claim("name","liberi")
                 .claim("age",new Random().nextInt(20)+1)
