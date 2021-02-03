@@ -4,6 +4,7 @@ import models.AuthInput;
 import models.User;
 import utils.CommonUtil;
 import utils.ConsoleColor;
+import utils.UserIterator;
 import views.components.Component;
 
 import java.sql.SQLException;
@@ -13,7 +14,9 @@ public class View {
 
     public static void loginView() throws SQLException {
         UserController userControl = new UserController();
-        System.out.println("this is data"+userControl.getAllUser());
+        utils.UserIterator userIterator = new UserIterator();
+        userIterator.printUsers(userControl.getAllUser());
+
         Scanner scanner = new Scanner(System.in);
 
         Component.pageTitleView("Login to your Account");
