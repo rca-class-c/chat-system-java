@@ -2,6 +2,7 @@
 import utils.ConsoleColor;
 import utils.CommonMethod;
 import views.View;
+import views.MessagesView;
 import views.components.Component;
 
 
@@ -20,6 +21,7 @@ public class Main {
     }
 
     static void landingView() {
+    	MessagesView messages = new MessagesView();
         int action = -1;
 
         appNav();
@@ -85,6 +87,12 @@ public class Main {
                     CommonMethod.addTabs(10, false);
                     CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
                     System.out.print("Only numbers allowed: ");
+                    CommonMethod.resetColor();
+                }
+                catch (Exception e) {
+                    CommonMethod.addTabs(10, false);
+                    CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                    System.out.print("There was an error getting notification!");
                     CommonMethod.resetColor();
                 }
             } while (action == -1);

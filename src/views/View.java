@@ -8,6 +8,7 @@ import controllers.login;
 import org.postgresql.shaded.com.ongres.scram.common.ScramAttributes;
 import utils.CommonMethod;
 import utils.ConsoleColor;
+import utils.UserIterator;
 import views.components.Component;
 
 import javax.mail.MessagingException;
@@ -16,7 +17,11 @@ import java.util.Scanner;
 
 public class View {
 
-    public static void loginView() throws SQLException, ClassNotFoundException {
+    public static void loginView() throws SQLException {
+        UserController userControl = new UserController();
+        utils.UserIterator userIterator = new UserIterator();
+        userIterator.printUsers(userControl.getAllUser());
+
         Scanner scanner = new Scanner(System.in);
 
         Component.pageTitleView("Login to your Account");
