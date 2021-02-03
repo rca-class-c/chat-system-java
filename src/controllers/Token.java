@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
+import io.jsonwebtoken.security.SignatureException;
 
 
 /**
@@ -73,14 +74,31 @@ public class Token {
     }
 
 
-    public String decodeToken(String jwt){
+    /**
+     *
+     * Decoding jwt token created by Token class, make sure that you
+     * decode token created by Token Class so that it will match secret Key
+     * unless you will get an io.jsonwebtoken.security.SignatureException exception
+     *
+     * @param jwt jwt token, of String type
+     *
+     * @return decoded string, of String type
+     *
+     * @throws SignatureException invalid signature exception
+     */
+    public String decodeToken(String jwt) throws SignatureException{
         byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
-        String results;
+        String results = "";
 
-        results = Jwts.parser()
-                .setSigningKey(Keys.hmacShaKeyFor(secrete))
-                .parseClaimsJws(jwt)
-                .toString();
+        try{
+            results = Jwts.parser()
+                    .setSigningKey(Keys.hmacShaKeyFor(secrete))
+                    .parseClaimsJws(jwt)
+                    .toString();
+
+        }catch(SignatureException e){
+            System.out.println(e.getMessage());
+        }
 
         return results;
     }
