@@ -4,10 +4,7 @@ import config.Config;
 import models.AuthInput;
 import models.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -59,9 +56,9 @@ public class UserRepository {
         catch ( Exception e ) {
 
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-      
+
             System.exit(0);
-      
+
          }
         return null;
     }
@@ -99,10 +96,12 @@ public class UserRepository {
     public User getUserById(int userID) throws SQLException{
         try{
             Connection connection = Config.getConnection();
-            Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' "+userID);
+
+            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' ",userID);
+            Statement statement =  connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
+
             System.out.println("Reading users ....");
             if(rs.next()){
                 System.out.println("User Found!");
@@ -110,8 +109,7 @@ public class UserRepository {
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"));
-                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
-
+      //System.out.println(" User By Id"+rs.getString("last_name"));
                 return returnUser;
             }
             else{
@@ -128,6 +126,43 @@ public class UserRepository {
         return null;
     }
 
+
+    public int updateUser(User user, int userId) throws SQLException{
+        int affectedRows = 0;
+
+            Connection connection = Config.getConnection();
+            String query = String.format("UPDATE users SET first_name = ?,last_name = ?," +
+                    "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ");
+            PreparedStatement statement =  connection.prepareStatement(query);
+            statement.setString(1,user.getFname());
+            statement.setString(2,user.getLname());
+            statement.setString(3,user.getUsername());
+            statement.setString(4, user.getEmail());
+            statement.setString(5,user.getGender());
+            statement.setString(6,user.getPassword());
+            statement.setString(7,user.getDob());
+            statement.setInt(8,user.getCategoryID());
+            statement.setInt(user.getUserID(),userId);
+            affectedRows = statement.executeUpdate();
+            if(affectedRows > 0) {
+                System.out.println("  User updated successfully   ");
+            }
+            return affectedRows;
+    }
+
+    public int deleteUser(int userId) throws SQLException{
+
+          int affectedRows = 0;
+
+          Connection connection = Config.getConnection();
+          String query = String.format("DELETE FROM users WHERE user_id = ? ");
+          PreparedStatement statement = connection.prepareStatement(query);
+          statement.setInt(1, userId);
+          if (affectedRows > 0) {
+              System.out.println("  User updated successfully   ");
+          }
+          return affectedRows;
+    }
 
 }
 

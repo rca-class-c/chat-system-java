@@ -18,6 +18,7 @@ public class View {
         UserController userControl = new UserController();
         utils.UserIterator userIterator = new UserIterator();
         userIterator.printUsers(userControl.getAllUser());
+        userControl.getUserById(1);
 
         Scanner scanner = new Scanner(System.in);
 

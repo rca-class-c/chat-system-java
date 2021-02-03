@@ -19,6 +19,9 @@ public class UserController {
     public List<User> getAllUser() throws SQLException {
         return this.userService.getAllUser();
     }
+    public User getUserById(int userId) throws SQLException{
+        return this.userService.getUserById(userId);
+    }
 
 }
 

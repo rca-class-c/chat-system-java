@@ -18,4 +18,7 @@ public class UserService {
     public List<User> getAllUser() throws SQLException{
         return userRepository.getAllUsers();
     }
+    public User getUserById(int userId) throws SQLException{
+        return userRepository.getUserById(userId);
+    }
 }
