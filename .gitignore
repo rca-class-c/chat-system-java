@@ -1,5 +1,6 @@
 .idea/*
 chat_system.iml
 src/config/db.properties
+public/assets/*
 out
 chat-system-java-1.iml
