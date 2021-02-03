@@ -20,7 +20,7 @@ public class Config {
 
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
-        try (FileInputStream f = new FileInputStream("src/config/migrations.sql.properties")) {
+        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
 
             // load the properties file
             Properties pros = new Properties();
