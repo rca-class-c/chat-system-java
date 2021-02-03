@@ -15,7 +15,7 @@ public class GroupMemberView {
     public void createGroupMemberView() {
         Scanner scanner = new Scanner(System.in);
 
-        Component.pageTitleView("A simple test for creating a group member");
+        Component.pageTitleView("Just A simple test for creating a group member");
 
         try {
             CommonMethod.addTabs(10, false);
