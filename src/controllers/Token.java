@@ -1,6 +1,7 @@
 package controllers;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -68,8 +69,6 @@ public class Token {
                 .signWith(Keys.hmacShaKeyFor(secrete))
                 .compact();
 
-        this.decodeToken(jwtToken);
-
         return jwtToken;
     }
 
@@ -85,8 +84,9 @@ public class Token {
      * @return decoded string, of String type
      *
      * @throws SignatureException invalid signature exception
+     * @throws ExpiredJwtException token expiration exception
      */
-    public String decodeToken(String jwt) throws SignatureException{
+    public String decodeToken(String jwt) throws SignatureException, ExpiredJwtException {
         byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
         String results = "";
 
@@ -96,7 +96,8 @@ public class Token {
                     .parseClaimsJws(jwt)
                     .toString();
 
-        }catch(SignatureException e){
+        }
+        catch(SignatureException | ExpiredJwtException e){
             System.out.println(e.getMessage());
         }
 
