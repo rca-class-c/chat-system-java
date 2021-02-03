@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import controllers.Message;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import utils.ConsoleColor;
 
 public class MessagesView {
@@ -20,13 +20,13 @@ public class MessagesView {
 	public void printNotifications() throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		
-		CommonMethod.addTabs(10, false);
+		CommonUtil.addTabs(10, false);
         System.out.print("Enter The user Id: ");
         int userId = scanner.nextInt();
         
-        CommonMethod.addTabs(10, true);
-        CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-        CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+        CommonUtil.addTabs(10, true);
+        CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
         
         Set<ResultSet> notis = messageController.displayUserNotifications(userId);
 		System.out.println("Id\t content\t sender\t Ureceiver\t Greceiver\t Sendt\t isRead ");
@@ -54,7 +54,7 @@ public class MessagesView {
 	public void displayTray() throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		
-		CommonMethod.addTabs(10, false);
+		CommonUtil.addTabs(10, false);
         System.out.print("Enter The user Id: ");
         int userId = scanner.nextInt();
         

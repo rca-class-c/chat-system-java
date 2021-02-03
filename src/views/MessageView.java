@@ -1,10 +1,7 @@
 package views;
 
-import controllers.FileController;
 import controllers.Message;
-import models.File;
-import models.Messages;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import utils.ConsoleColor;
 import views.components.Component;
 
@@ -19,17 +16,17 @@ public class MessageView {
         Component.pageTitleView("Just a simple test for file sending");
 
         try {
-            CommonMethod.addTabs(10, false);
+            CommonUtil.addTabs(10, false);
             System.out.print("Enter your message: ");
             String name = scanner.nextLine();
 
 
 
-            CommonMethod.addTabs(10, true);
-            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
 
-            CommonMethod.resetColor();
+            CommonUtil.resetColor();
 //            Messages messages = new Messages(name, 1, 2,2);
 //
 //

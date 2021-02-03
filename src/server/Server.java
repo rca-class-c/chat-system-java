@@ -1,37 +1,34 @@
 package server;
 
+import java.net.InetSocketAddress;
+import java.util.Map;
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import com.sun.net.httpserver.HttpServer;
+import controllers.FileController;
+import utils.CommonUtil;
+import utils.ConsoleColor;
 
 public class Server {
-    public static void main(String[]args) {
+
+    public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(4008);
-            Socket socket = serverSocket.accept();
+            final int PORT = 8000;
+            HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+            CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
+            System.out.println("Server running on port " + PORT);
+            System.out.println();
+            CommonUtil.resetColor();
 
-            DataInputStream input = new DataInputStream(socket.getInputStream());
-            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+            Router router = new Router(server);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String request = "";
-            String response = "";
+            router.useRoute(HttpMethod.POST, "/api/files", new FileController(), FileController.class.getMethod("saveFile", Map.class));
 
-            while(!request.equals("end")) {
-                request = input.readUTF();
-                System.out.println("Client requested: "+request);
-
-                System.out.println("Writing response: ");
-                response = reader.readLine();
-
-                output.writeUTF(response);
-            }
-            input.close();
-            serverSocket.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            server.setExecutor(null); // creates a default executor
+            server.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
+
 }
+

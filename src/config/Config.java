@@ -10,16 +10,23 @@ import java.util.Properties;
 
 public class Config {
 
+    public static int PORT = 8000;
+    private static final String PUBLIC_FILES_DIRECTORY = System.getProperty("user.dir") + "/public/assets/";
+    public static String API_URL = "http://localhost:" + PORT;
+
+
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
+        try (FileInputStream f = new FileInputStream("src/config/migrations.sql.properties")) {
 
             // load the properties file
             Properties pros = new Properties();
             pros.load(f);
 
-            // assign db parameters
+            // assign migrations.sql parameters
             String url = pros.getProperty("url");
             String user = pros.getProperty("user");
             String password = pros.getProperty("password");
@@ -32,4 +39,12 @@ public class Config {
         return conn;
     }
 
+
+    public static int getPORT() {
+        return PORT;
+    }
+
+    public static String getPublicFilesDirectory() {
+        return PUBLIC_FILES_DIRECTORY;
+    }
 }
