@@ -1,15 +1,14 @@
 package controllers;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.Base64;
-import java.util.Random;
-import java.util.TreeMap;
-import java.util.Date;
+import java.util.*;
 
 
 /**
@@ -21,6 +20,7 @@ import java.util.Date;
 public class Token {
 
     private TreeMap<String,String> payload;
+    private final String secretKey = "V3uZKw7RPYW85FNTwiqm8JjZ9ep/jn2bZ8xy0vl8S+1OmHjJoCSNbXLl+hb8ulmnUTkxaPtBcYKM/60PjoMyPw==";
 
 
     /**
@@ -55,8 +55,7 @@ public class Token {
     public String generateToken(long timeToLast, TemporalUnit unit){
         String jwtToken;
         Instant now = Instant.now();
-        String secreteKey = "V3uZKw7RPYW85FNTwiqm8JjZ9ep/jn2bZ8xy0vl8S+1OmHjJoCSNbXLl+hb8ulmnUTkxaPtBcYKM/60PjoMyPw==";
-        byte[] secrete  = Base64.getDecoder().decode(secreteKey);
+        byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
 
         jwtToken = Jwts.builder()
                 .setSubject("Ntwari liberi")
@@ -68,7 +67,22 @@ public class Token {
                 .signWith(Keys.hmacShaKeyFor(secrete))
                 .compact();
 
+        this.decodeToken(jwtToken);
+
         return jwtToken;
+    }
+
+
+    public String decodeToken(String jwt){
+        byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
+        String results;
+
+        results = Jwts.parser()
+                .setSigningKey(Keys.hmacShaKeyFor(secrete))
+                .parseClaimsJws(jwt)
+                .toString();
+
+        return results;
     }
 
 }
