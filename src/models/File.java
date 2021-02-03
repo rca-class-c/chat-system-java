@@ -3,19 +3,21 @@ package models;
 import java.util.Date;
 
 public class File {
-    public int id;
-    public String url;
-    public String fileName;
-    public String fileType;
-    public int fileSize;
-    public String fileSizeType;
-    public int senderId;
-    public Date createdAt;
-    public FileStatusEnum status;
+    private int id;
+    private String fileLocalPath;
+    private String url;
+    private String fileName;
+    private String fileType;
+    private int fileSize;
+    private String fileSizeType;
+    private int senderId;
+    private Date createdAt;
+    private FileStatusEnum status;
 
     public File() { }
 
-    public File(String fileName, String fileType, int fileSize, String fileSizeType, int senderId) {
+    public File(String fileLocalPath, String fileName, String fileType, int fileSize, String fileSizeType, int senderId) {
+        this.fileLocalPath = fileLocalPath;
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileSize = fileSize;
@@ -71,6 +73,10 @@ public class File {
     public String getFileType() {
         return fileType;
     }
+
+    public String getFileLocalPath() { return fileLocalPath; }
+
+    public void setFileLocalPath(String fileLocalPath) { this.fileLocalPath = fileLocalPath; }
 
     public void setSenderId(int senderId) {
         this.senderId = senderId;

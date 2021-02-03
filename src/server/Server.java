@@ -1,8 +1,11 @@
 package server;
-import java.io.IOException;
+
 import java.net.InetSocketAddress;
+import java.util.Map;
+
 import com.sun.net.httpserver.HttpServer;
-import utils.CommonMethod;
+import controllers.FileController;
+import utils.CommonUtil;
 import utils.ConsoleColor;
 
 public class Server {
@@ -11,16 +14,14 @@ public class Server {
         try {
             final int PORT = 8000;
             HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-            CommonMethod.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
+            CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
             System.out.println("Server running on port " + PORT);
             System.out.println();
-            CommonMethod.resetColor();
+            CommonUtil.resetColor();
 
             Router router = new Router(server);
-            router.useRoute(HttpMethod.GET, "/");
-            router.useRoute(HttpMethod.POST, "/api/register");
-            router.useRoute(HttpMethod.POST, "/api/files");
-            router.useRoute(HttpMethod.GET, "/api/messages");
+
+            router.useRoute(HttpMethod.POST, "/api/files", new FileController(), FileController.class.getMethod("saveFile", Map.class));
 
             server.setExecutor(null); // creates a default executor
             server.start();
@@ -28,4 +29,6 @@ public class Server {
             System.out.println(e.getMessage());
         }
     }
+
 }
+

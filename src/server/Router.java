@@ -3,13 +3,13 @@ package server;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import utils.ConsoleColor;
-
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
-import java.util.HashMap;
 import java.util.Map;
+
 
 
 public class Router {
@@ -19,18 +19,27 @@ public class Router {
         this.server = server;
     }
 
-    public HttpContext useRoute(HttpMethod API_METHOD, String path) {
+    public HttpContext useRoute(HttpMethod API_METHOD, String path, Object object, Method method) {
         return this.getServer().createContext(path, (exchange -> {
             if (API_METHOD.toString().equals(exchange.getRequestMethod())) {
-                String respText = path +  " METHOD YAWE : " + API_METHOD;
-                CommonMethod.useColor(ConsoleColor.BoldColor.YELLOW_BOLD);
+                Object response = null;
+                CommonUtil.useColor(ConsoleColor.BoldColor.YELLOW_BOLD);
 
-                StringBuffer me = getRequestBody(exchange);
+                StringBuffer requestBody = getRequestBody(exchange);
+                Map<String, String> body = CommonUtil.mapRequestString(requestBody.toString());
 
+                try {
+                    response = method.invoke(object, body);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
                 System.out.println("REQUEST: " + API_METHOD +  " \"" + path + "\" " + 200);
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, respText.getBytes().length);
+                assert response != null;
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.toString().getBytes().length);
                 OutputStream output = exchange.getResponseBody();
-                output.write(respText.getBytes());
+                output.write(response.toString().getBytes());
                 output.flush();
             } else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_METHOD, -1);// 405 Method Not Allowed
@@ -48,9 +57,6 @@ public class Router {
 
 
     private StringBuffer getRequestBody(HttpExchange exchange) throws IOException {
-
-        Map<String, String> body = new HashMap<>();
-
         InputStream output1 = exchange.getRequestBody();
 
         BufferedReader in = new BufferedReader(new InputStreamReader(
