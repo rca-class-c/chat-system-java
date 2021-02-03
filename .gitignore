@@ -1,4 +1,7 @@
+#ignoring db properties
 src/config/db.properties
+
+# ignoring production folder
 out
 
 
