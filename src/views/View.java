@@ -84,6 +84,4 @@ public class View {
         FileView fileView = new FileView();
         fileView.sendFileView();
     }
-
-
 }
