@@ -1,5 +1,11 @@
-.idea
-chat_system.iml
 src/config/db.properties
 out
-chat-system-java-1.iml
+
+
+#avoiding intelije idea deafult folders and files
+.idea
+*.iml
+
+#avoiding intelije idea deafult folders and files
+.classpath
+.project
