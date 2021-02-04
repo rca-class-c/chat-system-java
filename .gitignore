@@ -2,7 +2,7 @@
 src/config/db.properties
 
 # ignoring production folder
-out
+./out
 
 
 #avoiding intelije idea deafult folders and files configs
