@@ -117,5 +117,19 @@ public class Token {
         return results;
     }
 
+    public boolean isValidToken(String token){
+        String decodedData = "";
+        boolean tokenIsValid = false;
+        try{
+            decodedData = this.decodeToken(token);
+
+            if(decodedData.length() > 1)
+                tokenIsValid = true;
+
+        } catch (SignatureException | ExpiredJwtException ignored){
+        }
+
+        return tokenIsValid;
+    }
 }
 
