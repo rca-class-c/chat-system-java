@@ -5,10 +5,10 @@ src/config/db.properties
 out
 
 
-#avoiding intelije idea deafult folders and files
+#avoiding intelije idea deafult folders and files configs
 .idea
 *.iml
 
-#avoiding intelije idea deafult folders and files
+#avoiding eclipse  deafult folders and files configs
 .classpath
 .project
