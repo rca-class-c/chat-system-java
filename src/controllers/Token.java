@@ -117,6 +117,12 @@ public class Token {
         return results;
     }
 
+    /**
+     * Validating token, when token is valid it will return true where as token has expired
+     * or has invalid signature it will return false
+     * @param token token to validate, of String type
+     * @return boolean that indicates validity of token
+     */
     public boolean isValidToken(String token){
         String decodedData = "";
         boolean tokenIsValid = false;
