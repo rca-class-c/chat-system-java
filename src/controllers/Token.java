@@ -72,7 +72,7 @@ public class Token {
 
 
     /**
-     * @author Ntwari Clarance Liberiste
+     *
      * Generates jwt based token basing on given data in class initialisation,
      * given data in initialization will be used as claims so they will appear
      * in the token
@@ -83,6 +83,9 @@ public class Token {
      * @return token, of String type
      *
      * @throws InvalidKeyException Detecting usage of invalid key in signing jwt token signature
+     *
+     *
+     * @author Ntwari Clarance Liberiste
      */
     public String generateToken(long timeToLast, TemporalUnit unit) throws InvalidKeyException{
         Instant now = Instant.now();
@@ -114,7 +117,6 @@ public class Token {
 
 
     /**
-     * @author Ntwari Clarance Liberiste
      * Decoding jwt token created by Token class, make sure that you
      * decode token created by Token Class so that it will match secret Key
      * unless you will get an io.jsonwebtoken.security.SignatureException exception
@@ -125,6 +127,9 @@ public class Token {
      *
      * @throws SignatureException invalid signature exception
      * @throws ExpiredJwtException token expiration exception
+     *
+     *
+     * @author Ntwari Clarance Liberiste
      */
     public String decodeToken(String jwt) throws SignatureException, ExpiredJwtException {
         byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
