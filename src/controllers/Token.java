@@ -23,6 +23,7 @@ public class Token {
     private final String subject;
 
     /**
+     * @author Ntwari Clarance Liberiste
      * Token controller
      *
      * @param subject Who you are issuing card for, this tend to be unique identifier of the token consumer
@@ -36,6 +37,7 @@ public class Token {
 
 
     /**
+     * @author Ntwari Clarance Liberiste
      * Get payload data
      *
      * @return payload data, of TreeMap type
@@ -45,6 +47,7 @@ public class Token {
     }
 
     /**
+     * @author Ntwari Clarance Liberiste
      * Re-assign jwt payload data
      *
      * @param payload data to be included in payload, of TreeMap type
@@ -55,6 +58,7 @@ public class Token {
 
 
     /**
+     * @author Ntwari Clarance Liberiste
      * Generates jwt based token basing on given data in class initialisation,
      * given data in initialization will be used as claims so they will appear
      * in the token
@@ -85,7 +89,7 @@ public class Token {
                     .compact();
 
         }catch(InvalidKeyException e){
-            System.out.println(e.getMessage());
+            throw new InvalidKeyException(e.getMessage());
         }
 
         return jwtToken;
@@ -93,7 +97,7 @@ public class Token {
 
 
     /**
-     *
+     * @author Ntwari Clarance Liberiste
      * Decoding jwt token created by Token class, make sure that you
      * decode token created by Token Class so that it will match secret Key
      * unless you will get an io.jsonwebtoken.security.SignatureException exception
@@ -118,6 +122,7 @@ public class Token {
     }
 
     /**
+     * @author Ntwari Clarance Liberiste
      * Validating token, when token is valid it will return true where as token has expired
      * or has invalid signature it will return false
      * @param token token to validate, of String type
