@@ -1,16 +1,13 @@
 package controllers;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
 import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.security.InvalidKeyException;
 
 
 /**
@@ -28,7 +25,9 @@ public class Token {
     /**
      * Token controller
      *
-     * @param payload Data to be included in the jwt token
+     * @param subject Who you are issuing card for, this tend to be unique identifier of the token consumer
+     *                like email,id,username or something, of String type
+     * @param payload Data to be included in the jwt token, of TreeMap type
      */
     public Token(String subject,TreeMap<String,String> payload){
         this.subject = subject;
@@ -36,10 +35,20 @@ public class Token {
     }
 
 
+    /**
+     * Get payload data
+     *
+     * @return payload data, of TreeMap type
+     */
     public TreeMap<String, String> getPayload() {
         return payload;
     }
 
+    /**
+     * Re-assign jwt payload data
+     *
+     * @param payload data to be included in payload, of TreeMap type
+     */
     public void setPayload(TreeMap<String, String> payload) {
         this.payload = payload;
     }
@@ -54,21 +63,30 @@ public class Token {
      * @param unit Unit of the time, of java.time.temporal.TemporalUnit type
      *
      * @return token, of String type
+     *
+     * @throws InvalidKeyException Detecting usage of invalid key in signing jwt token signature
      */
-    public String generateToken(long timeToLast, TemporalUnit unit){
-        String jwtToken;
+    public String generateToken(long timeToLast, TemporalUnit unit) throws InvalidKeyException{
         Instant now = Instant.now();
         byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
+        String jwtToken = "";
+        JwtBuilder jwt;
 
-        jwtToken = Jwts.builder()
-                .setSubject(this.subject)
-                .setAudience("Auth")
-                .claim("name","liberi")
-                .claim("age",new Random().nextInt(20)+1)
-                .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(timeToLast, unit)))
-                .signWith(Keys.hmacShaKeyFor(secrete))
-                .compact();
+        try{
+            jwt= Jwts.builder().setSubject(this.subject);
+
+            //adding claims to the jwt token
+            for(Map.Entry<String,String> entry: this.payload.entrySet())
+                jwt.claim(entry.getKey(),entry.getValue());
+
+            jwtToken = jwt.setIssuedAt(Date.from(now))
+                    .setExpiration(Date.from(now.plus(timeToLast, unit)))
+                    .signWith(Keys.hmacShaKeyFor(secrete))
+                    .compact();
+
+        }catch(InvalidKeyException e){
+            System.out.println(e.getMessage());
+        }
 
         return jwtToken;
     }
