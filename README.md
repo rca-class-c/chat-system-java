@@ -17,7 +17,7 @@ Here are simple details
 * ***src/utils*** : Our Utilities, some common methods we may need and so on.
 * ***src/client***: Client Flow
 * ***src/server*** : Server Flow
-Also Make sure you run the Main class in src folder
+Also Make sure you run the client.Main class in src folder
 
 ### Note
 remember to choose sdk while running this projects in you local machines ide. it gave me headache

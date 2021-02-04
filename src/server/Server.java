@@ -4,7 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpServer;
-import controllers.FileController;
+//import controllers.FileController;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 
@@ -21,7 +21,7 @@ public class Server {
 
             Router router = new Router(server);
 
-            router.useRoute(HttpMethod.POST, "/api/files", new FileController(), FileController.class.getMethod("saveFile", Map.class));
+//            router.useRoute(HttpMethod.POST, "/api/files", new FileController(), FileController.class.getMethod("saveFile", Map.class));
 
             server.setExecutor(null); // creates a default executor
             server.start();
