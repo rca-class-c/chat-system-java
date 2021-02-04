@@ -1,10 +1,8 @@
 package views;
-import controllers.FileController;
 import controllers.UserController;
 import models.AuthInput;
 import models.User;
-import org.postgresql.shaded.com.ongres.scram.common.ScramAttributes;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import utils.ConsoleColor;
 import utils.UserIterator;
 import views.components.Component;
@@ -24,11 +22,11 @@ public class View {
 
         Component.pageTitleView("Login to your Account");
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter Your Username: ");
         String username = scanner.nextLine();
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your Password: ");
         String password = scanner.nextLine();
         AuthInput input = new AuthInput(username,password);
@@ -56,43 +54,43 @@ public class View {
         Component.pageTitleView("Create a new account");
 
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your Username: ");
         String username = scanner.nextLine();
 
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your FirstName: ");
         String firstName = scanner.nextLine();
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your LastName: ");
         String lastName = scanner.nextLine();
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your Email: ");
         String email = scanner.nextLine();
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your Gender: ");
         String gender = scanner.nextLine();
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your DOB: ");
         String dob = scanner.nextLine();
 
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.print("Enter your Password: ");
         String password = scanner.nextLine();
         User user = new User(firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
         UserController userController = new UserController();
         userController.saveUser(user);
 
-        CommonMethod.addTabs(10, true);
-        CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-        CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+        CommonUtil.addTabs(10, true);
+        CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
         System.out.print(" Account Created Successfully");
-        CommonMethod.resetColor();
+        CommonUtil.resetColor();
 
     }
 

@@ -127,7 +127,7 @@ public class UserRepository {
     }
 
 
-    public int updateUser(User user, int userId) throws SQLException{
+    public int updateUser(User user,int userId) throws SQLException{
         int affectedRows = 0;
 
             Connection connection = Config.getConnection();
@@ -159,9 +159,21 @@ public class UserRepository {
           PreparedStatement statement = connection.prepareStatement(query);
           statement.setInt(1, userId);
           if (affectedRows > 0) {
-              System.out.println("  User updated successfully   ");
+              System.out.println("  User deleted successfully   ");
           }
           return affectedRows;
+    }
+
+    public int deactivateUser(int userId) throws SQLException{
+        int affectedRows = 0;
+        Connection connection = Config.getConnection();
+        String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d'",userId);
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1,userId);
+        if(affectedRows>0){
+            System.out.println(" User Deactived successfully");
+        }
+        return affectedRows;
     }
 
 }

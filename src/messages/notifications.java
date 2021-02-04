@@ -13,7 +13,7 @@ public class notifications {
 	        try {
 	             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/chat_system_db",
 	                    "postgres", "nshuti");
-	            //db connection;
+	            //migrations.sql connection;
 	            System.out.println("Connected to PostgreSQL database!");
 	            
 	        } catch (SQLException e) {

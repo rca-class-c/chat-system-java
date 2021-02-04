@@ -22,6 +22,16 @@ public class UserController {
     public User getUserById(int userId) throws SQLException{
         return this.userService.getUserById(userId);
     }
+    public int updateUser(User user,int userId) throws SQLException{
+        return this.userService.updateUser(user,userId);
+    }
+    public int deleteUser(int userId) throws SQLException{
+        return this.userService.deleteUser(userId);
+    }
+    public int deactiveUser(int userId) throws SQLException{
+        return this.userService.deactiveUser(userId);
+    }
+
 
 }
 

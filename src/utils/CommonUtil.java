@@ -1,8 +1,19 @@
 package utils;
 
-import java.io.IOException;
+import config.Config;
+import models.FileSizeTypeEnum;
 
-public class CommonMethod {
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+public class CommonUtil {
     /**
      * Use a Console Color
      * @param color
@@ -41,6 +52,16 @@ public class CommonMethod {
             }
         } catch (IOException | InterruptedException ex) {}
 
+    }
+
+    public static Map<String, String> mapRequestString(String string) {
+        Map<String, String> map = new HashMap<String, String>();
+        String[] parameters = string.split("&");
+        for (String parameter: parameters) {
+            String[] mapping = parameter.split("=");
+            map.put(mapping[0], mapping[1]);
+        }
+        return map;
     }
 
 }

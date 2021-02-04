@@ -21,4 +21,13 @@ public class UserService {
     public User getUserById(int userId) throws SQLException{
         return userRepository.getUserById(userId);
     }
+    public int updateUser(User user,int userId) throws SQLException{
+        return userRepository.updateUser(user,userId);
+    }
+    public int deleteUser(int userId) throws SQLException{
+        return userRepository.deleteUser(userId);
+    }
+    public int deactiveUser(int userId) throws SQLException{
+        return userRepository.deactivateUser(userId);
+    }
 }
