@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
 import io.jsonwebtoken.security.SignatureException;
@@ -28,12 +29,25 @@ public class Token {
      *
      * @param subject Who you are issuing card for, this tend to be unique identifier of the token consumer
      *                like email,id,username or something, of String type
-     * @param payload Data to be included in the jwt token, of TreeMap type
+     * @param payload Data to be included in the jwt token, of TreeMap type [optional]
      */
     public Token(String subject,TreeMap<String,String> payload){
         this.subject = subject;
         this.payload = payload;
     }
+
+    /**
+     * @author Ntwari Clarance Liberiste
+     * Token controller
+     *
+     * @param subject Who you are issuing card for, this tend to be unique identifier of the token consumer
+     *                like email,id,username or something, of String type
+     */
+    public Token(String subject){
+        this.subject = subject;
+        this.payload = new TreeMap<>();
+    }
+
 
 
     /**
@@ -79,9 +93,12 @@ public class Token {
         try{
             jwt= Jwts.builder().setSubject(this.subject);
 
-            //adding claims to the jwt token
-            for(Map.Entry<String,String> entry: this.payload.entrySet())
-                jwt.claim(entry.getKey(),entry.getValue());
+            //adding claims to the jwt token only if payload contains data
+            if(!payload.isEmpty()){
+
+                for(Map.Entry<String,String> entry: this.payload.entrySet())
+                    jwt.claim(entry.getKey(),entry.getValue());
+            }
 
             jwtToken = jwt.setIssuedAt(Date.from(now))
                     .setExpiration(Date.from(now.plus(timeToLast, unit)))
@@ -142,5 +159,6 @@ public class Token {
 
         return tokenIsValid;
     }
+
 }
 
