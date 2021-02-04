@@ -1,8 +1,9 @@
-package server;
+package server.config;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import server.models.HttpMethod;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 import java.io.*;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 
 public class Router {
-    private  HttpServer server;
+    private final HttpServer server;
 
     public Router(HttpServer server) {
         this.server = server;
@@ -34,7 +35,7 @@ public class Router {
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-                
+
                 System.out.println("REQUEST: " + API_METHOD +  " \"" + path + "\" " + 200);
                 assert response != null;
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.toString().getBytes().length);

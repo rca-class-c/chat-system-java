@@ -2,7 +2,6 @@ package server.repositories;
 
 import server.config.Config;
 import server.models.File;
-import utils.CommonUtil;
 import utils.FileUtil;
 
 import java.sql.Connection;
@@ -11,7 +10,6 @@ import java.sql.Statement;
 
 
 public class FileRepository {
-
     public String save(File file) {
       try {
 
