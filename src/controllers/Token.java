@@ -109,16 +109,10 @@ public class Token {
         byte[] secrete  = Base64.getDecoder().decode(this.secretKey);
         String results = "";
 
-        try{
-            results = Jwts.parser()
-                    .setSigningKey(Keys.hmacShaKeyFor(secrete))
-                    .parseClaimsJws(jwt)
-                    .toString();
-
-        }
-        catch(SignatureException | ExpiredJwtException e){
-            System.out.println(e.getMessage());
-        }
+        results = Jwts.parser()
+                .setSigningKey(Keys.hmacShaKeyFor(secrete))
+                .parseClaimsJws(jwt)
+                .toString();
 
         return results;
     }
