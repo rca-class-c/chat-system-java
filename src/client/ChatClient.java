@@ -74,9 +74,9 @@ public class ChatClient {
             Connection connection = connection();
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM public.users");
-            if (resultSet.getFetchSize() < 1) {
-                System.out.println("Invalid credentials");
-            }
+//            if (resultSet.getFetchSize() < 1) {
+//                System.out.println("Invalid credentials");
+//            }
         }while(resultSet.getFetchSize() < 1);
         return userName;
     }
