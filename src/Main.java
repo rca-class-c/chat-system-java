@@ -1,17 +1,13 @@
 
 import utils.ConsoleColor;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import views.View;
 import views.MessagesView;
 import views.components.Component;
-import controllers.Token;
 
 
 import java.sql.SQLException;
-import java.time.temporal.ChronoUnit;
-import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,99 +19,82 @@ public class Main {
     }
 
     static void landingView() {
+    	MessagesView messages = new MessagesView();
+        int action = -1;
 
-        TreeMap<String,String> payload = new TreeMap<String,String>();
+        appNav();
 
-        payload.put("name","liberi");
+        CommonUtil.addTabs(10, true);
+        System.out.println("1. Login");
+        CommonUtil.addTabs(10, false);
+        System.out.println("2. Create an Account");
+        CommonUtil.addTabs(10, false);
+        System.out.println("3. Send a File");
+        CommonUtil.addTabs(10, false);
+        System.out.println("4. View Notifications");
+        CommonUtil.addTabs(10, false);
+        System.out.println("5. Quit");
+        CommonUtil.addTabs(10, false);
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
+        System.out.print("  ");
+        CommonUtil.resetColor();
 
-        Token token = new Token(payload);
+        CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+        System.out.print(" Choose an option: ");
+        CommonUtil.resetColor();
 
-        System.out.println(token.generateToken(1, ChronoUnit.DAYS));
+            do {
+                try {
+                    CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
 
-        //my test code
-
-
-
-        //end of my test code
-
-//
-//
-//    	MessagesView messages = new MessagesView();
-//        int action = -1;
-//
-//        appNav();
-//
-//        CommonMethod.addTabs(10, true);
-//        System.out.println("1. Login");
-//        CommonMethod.addTabs(10, false);
-//        System.out.println("2. Create an Account");
-//        CommonMethod.addTabs(10, false);
-//        System.out.println("3. Send a File");
-//        CommonMethod.addTabs(10, false);
-//        System.out.println("4. View Notifications");
-//        CommonMethod.addTabs(10, false);
-//        System.out.println("5. Quit");
-//        CommonMethod.addTabs(10, false);
-//        CommonMethod.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
-//        System.out.print("  ");
-//        CommonMethod.resetColor();
-//
-//        CommonMethod.useColor(ConsoleColor.RegularColor.YELLOW);
-//        System.out.print(" Choose an option: ");
-//        CommonMethod.resetColor();
-//
-//            do {
-//                try {
-//                    CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-//
-//                    Scanner scanner = new Scanner(System.in);
-//                    action = scanner.nextInt();
-//                    CommonMethod.useColor(ConsoleColor.RESET);
-//                    switch (action) {
-//                        case 1:
-////                    loginView();
-//                            CommonMethod.resetColor();
-//                            View.loginView();
-//                            break;
-//                        case 2:
-//                            View.createAccountView();
-//                            System.out.println(2);
-//                            break;
-//                        case 3:
-//                            CommonMethod.resetColor();
-//                            View.sendFileView();
-//                            break;
-//                        case 4:
-//                            CommonMethod.resetColor();
-//                            messages.printNotifications();
-//                            break;
-//                        case 5:
-//                            CommonMethod.addTabs(10, true);
-//                            CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                            System.out.println("SYSTEM CLOSED !");
-//                            System.exit(1);
-//                            break;
-//                        default:
-//                            action = -1;
-//                            CommonMethod.addTabs(10, false);
-//                            CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                            System.out.print("Enter a valid choice (1, 2): ");
-//                            CommonMethod.resetColor();
-//                    }
-//                }
-//                 catch ( SQLException e) {
-//                    CommonMethod.addTabs(10, false);
-//                    CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                    System.out.print("Only numbers allowed: ");
-//                    CommonMethod.resetColor();
-//                }
-//                catch (Exception e) {
-//                    CommonMethod.addTabs(10, false);
-//                    CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                    System.out.print("There was an error getting notification!");
-//                    CommonMethod.resetColor();
-//                }
-//            } while (action == -1);
+                    Scanner scanner = new Scanner(System.in);
+                    action = scanner.nextInt();
+                    CommonUtil.useColor(ConsoleColor.RESET);
+                    switch (action) {
+                        case 1:
+//                    loginView();
+                            CommonUtil.resetColor();
+                            View.loginView();
+                            break;
+                        case 2:
+                            View.createAccountView();
+                            System.out.println(2);
+                            break;
+                        case 3:
+                            CommonUtil.resetColor();
+                            View.sendFileView();
+                            break;
+                        case 4:
+                            CommonUtil.resetColor();
+                            messages.printNotifications();
+                            break;    
+                        case 5:
+                            CommonUtil.addTabs(10, true);
+                            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                            System.out.println("SYSTEM CLOSED !");
+                            System.exit(1);
+                            break;
+                        default:
+                            action = -1;
+                            CommonUtil.addTabs(10, false);
+                            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                            System.out.print("Enter a valid choice (1, 2): ");
+                            CommonUtil.resetColor();
+                    }
+                }
+                 catch ( SQLException e) {
+                    CommonUtil.addTabs(10, false);
+                    CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                    System.out.print("Only numbers allowed: ");
+                    CommonUtil.resetColor();
+                }
+                catch (Exception e) {
+                    CommonUtil.addTabs(10, false);
+                    CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                    System.out.print("There was an error getting notification!");
+                    CommonUtil.resetColor();
+                }
+            } while (action == -1);
 
     }
 

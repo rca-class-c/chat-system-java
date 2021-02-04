@@ -94,7 +94,7 @@ public class MessagesRepository {
 
     //-------------------------------sending messages--------------------------
     //sending group message
-    public static int sendGroupMessage(Messages message) throws SQLException {
+    public  int sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -109,7 +109,7 @@ public class MessagesRepository {
     }
 
    //sending a direct message
-    public static int sendDirectMessage(Messages message) throws SQLException {
+    public  int sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);

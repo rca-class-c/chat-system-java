@@ -1,8 +1,7 @@
 package views;
 
 //import controllers.GroupController;
-import models.Group;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import utils.ConsoleColor;
 import views.components.Component;
 
@@ -16,19 +15,19 @@ public class GroupView {
         Component.pageTitleView("Just a simple test for file sending");
 
         try {
-            CommonMethod.addTabs(10, false);
+            CommonUtil.addTabs(10, false);
             System.out.print("Enter the Group name: ");
             String name = scanner.nextLine();
 
-            CommonMethod.addTabs(10, false);
+            CommonUtil.addTabs(10, false);
             System.out.print("Enter the Group description: ");
             String description = scanner.nextLine();
 
-            CommonMethod.addTabs(10, true);
-            CommonMethod.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
 
-            CommonMethod.resetColor();
+            CommonUtil.resetColor();
 //            Group group = new Group(name,description,2);
 //
 //
