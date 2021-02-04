@@ -1,12 +1,12 @@
 
 import utils.ConsoleColor;
-import utils.CommonMethod;
+import utils.CommonUtil;
 import views.View;
+import views.MessagesView;
 import views.components.Component;
 
 
 import java.sql.SQLException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -19,38 +19,41 @@ public class Main {
     }
 
     static void landingView() {
+    	MessagesView messages = new MessagesView();
         int action = -1;
 
         appNav();
 
-        CommonMethod.addTabs(10, true);
+        CommonUtil.addTabs(10, true);
         System.out.println("1. Login");
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.println("2. Create an Account");
-        CommonMethod.addTabs(10, false);
+        CommonUtil.addTabs(10, false);
         System.out.println("3. Send a File");
-        CommonMethod.addTabs(10, false);
-        System.out.println("4. Quit");
-        CommonMethod.addTabs(10, false);
-        CommonMethod.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
+        CommonUtil.addTabs(10, false);
+        System.out.println("4. View Notifications");
+        CommonUtil.addTabs(10, false);
+        System.out.println("5. Quit");
+        CommonUtil.addTabs(10, false);
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
         System.out.print("  ");
-        CommonMethod.resetColor();
+        CommonUtil.resetColor();
 
-        CommonMethod.useColor(ConsoleColor.RegularColor.YELLOW);
+        CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
         System.out.print(" Choose an option: ");
-        CommonMethod.resetColor();
+        CommonUtil.resetColor();
 
             do {
                 try {
-                    CommonMethod.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+                    CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
 
                     Scanner scanner = new Scanner(System.in);
                     action = scanner.nextInt();
-                    CommonMethod.useColor(ConsoleColor.RESET);
+                    CommonUtil.useColor(ConsoleColor.RESET);
                     switch (action) {
                         case 1:
 //                    loginView();
-                            CommonMethod.resetColor();
+                            CommonUtil.resetColor();
                             View.loginView();
                             break;
                         case 2:
@@ -58,28 +61,38 @@ public class Main {
                             System.out.println(2);
                             break;
                         case 3:
-                            CommonMethod.resetColor();
+                            CommonUtil.resetColor();
                             View.sendFileView();
                             break;
                         case 4:
-                            CommonMethod.addTabs(10, true);
-                            CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                            CommonUtil.resetColor();
+                            messages.printNotifications();
+                            break;    
+                        case 5:
+                            CommonUtil.addTabs(10, true);
+                            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
                             break;
                         default:
                             action = -1;
-                            CommonMethod.addTabs(10, false);
-                            CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                            CommonUtil.addTabs(10, false);
+                            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.print("Enter a valid choice (1, 2): ");
-                            CommonMethod.resetColor();
+                            CommonUtil.resetColor();
                     }
                 }
-                 catch (InputMismatchException | SQLException e) {
-                    CommonMethod.addTabs(10, false);
-                    CommonMethod.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                 catch ( SQLException e) {
+                    CommonUtil.addTabs(10, false);
+                    CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
                     System.out.print("Only numbers allowed: ");
-                    CommonMethod.resetColor();
+                    CommonUtil.resetColor();
+                }
+                catch (Exception e) {
+                    CommonUtil.addTabs(10, false);
+                    CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                    System.out.print("There was an error getting notification!");
+                    CommonUtil.resetColor();
                 }
             } while (action == -1);
 

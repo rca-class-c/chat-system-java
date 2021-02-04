@@ -71,16 +71,36 @@ public class MessagesRepository {
         conn.close();
         return allMessagesGrp;
     }
+    public Set<ResultSet> getNotifications(int user_id)throws Exception{
+		Set<ResultSet>  notis = new HashSet<ResultSet>();
+		Connection conn = Config.getConnection();
+        Statement statement = conn.createStatement();
+		ResultSet gr;
+		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
+		ResultSet grm = null;
+		while(gr.next()) {				
+				grm = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+				notis.add(grm);
+		}
+		ResultSet rs;
+		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
+		notis.add(rs);
+		
+		statement.close();
+        conn.close();
+		return notis;
+	}
+
 
     //-------------------------------sending messages--------------------------
     //sending group message
-    public static int sendGroupMessage(Messages message) throws SQLException {
+    public  int sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContext());
         statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver());
+       // statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
@@ -89,7 +109,7 @@ public class MessagesRepository {
     }
 
    //sending a direct message
-    public static int sendDirectMessage(Messages message) throws SQLException {
+    public  int sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
