@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Common Utilities
+ * @author Divin Irakiza
+ */
 public class CommonUtil {
     /**
      * Use a Console Color
@@ -32,7 +37,9 @@ public class CommonUtil {
 
     }
 
-
+    /**
+     * Clear Console Screen
+     */
     public static void clearScreen() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
@@ -41,10 +48,16 @@ public class CommonUtil {
             else {
                 System.out.print("\033\143");
             }
-        } catch (IOException | InterruptedException ex) {}
+        } catch (IOException | InterruptedException ignored) {}
 
     }
 
+
+    /**
+     * Formats a request String to a map
+     * @param string Request String
+     * @return Map<String, String>
+     */
     public static Map<String, String> mapRequestString(String string) {
         Map<String, String> map = new HashMap<String, String>();
         String[] parameters = string.split("&");

@@ -1,7 +1,10 @@
 package utils;
 
 
-
+/**
+ * Console Colors
+ * @author Divin Irakiza
+ */
 public class ConsoleColor {
     /**
      * RESET COLORING

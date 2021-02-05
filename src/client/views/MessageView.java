@@ -1,4 +1,4 @@
-//package client.views;
+package client.views;
 //
 //import controllers.Message;
 //import utils.CommonUtil;
@@ -7,7 +7,7 @@
 //
 //import java.util.Scanner;
 //
-//public class MessageView {
+public class MessageView {
 //
 //    private final Message message = new Message();
 //    public void sendMessageGroup() {
@@ -39,4 +39,4 @@
 //        }
 //
 //    }
-//}
+}

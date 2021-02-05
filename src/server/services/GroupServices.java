@@ -1,4 +1,4 @@
-//package services;
+package server.services;
 //
 //import models.Group;
 //import repositories.GroupRepository;
@@ -7,7 +7,7 @@
 //import java.util.Collection;
 //import java.util.Optional;
 //
-//public class GroupServices {
+public class GroupServices {
 //    private final GroupRepository groupRepository = new GroupRepository();
 //
 //    public Optional<Group> get(int id) throws SQLException {
@@ -29,4 +29,4 @@
 //    public void delete(Group group) throws SQLException {
 //        groupRepository.delete(group);
 //    }
-//}
+}

@@ -13,8 +13,16 @@ import java.net.HttpURLConnection;
 
 import java.util.Scanner;
 
+
+/**
+ * FileView
+ * @author Divin Irakiza
+ */
 public class FileView {
 
+    /**
+     * File View Test Method
+     */
     public void sendFileView() {
         Scanner scanner = new Scanner(System.in);
 
@@ -54,6 +62,13 @@ public class FileView {
         }
     }
 
+    /**
+     * Send POST Request
+     * @param POST_URL Posting route
+     * @param POST_PARAMS Posting Params
+     * @param USER_AGENT User Agent
+     * @throws IOException
+     */
     private static void sendPOST(String POST_URL, String POST_PARAMS, String USER_AGENT) throws IOException {
         URL obj = new URL(POST_URL);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
