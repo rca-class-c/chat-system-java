@@ -3,6 +3,7 @@ package client.views.components;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 import java.util.Locale;
+import java.util.Scanner;
 
 /**
  * View Reusable Components
@@ -24,4 +25,49 @@ public class Component {
         System.out.println(title);
         CommonUtil.resetColor();
     }
+
+    /**
+     * Print Styled Exception Message
+     * @param error Error Message
+     */
+    public static void showErrorMessage(String error) {
+        CommonUtil.addTabs(10, false);
+        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+        System.out.print(error);
+        CommonUtil.resetColor();
+    }
+
+    /**
+     * Styles the choose option
+     * @param title Choose Option Title
+     */
+    public static void chooseOptionInputView(String title) {
+        CommonUtil.addTabs(10, false);
+
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
+        System.out.print("  ");
+        CommonUtil.resetColor();
+
+        CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+        System.out.print(title);
+        CommonUtil.resetColor();
+    }
+
+
+    /**
+     * Styles the choose option from choices
+     */
+    public static int getChooseOptionChoice() {
+        int action;
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+
+        Scanner scanner = new Scanner(System.in);
+        action = scanner.nextInt();
+        CommonUtil.useColor(ConsoleColor.RESET);
+
+        return action;
+    }
+
+
+
 }
