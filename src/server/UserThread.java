@@ -1,11 +1,13 @@
 package server;
 
+import server.interfaces.ActiveUser;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
 /**
- * This thread handles connection for each connected client, so the server
- * can handle multiple clients at the same time.
+ * This is a thread that handles a user when he/she has connected to the server
+ * @Author: Didier Munezero
  *
  */
 public class UserThread extends Thread {
@@ -26,7 +28,18 @@ public class UserThread extends Thread {
 
 
             //ok now caught after the username is flushed server sets it good now
-            printUsers();
+            //printUsers();
+            InputStream inputStream = socket.getInputStream();
+            String request = reader.readLine();
+            if(request == "loginRequest"){
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                ActiveUser requestUser = (ActiveUser) objectInputStream.readObject();
+                System.out.println(requestUser.getFirst_name());
+            }
+            else if(request == "registerRequest"){
+
+            }
+
             String userName = reader.readLine();
             server.addUserName(userName);
             String serverMessage = "New user connected: " + userName;
@@ -43,7 +56,7 @@ public class UserThread extends Thread {
             //passing message to remaining users that one has quitted
             serverMessage = userName + " has quitted.";
             server.broadcast(serverMessage, this);
-        } catch (IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
         }

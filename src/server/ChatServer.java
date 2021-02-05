@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 /**
- * This is the chat server program. Press Ctrl + C to terminate the program.
- *
+ * This is the chat server main entry. Press Ctrl + C to terminate the program.
+ * @Author: Shallon Kobusinge
  */
 public class ChatServer {
     private int port;
