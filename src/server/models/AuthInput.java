@@ -1,6 +1,6 @@
 package server.models;
-
-public class AuthInput {
+import java.io.Serializable;
+public class AuthInput implements Serializable{
     public String username;
     public String password;
 

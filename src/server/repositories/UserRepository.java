@@ -69,7 +69,7 @@ public class UserRepository {
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users");
+            String query = String.format("SELECT * FROM users;");
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();
@@ -98,7 +98,7 @@ public class UserRepository {
             Connection connection = Config.getConnection();
 
 
-            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' ",userID);
+            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' ;",userID);
             Statement statement =  connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
@@ -132,7 +132,7 @@ public class UserRepository {
 
             Connection connection = Config.getConnection();
             String query = String.format("UPDATE users SET first_name = ?,last_name = ?," +
-                    "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ");
+                    "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ;");
             PreparedStatement statement =  connection.prepareStatement(query);
             statement.setString(1,user.getFname());
             statement.setString(2,user.getLname());
@@ -155,7 +155,7 @@ public class UserRepository {
           int affectedRows = 0;
 
           Connection connection = Config.getConnection();
-          String query = String.format("DELETE FROM users WHERE user_id = ? ");
+          String query = String.format("DELETE FROM users WHERE user_id = ? ;");
           PreparedStatement statement = connection.prepareStatement(query);
           statement.setInt(1, userId);
           if (affectedRows > 0) {
@@ -167,7 +167,7 @@ public class UserRepository {
     public int deactivateUser(int userId) throws SQLException{
         int affectedRows = 0;
         Connection connection = Config.getConnection();
-        String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d'",userId);
+        String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d';",userId);
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,userId);
         if(affectedRows>0){
