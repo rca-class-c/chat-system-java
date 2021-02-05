@@ -12,7 +12,7 @@ public class Config {
     private static final String PUBLIC_FILES_DIRECTORY = System.getProperty("user.dir") + "/public/assets/";
 
     public final static String SERVER_HOSTNAME = "localhost";
-    public final static int PORT = 4008;
+    public final static int PORT = 5432;
 
 
     public static String getServerHostname() {
@@ -37,7 +37,7 @@ public class Config {
 
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
-        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
+        try (FileInputStream f = new FileInputStream("src/server/config/db.properties")) {
 
             // load the properties file
             Properties pros = new Properties();

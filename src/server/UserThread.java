@@ -1,12 +1,14 @@
 package server;
 
-import com.sun.security.auth.UserPrincipal;
-import server.interfaces.ActiveUser;
-import server.interfaces.LoginData;
+
+import server.models.ActiveUser;
 import server.models.User;
+import server.models.AuthInput;
+import server.services.UserService;
 
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 import java.util.*;
 /**
  * This is a thread that handles a user when he/she has connected to the server
@@ -24,47 +26,67 @@ public class UserThread extends Thread {
 
     public void run() {
         try {
-            InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-//            Scanner reader = new Scanner(System.in);
-            OutputStream output = socket.getOutputStream();
-            writer = new PrintWriter(output, true);
+            do{
+            BufferedReader reader = new BufferedReader(new InputStreamReader( socket.getInputStream()));
+            writer = new PrintWriter(socket.getOutputStream(), true);
             String clientMessage;
             clientMessage = reader.readLine();
             System.out.println(clientMessage);
             if(clientMessage.equals("LOGIN_REQUEST")){
-                InputStream inputStream = socket.getInputStream();
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                LoginData loginData = (LoginData) objectInputStream.readObject();
-                System.out.println("Received Login data");
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                AuthInput loginData = (AuthInput) objectInputStream.readObject();
+
+                User user = new UserService().loginUser(loginData);
+                PrintWriter out = null;
+
+                try {
+                    out = new PrintWriter(this.socket.getOutputStream(), true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(user == null){
+                    System.out.println("Login Failed");
+                    out.println("false");
+                }
+                else {
+                    out.println("true");
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                    System.out.println("Login successfully");
+                    ActiveUser activeUser = new ActiveUser(user.getUserID(),user.getUsername());
+                    objectOutputStream.writeObject(activeUser);
+                    objectOutputStream.flush();
+                }
+                //objectInputStream.close();
             }
             else if(clientMessage.equals("SIGNUP_REQUEST")){
-                InputStream inputStream = socket.getInputStream();
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                User user = (User)objectInputStream.readObject();
+//                InputStream inputStream = socket.getInputStream();
+//                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+//                User user = (User)objectInputStream.readObject();
                 System.out.println("Received Signup data");
             }
 
 
 
 
-            String userName = reader.readLine();
-            server.addUserName(userName);
-            String serverMessage = "New user connected: " + userName;
-            //passing message and user to exclude who is the sender
-            server.broadcast(serverMessage, this);
+//            String userName = reader.readLine();
+//            server.addUserName(userName);
+//            String serverMessage = "New user connected: " + userName;
+//            //passing message and user to exclude who is the sender
+//            server.broadcast(serverMessage, this);
 
-            do {
-                clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
-                server.broadcast(serverMessage, this);
-            } while (!clientMessage.equals("bye"));
-            server.removeUser(userName, this);
-            socket.close();
-            //passing message to remaining users that one has quitted
-            serverMessage = userName + " has quitted.";
-            server.broadcast(serverMessage, this);
-        } catch (IOException | ClassNotFoundException ex) {
+//            do {
+//                clientMessage = reader.readLine();
+//                serverMessage = "[" + userName + "]: " + clientMessage;
+//                server.broadcast(serverMessage, this);
+//            } while (!clientMessage.equals("bye"));
+//            server.removeUser(userName, this);
+//            socket.close();
+//            //passing message to remaining users that one has quitted
+//            serverMessage = userName + " has quitted.";
+//            server.broadcast(serverMessage, this);
+            }while(true);
+        } catch (IOException | ClassNotFoundException | SQLException ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -72,18 +94,18 @@ public class UserThread extends Thread {
     /**
      * Sends a list of online users to the newly connected user.
      */
-    void printUsers() {
-        System.out.println(server.hasUsers());
-        if (server.hasUsers()) {
-            writer.println("Connected users: " + server.getUserNames());
-        } else {
-            writer.println("No other users connected");
-        }
-    }
+//    void printUsers() {
+//        System.out.println(server.hasUsers());
+//        if (server.hasUsers()) {
+//            writer.println("Connected users: " + server.getUserNames());
+//        } else {
+//            writer.println("No other users connected");
+//        }
+//    }
     /**
      * Sends a message to the client.
      */
-    void sendMessage(String message) {
-        writer.println(message);
-    }
+//    void sendMessage(String message) {
+//        writer.println(message);
+//    }
 }

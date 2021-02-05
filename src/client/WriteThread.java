@@ -1,6 +1,7 @@
 package client;
 
-import server.interfaces.LoginData;
+import server.models.ActiveUser;
+import server.models.AuthInput;
 
 import java.io.*;
 import java.net.*;
@@ -30,8 +31,9 @@ public class WriteThread extends Thread {
             ex.printStackTrace();
         }
     }
-    public String login() throws IOException {
+    public String login() throws IOException, ClassNotFoundException {
         OutputStream outputStream = this.socket.getOutputStream();
+        InputStream input = socket.getInputStream();
         // create an object output stream from the output stream so we can send an object through it
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         Scanner scanner = new Scanner(System.in);
@@ -40,13 +42,25 @@ public class WriteThread extends Thread {
             userName = scanner.nextLine();
             System.out.print("Your password:");
             String password = scanner.nextLine();
-        LoginData loginData = new LoginData(userName,password);
+
+        AuthInput loginData = new AuthInput(userName,password);
         objectOutputStream.writeObject(loginData);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        String response = reader.readLine();
+        System.out.println(response);
+        if(response.equals("true")){
+            System.out.println("Getting db logging results");
+            InputStream inputStream = socket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            ActiveUser activeUser = (ActiveUser) objectInputStream.readObject();
+        }
+        System.out.println("\n" + response);
 
         return "Data sent";
 
 
     }
+
 
 
     public void run() {
@@ -73,7 +87,7 @@ public class WriteThread extends Thread {
                         out.println("LOGIN_REQUEST");
                         out.flush();
                         login();
-                    } catch (IOException e) {
+                    } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                     System.out.println("Your choice is login");
