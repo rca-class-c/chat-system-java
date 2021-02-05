@@ -1,8 +1,5 @@
-
-//Done by Dian Pretty , incase you find any problem , don't hesitate to let me know 
-//this class contains functions for authorization
-
 package middleWares;
+
 import config.Config;
 
 import java.sql.Connection;
@@ -10,7 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-public class Auth {
+
+
+public class Authorization {
     public int id_DeleteUser = 1;
     public int id_createGroup = 2;
     public int id_Invite=3;
@@ -24,7 +23,7 @@ public class Auth {
 
 
     //Checking if a user with a certain category id is allowed to delete a user. We pass the category id to the
-   // function and it returns a boolean
+    // function and it returns a boolean
 
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
@@ -178,12 +177,8 @@ public class Auth {
         return allowed;
     };
     public static void main(String[] args) throws SQLException {
-        Auth auth=new Auth();
+        Authorization auth=new Authorization();
         boolean b=  auth.canRemoveFromGroup(5);
         System.out.println(b);
     }
 }
-
-
-
-
