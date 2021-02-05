@@ -12,31 +12,33 @@ public class PasswordResets {
     /**
      * The Id.
      */
-    public int id;
+    private int id;
     /**
      * The Email.
      */
-    public String email;
+    private String email;
     /**
      * The Otp.
      */
-    public int otp;
+    private int otp;
     /**
      * The Expiration date.
      */
-    public String expiration_date;
+    private String expiration_date;
     /**
      * The Status.
      */
-    public PasswordResetsStatusesEnum status;
+    private PasswordResetsStatusesEnum status;
     /**
      * The Created at.
      */
-    public String created_at;
+    private String created_at;
+
+
     /**
      * The Update at.
      */
-    public String update_at;
+    private String updated_at;
 
 
     /**
@@ -56,7 +58,7 @@ public class PasswordResets {
         this.expiration_date = expiration_date;
         this.status = status;
         this.created_at = Instant.now().toString();
-        this.update_at = Instant.now().toString();
+        this.updated_at = Instant.now().toString();
     }
 
     /**
@@ -74,7 +76,7 @@ public class PasswordResets {
         this.expiration_date = expiration_date;
         this.status = status;
         this.created_at = Instant.now().toString();
-        this.update_at = Instant.now().toString();
+        this.updated_at = Instant.now().toString();
     }
 
     /**
@@ -91,7 +93,7 @@ public class PasswordResets {
         this.expiration_date = expiration_date;
         this.status = PasswordResetsStatusesEnum.PENDING;
         this.created_at = Instant.now().toString();
-        this.update_at = Instant.now().toString();
+        this.updated_at = Instant.now().toString();
     }
 
     /**
@@ -166,23 +168,6 @@ public class PasswordResets {
         this.created_at = created_at;
     }
 
-    /**
-     * Gets update at.
-     *
-     * @return the update at
-     */
-    public String getUpdate_at() {
-        return update_at;
-    }
-
-    /**
-     * Sets update at.
-     *
-     * @param update_at the update at
-     */
-    public void setUpdate_at(String update_at) {
-        this.update_at = update_at;
-    }
 
     /**
      * Gets otp.
@@ -219,6 +204,26 @@ public class PasswordResets {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+    /**
+     * Gets updated at.
+     *
+     * @return the updated at
+     */
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    /**
+     * Sets updated at.
+     *
+     * @param updated_at the updated at
+     */
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
 
 
 }
