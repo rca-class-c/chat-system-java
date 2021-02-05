@@ -3,6 +3,11 @@ package client;
 import server.models.ActiveUser;
 import server.models.AuthInput;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.net.*;
 import java.sql.ResultSet;
@@ -31,9 +36,9 @@ public class WriteThread extends Thread {
             ex.printStackTrace();
         }
     }
-    public String login() throws IOException, ClassNotFoundException {
+    public void login() throws IOException, ClassNotFoundException {
         OutputStream outputStream = this.socket.getOutputStream();
-        InputStream input = socket.getInputStream();
+       // InputStream input = socket.getInputStream();
         // create an object output stream from the output stream so we can send an object through it
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         Scanner scanner = new Scanner(System.in);
@@ -43,20 +48,30 @@ public class WriteThread extends Thread {
             System.out.print("Your password:");
             String password = scanner.nextLine();
 
+        ObjectMapper objectMapper = new ObjectMapper();
         AuthInput loginData = new AuthInput(userName,password);
-        objectOutputStream.writeObject(loginData);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        String response = reader.readLine();
-        System.out.println(response);
-        if(response.equals("true")){
-            System.out.println("Getting db logging results");
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            ActiveUser activeUser = (ActiveUser) objectInputStream.readObject();
-        }
-        System.out.println("\n" + response);
+        String LoginDataAsString = objectMapper.writeValueAsString(loginData);
+        System.out.println(LoginDataAsString);
 
-        return "Data sent";
+        PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
+        out.println(LoginDataAsString);
+        out.flush();
+//        AuthInput loginData = new AuthInput(userName,password);
+//        objectOutputStream.writeObject(loginData);
+//        objectOutputStream.flush();
+
+        //BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+//        String response = reader.readLine();;
+//        System.out.println(response);
+//        if(response.equals("true")){
+//            System.out.println("Getting db logging results");
+//            InputStream inputStream = socket.getInputStream();
+//            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+//            ActiveUser activeUser = (ActiveUser) objectInputStream.readObject();
+//        }
+//        System.out.println("\n" + response);
+//
+//        return "Data sent";
 
 
     }
@@ -64,12 +79,6 @@ public class WriteThread extends Thread {
 
 
     public void run() {
-        PrintWriter out = null;
-        try {
-            out = new PrintWriter(this.socket.getOutputStream(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Scanner scanner = new Scanner(System.in);
         String text="";
         do {
@@ -84,8 +93,6 @@ public class WriteThread extends Thread {
 
                 case 1:
                     try {
-                        out.println("LOGIN_REQUEST");
-                        out.flush();
                         login();
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
@@ -93,8 +100,6 @@ public class WriteThread extends Thread {
                     System.out.println("Your choice is login");
                     break;
                 case 2:
-                    out.println("SIGNUP_REQUEST");
-                    //your methods;
                     System.out.println("Your choice is signup");
                     break;
                 case 3:
