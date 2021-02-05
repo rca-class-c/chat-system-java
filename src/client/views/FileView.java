@@ -1,7 +1,7 @@
 package client.views;
 
 import client.Main;
-import server.models.FileSizeTypeEnum;
+import server.models.enums.FileSizeTypeEnum;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 import utils.FileUtil;

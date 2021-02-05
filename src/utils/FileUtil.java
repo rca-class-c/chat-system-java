@@ -1,6 +1,6 @@
 package utils;
 
-import server.models.FileSizeTypeEnum;
+import server.models.enums.FileSizeTypeEnum;
 import server.config.Config;
 
 import java.io.File;
