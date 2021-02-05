@@ -1,7 +1,9 @@
 package server;
 
+import com.sun.security.auth.UserPrincipal;
 import server.interfaces.ActiveUser;
 import server.interfaces.LoginData;
+import server.models.User;
 
 import java.io.*;
 import java.net.*;
@@ -19,6 +21,7 @@ public class UserThread extends Thread {
         this.socket = socket;
         this.server = server;
     }
+
     public void run() {
         try {
             InputStream input = socket.getInputStream();
@@ -26,31 +29,31 @@ public class UserThread extends Thread {
 //            Scanner reader = new Scanner(System.in);
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
+            String clientMessage;
+            clientMessage = reader.readLine();
+            System.out.println(clientMessage);
+            if(clientMessage.equals("LOGIN_REQUEST")){
+                InputStream inputStream = socket.getInputStream();
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                LoginData loginData = (LoginData) objectInputStream.readObject();
+                System.out.println("Received Login data");
+            }
+            else if(clientMessage.equals("SIGNUP_REQUEST")){
+                InputStream inputStream = socket.getInputStream();
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                User user = (User)objectInputStream.readObject();
+                System.out.println("Received Signup data");
+            }
 
 
-            //ok now caught after the username is flushed server sets it good now
-            //printUsers();
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            LoginData loginData = (LoginData) objectInputStream.readObject();
-            System.out.println("Received Login data");
 
-           // String request = reader.readLine();
-//            if(request == "loginRequest"){
-//                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-//                ActiveUser requestUser = (ActiveUser) objectInputStream.readObject();
-//                System.out.println(requestUser.getFirst_name());
-//            }
-//            else if(request == "registerRequest"){
-//
-//            }
 
             String userName = reader.readLine();
             server.addUserName(userName);
             String serverMessage = "New user connected: " + userName;
             //passing message and user to exclude who is the sender
             server.broadcast(serverMessage, this);
-            String clientMessage;
+
             do {
                 clientMessage = reader.readLine();
                 serverMessage = "[" + userName + "]: " + clientMessage;
