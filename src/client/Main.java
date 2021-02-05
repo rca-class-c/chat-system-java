@@ -1,5 +1,6 @@
 package client;
 
+import client.views.AdminAction;
 import utils.ConsoleColor;
 import utils.CommonUtil;
 import client.views.View;
@@ -93,10 +94,11 @@ public class Main {
                         }
                         case 4 -> {
                             CommonUtil.resetColor();
-//                            messages.printNotifications();
+                            AdminAction admin = new AdminAction();
                         }
                         case 5 -> {
                             CommonUtil.addTabs(10, true);
+                            Component.byeBye();
                             CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
