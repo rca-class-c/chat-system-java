@@ -1,3 +1,5 @@
+package server.controllers;
+
 //package controllers;
 //
 //import models.Group;
@@ -8,7 +10,7 @@
 //import java.util.Collection;
 //import java.util.Optional;
 //
-//public class GroupController {
+public class GroupController {
 //    private final GroupServices groupServices = new GroupServices();
 //
 //    public Optional<Group> get(int id) throws SQLException {
@@ -31,4 +33,4 @@
 //         this.groupServices.update(group);
 //    }
 //
-//}
+}

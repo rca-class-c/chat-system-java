@@ -1,13 +1,15 @@
 package client.views;
 import utils.CommonUtil;
 import utils.ConsoleColor;
-import utils.UserIterator;
 import client.views.components.Component;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class View {
+
+    public static SendMessageView sendMessageView = new SendMessageView();
+
 
     public static void loginView() throws SQLException {
 //        UserController userControl = new UserController();
@@ -95,6 +97,9 @@ public class View {
         FileView fileView = new FileView();
         fileView.sendFileView();
     }
+
+
+
 
 
 }

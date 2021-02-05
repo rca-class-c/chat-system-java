@@ -5,7 +5,7 @@ import server.models.Group;
 //import config.Config;
 
 //
-//public class GroupRepository implements Crud<Group> {
+public class GroupRepository  {
 //    private List<Group> groupList= new ArrayList<>();
 //    @Override
 //    public Optional<Group> get(int id) throws SQLException {
@@ -101,4 +101,4 @@ import server.models.Group;
 //        statement.close();
 //        connection.close();
 //    }
-//}
+}

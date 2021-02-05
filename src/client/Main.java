@@ -57,9 +57,12 @@ public class Main {
         CommonUtil.addTabs(10, false);
         System.out.println("3. Send a File");
         CommonUtil.addTabs(10, false);
+
         System.out.println("4. View Notifications");
         CommonUtil.addTabs(10, false);
         System.out.println("5. Quit");
+        CommonUtil.addTabs(10, false);
+        System.out.println("6. Send a Message");
         CommonUtil.addTabs(10, false);
         CommonUtil.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
         System.out.print("  ");
@@ -87,7 +90,6 @@ public class Main {
                             System.out.println(2);
                         }
                         case 3 -> {
-                            CommonUtil.resetColor();
                             View.sendFileView();
                         }
                         case 4 -> {
@@ -100,6 +102,9 @@ public class Main {
                             CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
+                        }
+                        case 6 -> {
+                           View.sendMessageView.OptionsView();
                         }
                         default -> {
                             action = -1;
