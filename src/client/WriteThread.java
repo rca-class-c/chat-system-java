@@ -50,8 +50,13 @@ public class WriteThread extends Thread {
 
 
     public void run() {
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(this.socket.getOutputStream(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner scanner = new Scanner(System.in);
-        String userName = "";
         String text="";
         do {
             System.out.println("\t \t WELCOME TO CHAT SYSTEM \t\t");
@@ -65,6 +70,8 @@ public class WriteThread extends Thread {
 
                 case 1:
                     try {
+                        out.println("LOGIN_REQUEST");
+                        out.flush();
                         login();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -72,6 +79,8 @@ public class WriteThread extends Thread {
                     System.out.println("Your choice is login");
                     break;
                 case 2:
+                    out.println("SIGNUP_REQUEST");
+                    //your methods;
                     System.out.println("Your choice is signup");
                     break;
                 case 3:
