@@ -1,6 +1,7 @@
 package server;
 
 import server.interfaces.ActiveUser;
+import server.interfaces.LoginData;
 
 import java.io.*;
 import java.net.*;
@@ -30,15 +31,19 @@ public class UserThread extends Thread {
             //ok now caught after the username is flushed server sets it good now
             //printUsers();
             InputStream inputStream = socket.getInputStream();
-            String request = reader.readLine();
-            if(request == "loginRequest"){
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                ActiveUser requestUser = (ActiveUser) objectInputStream.readObject();
-                System.out.println(requestUser.getFirst_name());
-            }
-            else if(request == "registerRequest"){
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            LoginData loginData = (LoginData) objectInputStream.readObject();
+            System.out.println("Received Login data");
 
-            }
+           // String request = reader.readLine();
+//            if(request == "loginRequest"){
+//                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+//                ActiveUser requestUser = (ActiveUser) objectInputStream.readObject();
+//                System.out.println(requestUser.getFirst_name());
+//            }
+//            else if(request == "registerRequest"){
+//
+//            }
 
             String userName = reader.readLine();
             server.addUserName(userName);
