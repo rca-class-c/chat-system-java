@@ -19,9 +19,9 @@ import server.models.User;
 import utils.CommonUtil;
 
 /**
- * This thread is responsible for reading user's input and send it
- * to the server.
- * It runs in an infinite loop until the user types 'bye' to quit.
+ * This is the file for sending and handling request from the client to the server
+ * and vice versa
+ * @AUTHOR: Kobusinge Shallon
  */
 public class WriteThread extends Thread {
     private PrintWriter writer;
@@ -63,11 +63,14 @@ public class WriteThread extends Thread {
             Request request = new Request(loginData,key);
             String LoginDataAsString = objectMapper.writeValueAsString(request);
             writer.println(LoginDataAsString);
+
             ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
             if(response.isSuccess()){
+                JsonNode data = objectMapper.readTree(response.getData());
+                client.setUserid(data.get("userID").asInt());
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your login was very successful\n");
-                new UserView().viewOptions();
+                new UserView(client.getUserid(), writer, reader).viewOptions();
             }
             else{
                 CommonUtil.addTabs(10, true);
@@ -125,7 +128,7 @@ public class WriteThread extends Thread {
             if(response.isSuccess()){
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your account was created successfully!\n");
-                new UserView().viewOptions();
+                new UserView(client.getUserid(),writer,reader).viewOptions();
             }
             else{
                 CommonUtil.addTabs(10, true);
