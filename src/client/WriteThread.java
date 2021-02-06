@@ -49,7 +49,7 @@ public class WriteThread extends Thread {
     public  void login() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
-        while(true){
+
             CommonUtil.addTabs(10, false);
             System.out.print("Your username:");
 
@@ -68,17 +68,15 @@ public class WriteThread extends Thread {
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your login was very successful\n");
                 new UserView().viewOptions();
-                break;
             }
             else{
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your login failed, try again\n");
             }
-        }
+
     }
     public  void signup() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
-        while(true){
             Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 
 
@@ -127,21 +125,18 @@ public class WriteThread extends Thread {
             if(response.isSuccess()){
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your account was created successfully!\n");
-                break;
+                new UserView().viewOptions();
             }
             else{
                 CommonUtil.addTabs(10, true);
                 System.out.println("Account not created, try again!\n");
             }
-        }
     }
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
         int choice = 0;
         do {
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
             Component.pageTitleView("WELCOME TO CHAT SYSTEM");
             CommonUtil.addTabs(10, false);
             System.out.println("\t  1. LOGIN  \t");
