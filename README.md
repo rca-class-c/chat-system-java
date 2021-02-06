@@ -15,8 +15,8 @@ Here are simple details
 * ***src/utils*** : Our Utilities, some common methods we may need and so on, ____You will also find the db migration file___.
 
 ## How to run/start
--To start the server, Go to ***src/server*** and run ____ChatServer.java___
--To start the server, Go to ***src/client*** and run ____ChatClient.java___
+*To start the server, Go to ***src/server*** and run ____ChatServer.java___
+*To start the server, Go to ***src/client*** and run ____ChatClient.java___
 ## Note
 Remember to choose sdk while running this projects in you local machines ide. it gave me headache
 
