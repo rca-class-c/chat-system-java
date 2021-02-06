@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.dataDecoders.CreateUserDataDecoder;
 import server.dataDecoders.LoginDataDecoder;
 import server.models.Response;
 import server.models.User;
@@ -53,14 +54,35 @@ public class UserThread extends Thread {
                 if(request_type.equals("login")){
                     User returned = new UserService().loginUser(new LoginDataDecoder(data).decode());
                     if(returned == null){
-                        System.out.println("No user found");
+                        System.out.println("Login failed");
+                        Response response = new Response(null,false);
+                        String ResponseAsString = objectMapper.writeValueAsString(response);
+                        writer.println(ResponseAsString);
                     }
                     else{
                         Response response = new Response(returned,true);
                         String ResponseAsString = objectMapper.writeValueAsString(response);
-                        System.out.println("User found");
+                        System.out.println(returned.getUsername()+" logged in");
                         writer.println(ResponseAsString);
                     }
+                }
+                else if(request_type.equals("register")){
+                    User returned = new UserService().saveUser(new CreateUserDataDecoder(data).decode());
+                    if(returned == null){
+                        System.out.println("Account not created");
+                        Response response = new Response(null,false);
+                        String ResponseAsString = objectMapper.writeValueAsString(response);
+                        writer.println(ResponseAsString);
+                    }
+                    else{
+                        Response response = new Response(returned,true);
+                        String ResponseAsString = objectMapper.writeValueAsString(response);
+                        System.out.println(returned.getUsername()+" logged in");
+                        writer.println(ResponseAsString);
+                    }
+                }
+                else{
+                    writer.println("Request type not known");
                 }
                 //server.broadcast(serverMessage, this);
             } while (!clientMessage.equals("bye"));

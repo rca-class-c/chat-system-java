@@ -25,7 +25,7 @@ public class ChatClient {
             System.out.println("Connected to the chat server");
 
             //readthread and writethread recieves socket and client as parameters
-            new client.ReadThread(socket, this).start();
+            //new client.ReadThread(socket, this).start();
             new client.WriteThread(socket, this).start();
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
