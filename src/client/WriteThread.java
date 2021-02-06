@@ -134,9 +134,9 @@ public class WriteThread extends Thread {
             System.out.println("\t  1. LOGIN  \t");
             System.out.println("\t  2. SIGNUP \t");
             System.out.println("\t  3. HELP   \t");
-            System.out.println("\t  44.QUIT   \t");
+            System.out.println("\t -1.QUIT   \t");
 
-
+            System.out.println("Your choice:\t");
             choice  = scanner.nextInt();
 
             switch (choice){
@@ -162,14 +162,15 @@ public class WriteThread extends Thread {
                 case 3:
                     System.out.println("Your choice is help");
                     break;
-                case 44:
+                case -1:
                     System.out.println("Thank you for being with us");
+                    break;
                 default:
                     System.out.println("Your choice null");
                     break;
             }
 
-        } while (choice != 44);
+        } while (choice != -1);
         try {
             socket.close();
         } catch (IOException ex) {

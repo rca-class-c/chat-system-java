@@ -43,14 +43,14 @@ public class ChatClient {
 
 
     public static void main(String[] args) throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your host name");
 //        Scanner scanner = new Scanner(System.in);
-        String hostname = scanner.nextLine();
-        System.out.println("Enter your port number");
-        int port  = scanner.nextInt();
+//        System.out.println("Enter your host name");
+////        Scanner scanner = new Scanner(System.in);
+//        String hostname = scanner.nextLine();
+//        System.out.println("Enter your port number");
+//        int port  = scanner.nextInt();
 
-        ChatClient client = new ChatClient(hostname, port);
+        ChatClient client = new ChatClient("localhost", 9812);
         client.execute();
 
 
