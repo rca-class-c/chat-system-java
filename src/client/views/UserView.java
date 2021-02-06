@@ -24,10 +24,10 @@ public class UserView {
             CommonUtil.addTabs(10, false);
             System.out.println("5. NOTIFICATIONS");
             CommonUtil.addTabs(10, false);
-            System.out.println("5. LOGOUT");
+            System.out.println("6. LOGOUT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
-        }while(choice != 5);
+        }while(choice != 6);
 
     }
 }
