@@ -8,6 +8,7 @@ import java.util.Scanner;
 import client.interfaces.DecodeResponse;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
+import client.views.UserView;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,7 +49,7 @@ public class WriteThread extends Thread {
     public  void login() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
-        while(true){
+
             CommonUtil.addTabs(10, false);
             System.out.print("Your username:");
 
@@ -66,17 +67,16 @@ public class WriteThread extends Thread {
             if(response.isSuccess()){
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your login was very successful\n");
-                break;
+                new UserView().viewOptions();
             }
             else{
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your login failed, try again\n");
             }
-        }
+
     }
     public  void signup() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
-        while(true){
             Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 
 
@@ -125,13 +125,12 @@ public class WriteThread extends Thread {
             if(response.isSuccess()){
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your account was created successfully!\n");
-                break;
+                new UserView().viewOptions();
             }
             else{
                 CommonUtil.addTabs(10, true);
                 System.out.println("Account not created, try again!\n");
             }
-        }
     }
     public void run() {
         Scanner scanner = new Scanner(System.in);
@@ -147,8 +146,7 @@ public class WriteThread extends Thread {
             System.out.println("\t  3. HELP   \t");
             CommonUtil.addTabs(10, false);
             System.out.println("\t -1.QUIT   \t");
-            CommonUtil.addTabs(10, false);
-            System.out.println("\tYour choice:\t");
+            Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
 
             switch (choice){
@@ -159,8 +157,6 @@ public class WriteThread extends Thread {
                     } catch (SQLException | IOException throwables) {
                         throwables.printStackTrace();
                     }
-                    CommonUtil.addTabs(10, false);
-                    System.out.println("Your choice is login");
                     break;
                 case 2:
                     try {
