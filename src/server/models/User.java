@@ -27,6 +27,20 @@ public class User {
         this.status = status;
     }
 
+    public User(int userID, String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status ,String createAt, String updatedAt) {
+        this.userID = userID;
+        this.fname = fname;
+        this.lname = lname;
+        this.password = password;
+        this.email = email;
+        this.dob = dob;
+        this.createAt = createAt;
+        this.updatedAt = updatedAt;
+        this.username = username;
+        this.gender = gender;
+        this.categoryID = categoryID;
+        this.status = status;
+    }
 
     public String getFname() {
         return fname;
@@ -110,5 +124,17 @@ public class User {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

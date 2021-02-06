@@ -42,10 +42,10 @@ public class UserRepository {
             System.out.println("Reading users ....");
             if(rs.next()){
                 System.out.println("User Found!");
-                User returnUser =  new User(rs.getString("first_name"),rs.getString("last_name"),
+                User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
-                        rs.getString("status"));
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at"));
                 System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
 //            while(rs.next()){
 //                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));

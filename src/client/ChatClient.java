@@ -5,15 +5,14 @@ import java.sql.*;
 import java.util.Scanner;
 
 /**
- * This is the chat client program.
- * Type 'bye' to terminte the program.
- *
+ * This is the main Entry
+ * @Author: Hirwa Chanelle
  */
 
 public class ChatClient {
     private String hostname;
     private int port;
-    private String userName;
+    private int Userid;
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
@@ -23,9 +22,6 @@ public class ChatClient {
         try {
             Socket socket = new Socket(hostname, port);
             System.out.println("Connected to the chat server");
-
-            //readthread and writethread recieves socket and client as parameters
-            //new client.ReadThread(socket, this).start();
             new client.WriteThread(socket, this).start();
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
@@ -33,27 +29,18 @@ public class ChatClient {
             System.out.println("I/O Error: " + ex.getMessage());
         }
     }
-    void setUserName(String userName) {
-        this.userName = userName;
-    }
-    String getUserName() {
-        
-        return this.userName;
+
+    public int getUserid() {
+        return Userid;
     }
 
+    public void setUserid(int userid) {
+        Userid = userid;
+    }
 
     public static void main(String[] args) throws SQLException {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Enter your host name");
-////        Scanner scanner = new Scanner(System.in);
-//        String hostname = scanner.nextLine();
-//        System.out.println("Enter your port number");
-//        int port  = scanner.nextInt();
-
         ChatClient client = new ChatClient("localhost", 9812);
         client.execute();
-
-
 
     }
 }
