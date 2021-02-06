@@ -23,7 +23,7 @@ public class Component {
         title = title.toUpperCase(Locale.ROOT);
         CommonUtil.clearScreen();
         CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
-        CommonUtil.addTabs(20, true);
+        CommonUtil.addTabs(10, true);
         CommonUtil.useColor(ConsoleColor.UnderlineColor.GREEN_UNDERLINED);
         System.out.println(title);
         CommonUtil.resetColor();

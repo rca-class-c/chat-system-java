@@ -47,9 +47,13 @@ public class WriteThread extends Thread {
     }
     public  void login() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
+        Component.pageTitleView("LOGIN TO CLASS_C CHAT");
         while(true){
+            CommonUtil.addTabs(10, false);
             System.out.print("Your username:");
+
             String userName = scanner.nextLine();
+            CommonUtil.addTabs(10, false);
             System.out.print("Your password:");
             String password = scanner.nextLine();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -60,18 +64,20 @@ public class WriteThread extends Thread {
             writer.println(LoginDataAsString);
             ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                System.out.println("Your login was very successful");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your login was very successful\n");
                 break;
             }
             else{
-                System.out.println("Your login failed, try again");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your login failed, try again\n");
             }
         }
     }
     public  void signup() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
         while(true){
-            Component.pageTitleView("Create a new account");
+            Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 
 
             CommonUtil.addTabs(10, false);
@@ -117,11 +123,13 @@ public class WriteThread extends Thread {
             writer.println(requestAsString);
             ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                System.out.println("Your account was created successfully");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your account was created successfully!\n");
                 break;
             }
             else{
-                System.out.println("Account not created, try again");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Account not created, try again!\n");
             }
         }
     }
@@ -130,13 +138,17 @@ public class WriteThread extends Thread {
 
         int choice = 0;
         do {
-            System.out.println("\t \t WELCOME TO CHAT SYSTEM \t\t");
+            Component.pageTitleView("WELCOME TO CHAT SYSTEM");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t  1. LOGIN  \t");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t  2. SIGNUP \t");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t  3. HELP   \t");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t -1.QUIT   \t");
-
-            System.out.println("Your choice:\t");
+            CommonUtil.addTabs(10, false);
+            System.out.println("\tYour choice:\t");
             choice  = scanner.nextInt();
 
             switch (choice){
@@ -147,6 +159,7 @@ public class WriteThread extends Thread {
                     } catch (SQLException | IOException throwables) {
                         throwables.printStackTrace();
                     }
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice is login");
                     break;
                 case 2:
@@ -157,15 +170,19 @@ public class WriteThread extends Thread {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice is signup");
                     break;
                 case 3:
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice is help");
                     break;
                 case -1:
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Thank you for being with us");
                     break;
                 default:
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice null");
                     break;
             }
@@ -174,6 +191,7 @@ public class WriteThread extends Thread {
         try {
             socket.close();
         } catch (IOException ex) {
+            CommonUtil.addTabs(10, false);
             System.out.println("Error writing to server: " + ex.getMessage());
         }
     }
