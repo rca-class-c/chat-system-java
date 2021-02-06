@@ -8,6 +8,7 @@ import java.util.Scanner;
 import client.interfaces.DecodeResponse;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
+import client.views.UserView;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,6 +67,7 @@ public class WriteThread extends Thread {
             if(response.isSuccess()){
                 CommonUtil.addTabs(10, true);
                 System.out.println("Your login was very successful\n");
+                new UserView().viewOptions();
                 break;
             }
             else{
@@ -138,6 +140,8 @@ public class WriteThread extends Thread {
 
         int choice = 0;
         do {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             Component.pageTitleView("WELCOME TO CHAT SYSTEM");
             CommonUtil.addTabs(10, false);
             System.out.println("\t  1. LOGIN  \t");
@@ -147,8 +151,7 @@ public class WriteThread extends Thread {
             System.out.println("\t  3. HELP   \t");
             CommonUtil.addTabs(10, false);
             System.out.println("\t -1.QUIT   \t");
-            CommonUtil.addTabs(10, false);
-            System.out.println("\tYour choice:\t");
+            Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
 
             switch (choice){
@@ -159,8 +162,6 @@ public class WriteThread extends Thread {
                     } catch (SQLException | IOException throwables) {
                         throwables.printStackTrace();
                     }
-                    CommonUtil.addTabs(10, false);
-                    System.out.println("Your choice is login");
                     break;
                 case 2:
                     try {
