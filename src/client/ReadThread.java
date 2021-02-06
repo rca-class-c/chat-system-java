@@ -1,7 +1,5 @@
 package client;
 
-import server.models.ActiveUser;
-
 import java.io.*;
 import java.net.*;
 /**
@@ -28,24 +26,13 @@ public class ReadThread extends Thread {
     public void run() {
         while (true) {
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String response = reader.readLine();
-                System.out.println(response);
-                if(response.equals("true")){
-                    System.out.println("Getting db logging results");
-                    InputStream inputStream = socket.getInputStream();
-                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                    ActiveUser activeUser = (ActiveUser) objectInputStream.readObject();
-
-                }
                 System.out.println("\n" + response);
-//                String response = reader.readLine();
-//                System.out.println("\n" + response);
-//                // prints the username after displaying the server's message
-//                if (client.getUserName() != null) {
-//                    System.out.print("[" + client.getUserName() + "]: ");
-//                }
-            } catch (IOException | ClassNotFoundException ex) {
+                // prints the username after displaying the server's message
+                if (client.getUserName() != null) {
+                    System.out.print("[" + client.getUserName() + "]: ");
+                }
+            } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());
                 ex.printStackTrace();
                 break;

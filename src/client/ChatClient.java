@@ -25,7 +25,7 @@ public class ChatClient {
             System.out.println("Connected to the chat server");
 
             //readthread and writethread recieves socket and client as parameters
-            //new client.ReadThread(socket, this).start();
+            new client.ReadThread(socket, this).start();
             new client.WriteThread(socket, this).start();
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
@@ -41,6 +41,7 @@ public class ChatClient {
         return this.userName;
     }
 
+
     public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your host name");
@@ -48,9 +49,9 @@ public class ChatClient {
         String hostname = scanner.nextLine();
         System.out.println("Enter your port number");
         int port  = scanner.nextInt();
+
         ChatClient client = new ChatClient(hostname, port);
         client.execute();
-
 
 
 

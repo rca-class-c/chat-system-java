@@ -8,9 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+
 /**
- * This is the chat server main entry. Press Ctrl + C to terminate the program.
- * @Author: Shallon Kobusinge
+ * This is the chat server program. Press Ctrl + C to terminate the program.
+ *
  */
 public class ChatServer {
     private int port;
@@ -37,48 +38,51 @@ public class ChatServer {
             ex.printStackTrace();
         }
     }
-
+    
     public static void main(String[] args) {
+     
+    	//connecting to the database
 
-        int port = 9812;
+        
+        int port = 6900;
         ChatServer server = new ChatServer(port);
-        server.execute();
-
+        server.execute();	
+        
     }
     /**
      * Delivers a message from one user to others (broadcasting)
      */
-//    void broadcast(String message, UserThread excludeUser) {
-//        for (UserThread aUser : userThreads) {
-//            if (aUser != excludeUser) {
-//                aUser.sendMessage(message);
-//            }
-//        }
-//    }
+    void broadcast(String message, UserThread excludeUser) {
+        for (UserThread aUser : userThreads) {
+            if (aUser != excludeUser) {
+                aUser.sendMessage(message);
+            }
+        }
+    }
     /**
      * Stores username of the newly connected client will read.
      */
-//    void addUserName(String userName) {
-//        userNames.add(userName);
-//    }
+    void addUserName(String userName) {
+        userNames.add(userName);
+    }
     /**
      * When a client is disconneted, removes the associated username and UserThread
      */
-//    void removeUser(String userName, UserThread aUser) {
-//        boolean removed = userNames.remove(userName);
-//        if (removed) {
-//            userThreads.remove(aUser);
-//            System.out.println("The user " + userName + " quitted");
-//        }
-//    }
-//    Set<String> getUserNames() {
-//        return this.userNames;
-//    }
+    void removeUser(String userName, UserThread aUser) {
+        boolean removed = userNames.remove(userName);
+        if (removed) {
+            userThreads.remove(aUser);
+            System.out.println("The user " + userName + " quitted");
+        }
+    }
+    Set<String> getUserNames() {
+        return this.userNames;
+    }
     /**
      * Returns true if there are other users connected (not count the currently
      * connected user)
      */
-//    boolean hasUsers() {
-//        return !this.userNames.isEmpty();
-//    }
+    boolean hasUsers() {
+        return !this.userNames.isEmpty();
+    }
 }

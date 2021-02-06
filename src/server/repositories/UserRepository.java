@@ -35,6 +35,7 @@ public class UserRepository {
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
+            System.out.println(query);
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             if(rs.next()){

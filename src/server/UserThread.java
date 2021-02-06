@@ -1,24 +1,19 @@
 package server;
 
-
-import server.models.ActiveUser;
-import server.models.User;
-import server.models.AuthInput;
-import server.services.UserService;
-
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
 import java.util.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import server.dataDecoders.LoginDataDecoder;
+import server.models.Response;
+import server.models.User;
+import server.services.UserService;
+
 /**
- * This is a thread that handles a user when he/she has connected to the server
+ * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
  * @Author: Didier Munezero
- *
  */
 public class UserThread extends Thread {
     private Socket socket;
@@ -28,103 +23,72 @@ public class UserThread extends Thread {
         this.socket = socket;
         this.server = server;
     }
-
     public void run() {
         try {
-            do{
-                ObjectMapper objectMapper = new ObjectMapper();
-                BufferedReader reader = null;
+            InputStream input = socket.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+//            Scanner reader = new Scanner(System.in);
+            OutputStream output = socket.getOutputStream();
+            writer = new PrintWriter(output, true);
 
-                    reader = new BufferedReader(new InputStreamReader( socket.getInputStream()));
 
-                writer = new PrintWriter(socket.getOutputStream(), true);
+            //ok now caught after the username is flushed server sets it good now
+            //printUsers();
+            //String userName = reader.readLine();
+            //server.addUserName(userName);
+            String serverMessage;
+            //passing message and user to exclude who is the sender
+            //System.out.println(serverMessage);
+            //server.broadcast(serverMessage, this);
             String clientMessage;
-            clientMessage = reader.readLine();
-            System.out.println(clientMessage);
-            if(clientMessage.equals("LOGIN_REQUEST")) {
-//                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-//                AuthInput loginData = (AuthInput) objectInputStream.readObject();
-//                System.out.println("Data provided");
-//                System.out.println(loginData.getUsername());
-//                System.out.println(loginData.getPassword());
-//
-//                User user = new UserService().loginUser(loginData);
+            do {
                 clientMessage = reader.readLine();
-                System.out.println("Login data: "+clientMessage);
+                serverMessage = clientMessage;
+                System.out.println(serverMessage);
+                ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonNode = objectMapper.readTree(clientMessage);
-                String userName = jsonNode.get("username").asText();
-                System.out.println("this is username: "+userName);
-            }
-//                PrintWriter out = null;
-//
-//                try {
-//                    out = new PrintWriter(this.socket.getOutputStream(), true);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                if(user == null){
-//                    System.out.println("Login Failed");
-//                    out.println("false");
-//                }
-//                else {
-//                    out.println("true");
-//                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-//                    System.out.println("Login successfully");
-//                    ActiveUser activeUser = new ActiveUser(user.getUserID(),user.getUsername());
-//                    objectOutputStream.writeObject(activeUser);
-//                    objectOutputStream.flush();
-//                }
-//                //objectInputStream.close();
-//            }
-//            else if(clientMessage.equals("SIGNUP_REQUEST")){
-////                InputStream inputStream = socket.getInputStream();
-////                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-////                User user = (User)objectInputStream.readObject();
-//                System.out.println("Received Signup data");
-//            }
+                String request_type = jsonNode.get("request_type").asText();
+                String data = jsonNode.get("data").toString();
 
-
-
-
-//            String userName = reader.readLine();
-//            server.addUserName(userName);
-//            String serverMessage = "New user connected: " + userName;
-//            //passing message and user to exclude who is the sender
-//            server.broadcast(serverMessage, this);
-
-//            do {
-//                clientMessage = reader.readLine();
-//                serverMessage = "[" + userName + "]: " + clientMessage;
-//                server.broadcast(serverMessage, this);
-//            } while (!clientMessage.equals("bye"));
-//            server.removeUser(userName, this);
-//            socket.close();
-//            //passing message to remaining users that one has quitted
-//            serverMessage = userName + " has quitted.";
-//            server.broadcast(serverMessage, this);
-            }while(true);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+                if(request_type.equals("login")){
+                    User returned = new UserService().loginUser(new LoginDataDecoder(data).decode());
+                    if(returned == null){
+                        System.out.println("No user found");
+                    }
+                    else{
+                        Response response = new Response(returned,true);
+                        String ResponseAsString = objectMapper.writeValueAsString(response);
+                        System.out.println("User found");
+                        writer.println(ResponseAsString);
+                    }
+                }
+                //server.broadcast(serverMessage, this);
+            } while (!clientMessage.equals("bye"));
+            //server.removeUser(userName, this);
+            socket.close();
+            //passing message to remaining users that one has quitted
+            //serverMessage = userName + " has quitted.";
+            server.broadcast(serverMessage, this);
+        } catch (IOException | SQLException ex) {
+            System.out.println("Error in UserThread: " + ex.getMessage());
+            ex.printStackTrace();
         }
-
     }
     /**
      * Sends a list of online users to the newly connected user.
      */
-//    void printUsers() {
-//        System.out.println(server.hasUsers());
-//        if (server.hasUsers()) {
-//            writer.println("Connected users: " + server.getUserNames());
-//        } else {
-//            writer.println("No other users connected");
-//        }
-//    }
+    void printUsers() {
+        System.out.println(server.hasUsers());
+        if (server.hasUsers()) {
+            writer.println("Connected users: " + server.getUserNames());
+        } else {
+            writer.println("No other users connected");
+        }
+    }
     /**
      * Sends a message to the client.
      */
-//    void sendMessage(String message) {
-//        writer.println(message);
-//    }
+    void sendMessage(String message) {
+        writer.println(message);
+    }
 }
