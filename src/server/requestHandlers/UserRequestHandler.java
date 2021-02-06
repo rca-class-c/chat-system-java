@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.dataDecoders.CreateUserDataDecoder;
+import server.dataDecoders.GetProfileDecoder;
 import server.dataDecoders.LoginDataDecoder;
 import server.models.Response;
 import server.models.User;
@@ -42,6 +43,23 @@ public class UserRequestHandler {
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(returned.getUsername()+" created an account!");
+            writer.println(ResponseAsString);
+        }
+    }
+
+    public void HandleGetProfile(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException,SQLException {
+        User returned = new UserService().getUserById(new GetProfileDecoder(data).decode());
+        if(returned == null){
+            System.out.println("Account not found");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(response);
+            System.out.println(returned.getUsername()+" requested profile");
             writer.println(ResponseAsString);
         }
     }
