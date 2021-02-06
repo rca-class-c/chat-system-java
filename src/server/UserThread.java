@@ -62,7 +62,7 @@ public class UserThread extends Thread {
                     else{
                         Response response = new Response(returned,true);
                         String ResponseAsString = objectMapper.writeValueAsString(response);
-                        System.out.println(returned.getUsername()+" logged in");
+                        System.out.println(returned.getUsername()+" is logged in");
                         writer.println(ResponseAsString);
                     }
                 }
@@ -77,7 +77,7 @@ public class UserThread extends Thread {
                     else{
                         Response response = new Response(returned,true);
                         String ResponseAsString = objectMapper.writeValueAsString(response);
-                        System.out.println(returned.getUsername()+" logged in");
+                        System.out.println(returned.getUsername()+" created an account!");
                         writer.println(ResponseAsString);
                     }
                 }

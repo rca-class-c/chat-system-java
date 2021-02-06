@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class UserRepository {
     public User save(User user) throws SQLException {
+        int i= 0;
         try {
             Connection connection = Config.getConnection();
             Statement statement = connection.createStatement();
@@ -17,9 +18,8 @@ public class UserRepository {
             String query = String.format("INSERT INTO users(first_name, last_name, username, email, gender, pass_word,dob,status,categoryid) VALUES (" +
                     "'%s','%s','%s','%s','%s','%s','%s','%s',%d);", user.getFname(), user.getLname(), user.getUsername(), user.getEmail(), user.getGender(), user.getPassword(),user.getDob(),user.getStatus(),user.getCategoryID());
 
-            System.out.println(query);
 
-            int i = statement.executeUpdate(query);
+            i = statement.executeUpdate(query);
             System.out.println("Rows inserted: "+i);
 
             statement.close();
@@ -27,7 +27,10 @@ public class UserRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return user;
+        if(i > 0) {
+            return user;
+        }
+        return null;
     }
     public User login(AuthInput input) throws SQLException{
         try{
@@ -35,7 +38,6 @@ public class UserRepository {
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
-            System.out.println(query);
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             if(rs.next()){
@@ -79,7 +81,6 @@ public class UserRepository {
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status")));
-               // System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
             }
             return users;
         }
