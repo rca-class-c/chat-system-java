@@ -123,13 +123,13 @@ public class WriteThread extends Thread {
             writer.println(requestAsString);
             ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                CommonUtil.addTabs(10, false);
-                System.out.println("Your account was created successfully\n");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your account was created successfully!\n");
                 break;
             }
             else{
-                CommonUtil.addTabs(10, false);
-                System.out.println("Account not created, try again\n");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Account not created, try again!\n");
             }
         }
     }

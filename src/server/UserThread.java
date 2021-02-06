@@ -3,13 +3,13 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
-import java.util.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.dataDecoders.CreateUserDataDecoder;
-import server.dataDecoders.LoginDataDecoder;
 import server.models.Response;
 import server.models.User;
+import server.requestHandlers.UserRequestHandler;
 import server.services.UserService;
 
 /**
@@ -52,41 +52,17 @@ public class UserThread extends Thread {
                 String data = jsonNode.get("data").toString();
 
                 if(request_type.equals("login")){
-                    User returned = new UserService().loginUser(new LoginDataDecoder(data).decode());
-                    if(returned == null){
-                        System.out.println("Login failed");
-                        Response response = new Response(null,false);
-                        String ResponseAsString = objectMapper.writeValueAsString(response);
-                        writer.println(ResponseAsString);
-                    }
-                    else{
-                        Response response = new Response(returned,true);
-                        String ResponseAsString = objectMapper.writeValueAsString(response);
-                        System.out.println(returned.getUsername()+" is logged in");
-                        writer.println(ResponseAsString);
-                    }
+                    new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("register")){
-                    User returned = new UserService().saveUser(new CreateUserDataDecoder(data).decode());
-                    if(returned == null){
-                        System.out.println("Account not created");
-                        Response response = new Response(null,false);
-                        String ResponseAsString = objectMapper.writeValueAsString(response);
-                        writer.println(ResponseAsString);
-                    }
-                    else{
-                        Response response = new Response(returned,true);
-                        String ResponseAsString = objectMapper.writeValueAsString(response);
-                        System.out.println(returned.getUsername()+" created an account!");
-                        writer.println(ResponseAsString);
-                    }
+                    new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
                 }
                 else{
                     writer.println("Request type not known");
                 }
                 //server.broadcast(serverMessage, this);
             } while (!clientMessage.equals("bye"));
-            //server.removeUser(userName, this);
+           // server.removeUser(userName, this);
             socket.close();
             //passing message to remaining users that one has quitted
             //serverMessage = userName + " has quitted.";

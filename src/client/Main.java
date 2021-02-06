@@ -3,7 +3,6 @@ package client;
 import client.views.AdminAction;
 import utils.ConsoleColor;
 import utils.CommonUtil;
-import client.views.View;
 //import client.views.MessagesView;
 import client.views.components.Component;
 import java.sql.SQLException;
