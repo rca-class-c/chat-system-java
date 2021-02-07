@@ -34,4 +34,11 @@ public class MessagesService {
     public void sendDirectly(Messages messages) throws SQLException{
         messagesRepository.sendDirectMessage(messages);
     }
+    public void ReplyInGroup(Messages messages) throws SQLException{
+        messagesRepository.ReplyDirectMessage(messages);
+    }
+
+    public void ReplyDirectly(Messages messages) throws SQLException{
+        messagesRepository.ReplyGroupMessage(messages);
+    }
 }
