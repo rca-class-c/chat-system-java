@@ -4,6 +4,7 @@ import client.interfaces.ProfileRequestData;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
+import server.services.sendInvitations;
 import utils.CommonUtil;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
@@ -12,6 +13,7 @@ import client.interfaces.DecodeResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserView {
@@ -104,4 +106,26 @@ public class UserView {
         int choice  = scanner.nextInt();
 
     }
+
+    public static  void sendInvitations() throws ClassNotFoundException,  SQLException {
+        Scanner scanner = new Scanner(System.in);
+
+        Component.pageTitleView("Admin Send An Invitation ");
+
+        CommonUtil.addTabs(10, false);
+        System.out.print("Enter Your Email: ");
+        String email = scanner.nextLine();
+
+        CommonUtil.addTabs(10, false);
+        System.out.print("Enter your Password: ");
+        String password = scanner.nextLine();
+        try {
+            sendInvitations.sendingInvitations(email,password);
+        }
+        catch (SQLException e){
+            System.out.println(e);
+        }
+
+    }
+
 }
