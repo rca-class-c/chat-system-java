@@ -13,6 +13,11 @@ import server.services.UserService;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+
+/**
+ * User related request handler
+ * @author: Didier Munezero
+ */
 public class UserRequestHandler {
 
     public void HandleLogin(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {

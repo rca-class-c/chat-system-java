@@ -55,7 +55,7 @@ public class UserThread extends Thread {
                     new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("register")){
-                    new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
+                    new UserRequestHandler().HandleRegister(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("get_profile")){
                     new UserRequestHandler().HandleGetProfile(data,writer,objectMapper,server);

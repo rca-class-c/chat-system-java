@@ -8,6 +8,11 @@ import java.util.*;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+
+/**
+ * Group queries repository
+ * @author: Phinah Mahoro
+ */
 public class GroupRepository  {
     private List<Group> groupList= new ArrayList<>();
     public Optional<Group> get(int id) throws SQLException {

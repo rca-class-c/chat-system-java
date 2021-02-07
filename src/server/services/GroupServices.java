@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Group services provider
+ * @author: Yvette Gahamanyi
+ */
 public class GroupServices {
     private final GroupRepository groupRepository = new GroupRepository();
 

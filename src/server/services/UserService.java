@@ -7,6 +7,11 @@ import server.repositories.UserRepository;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * User Services provider
+ * @author: Shallon Kobusinge
+ */
+
 public class UserService {
     private final UserRepository userRepository = new UserRepository();
     public User saveUser(User user) throws SQLException {

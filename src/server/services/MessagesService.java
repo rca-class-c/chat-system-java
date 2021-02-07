@@ -9,6 +9,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * User Services provider
+ * @author: Bella Mellissa  Ineza
+ */
+
 public class MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
 
