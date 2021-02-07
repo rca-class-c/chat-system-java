@@ -1,13 +1,13 @@
 package client.views;
 
+import client.interfaces.DecodeResponse;
 import client.interfaces.ProfileRequestData;
+import client.interfaces.Request;
+import client.interfaces.ResponseDecoded;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 import utils.CommonUtil;
-import client.interfaces.Request;
-import client.interfaces.ResponseDecoded;
-import client.interfaces.DecodeResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -65,18 +65,25 @@ public class UserView {
 
     }
 
-    public void allActiveUsers(){
+    public void allActiveUsers() throws IOException {
+        String  key= "get_users_list";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
         Component.pageTitleView("USERS LIST");
-        CommonUtil.addTabs(10, true);
-        System.out.println("1. chanelle740");
-        CommonUtil.addTabs(10, false);
-        System.out.println("2. edine-noella");
-        CommonUtil.addTabs(10, false);
-        System.out.println("3. divin-irakiza");
-        CommonUtil.addTabs(10, false);
-        System.out.println("4. Hortance-irakoze");
-        CommonUtil.addTabs(10, false);
-        System.out.println("5. Loraine");
+        if(response.isSuccess()){
+            User[] users = new DecodeResponse().returnUsersListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (User user : users) {
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = scanner.nextInt();
     }

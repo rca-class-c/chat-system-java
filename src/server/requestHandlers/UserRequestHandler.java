@@ -79,7 +79,7 @@ public class UserRequestHandler {
         else{
             Response response = new Response(users,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(response);
+            System.out.println(ResponseAsString);
             System.out.println("Users list is provided");
             writer.println(ResponseAsString);
         }

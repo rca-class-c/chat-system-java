@@ -15,6 +15,9 @@ public class User {
     public int categoryID;
     public String status;
 
+    public User() {
+    };
+
     public User(String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status) {
         this.fname = fname;
         this.lname = lname;
