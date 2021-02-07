@@ -10,6 +10,7 @@ import server.models.User;
 import server.services.sendInvitations;
 import utils.CommonUtil;
 
+import javax.mail.MessagingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -137,7 +138,7 @@ public class UserView {
         try {
             sendInvitations.sendingInvitations(email,password);
         }
-        catch (SQLException e){
+        catch (SQLException | MessagingException e){
             System.out.println(e);
         }
 
