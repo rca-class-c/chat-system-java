@@ -6,6 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.AuthInput;
 import server.models.User;
 
+
+/**
+ * User related request data decoder
+ * @author: Didier Munezero
+ */
 public class UserDecoder {
 
     String data;

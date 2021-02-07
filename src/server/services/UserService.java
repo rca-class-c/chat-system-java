@@ -20,8 +20,11 @@ public class UserService {
     public User loginUser(AuthInput input) throws SQLException{
         return userRepository.login(input);
     }
-    public List<User> getAllUser() throws SQLException{
+    public List<User> getAllUsers() throws SQLException{
         return userRepository.getAllUsers();
+    }
+    public List<User> getAllOtherUsers(int id) throws SQLException{
+        return userRepository.getAllOtherUsers(id);
     }
     public User getUserById(int userId) throws SQLException{
         return userRepository.getUserById(userId);

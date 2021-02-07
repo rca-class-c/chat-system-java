@@ -10,6 +10,7 @@ import server.services.UserService;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -63,6 +64,23 @@ public class UserRequestHandler {
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(response);
             System.out.println(returned.getUsername()+" requested profile");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleUsersList(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException,SQLException {
+        List<User> users = new UserService().getAllOtherUsers(new UserDecoder(data).GetProfileDecode());
+        //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+        if(users == null){
+            System.out.println("Account not found");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(users,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(response);
+            System.out.println("Users list is provided");
             writer.println(ResponseAsString);
         }
     }
