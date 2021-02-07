@@ -27,3 +27,8 @@ Demo Credentials
  username: test
  password: test
 ```
+## Killer Hint
+* There is a time when you clone on main and then it fails to run while it was running, Do you kno what delete the out folder which contains the production folder.
+* This error is encountered mainly when you pull codes that haven't been compiled by the uploader. 
+* So the production folder contains code which are not compiled, when you line 
+* You encounter some errors like missing some classes that are properly imported or others. Try it!
