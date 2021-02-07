@@ -2,7 +2,8 @@ package server.services;
 
 import server.models.Messages;
 import server.repositories.MessagesRepository;
-import utils.*;
+import utils.DirectMessage;
+import utils.GroupMessage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

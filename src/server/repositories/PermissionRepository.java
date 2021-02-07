@@ -1,11 +1,13 @@
 package server.repositories;
 
-import config.Config;
+import server.config.Config;
 import server.models.Permission;
 
 import java.sql.*;
-import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -123,7 +125,7 @@ public class PermissionRepository {
         Connection connection=Config.getConnection();
 
         PreparedStatement statement=connection.prepareStatement(sql);
-        statement.setString(1,permission.getPermission_name());
+        //statement.setString(1,permission.getPermission_name());
         statement.setInt(2,id);
 
         boolean rowUpdated=statement.executeUpdate()>0;
