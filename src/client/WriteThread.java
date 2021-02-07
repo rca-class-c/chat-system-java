@@ -1,22 +1,20 @@
 package client;
 
-import java.io.*;
-import java.net.*;
-import java.sql.SQLException;
-import java.util.Scanner;
-
 import client.interfaces.DecodeResponse;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
 import client.views.UserView;
 import client.views.components.Component;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.AuthInput;
 import server.models.User;
 import utils.CommonUtil;
+
+import java.io.*;
+import java.net.Socket;
+import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  * This is the file for sending and handling request from the client to the server
@@ -46,6 +44,10 @@ public class WriteThread extends Thread {
             ex.printStackTrace();
         }
     }
+    /**
+     * This a function that takes user login data
+     * @AUTHOR: Phinah Mahoro
+     */
     public  void login() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
@@ -78,7 +80,24 @@ public class WriteThread extends Thread {
             }
 
     }
-    public  void signup() throws SQLException, IOException {
+    public  void VerificationCode(){
+        Scanner scanner = new Scanner(System.in);
+        Component.pageTitleView("Invitation Code Verifier.");
+        try {
+            System.out.println("");
+            CommonUtil.addTabs(10, false);
+            System.out.print("Enter the verification code: ");
+            int code = scanner.nextInt();
+            CommonUtil.addTabs(10, false);
+            System.out.print("Code verification worked out with success! ");
+            System.out.println("");
+            signup();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    public  void signup() throws  IOException {
         Scanner scanner = new Scanner(System.in);
             Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 
@@ -162,13 +181,7 @@ public class WriteThread extends Thread {
                     }
                     break;
                 case 2:
-                    try {
-                        signup();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                        VerificationCode();
                     CommonUtil.addTabs(10, false);
                     System.out.println("Your choice is signup");
                     break;
