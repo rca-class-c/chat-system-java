@@ -1,16 +1,16 @@
 package client.views;
 
 import client.views.components.Component;
-import utils.CommonUtil;
+import utils.*;
 
 
 public class SendMessageView {
-    public void OptionsView() {
+    public static void OptionsView() {
         Component.pageTitleView("Send a Message");
 
-        CommonUtil.addTabs(10, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. Direct Message");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Message a group");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -45,14 +45,14 @@ public class SendMessageView {
     }
 
 
-    public void DirectMessageView() {
+    public static void DirectMessageView() {
         Component.pageTitleView("Direct Message");
 
-        CommonUtil.addTabs(10, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. List all Users");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Search a User (names)");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("3. Enter a user ID");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -84,14 +84,14 @@ public class SendMessageView {
         } while (action == -1);
     }
 
-    public void GroupMessageView() {
+    public static void GroupMessageView() {
         Component.pageTitleView("Group Message");
 
-        CommonUtil.addTabs(10, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. List all Groups");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Search a Group (name)");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("3. Enter a group ID");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -123,7 +123,7 @@ public class SendMessageView {
     }
 
 
-    public void GetAllUsersView() {
+    public static void GetAllUsersView() {
         Component.pageTitleView("Users List");
 
         System.out.println("1. All users list");
@@ -131,19 +131,19 @@ public class SendMessageView {
 
 
 
-    public void SearchUserView() {
+    public static void SearchUserView() {
         Component.pageTitleView("Search a User");
 
         Component.chooseOptionInputView("Search: ");
     }
 
-    public void UserIdView() {
+    public static void UserIdView() {
         Component.pageTitleView("Get User");
 
         Component.chooseOptionInputView("Enter User Id: ");
     }
 
-    public void GetAllGroupsView() {
+    public static void GetAllGroupsView() {
         Component.pageTitleView("Groups List");
 
         System.out.println("1. All groups list");
@@ -151,13 +151,13 @@ public class SendMessageView {
 
 
 
-    public void SearchGroupView() {
+    public static void SearchGroupView() {
         Component.pageTitleView("Search a Group");
 
         Component.chooseOptionInputView("Search: ");
     }
 
-    public void GroupIdView() {
+    public static void GroupIdView() {
         Component.pageTitleView("Get Group");
 
         Component.chooseOptionInputView("Enter Group Id: ");

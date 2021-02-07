@@ -4,6 +4,7 @@ import client.interfaces.DecodeResponse;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
 import client.views.UserView;
+import client.views.View;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,161 +45,17 @@ public class WriteThread extends Thread {
             ex.printStackTrace();
         }
     }
-    /**
-     * This a function that takes user login data
-     * @AUTHOR: Phinah Mahoro
-     */
-    public  void login() throws SQLException, IOException {
-        Scanner scanner = new Scanner(System.in);
-        Component.pageTitleView("LOGIN TO CLASS_C CHAT");
-
-            CommonUtil.addTabs(10, false);
-            System.out.print("Your username:");
-
-            String userName = scanner.nextLine();
-            CommonUtil.addTabs(10, false);
-            System.out.print("Your password:");
-            String password = scanner.nextLine();
-            ObjectMapper objectMapper = new ObjectMapper();
-            AuthInput loginData = new AuthInput(userName,password);
-            String key = "login";
-            Request request = new Request(loginData,key);
-            String LoginDataAsString = objectMapper.writeValueAsString(request);
-            writer.println(LoginDataAsString);
-
-            ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
-            if(response.isSuccess()){
-                JsonNode data = objectMapper.readTree(response.getData());
-                client.setUserid(data.get("userID").asInt());
-                CommonUtil.addTabs(10, true);
-                System.out.println("Your login was very successful\n");
-                new UserView(client.getUserid(), writer, reader).viewOptions();
-            }
-            else{
-                CommonUtil.addTabs(10, true);
-                System.out.println("Your login failed, try again\n");
-            }
-
-    }
-    public  void VerificationCode(){
-        Scanner scanner = new Scanner(System.in);
-        Component.pageTitleView("Invitation Code Verifier.");
-        try {
-            System.out.println("");
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter the verification code: ");
-            int code = scanner.nextInt();
-            CommonUtil.addTabs(10, false);
-            System.out.print("Code verification worked out with success! ");
-            System.out.println("");
-            signup();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-    public  void signup() throws  IOException {
-        Scanner scanner = new Scanner(System.in);
-            Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 
 
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter your Username: ");
-            String username = scanner.nextLine();
-
-
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter your FirstName: ");
-            String firstName = scanner.nextLine();
-
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter your LastName: ");
-            String lastName = scanner.nextLine();
-
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter your Email: ");
-            String email = scanner.nextLine();
-            String gender = "";
-            do {
-                CommonUtil.addTabs(10, false);
-                System.out.print("Enter your Gender[male,female]: ");
-                gender = scanner.nextLine();
-                if(!gender.equals("male") && !gender.equals("female")){
-                    CommonUtil.addTabs(10, false);
-                    System.out.println(gender +"Gender not valid");
-                }
-            }while(!gender.equals("male") && !gender.equals("female"));
-
-
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter your DOB: ");
-            String dob = scanner.nextLine();
-
-            CommonUtil.addTabs(10, false);
-            System.out.print("Enter your Password: ");
-            String password = scanner.nextLine();
-            ObjectMapper objectMapper = new ObjectMapper();
-            User user = new User(firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
-            String key = "register";
-            Request request = new Request(user,key);
-            String requestAsString = objectMapper.writeValueAsString(request);
-            writer.println(requestAsString);
-            ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
-            if(response.isSuccess()){
-                CommonUtil.addTabs(10, true);
-                System.out.println("Your account was created successfully!\n");
-                new UserView(client.getUserid(),writer,reader).viewOptions();
-            }
-            else{
-                CommonUtil.addTabs(10, true);
-                System.out.println("Account not created, try again!\n");
-            }
-    }
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-
+    public void run(Socket socket) {
         int choice = 0;
         do {
-            Component.pageTitleView("WELCOME TO CHAT SYSTEM");
-            CommonUtil.addTabs(10, false);
-            System.out.println("\t  1. LOGIN  \t");
-            CommonUtil.addTabs(10, false);
-            System.out.println("\t  2. SIGNUP \t");
-            CommonUtil.addTabs(10, false);
-            System.out.println("\t  3. HELP   \t");
-            CommonUtil.addTabs(10, false);
-            System.out.println("\t -1.QUIT   \t");
-            Component.chooseOptionInputView("Choose an option: ");
-            choice  = scanner.nextInt();
-
-            switch (choice){
-
-                case 1:
-                    try {
-                        login();
-                    } catch (SQLException | IOException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    break;
-                case 2:
-                        VerificationCode();
-                    CommonUtil.addTabs(10, false);
-                    System.out.println("Your choice is signup");
-                    break;
-                case 3:
-                    CommonUtil.addTabs(10, false);
-                    System.out.println("Your choice is help");
-                    break;
-                case -1:
-                    CommonUtil.addTabs(10, false);
-                    System.out.println("Thank you for being with us");
-                    break;
-                default:
-                    CommonUtil.addTabs(10, false);
-                    System.out.println("Your choice null");
-                    break;
+            try {
+                View.WelcomeView(client, writer, reader);
             }
-
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         } while (choice != -1);
         try {
             socket.close();
