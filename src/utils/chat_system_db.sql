@@ -30,6 +30,19 @@ CREATE TYPE public.gender_enum AS ENUM (
 ALTER TYPE public.gender_enum OWNER TO postgres;
 
 --
+-- Name: invite_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.invite_status AS ENUM (
+    'PENDING',
+    'ACCEPTED',
+    'DENIED'
+);
+
+
+ALTER TYPE public.invite_status OWNER TO postgres;
+
+--
 -- Name: message_status; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -218,6 +231,43 @@ ALTER SEQUENCE public.permissions_permission_id_seq OWNED BY public.permissions.
 
 
 --
+-- Name: sent_invitations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sent_invitations (
+    sent_id integer NOT NULL,
+    admin_id integer NOT NULL,
+    sent_to character varying(255) NOT NULL,
+    verificationcode integer NOT NULL,
+    status public.invite_status DEFAULT 'PENDING'::public.invite_status NOT NULL
+);
+
+
+ALTER TABLE public.sent_invitations OWNER TO postgres;
+
+--
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sent_invitations_sent_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sent_invitations_sent_id_seq OWNER TO postgres;
+
+--
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sent_invitations_sent_id_seq OWNED BY public.sent_invitations.sent_id;
+
+
+--
 -- Name: user_categories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -349,6 +399,13 @@ ALTER TABLE ONLY public.permissions ALTER COLUMN permission_id SET DEFAULT nextv
 
 
 --
+-- Name: sent_invitations sent_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sent_invitations ALTER COLUMN sent_id SET DEFAULT nextval('public.sent_invitations_sent_id_seq'::regclass);
+
+
+--
 -- Name: user_categories categoryid; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -399,6 +456,15 @@ COPY public.messages (id, content, sender, user_receiver, group_receiver, origin
 COPY public.permissions (permission_id, name, status, created_at, updated_at) FROM stdin;
 1	CREATE_GROUP	ACTIVE	2021-02-05	2021-02-05
 2	DELETE_GROUP	ACTIVE	2021-02-05	2021-02-05
+\.
+
+
+--
+-- Data for Name: sent_invitations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sent_invitations (sent_id, admin_id, sent_to, verificationcode, status) FROM stdin;
+1	1	classc@gmail.com	12345	PENDING
 \.
 
 
@@ -470,6 +536,13 @@ SELECT pg_catalog.setval('public.permissions_permission_id_seq', 2, true);
 
 
 --
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.sent_invitations_sent_id_seq', 1, true);
+
+
+--
 -- Name: user_categories_categoryid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -513,6 +586,14 @@ ALTER TABLE ONLY public.messages
 
 ALTER TABLE ONLY public.permissions
     ADD CONSTRAINT permissions_pkey PRIMARY KEY (permission_id);
+
+
+--
+-- Name: sent_invitations sent_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sent_invitations
+    ADD CONSTRAINT sent_invitations_pkey PRIMARY KEY (sent_id);
 
 
 --
@@ -609,6 +690,14 @@ ALTER TABLE ONLY public.messages
 
 ALTER TABLE ONLY public.messages
     ADD CONSTRAINT messages_user_receiver_fkey FOREIGN KEY (user_receiver) REFERENCES public.users(user_id);
+
+
+--
+-- Name: sent_invitations sent_invitations_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sent_invitations
+    ADD CONSTRAINT sent_invitations_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.users(user_id);
 
 
 --
