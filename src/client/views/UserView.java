@@ -39,26 +39,34 @@ public class UserView {
         int choice = 0;
         do {
             CommonUtil.addTabs(10, true);
-            System.out.println("1. MY PROFILE");
+            System.out.println("1. SEND MESSAGE");
             CommonUtil.addTabs(10, false);
-            System.out.println("2. CHAT SET");
+            System.out.println("2. CHANNEL SETTINGS");
             CommonUtil.addTabs(10, false);
-            System.out.println("3. USERS LIST");
+            System.out.println("3. NOTIFICATIONS");
             CommonUtil.addTabs(10, false);
-            System.out.println("5. NOTIFICATIONS");
+            System.out.println("4. USERS LIST");
+            CommonUtil.addTabs(10, false);
+            System.out.println("5. PROFILE SETTINGS");
             CommonUtil.addTabs(10, false);
             System.out.println("6. LOGOUT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
+                new SendMessageView().OptionsView();
+            }
+            else if(choice == 5){
                 MyProfile();
+            }
+            else if(choice == 4){
+                allActiveUsers();
             }
         }while(choice != 6);
 
     }
 
     public void allActiveUsers(){
-        Component.pageTitleView("ACTIVE USERS LIST");
+        Component.pageTitleView("USERS LIST");
         CommonUtil.addTabs(10, true);
         System.out.println("1. chanelle740");
         CommonUtil.addTabs(10, false);
@@ -100,7 +108,7 @@ public class UserView {
            System.out.println("No profile found!");
        }
 
-        Component.chooseOptionInputView("Type any number to go to main page: ");
+        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
         int choice  = scanner.nextInt();
 
     }
