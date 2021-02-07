@@ -3,9 +3,7 @@ package server.requestHandlers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
-import server.dataDecoders.CreateUserDataDecoder;
-import server.dataDecoders.GetProfileDecoder;
-import server.dataDecoders.LoginDataDecoder;
+import server.dataDecoders.UserDecoder;
 import server.models.Response;
 import server.models.User;
 import server.services.UserService;
@@ -21,7 +19,7 @@ import java.sql.SQLException;
 public class UserRequestHandler {
 
     public void HandleLogin(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
-        User returned = new UserService().loginUser(new LoginDataDecoder(data).decode());
+        User returned = new UserService().loginUser(new UserDecoder(data).LoginDecode());
         if(returned == null){
             System.out.println("Login failed");
             Response response = new Response(null,false);
@@ -37,7 +35,7 @@ public class UserRequestHandler {
         }
     }
     public void HandleRegister(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
-        User returned = new UserService().saveUser(new CreateUserDataDecoder(data).decode());
+        User returned = new UserService().saveUser(new UserDecoder(data).CreateUserDecode());
         if(returned == null){
             System.out.println("Account not created");
             Response response = new Response(null,false);
@@ -53,7 +51,7 @@ public class UserRequestHandler {
     }
 
     public void HandleGetProfile(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException,SQLException {
-        User returned = new UserService().getUserById(new GetProfileDecoder(data).decode());
+        User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if(returned == null){
             System.out.println("Account not found");
             Response response = new Response(null,false);

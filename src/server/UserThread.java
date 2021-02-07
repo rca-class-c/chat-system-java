@@ -6,11 +6,7 @@ import java.sql.SQLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.dataDecoders.CreateUserDataDecoder;
-import server.models.Response;
-import server.models.User;
 import server.requestHandlers.UserRequestHandler;
-import server.services.UserService;
 
 /**
  * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
