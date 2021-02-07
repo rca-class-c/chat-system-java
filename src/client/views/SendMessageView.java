@@ -1,10 +1,32 @@
 package client.views;
 
+import client.interfaces.DecodeResponse;
+import client.interfaces.ProfileRequestData;
+import client.interfaces.Request;
+import client.interfaces.ResponseDecoded;
 import client.views.components.Component;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.User;
 import utils.CommonUtil;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 
 public class SendMessageView {
+    int userId;
+    public PrintWriter writer;
+    public BufferedReader reader;
+    Scanner scanner = new Scanner(System.in);
+
+    public SendMessageView(int userId, PrintWriter writer, BufferedReader reader) {
+        this.userId = userId;
+        this.writer = writer;
+        this.reader = reader;
+    }
+
     public void OptionsView() {
         Component.pageTitleView("Send a Message");
 
@@ -43,7 +65,28 @@ public class SendMessageView {
         } while (action == -1);
 
     }
-
+    public void allActiveUsers() throws IOException {
+        String  key= "get_users_list";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        Component.pageTitleView("USERS LIST");
+        if(response.isSuccess()){
+            User[] users = new DecodeResponse().returnUsersListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (User user : users) {
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = scanner.nextInt();
+    }
 
     public void DirectMessageView() {
         Component.pageTitleView("Direct Message");
@@ -65,7 +108,7 @@ public class SendMessageView {
                 CommonUtil.resetColor();
                 switch (action) {
                     case 1 -> {
-                        GetAllUsersView();
+                        allActiveUsers();
                     }
                     case 2 -> {
                         SearchUserView();
@@ -123,26 +166,38 @@ public class SendMessageView {
     }
 
 
-    public void GetAllUsersView() {
-        Component.pageTitleView("Users List");
-
-        System.out.println("1. All users list");
-    }
-
-
-
     public void SearchUserView() {
         Component.pageTitleView("Search a User");
 
         Component.chooseOptionInputView("Search: ");
     }
 
-    public void UserIdView() {
+    public void UserIdView() throws IOException {
         Component.pageTitleView("Get User");
 
         Component.chooseOptionInputView("Enter User Id: ");
-    }
+        int id = scanner.nextInt();
+        FindUser(id);
 
+    }
+    public void FindUser(int id) throws IOException {
+        String key = "get_profile";
+        Request request = new Request(new ProfileRequestData(id), key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        if (response.isSuccess()) {
+            User profile = new DecodeResponse().returnUserDecoded(response.getData());
+            Component.pageTitleView("Chat with " + profile.getUsername()+" "+profile.getFname());
+            CommonUtil.addTabs(10, false);
+            System.out.println("Type message:  ");
+            CommonUtil.addTabs(10, false);
+            int message = scanner.nextInt();
+        } else {
+            CommonUtil.addTabs(10, false);
+            System.out.println("User not found");
+        }
+    }
     public void GetAllGroupsView() {
         Component.pageTitleView("Groups List");
 
