@@ -42,10 +42,10 @@ public class UserRepository {
             System.out.println("Reading users ....");
             if(rs.next()){
                 System.out.println("User Found!");
-                User returnUser =  new User(rs.getString("first_name"),rs.getString("last_name"),
+                User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
-                        rs.getString("status"));
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at"));
                 System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
 //            while(rs.next()){
 //                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
@@ -82,6 +82,34 @@ public class UserRepository {
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status")));
             }
+            return users;
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+    public List<User> getAllOtherUsers(int id) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM users where user_id != '%d' ORDER BY user_id ASC;",id);
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            List<User> users=new ArrayList<User>();
+            while(rs.next()){
+                users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
+            }
+            System.out.println(users.size());
             return users;
         }
         catch ( Exception e ) {

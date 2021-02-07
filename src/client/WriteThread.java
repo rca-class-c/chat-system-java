@@ -1,26 +1,25 @@
 package client;
 
-import java.io.*;
-import java.net.*;
-import java.sql.SQLException;
-import java.util.Scanner;
-
 import client.interfaces.DecodeResponse;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
+import client.views.UserView;
 import client.views.components.Component;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.AuthInput;
 import server.models.User;
 import utils.CommonUtil;
 
+import java.io.*;
+import java.net.Socket;
+import java.sql.SQLException;
+import java.util.Scanner;
+
 /**
- * This thread is responsible for reading user's input and send it
- * to the server.
- * It runs in an infinite loop until the user types 'bye' to quit.
+ * This is the file for sending and handling request from the client to the server
+ * and vice versa
+ * @AUTHOR: Kobusinge Shallon
  */
 public class WriteThread extends Thread {
     private PrintWriter writer;
@@ -45,11 +44,19 @@ public class WriteThread extends Thread {
             ex.printStackTrace();
         }
     }
+    /**
+     * This a function that takes user login data
+     * @AUTHOR: Phinah Mahoro
+     */
     public  void login() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
-        while(true){
+        Component.pageTitleView("LOGIN TO CLASS_C CHAT");
+
+            CommonUtil.addTabs(10, false);
             System.out.print("Your username:");
+
             String userName = scanner.nextLine();
+            CommonUtil.addTabs(10, false);
             System.out.print("Your password:");
             String password = scanner.nextLine();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -58,20 +65,41 @@ public class WriteThread extends Thread {
             Request request = new Request(loginData,key);
             String LoginDataAsString = objectMapper.writeValueAsString(request);
             writer.println(LoginDataAsString);
+
             ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                System.out.println("Your login was very successful");
-                break;
+                JsonNode data = objectMapper.readTree(response.getData());
+                client.setUserid(data.get("userID").asInt());
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your login was very successful\n");
+                new UserView(client.getUserid(), writer, reader).viewOptions();
             }
             else{
-                System.out.println("Your login failed, try again");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your login failed, try again\n");
             }
-        }
+
     }
-    public  void signup() throws SQLException, IOException {
+    public  void VerificationCode(){
         Scanner scanner = new Scanner(System.in);
-        while(true){
-            Component.pageTitleView("Create a new account");
+        Component.pageTitleView("Invitation Code Verifier.");
+        try {
+            System.out.println("");
+            CommonUtil.addTabs(10, false);
+            System.out.print("Enter the verification code: ");
+            int code = scanner.nextInt();
+            CommonUtil.addTabs(10, false);
+            System.out.print("Code verification worked out with success! ");
+            System.out.println("");
+            signup();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    public  void signup() throws  IOException {
+        Scanner scanner = new Scanner(System.in);
+            Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 
 
             CommonUtil.addTabs(10, false);
@@ -117,26 +145,30 @@ public class WriteThread extends Thread {
             writer.println(requestAsString);
             ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                System.out.println("Your account was created successfully");
-                break;
+                CommonUtil.addTabs(10, true);
+                System.out.println("Your account was created successfully!\n");
+                new UserView(client.getUserid(),writer,reader).viewOptions();
             }
             else{
-                System.out.println("Account not created, try again");
+                CommonUtil.addTabs(10, true);
+                System.out.println("Account not created, try again!\n");
             }
-        }
     }
     public void run() {
         Scanner scanner = new Scanner(System.in);
 
         int choice = 0;
         do {
-            System.out.println("\t \t WELCOME TO CHAT SYSTEM \t\t");
+            Component.pageTitleView("WELCOME TO CHAT SYSTEM");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t  1. LOGIN  \t");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t  2. SIGNUP \t");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t  3. HELP   \t");
+            CommonUtil.addTabs(10, false);
             System.out.println("\t -1.QUIT   \t");
-
-            System.out.println("Your choice:\t");
+            Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
 
             switch (choice){
@@ -147,25 +179,22 @@ public class WriteThread extends Thread {
                     } catch (SQLException | IOException throwables) {
                         throwables.printStackTrace();
                     }
-                    System.out.println("Your choice is login");
                     break;
                 case 2:
-                    try {
-                        signup();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                        VerificationCode();
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice is signup");
                     break;
                 case 3:
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice is help");
                     break;
                 case -1:
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Thank you for being with us");
                     break;
                 default:
+                    CommonUtil.addTabs(10, false);
                     System.out.println("Your choice null");
                     break;
             }
@@ -174,6 +203,7 @@ public class WriteThread extends Thread {
         try {
             socket.close();
         } catch (IOException ex) {
+            CommonUtil.addTabs(10, false);
             System.out.println("Error writing to server: " + ex.getMessage());
         }
     }
