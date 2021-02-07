@@ -122,4 +122,40 @@ public class MessagesRepository {
         conn.close();
         return 0;
     }
+    //----------------------------Reply direct messages-----------------------------
+    // author : Melissa
+
+    public static int ReplyDirectMessage(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
+        Connection conn = Config.getConnection();
+        PreparedStatement statement=conn.prepareStatement(sql);
+        statement.setString(1, message.getContext());
+        statement.setInt(2, message.getSender());
+        statement.setInt(3, message.getGroup_receiver(null));
+        statement.setDate(4, (java.sql.Date) message.getSent_at());
+        boolean rowInsert= statement.executeUpdate()>1;
+        statement.close();
+        conn.close();
+        return 0;
+    }
+
+
+
+    //----------------------------Reply group messages--------------------------------
+    // author : Melissa
+
+
+    public static int ReplyGroupMessage(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
+        Connection conn = Config.getConnection();
+        PreparedStatement statement=conn.prepareStatement(sql);
+        statement.setString(1, message.getContext());
+        statement.setInt(2, message.getSender());
+        statement.setInt(3, message.getGroup_receiver(null));
+        statement.setDate(4, (java.sql.Date) message.getSent_at());
+        boolean rowInsert= statement.executeUpdate()>1;
+        statement.close();
+        conn.close();
+        return 0;
+    }
 }

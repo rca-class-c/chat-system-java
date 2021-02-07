@@ -2,12 +2,18 @@ package server.services;
 
 import server.models.Messages;
 import server.repositories.MessagesRepository;
-import utils.*;
+import utils.DirectMessage;
+import utils.GroupMessage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
+
+/**
+ * User Services provider
+ * @author: Bella Mellissa  Ineza
+ */
 
 public class MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
@@ -28,5 +34,12 @@ public class MessagesService {
 
     public void sendDirectly(Messages messages) throws SQLException{
         messagesRepository.sendDirectMessage(messages);
+    }
+    public void ReplyInGroup(Messages messages) throws SQLException{
+        messagesRepository.ReplyDirectMessage(messages);
+    }
+
+    public void ReplyDirectly(Messages messages) throws SQLException{
+        messagesRepository.ReplyGroupMessage(messages);
     }
 }
