@@ -58,7 +58,7 @@ public class UserView {
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
-                new SendMessageView(userId,writer,reader).OptionsView();
+                new SendMessageView(userId, writer, reader).OptionsView();
             }
             else if(choice == 5){
                 MyProfile();
