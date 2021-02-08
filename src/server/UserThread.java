@@ -1,12 +1,13 @@
 package server;
 
-import java.io.*;
-import java.net.*;
-import java.sql.SQLException;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.requestHandlers.MessageRequestHandler;
 import server.requestHandlers.UserRequestHandler;
+
+import java.io.*;
+import java.net.Socket;
+import java.sql.SQLException;
 
 /**
  * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
@@ -48,6 +49,9 @@ public class UserThread extends Thread {
                 }
                 else if(request_type.equals("get_users_list")){
                     new UserRequestHandler().HandleUsersList(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_messages_between_two")){
+                    new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper,server);
                 }
                 else{
                     writer.println("Request type not known");
