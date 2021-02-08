@@ -1,12 +1,11 @@
 package client;
-import client.views.components.Component;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 
-import java.net.*;
-import java.io.*;
-import java.sql.*;
-import java.util.Scanner;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.sql.SQLException;
 
 /**
  * This is the main Entry
@@ -25,7 +24,7 @@ public class ChatClient {
     public void execute() {
         try {
             Socket socket = new Socket(hostname, port);
-
+            CommonUtil.addTabs(10,true);
             CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.WHITE_BACKGROUND_BRIGHT);
             CommonUtil.useColor(ConsoleColor.BoldColor.BLACK_BOLD);
             System.out.print(" Connected to Server Successfully " );
