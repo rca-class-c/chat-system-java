@@ -1,13 +1,13 @@
 package client.views.components;
 
-import utils.*;
+import utils.CommonUtil;
+import utils.ConsoleColor;
+
+import java.util.Locale;
+import java.util.Scanner;
+
 //import utils.CommonUtil;
 //import utils.ConsoleColor;
-import java.util.Locale;
-
-import java.util.Properties;
-
-import java.util.Scanner;
 
 
 /**
@@ -24,7 +24,7 @@ public class Component {
         title = title.toUpperCase(Locale.ROOT);
         CommonUtil.clearScreen();
         CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
-        CommonUtil.addTabs(23, true);
+        CommonUtil.addTabs(8, true);
         CommonUtil.useColor(ConsoleColor.UnderlineColor.GREEN_UNDERLINED);
         System.out.println(title);
         CommonUtil.resetColor();
