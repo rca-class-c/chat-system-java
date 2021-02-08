@@ -1,12 +1,10 @@
 package client.views;
 
-import client.interfaces.UserResponseDataDecoder;
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
+import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Messages;
 import server.models.User;
 import utils.CommonUtil;
 
@@ -302,10 +300,7 @@ public class SendMessageView {
 
                     default -> {
                         action = -1;
-//                        CommonUtil.addTabs(10, false);
-//                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                        System.out.print("Enter a valid choice (1, 2): ");
-//                        CommonUtil.resetColor();
+
                         Component.showErrorMessage("Enter a valid choice (1, 2): ");
 
                     }
@@ -317,6 +312,28 @@ public class SendMessageView {
 
     }
 
+    public void ViewNotifications() throws IOException {
+        Component.pageTitleView("My notifications");
+        String  key= "get_my_notifications";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages messages : messageList) {
+                System.out.println(messages.getSender()+". "+messages.getContent()+" "+messages.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to get notifications, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = scanner.nextInt();
+    }
     public static void SendReplyView() {
         Component.pageTitleView("Send reply");
 

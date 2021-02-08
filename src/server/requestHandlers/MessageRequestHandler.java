@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.dataDecoders.MessageDecoder;
+import server.dataDecoders.UserDecoder;
+import server.models.Messages;
 import server.models.Response;
 import server.services.MessagesService;
 import utils.DirectMessage;
@@ -27,6 +29,23 @@ public class MessageRequestHandler {
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(ResponseAsString);
             System.out.println("Messages betweeen two users are provided");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleNotification(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
+        List<Messages> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
+        //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+        if(messages == null){
+            System.out.println("Query failed recheck your db");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(messages,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Notification list is provided");
             writer.println(ResponseAsString);
         }
     }

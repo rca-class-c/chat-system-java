@@ -58,6 +58,9 @@ public class UserView {
             if(choice == 1){
                 new SendMessageView(userId, writer, reader).OptionsView();
             }
+            else if(choice == 3){
+                new SendMessageView(userId, writer, reader).ViewNotifications();
+            }
             else if(choice == 5){
                 MyProfile();
             }
