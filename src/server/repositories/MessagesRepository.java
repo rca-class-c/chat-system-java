@@ -108,10 +108,10 @@ public class MessagesRepository {
         return 0;
     }
 
-    public List<Messages> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
+    public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
-        List <Messages> messages = new ArrayList<Messages>();
+        List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
         String readQuery = String.format(
                 "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
@@ -127,7 +127,7 @@ public class MessagesRepository {
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-            messages.add(new Messages(id,content,sender,user_receiver,0,original_message,sent_at));
+            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message));
         }
         statement.close();
         conn.close();

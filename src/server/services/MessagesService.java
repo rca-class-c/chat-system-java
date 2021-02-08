@@ -22,7 +22,7 @@ public class MessagesService {
     public List<DirectMessage> viewDirectMessages(Messages messages) throws SQLException {
         return messagesRepository.getDirectMessages(messages);
     }
-    public List<Messages> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
+    public List<DirectMessage> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }
     public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
