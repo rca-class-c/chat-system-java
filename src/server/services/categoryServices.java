@@ -24,5 +24,8 @@ public categories getCategoryById(int id) throws SQLException {
 public  int deleteCategory(int id) throws SQLException {
     return  categoryRepository.deleteCategory(id);
 }
+public int AssignPermissionToCategory(int CategoryId,int PermissionId) throws SQLException {
 
+    return categoryRepository.AssignPermissionToCategory(CategoryId,PermissionId);
+}
 }
