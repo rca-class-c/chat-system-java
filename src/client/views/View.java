@@ -38,6 +38,9 @@ public class View
                     case 3 -> {
                         System.out.println("You requested for help");
                     }
+                    case 7 -> {
+                        new SendMessageView(1, writer, reader).OptionsView();
+                    }
                     case -1 -> {
                         System.out.println();
                         Component.showErrorMessage("System Exited ");
