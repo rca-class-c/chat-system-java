@@ -7,8 +7,8 @@ public class Group {
     private String name;
     private String description;
     private int creator;
-    private Date created_at;
-    private Date updated_at;
+    private java.sql.Date created_at;
+    private java.sql.Date updated_at;
 
     public Group() {
     }
@@ -18,6 +18,15 @@ public class Group {
         this.name = name;
         this.description = description;
         this.creator = creator;
+    }
+
+    public Group(int id, String name, String description, int creator, Date created_at, Date updated_at) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.creator = creator;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public Group(String name, String desctiption, int creator) {

@@ -98,7 +98,7 @@ public class UserRepository {
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users where first_name != '%s' or last_name != '%s' username != '%s' ORDER BY user_id ASC;",search,search,search);
+            String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' username = '%s' ORDER BY user_id ASC;",search,search,search);
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();

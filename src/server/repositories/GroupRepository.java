@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
  */
 public class GroupRepository  {
     private List<Group> groupList= new ArrayList<>();
-    public Optional<Group> get(int id) throws SQLException {
-        Group group=null;
+    public Group get(int id) throws SQLException {
         String sql = "select * from groups where group_id = ?";
         Connection connection= Config.getConnection();
 
@@ -26,19 +25,21 @@ public class GroupRepository  {
         ResultSet resultSet= statement.executeQuery();
 
         if(resultSet.next()){
+            int g_id = resultSet.getInt("group_id");
             String name = resultSet.getString("group_name");
             String description = resultSet.getString("description");
             int creator = resultSet.getInt("group_creator");
-            Date created_at = resultSet.getDate("created_at");
-            Date updated_at = resultSet.getDate("updated_at");
+            java.sql.Date created_at = resultSet.getDate("created_at");
+            java.sql.Date updated_at = resultSet.getDate("updated_at");
 
-            group= new Group();
+            return new Group(g_id,name,description,creator,created_at,updated_at);
+
         }
         resultSet.close();
         statement.close();
         connection.close();
 
-        return Optional.ofNullable(group);
+        return null;
     }
 
     public Collection<Group> getAll() throws SQLException {
