@@ -87,6 +87,24 @@ public class UserThread extends Thread {
                 else if(request_type.equals("update_group")){
                     new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper,server);
                 }
+                else if(request_type.equals("get_group_members")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("get_my_groups")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("remove_group_member")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("add_group_member")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("send_file")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("delete_message")){
+                    System.out.println("Not yet done");
+                }
                 else{
                     writer.println("Request type not known");
                 }
