@@ -43,4 +43,35 @@ public class sendInvitationRepositories {
            }
        conn.close();
    }
+   public int SearchForInvited(int verificationCode) throws SQLException {
+       Connection conn=Config.getConnection();
+       int id=0;
+       final String query="Select sent_id from sent_invitations where verificationcode=?";
+       PreparedStatement prepared=conn.prepareStatement(query);
+       prepared.setInt(1,verificationCode);
+       ResultSet resultSet= prepared.executeQuery();
+       while(resultSet.next()){
+           id=resultSet.getInt("sent_id");
+           System.out.println("Admin Id found");
+       }
+       return id;
+   }
+   public int AcceptingInvitation(int verificationCode) throws SQLException {
+       Connection conn=Config.getConnection();
+       int id=SearchForInvited(verificationCode);
+       final String sql="UPDATE sent_invitations SET status='activated' , verificationcode=0 where sent_id=? ";
+       PreparedStatement prepared=conn.prepareStatement(sql);
+       prepared.setInt(1,id);
+       int row = prepared.executeUpdate();
+       prepared.close();
+       conn.close();
+       if (row!=-1) {
+           System.out.println("Code Verified And Is True");
+           return 1;
+       }
+       else {
+           System.out.println("Code Verified Not Correct");
+           return 0;
+       }
+    }
 }

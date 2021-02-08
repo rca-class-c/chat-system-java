@@ -38,7 +38,7 @@ public int updateCategory(categories categories,int id) throws SQLException {
         return 1;
     }
     else {
-        System.out.println("Category Updated");
+        System.out.println("Category Not Updated");
         return 0;
     }
 }
