@@ -7,13 +7,8 @@ import client.interfaces.ResponseDecoded;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
-<<<<<<< HEAD
-import utils.*;
-//import utils.CommonUtil;
-=======
 import server.services.sendInvitations;
 import utils.CommonUtil;
->>>>>>> 3d1efe3f5554294736d40116c52904cf9081568f
 
 import javax.mail.MessagingException;
 import java.io.BufferedReader;
@@ -61,7 +56,7 @@ public class UserView {
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
-                new SendMessageView(userId,writer,reader).OptionsView();
+                new SendMessageView(userId, writer, reader).OptionsView();
             }
             else if(choice == 5){
                 MyProfile();
