@@ -1,16 +1,14 @@
 package client.views;
 
-import client.interfaces.UserResponseDataDecoder;
 import client.interfaces.ProfileRequestData;
 import client.interfaces.Request;
 import client.interfaces.ResponseDataSuccessDecoder;
+import client.interfaces.UserResponseDataDecoder;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
-import server.services.sendInvitations;
 import utils.CommonUtil;
 
-import javax.mail.MessagingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -136,13 +134,13 @@ public class UserView {
 
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Password: ");
-        String password = scanner.nextLine();
-        try {
-            sendInvitations.sendingInvitations(email,password);
-        }
-        catch (SQLException | MessagingException e){
-            System.out.println(e);
-        }
+        Integer password = scanner.nextInt();
+//        try {
+//            sendInvitations.sendingInvitations(email,password);
+//        }
+//        catch (SQLException  e){
+//            System.out.println(e);
+//        }
 
     }
 
