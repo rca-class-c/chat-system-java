@@ -108,6 +108,31 @@ public class MessagesRepository {
         return 0;
     }
 
+    public List<Messages> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
+        Connection conn = Config.getConnection();
+        Statement statement = conn.createStatement();
+        List <Messages> messages = new ArrayList<Messages>();
+
+        String readQuery = String.format(
+                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                first, last,first, last);
+
+        ResultSet result = statement.executeQuery(readQuery);
+
+        while (result.next()){
+
+            Integer id = result.getInt(1);
+            String content = result.getString(2);
+            Integer sender = result.getInt(3);
+            Integer user_receiver = result.getInt(4);
+            Integer original_message = result.getInt(6);
+            Date sent_at = result.getDate(7);
+            messages.add(new Messages(id,content,sender,user_receiver,0,original_message,sent_at));
+        }
+        statement.close();
+        conn.close();
+        return messages;
+    }
    //sending a direct message
     public  int sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";

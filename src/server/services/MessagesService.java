@@ -2,6 +2,7 @@ package server.services;
 
 import server.models.Messages;
 import server.repositories.MessagesRepository;
+import utils.ChatBetweenTwo;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
@@ -21,7 +22,9 @@ public class MessagesService {
     public List<DirectMessage> viewDirectMessages(Messages messages) throws SQLException {
         return messagesRepository.getDirectMessages(messages);
     }
-
+    public List<Messages> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
+        return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
+    }
     public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
         return messagesRepository.getGroupMessages(messages);
     }

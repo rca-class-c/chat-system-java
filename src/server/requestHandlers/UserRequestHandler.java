@@ -71,7 +71,7 @@ public class UserRequestHandler {
         List<User> users = new UserService().getAllOtherUsers(new UserDecoder(data).GetProfileDecode());
         //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if(users == null){
-            System.out.println("Account not found");
+            System.out.println("Query failed recheck your db");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
