@@ -101,7 +101,40 @@ public class PasswordResetsRepository {
         return null;
     }
 
-    //TODO get password resets by id
+
+    public static List<PasswordResets> getAllPasswordResets(PasswordResetsStatusesEnum status) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = String.format("SELECT * FROM user_password_resets WHERE status = '%s'",status);
+            ResultSet rs = statement.executeQuery(query);
+
+            System.out.println("Reading passwordResets ....");
+            List<PasswordResets> passwordResets= new ArrayList<PasswordResets>();
+            while(rs.next()){
+                passwordResets.add(new PasswordResets(
+                        rs.getString("email"),
+                        rs.getInt("otp"),
+                        rs.getString("expiration_date"),
+                        PasswordResetsStatusesEnum.valueOf(rs.getString("status")))
+                );
+
+                System.out.println("email: " + rs.getString("email") + "status: " + rs.getString("status"));
+
+            }
+            return passwordResets;
+
+        }catch (Exception e){
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+
+        }
+
+        return null;
+    }
+
+
     public static PasswordResets getPasswordResetsById(int passwordResetsId) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -136,7 +169,7 @@ public class PasswordResetsRepository {
         return null;
     }
 
-    //TODO get password reset by email
+
     public static PasswordResets getPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -144,6 +177,39 @@ public class PasswordResetsRepository {
 
 
             String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' ",passwordResetsEmail);
+            ResultSet rs = statement.executeQuery(query);
+
+            System.out.println("Reading password reset ....");
+            if(rs.next()){
+                System.out.println("Password Reset Found");
+
+                return  new PasswordResets(
+                        rs.getString("email"),
+                        rs.getInt("otp"),
+                        rs.getString("expiration_date"),
+                        PasswordResetsStatusesEnum.valueOf(rs.getString("status")));
+            }
+            else{
+                System.out.println("Password Reset not found");
+            }
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+    public static PasswordResets getPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+
+            String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' AND status = '%s",passwordResetsEmail,status);
             ResultSet rs = statement.executeQuery(query);
 
             System.out.println("Reading password reset ....");
