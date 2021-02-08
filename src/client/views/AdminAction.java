@@ -5,6 +5,7 @@ import utils.*;
 //import utils.CommonUtil;
 //import utils.ConsoleColor;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class AdminAction {
@@ -86,12 +87,12 @@ public class AdminAction {
               switch (choiceStatic) {
                   case 1 -> {
                       CommonUtil.clearScreen();
-                      this.choosePeriod();
+                      this.choosePeriod("messaging");
                   }
                   case 2 ->{
                       System.out.flush();
                       CommonUtil.clearScreen();
-                      this.choosePeriod();
+                      this.choosePeriod("user report");
                   }
                   case 3 -> this.starts();
                   case 4 -> {
@@ -127,9 +128,9 @@ public class AdminAction {
       return num;
   }
 
-  private  void choosePeriod(){
+  private  void choosePeriod(String range){
 
-          Component.pageTitleView("CHOOSE THE REPORT");
+          Component.pageTitleView("CHOOSE "+ range.toUpperCase(Locale.ROOT)+" REPORT");
           CommonUtil.addTabs(10, true);
           System.out.println("1. Daily");
           CommonUtil.addTabs(10, false);
@@ -152,9 +153,30 @@ public class AdminAction {
                           int choicePeriod = this.insertAdminChoice();
 
                           switch (choicePeriod) {
-                              case 1 -> System.out.println("choicePeriod = " + choicePeriod);
-                              case 2 -> System.out.println("monthly");
-                              case 3 -> System.out.println("yearly");
+                              case 1 -> {
+                                  if (range.contains("messaging")){
+                                      System.out.println("choicePeriod = " + choicePeriod);
+                                  }else{
+                                      System.out.println("daily user report");
+                                  }
+
+                              }
+                              case 2 -> {
+                                  if (range.contains("messaging")){
+                                      System.out.println("monthly messaging report");
+                                  }else{
+                                      System.out.println("monthly user report");
+                                  }
+
+                              }
+                              case 3 -> {
+                                  if (range.contains("messaging")){
+                                      System.out.println("yearly messaging report");
+                                  }else{
+                                      System.out.println("yearly user report");
+                                  }
+
+                              }
                               case 4 -> this.starts();
                               case 5 -> {
                                   CommonUtil.addTabs(10, true);
