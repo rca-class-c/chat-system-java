@@ -27,7 +27,7 @@ public class PasswordResetsRepository {
      * creating password reset record and sending email
      *
      * @param pr Password Reset object
-     * @return number of created rows
+     * @return number of created rows, usually 1 as it will create only one record at time
      * @throws SQLException throws an sql exception
      * @author Ntwari Clarance Liberiste
      */
@@ -66,7 +66,7 @@ public class PasswordResetsRepository {
     }
 
     /**
-     * get all password reset values as recorded
+     * get all password resets
      *
      * @return List, of type PasswordResets
      * @throws SQLException sql exception
@@ -102,6 +102,13 @@ public class PasswordResetsRepository {
     }
 
 
+    /**
+     * get all password resets filtered by status
+     * @param status status to filter password resets
+     * @return List of type PasswordRests, list contains all queried result
+     * @throws SQLException throws sql exception
+     * @author Ntwari Clarance Liberiste
+     */
     public static List<PasswordResets> getAllPasswordResets(PasswordResetsStatusesEnum status) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -135,6 +142,14 @@ public class PasswordResetsRepository {
     }
 
 
+    /**
+     * get password resets by id
+     *
+     * @param passwordResetsId id to be used to search password resets
+     * @return PasswordResets object
+     * @throws SQLException throws sql exception
+     * @author Ntwari Clarance Liberiste
+     */
     public static PasswordResets getPasswordResetsById(int passwordResetsId) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -170,6 +185,13 @@ public class PasswordResetsRepository {
     }
 
 
+    /**
+     * get password reset by email
+     * @param passwordResetsEmail email to be used while searching password reset email
+     * @return PasswordResets object
+     * @throws SQLException throws sql exception
+     * @author Ntwari Clarance Liberiste
+     */
     public static PasswordResets getPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -203,6 +225,15 @@ public class PasswordResetsRepository {
         return null;
     }
 
+    /**
+     * get password resets by email and status
+     *
+     * @param passwordResetsEmail email to be used while searching password reset
+     * @param status status to be used when searching password reset
+     * @return PasswordResets object
+     * @throws SQLException throws sql Exception
+     * @author Ntwari Clarance Liberiste
+     */
     public static PasswordResets getPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
         try{
             Connection connection = Config.getConnection();
