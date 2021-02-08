@@ -41,7 +41,7 @@ public class GroupRepository  {
         return null;
     }
 
-    public Collection<Group> getAll() throws SQLException {
+    public List<Group> getAll() throws SQLException {
         String sql= "select * from group";
         Connection connection= Config.getConnection();
 
@@ -65,7 +65,7 @@ public class GroupRepository  {
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
-    public boolean create(Group group) throws SQLException {
+    public Group create(Group group) throws SQLException {
         String sql ="insert into groups (group_name, description,group_creator) values(?,?,?)";
         Connection connection= Config.getConnection();
 
@@ -78,7 +78,10 @@ public class GroupRepository  {
         statement.close();
         connection.close();
 
-        return rowCreated;
+         if(rowCreated){
+             return group;
+         }
+         return null;
     }
 
     public void update(Group group) throws SQLException {
