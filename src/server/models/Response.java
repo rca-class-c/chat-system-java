@@ -9,6 +9,9 @@ public class Response {
         this.success = success;
     }
 
+    public Response(int data, String bad_request, String message) {
+    }
+
     public Object getData() {
         return data;
     }
