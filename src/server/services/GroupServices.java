@@ -1,10 +1,12 @@
 package server.services;
 
 import server.models.Group;
+import server.models.User;
 import server.repositories.GroupRepository;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,7 +19,9 @@ public class GroupServices {
     public Optional<Group> get(int id) throws SQLException {
         return groupRepository.get(id);
     }
-
+    public List<Group> SearchGroups(String search_data) throws SQLException {
+        return groupRepository.getUserSearchList(search_data);
+    }
     public Collection<Group> getAll() throws SQLException {
         return groupRepository.getAll();
     }

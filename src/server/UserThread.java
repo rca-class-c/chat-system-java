@@ -2,6 +2,7 @@ package server;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.requestHandlers.GroupRequestHandler;
 import server.requestHandlers.MessageRequestHandler;
 import server.requestHandlers.UserRequestHandler;
 
@@ -52,6 +53,12 @@ public class UserThread extends Thread {
                 }
                 else if(request_type.equals("get_messages_between_two")){
                     new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("search_user")){
+                    new UserRequestHandler().HandlerSearchUser(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("search_group")){
+                    new GroupRequestHandler().HandlerSearchGroup(data,writer,objectMapper,server);
                 }
                 else{
                     writer.println("Request type not known");

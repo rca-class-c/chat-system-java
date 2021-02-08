@@ -84,4 +84,21 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    public  void HandlerSearchUser(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        List<User> users = new UserService().SearchUsers(new UserDecoder(data).GetSearchDecode());
+        if(users == null){
+            System.out.println("Query failed recheck your db");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(users,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Users list is provided");
+            writer.println(ResponseAsString);
+        }
+
+    }
 }

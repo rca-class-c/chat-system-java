@@ -87,7 +87,7 @@ public class GroupRepository  {
         Connection connection=Config.getConnection();
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,group.getName());
-        statement.setString(2,group.getDesctiption());
+        statement.setString(2,group.getDescription());
         statement.setInt(3,group.getCreator());
 
         statement.close();
@@ -103,5 +103,30 @@ public class GroupRepository  {
 
         statement.close();
         connection.close();
+    }
+    public List<Group> getUserSearchList(String search){
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM groups where name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            List<Group> groups=new ArrayList<Group>();
+            while(rs.next()){
+                groups.add(new Group(rs.getInt("group_id"),rs.getString("name"),rs.getString("description"),
+                        rs.getInt("group_creator")));
+            }
+            System.out.println(groups.size());
+            return groups;
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
     }
 }
