@@ -2,10 +2,8 @@ package client.views.components;
 
 import utils.CommonUtil;
 import utils.ConsoleColor;
+
 import java.util.Locale;
-
-import java.util.Properties;
-
 import java.util.Scanner;
 
 
