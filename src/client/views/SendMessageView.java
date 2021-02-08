@@ -5,6 +5,7 @@ import client.interfaces.ProfileRequestData;
 import client.interfaces.Request;
 import client.interfaces.ResponseDecoded;
 import client.views.components.Component;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 import utils.CommonUtil;
@@ -26,6 +27,7 @@ public class SendMessageView {
         this.writer = writer;
         this.reader = reader;
     }
+
     public void OptionsView() {
         Component.pageTitleView("Send a Message");
 
@@ -64,8 +66,6 @@ public class SendMessageView {
         } while (action == -1);
 
     }
-
-
     public void DirectMessageView() {
         Component.pageTitleView("Direct Message");
 
@@ -144,15 +144,9 @@ public class SendMessageView {
     }
 
 
-    public static void GetAllUsersView() {
-        Component.pageTitleView("Users List");
-
-        System.out.println("1. All users list");
-    }
 
 
-
-    public static void SearchUserView() {
+    public static void SearchUserView() throws JsonProcessingException {
         Component.pageTitleView("Search a User");
 
         Component.chooseOptionInputView("Search: ");
