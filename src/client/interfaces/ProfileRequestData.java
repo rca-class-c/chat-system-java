@@ -7,11 +7,11 @@ public class ProfileRequestData {
         this.id = id;
     }
 
-    public int getData() {
+    public int getId() {
         return id;
     }
 
-    public void setData(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

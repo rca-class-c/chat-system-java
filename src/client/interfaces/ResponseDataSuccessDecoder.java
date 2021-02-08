@@ -1,10 +1,10 @@
 package client.interfaces;
 
-public class ResponseDecoded {
+public class ResponseDataSuccessDecoder {
     String data;
     boolean success;
 
-    public ResponseDecoded(String data, boolean success) {
+    public ResponseDataSuccessDecoder(String data, boolean success) {
         this.data = data;
         this.success = success;
     }

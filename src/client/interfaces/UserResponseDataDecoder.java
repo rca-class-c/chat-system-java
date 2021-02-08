@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 
-public class DecodeResponse {
+public class UserResponseDataDecoder {
 
     Object data;
     String success;
@@ -17,12 +17,12 @@ public class DecodeResponse {
         return success;
     }
 
-    public ResponseDecoded decodedResponse(String response) throws JsonProcessingException {
+    public ResponseDataSuccessDecoder decodedResponse(String response) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode data = objectMapper.readTree(response);
 
-        //System.out.println(response);
-        return new ResponseDecoded(data.get("data").toString(),data.get("success").asBoolean());
+
+        return new ResponseDataSuccessDecoder(data.get("data").toString(),data.get("success").asBoolean());
     }
 
     public User returnUserDecoded(String data)throws JsonProcessingException{

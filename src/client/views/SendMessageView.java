@@ -1,9 +1,9 @@
 package client.views;
 
-import client.interfaces.DecodeResponse;
+import client.interfaces.UserResponseDataDecoder;
 import client.interfaces.ProfileRequestData;
 import client.interfaces.Request;
-import client.interfaces.ResponseDecoded;
+import client.interfaces.ResponseDataSuccessDecoder;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -186,10 +186,10 @@ public class SendMessageView {
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("USERS LIST");
         if(response.isSuccess()){
-            User[] users = new DecodeResponse().returnUsersListDecoded(response.getData());
+            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(10, true);
             for (User user : users) {
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
@@ -209,9 +209,9 @@ public class SendMessageView {
         Request request = new Request(new ProfileRequestData(id), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if (response.isSuccess()) {
-            User profile = new DecodeResponse().returnUserDecoded(response.getData());
+            User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
             Component.pageTitleView("Chat with " + profile.getUsername()+" "+profile.getFname());
             CommonUtil.addTabs(10, false);
             System.out.println("Type number message:  ");

@@ -1,9 +1,9 @@
 package client.views;
 
 import client.ChatClient;
-import client.interfaces.DecodeResponse;
+import client.interfaces.UserResponseDataDecoder;
 import client.interfaces.Request;
-import client.interfaces.ResponseDecoded;
+import client.interfaces.ResponseDataSuccessDecoder;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +43,7 @@ public class WelcomeView {
         String LoginDataAsString = objectMapper.writeValueAsString(request);
         writer.println(LoginDataAsString);
 
-        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             JsonNode data = objectMapper.readTree(response.getData());
             client.setUserid(data.get("userID").asInt());
@@ -137,7 +137,7 @@ public class WelcomeView {
         Request request = new Request(user,key);
         String requestAsString = objectMapper.writeValueAsString(request);
         writer.println(requestAsString);
-        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             CommonUtil.addTabs(10, true);
             CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);

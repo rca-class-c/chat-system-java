@@ -26,7 +26,7 @@ public class UserDecoder {
     public int GetProfileDecode() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
-        return dataDecrypt.get("data").asInt();
+        return dataDecrypt.get("id").asInt();
     }
 
     public User CreateUserDecode() throws JsonProcessingException {
