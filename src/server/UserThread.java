@@ -57,8 +57,14 @@ public class UserThread extends Thread {
                 else if(request_type.equals("search_user")){
                     new UserRequestHandler().HandlerSearchUser(data,writer,objectMapper,server);
                 }
+                else if(request_type.equals("create_group")){
+                    new GroupRequestHandler().HandleCreateGroup(data,writer,objectMapper,server);
+                }
                 else if(request_type.equals("search_group")){
                     new GroupRequestHandler().HandlerSearchGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_all_groups")){
+                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("get_group")){
                     new GroupRequestHandler().HandleGetGroup(data,writer,objectMapper,server);
