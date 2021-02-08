@@ -84,7 +84,7 @@ public class GroupRepository  {
          return null;
     }
 
-    public void update(Group group) throws SQLException {
+    public Group update(Group group) throws SQLException {
         String sql="update groups set name=?, description=?" +
                 "where group_id=?";
         Connection connection=Config.getConnection();
@@ -95,6 +95,7 @@ public class GroupRepository  {
 
         statement.close();
         connection.close();
+        return group;
     }
 
     public void delete(Group group) throws SQLException {

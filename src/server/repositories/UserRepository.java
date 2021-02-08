@@ -183,7 +183,7 @@ public class UserRepository {
     }
 
 
-    public int updateUser(User user,int userId) throws SQLException{
+    public User updateUser(User user,int userId) throws SQLException{
         int affectedRows = 0;
 
             Connection connection = Config.getConnection();
@@ -201,9 +201,9 @@ public class UserRepository {
             statement.setInt(user.getUserID(),userId);
             affectedRows = statement.executeUpdate();
             if(affectedRows > 0) {
-                System.out.println("  User updated successfully   ");
+                return user;
             }
-            return affectedRows;
+            return null;
     }
 
     public int deleteUser(int userId) throws SQLException{

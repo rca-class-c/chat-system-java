@@ -81,6 +81,12 @@ public class UserThread extends Thread {
                 else if(request_type.equals("send_group_reply")){
                     new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper,server);
                 }
+                else if(request_type.equals("update_profile")){
+                    new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("update_group")){
+                    new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper,server);
+                }
                 else{
                     writer.println("Request type not known");
                 }

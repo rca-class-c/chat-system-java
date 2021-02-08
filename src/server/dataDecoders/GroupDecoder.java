@@ -15,4 +15,10 @@ public class GroupDecoder {
         JsonNode dataDecrypt = objectMapper.readTree(data);
         return new Group(dataDecrypt.get("name").asText(),dataDecrypt.get("description").asText(),dataDecrypt.get("group_creator").asInt());
     }
+
+    public Group UpdateGroupDecode() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode dataDecrypt = objectMapper.readTree(data);
+        return new Group(dataDecrypt.get("group_id").asInt(),dataDecrypt.get("name").asText(),dataDecrypt.get("description").asText(),dataDecrypt.get("group_creator").asInt());
+    }
 }

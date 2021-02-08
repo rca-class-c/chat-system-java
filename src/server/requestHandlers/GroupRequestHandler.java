@@ -48,6 +48,22 @@ public class GroupRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    public  void HandleGroupUpdate(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Group decodedOne = new GroupDecoder(data).UpdateGroupDecode();
+        Group returned = new GroupServices().update(decodedOne);
+        if(returned == null){
+            System.out.println("Account not updated");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getName()+" updated ");
+            writer.println(ResponseAsString);
+        }
+    }
     public void HandleGetAllGroups(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
         List<Group> messages = new GroupServices().getAll();
         if(messages == null){

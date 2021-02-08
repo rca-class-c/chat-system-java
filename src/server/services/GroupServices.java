@@ -27,8 +27,8 @@ public class GroupServices {
         return groupRepository.create(group);
     }
 
-    public void update(Group group) throws SQLException {
-        groupRepository.update(group);
+    public Group update(Group group) throws SQLException {
+        return groupRepository.update(group);
     }
 
     public void delete(Group group) throws SQLException {

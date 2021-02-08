@@ -30,6 +30,19 @@ public class User {
         this.status = status;
     }
 
+    public User(int id,String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status) {
+        this.fname = fname;
+        this.lname = lname;
+        this.password = password;
+        this.email = email;
+        this.dob = dob;
+        this.username = username;
+        this.gender = gender;
+        this.categoryID = categoryID;
+        this.status = status;
+        this.userID = id;
+    }
+
     public User(int userID, String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status ,String createAt, String updatedAt) {
         this.userID = userID;
         this.fname = fname;
