@@ -37,7 +37,11 @@ public class AdminAction {
 
                 switch (choice) {
                     case 1 -> this.chooseStat();
+<<<<<<< HEAD
+                    case 2 -> client.views.UserView.sendInvitations();
+=======
                     //case 2 -> client.views.SendInvitationView.sendInvitations();
+>>>>>>> e46cfffe95545766bd662d9ce68c520b051fe24a
                     case 3 -> System.out.println("back to profile setting");
                     case 4 -> {
                         CommonUtil.addTabs(10, true);
