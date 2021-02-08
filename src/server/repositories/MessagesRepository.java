@@ -98,7 +98,7 @@ public class MessagesRepository {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
-        statement.setString(1, message.getContext());
+        statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
        // statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
@@ -113,7 +113,7 @@ public class MessagesRepository {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
-        statement.setString(1, message.getContext());
+        statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
         statement.setInt(3, message.getUser_receiver() );
         statement.setDate(4, (java.sql.Date) message.getSent_at());
@@ -129,7 +129,7 @@ public class MessagesRepository {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
-        statement.setString(1, message.getContext());
+        statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
         statement.setInt(3, message.getGroup_receiver(null));
         statement.setDate(4, (java.sql.Date) message.getSent_at());
@@ -149,7 +149,7 @@ public class MessagesRepository {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
-        statement.setString(1, message.getContext());
+        statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
         statement.setInt(3, message.getGroup_receiver(null));
         statement.setDate(4, (java.sql.Date) message.getSent_at());

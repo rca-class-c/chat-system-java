@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Messages {
     public Integer id;
-    public String context;
+    public String content;
     public Integer sender;
     public Integer user_receiver;
     public Integer group_receiver;
@@ -12,12 +12,18 @@ public class Messages {
     public Date sent_at;
 
     //Message class constructor
-    public Messages(
-            Integer id, String context, Integer sender, Integer user_receiver,
-            Integer group_receiver, Integer original_message, Date sent_at
+    public Messages(String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message
     ){
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+        this.group_receiver = group_receiver;
+        this.original_message = original_message;
+    }
+
+    public Messages(Integer id, String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message, Date sent_at) {
         this.id = id;
-        this.context = context;
+        this.content = content;
         this.sender = sender;
         this.user_receiver = user_receiver;
         this.group_receiver = group_receiver;
@@ -30,9 +36,9 @@ public class Messages {
 
     public void setId(Integer id) { this.id = id; }
 
-    public String getContext(){ return context;}
+    public String getContent(){ return content;}
 
-    public void setContext(String context) { this.context = context; }
+    public void setContent(String content) { this.content = content; }
 
     public int getSender(){ return sender; }
 
