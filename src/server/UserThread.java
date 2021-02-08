@@ -69,6 +69,18 @@ public class UserThread extends Thread {
                 else if(request_type.equals("get_group")){
                     new GroupRequestHandler().HandleGetGroup(data,writer,objectMapper,server);
                 }
+                else if(request_type.equals("send_direct_message")){
+                    new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_group_message")){
+                    new MessageRequestHandler().HandleSaveMessageInGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_direct_reply")){
+                    new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_group_reply")){
+                    new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper,server);
+                }
                 else{
                     writer.println("Request type not known");
                 }

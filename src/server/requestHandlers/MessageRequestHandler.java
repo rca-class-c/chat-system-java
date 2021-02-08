@@ -4,12 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.dataDecoders.MessageDecoder;
-import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
-import server.models.User;
 import server.services.MessagesService;
-import server.services.UserService;
 import utils.DirectMessage;
 
 import java.io.PrintWriter;
@@ -46,6 +43,51 @@ public class MessageRequestHandler {
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(returned.getSender()+" sent a message");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("message not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getSender()+" sent a message");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().ReplyInGroup(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getSender()+" added a reply");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().ReplyDirectly(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getSender()+" added a reply");
             writer.println(ResponseAsString);
         }
     }
