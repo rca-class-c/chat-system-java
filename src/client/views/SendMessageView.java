@@ -1,16 +1,39 @@
 package client.views;
 
+import client.interfaces.UserResponseDataDecoder;
+import client.interfaces.ProfileRequestData;
+import client.interfaces.Request;
+import client.interfaces.ResponseDataSuccessDecoder;
 import client.views.components.Component;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.User;
 import utils.CommonUtil;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 
 public class SendMessageView {
+    int userId;
+    public PrintWriter writer;
+    public BufferedReader reader;
+    Scanner scanner = new Scanner(System.in);
+
+    public SendMessageView(int userId, PrintWriter writer, BufferedReader reader) {
+        this.userId = userId;
+        this.writer = writer;
+        this.reader = reader;
+    }
+
     public void OptionsView() {
         Component.pageTitleView("Send a Message");
 
-        CommonUtil.addTabs(10, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. Direct Message");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Message a group");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -43,16 +66,14 @@ public class SendMessageView {
         } while (action == -1);
 
     }
-
-
     public void DirectMessageView() {
         Component.pageTitleView("Direct Message");
 
-        CommonUtil.addTabs(10, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. List all Users");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Search a User (names)");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("3. Enter a user ID");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -65,7 +86,7 @@ public class SendMessageView {
                 CommonUtil.resetColor();
                 switch (action) {
                     case 1 -> {
-                        GetAllUsersView();
+                        allActiveUsers();
                     }
                     case 2 -> {
                         SearchUserView();
@@ -84,14 +105,14 @@ public class SendMessageView {
         } while (action == -1);
     }
 
-    public void GroupMessageView() {
+    public static void GroupMessageView() {
         Component.pageTitleView("Group Message");
 
-        CommonUtil.addTabs(10, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. List all Groups");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Search a Group (name)");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("3. Enter a group ID");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -123,27 +144,24 @@ public class SendMessageView {
     }
 
 
-    public void GetAllUsersView() {
-        Component.pageTitleView("Users List");
-
-        System.out.println("1. All users list");
-    }
 
 
-
-    public void SearchUserView() {
+    public static void SearchUserView() throws JsonProcessingException {
         Component.pageTitleView("Search a User");
 
         Component.chooseOptionInputView("Search: ");
     }
 
-    public void UserIdView() {
+    public void UserIdView() throws IOException {
         Component.pageTitleView("Get User");
 
         Component.chooseOptionInputView("Enter User Id: ");
+        int id = scanner.nextInt();
+        FindUser(id);
+
     }
 
-    public void GetAllGroupsView() {
+    public static void GetAllGroupsView() {
         Component.pageTitleView("Groups List");
 
         System.out.println("1. All groups list");
@@ -151,16 +169,58 @@ public class SendMessageView {
 
 
 
-    public void SearchGroupView() {
+    public static void SearchGroupView() {
         Component.pageTitleView("Search a Group");
 
         Component.chooseOptionInputView("Search: ");
     }
 
-    public void GroupIdView() {
+    public static void GroupIdView() {
         Component.pageTitleView("Get Group");
 
         Component.chooseOptionInputView("Enter Group Id: ");
+    }
+
+    public void allActiveUsers() throws IOException {
+        String  key= "get_users_list";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("USERS LIST");
+        if(response.isSuccess()){
+            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (User user : users) {
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = scanner.nextInt();
+    }
+
+    public void FindUser(int id) throws IOException {
+        String key = "get_profile";
+        Request request = new Request(new ProfileRequestData(id), key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if (response.isSuccess()) {
+            User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
+            Component.pageTitleView("Chat with " + profile.getUsername()+" "+profile.getFname());
+            CommonUtil.addTabs(10, false);
+            System.out.println("Type number message:  ");
+            CommonUtil.addTabs(10, false);
+            int message = scanner.nextInt();
+        } else {
+            CommonUtil.addTabs(10, false);
+            System.out.println("User not found");
+        }
     }
 
 }

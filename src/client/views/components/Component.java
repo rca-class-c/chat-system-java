@@ -6,6 +6,9 @@ import utils.ConsoleColor;
 import java.util.Locale;
 import java.util.Scanner;
 
+//import utils.CommonUtil;
+//import utils.ConsoleColor;
+
 
 /**
  * View Reusable Components
@@ -63,7 +66,7 @@ public class Component {
      * @param error Error Message
      */
     public static void showErrorMessage(String error) {
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
         System.out.print(error);
         CommonUtil.resetColor();
@@ -74,7 +77,7 @@ public class Component {
      * @param title Choose Option Title
      */
     public static void chooseOptionInputView(String title) {
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
 
         CommonUtil.useColor(ConsoleColor.BackgroundColor.YELLOW_BACKGROUND);
         System.out.print("  ");

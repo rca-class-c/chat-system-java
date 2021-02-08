@@ -1,18 +1,23 @@
 package client.views;
 
+import client.interfaces.UserResponseDataDecoder;
 import client.interfaces.ProfileRequestData;
+import client.interfaces.Request;
+import client.interfaces.ResponseDataSuccessDecoder;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
+import server.services.sendInvitations;
 import utils.CommonUtil;
-import client.interfaces.Request;
-import client.interfaces.ResponseDecoded;
-import client.interfaces.DecodeResponse;
 
+import javax.mail.MessagingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Scanner;
+
+//import utils.CommonUtil;
 
 public class UserView {
     public int userId;
@@ -39,36 +44,51 @@ public class UserView {
         int choice = 0;
         do {
             CommonUtil.addTabs(10, true);
-            System.out.println("1. MY PROFILE");
+            System.out.println("1. SEND MESSAGE");
             CommonUtil.addTabs(10, false);
-            System.out.println("2. CHAT SET");
+            System.out.println("2. CHANNEL SETTINGS");
             CommonUtil.addTabs(10, false);
-            System.out.println("3. USERS LIST");
+            System.out.println("3. NOTIFICATIONS");
             CommonUtil.addTabs(10, false);
-            System.out.println("5. NOTIFICATIONS");
+            System.out.println("4. USERS LIST");
+            CommonUtil.addTabs(10, false);
+            System.out.println("5. PROFILE SETTINGS");
             CommonUtil.addTabs(10, false);
             System.out.println("6. LOGOUT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
+                new SendMessageView(userId,writer,reader).OptionsView();
+            }
+            else if(choice == 5){
                 MyProfile();
+            }
+            else if(choice == 4){
+                allActiveUsers();
             }
         }while(choice != 6);
 
     }
 
-    public void allActiveUsers(){
-        Component.pageTitleView("ACTIVE USERS LIST");
-        CommonUtil.addTabs(10, true);
-        System.out.println("1. chanelle740");
-        CommonUtil.addTabs(10, false);
-        System.out.println("2. edine-noella");
-        CommonUtil.addTabs(10, false);
-        System.out.println("3. divin-irakiza");
-        CommonUtil.addTabs(10, false);
-        System.out.println("4. Hortance-irakoze");
-        CommonUtil.addTabs(10, false);
-        System.out.println("5. Loraine");
+    public void allActiveUsers() throws IOException {
+        String  key= "get_users_list";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("USERS LIST");
+        if(response.isSuccess()){
+            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (User user : users) {
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = scanner.nextInt();
     }
@@ -78,9 +98,9 @@ public class UserView {
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        ResponseDecoded response = new DecodeResponse().decodedResponse(reader.readLine());
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
        if(response.isSuccess()){
-           User profile = new DecodeResponse().returnUserDecoded(response.getData());
+           User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
            Component.pageTitleView("MY PROFILE");
            CommonUtil.addTabs(10, false);
            System.out.println("FIRST NAME:  "+profile.getFname());
@@ -100,8 +120,30 @@ public class UserView {
            System.out.println("No profile found!");
        }
 
-        Component.chooseOptionInputView("Type any number to go to main page: ");
+        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
         int choice  = scanner.nextInt();
 
     }
+
+    public static  void sendInvitations() throws ClassNotFoundException,  SQLException {
+        Scanner scanner = new Scanner(System.in);
+
+        Component.pageTitleView("Admin Send An Invitation ");
+
+        CommonUtil.addTabs(10, false);
+        System.out.print("Enter Your Email: ");
+        String email = scanner.nextLine();
+
+        CommonUtil.addTabs(10, false);
+        System.out.print("Enter your Password: ");
+        String password = scanner.nextLine();
+        try {
+            sendInvitations.sendingInvitations(email,password);
+        }
+        catch (SQLException | MessagingException e){
+            System.out.println(e);
+        }
+
+    }
+
 }

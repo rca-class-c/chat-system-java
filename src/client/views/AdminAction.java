@@ -1,8 +1,9 @@
 package client.views;
 
-import client.views.components.Component;
-import utils.CommonUtil;
-import utils.ConsoleColor;
+import client.views.components.*;
+import utils.*;
+//import utils.CommonUtil;
+//import utils.ConsoleColor;
 
 import java.util.Scanner;
 
@@ -37,7 +38,7 @@ public class AdminAction {
 
                 switch (choice) {
                     case 1 -> this.chooseStat();
-                    case 2 -> System.out.println("case 2 chosen");
+                    //case 2 -> client.views.SendInvitationView.sendInvitations();
                     case 3 -> System.out.println("back to profile setting");
                     case 4 -> {
                         CommonUtil.addTabs(10, true);
