@@ -1,21 +1,10 @@
 package client;
 
-import client.interfaces.DecodeResponse;
-import client.interfaces.Request;
-import client.interfaces.ResponseDecoded;
-import client.views.UserView;
 import client.views.View;
-import client.views.components.Component;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import server.models.AuthInput;
-import server.models.User;
 import utils.CommonUtil;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.SQLException;
-import java.util.Scanner;
 
 /**
  * This is the file for sending and handling request from the client to the server

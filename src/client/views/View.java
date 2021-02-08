@@ -5,10 +5,7 @@ import client.views.components.Component;
 import utils.CommonUtil;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.Scanner;
 
 public class View
 {
@@ -39,7 +36,7 @@ public class View
                         WelcomeView.VerificationCode(client, writer, reader);
                     }
                     case 3 -> {
-                        SendMessageView.OptionsView();
+                        System.out.println("You requested for help");
                     }
                     case -1 -> {
                         System.out.println();
