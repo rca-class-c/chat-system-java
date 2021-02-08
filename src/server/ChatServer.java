@@ -1,6 +1,9 @@
 package server;
 
+import client.views.components.Component;
 import server.models.ActiveUser;
+import utils.CommonUtil;
+import utils.ConsoleColor;
 
 import java.io.*;
 import java.net.*;
@@ -24,7 +27,15 @@ public class ChatServer {
     }
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Chat Server is listening on port " + port);
+            Component.pageTitleView("SERVER");
+            System.out.println();
+
+
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.WHITE_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.BLACK_BOLD);
+            System.out.print(" Chat Server is listening on port "  + port + " ");
+            CommonUtil.resetColor();
+
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New user connected");
