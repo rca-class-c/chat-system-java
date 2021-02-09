@@ -2,7 +2,6 @@ package server.repositories;
 
 import server.config.Config;
 import server.models.File;
-import utils.CommonUtil;
 import utils.FileUtil;
 
 import java.sql.Connection;
@@ -11,8 +10,7 @@ import java.sql.Statement;
 
 
 public class FileRepository {
-
-    public String save(File file) {
+    public File save(File file) {
       try {
 
           Connection connection = Config.getConnection();
@@ -27,8 +25,8 @@ public class FileRepository {
 
           int i = statement.executeUpdate(query);
 
-          if (i > 0) {
-              return "File Saved Successfully";
+          if(i > 0) {
+              return file;
           }
 
           statement.close();
@@ -36,7 +34,7 @@ public class FileRepository {
       } catch (SQLException e) {
         e.printStackTrace();
       }
-        return "File Not Saved";
+        return null;
     }
 
     private String uploadFileToServer(File file) {

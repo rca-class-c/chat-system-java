@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class UserRepository {
     public User save(User user) throws SQLException {
+        int i= 0;
         try {
             Connection connection = Config.getConnection();
             Statement statement = connection.createStatement();
@@ -17,9 +18,8 @@ public class UserRepository {
             String query = String.format("INSERT INTO users(first_name, last_name, username, email, gender, pass_word,dob,status,categoryid) VALUES (" +
                     "'%s','%s','%s','%s','%s','%s','%s','%s',%d);", user.getFname(), user.getLname(), user.getUsername(), user.getEmail(), user.getGender(), user.getPassword(),user.getDob(),user.getStatus(),user.getCategoryID());
 
-            System.out.println(query);
 
-            int i = statement.executeUpdate(query);
+            i = statement.executeUpdate(query);
             System.out.println("Rows inserted: "+i);
 
             statement.close();
@@ -27,7 +27,10 @@ public class UserRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return user;
+        if(i > 0) {
+            return user;
+        }
+        return null;
     }
     public User login(AuthInput input) throws SQLException{
         try{
@@ -39,10 +42,10 @@ public class UserRepository {
             System.out.println("Reading users ....");
             if(rs.next()){
                 System.out.println("User Found!");
-                User returnUser =  new User(rs.getString("first_name"),rs.getString("last_name"),
+                User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
-                        rs.getString("status"));
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at"));
                 System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
 //            while(rs.next()){
 //                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
@@ -69,7 +72,7 @@ public class UserRepository {
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users");
+            String query = String.format("SELECT * FROM users;");
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();
@@ -78,8 +81,61 @@ public class UserRepository {
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status")));
-               // System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
             }
+            return users;
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+    public List<User> getUserSearchList(String search) throws SQLException {
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' or username = '%s' ORDER BY user_id ASC;",search,search,search);
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            List<User> users=new ArrayList<User>();
+            while(rs.next()){
+                users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
+            }
+            System.out.println(users.size());
+            return users;
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+    public List<User> getAllOtherUsers(int id) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM users where user_id != '%d' ORDER BY user_id ASC;",id);
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            List<User> users=new ArrayList<User>();
+            while(rs.next()){
+                users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
+            }
+            System.out.println(users.size());
             return users;
         }
         catch ( Exception e ) {
@@ -98,7 +154,7 @@ public class UserRepository {
             Connection connection = Config.getConnection();
 
 
-            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' ",userID);
+            String query = String.format("SELECT * FROM users  WHERE user_id = '%d' ;",userID);
             Statement statement =  connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
@@ -127,12 +183,12 @@ public class UserRepository {
     }
 
 
-    public int updateUser(User user,int userId) throws SQLException{
+    public User updateUser(User user,int userId) throws SQLException{
         int affectedRows = 0;
 
             Connection connection = Config.getConnection();
             String query = String.format("UPDATE users SET first_name = ?,last_name = ?," +
-                    "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ");
+                    "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ;");
             PreparedStatement statement =  connection.prepareStatement(query);
             statement.setString(1,user.getFname());
             statement.setString(2,user.getLname());
@@ -145,9 +201,9 @@ public class UserRepository {
             statement.setInt(user.getUserID(),userId);
             affectedRows = statement.executeUpdate();
             if(affectedRows > 0) {
-                System.out.println("  User updated successfully   ");
+                return user;
             }
-            return affectedRows;
+            return null;
     }
 
     public int deleteUser(int userId) throws SQLException{
@@ -155,7 +211,7 @@ public class UserRepository {
           int affectedRows = 0;
 
           Connection connection = Config.getConnection();
-          String query = String.format("DELETE FROM users WHERE user_id = ? ");
+          String query = String.format("DELETE FROM users WHERE user_id = ? ;");
           PreparedStatement statement = connection.prepareStatement(query);
           statement.setInt(1, userId);
           if (affectedRows > 0) {
@@ -167,7 +223,7 @@ public class UserRepository {
     public int deactivateUser(int userId) throws SQLException{
         int affectedRows = 0;
         Connection connection = Config.getConnection();
-        String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d'",userId);
+        String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d';",userId);
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,userId);
         if(affectedRows>0){

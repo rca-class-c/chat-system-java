@@ -4,6 +4,10 @@ import server.models.enums.FileStatusEnum;
 
 import java.util.Date;
 
+/**
+ * File Model
+ * @author Divin Irakiza
+ */
 public class File {
     private int id;
     private String fileLocalPath;
@@ -16,8 +20,16 @@ public class File {
     private Date createdAt;
     private FileStatusEnum status;
 
-    public File() { }
 
+    /**
+     * File Constructor
+     * @param fileLocalPath File Local Path
+     * @param fileName File name
+     * @param fileType File type
+     * @param fileSize File size
+     * @param fileSizeType File size type
+     * @param senderId File sender Id
+     */
     public File(String fileLocalPath, String fileName, String fileType, int fileSize, String fileSizeType, int senderId) {
         this.fileLocalPath = fileLocalPath;
         this.fileName = fileName;

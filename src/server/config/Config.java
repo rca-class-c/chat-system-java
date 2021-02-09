@@ -1,6 +1,4 @@
 package server.config;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,9 +8,27 @@ import java.util.Properties;
 
 public class Config {
 
-    public static int PORT = 8000;
     private static final String PUBLIC_FILES_DIRECTORY = System.getProperty("user.dir") + "/public/assets/";
-    public static String API_URL = "http://localhost:" + PORT;
+
+    public final static String SERVER_HOSTNAME = "localhost";
+    public final static int PORT = 5432;
+
+
+    public static String getServerHostname() {
+        return SERVER_HOSTNAME;
+    }
+
+    public static int getPORT() {
+        return PORT;
+    }
+
+    public static String getAPIURL() {
+        return  "http://" + getServerHostname() + ":" + PORT;
+    }
+
+    public static String getPublicFilesDirectory() {
+        return PUBLIC_FILES_DIRECTORY;
+    }
 
 
     public static Connection getConnection() throws SQLException {
@@ -20,7 +36,7 @@ public class Config {
 
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
-        try (FileInputStream f = new FileInputStream("src/config/db.properties")) {
+        try (FileInputStream f = new FileInputStream("src/server/config/db.properties")) {
 
             // load the properties file
             Properties pros = new Properties();
@@ -39,12 +55,4 @@ public class Config {
         return conn;
     }
 
-
-    public static int getPORT() {
-        return PORT;
-    }
-
-    public static String getPublicFilesDirectory() {
-        return PUBLIC_FILES_DIRECTORY;
-    }
 }

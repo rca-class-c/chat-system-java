@@ -1,6 +1,6 @@
 package server.models;
-
-public class AuthInput {
+import java.io.Serializable;
+public class AuthInput implements Serializable{
     public String username;
     public String password;
 
@@ -23,5 +23,9 @@ public class AuthInput {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    @Override
+    public String toString(){
+        return "{ \"username\" : \""+this.username+"\", \"password\" : \""+this.password+"\" }";
     }
 }
