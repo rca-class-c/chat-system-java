@@ -479,7 +479,7 @@ public class SendMessageView {
 //                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
 //                        System.out.print("Enter a valid choice (1, 2): ");
 //                        CommonUtil.resetColor();
-                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+                        Component.showErrorMessage("Enter a valid choice (1, 2, 3): ");
 
                     }
                 }
