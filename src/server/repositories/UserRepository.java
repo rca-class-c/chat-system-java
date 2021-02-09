@@ -259,6 +259,20 @@ public class UserRepository {
     }
 
 
+    public boolean changePassword(String username, String password, boolean usingUsername) throws Exception{
+        Connection connection = Config.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setString(2,username);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
+
 }
 
 
