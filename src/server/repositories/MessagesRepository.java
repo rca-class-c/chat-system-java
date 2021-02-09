@@ -14,15 +14,16 @@ public class MessagesRepository {
 
     //-------------------------------View Messages-----------------------------------------
 
-    public List<DirectMessage> getDirectMessages(Messages messages) throws SQLException {
-        List<DirectMessage> allMessagesDM = new ArrayList<>();
+    public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
+        List<DirectMessage> allMessagesDM = new ArrayList<DirectMessage>();
 
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d;",
-                messages.getSender(), messages.getUser_receiver());
+                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                first, last, first, last
+        );
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -43,15 +44,15 @@ public class MessagesRepository {
         return allMessagesDM;
     }
 
-    public List<GroupMessage> getGroupMessages(Messages messages) throws SQLException {
-        List<GroupMessage> allMessagesGrp = new ArrayList<>();
+    public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
+        List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && group_receiver = %d;",
-                messages.getSender(), messages.getUser_receiver());
+                "SELECT * from messages where sender = %d && group_receiver = %d or sender = %d && group_receiver = %d;",
+                first, last, first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
 

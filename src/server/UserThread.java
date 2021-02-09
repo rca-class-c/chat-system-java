@@ -110,6 +110,9 @@ public class UserThread extends Thread {
                 else if(request_type.equals("verify_code")){
                     System.out.println("Not yet done");
                 }
+                else if(request_type.equals("delete_group")){
+                    new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper,server);
+                }
                 else{
                     writer.println("Request type not known");
                 }

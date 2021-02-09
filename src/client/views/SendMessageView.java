@@ -2,7 +2,6 @@ package client.views;
 
 import client.interfaces.*;
 import client.views.components.Component;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Messages;
 import server.models.User;
@@ -49,10 +48,6 @@ public class SendMessageView {
                     }
                     default -> {
                         action = -1;
-//                        CommonUtil.addTabs(10, false);
-//                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                        System.out.print("Enter a valid choice (1, 2): ");
-//                        CommonUtil.resetColor();
                         Component.showErrorMessage("Enter a valid choice (1, 2): ");
 
                     }
@@ -150,7 +145,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
 
-        WriteMessageView();
+        WriteMessageView(new User());
     }
 
     public static void SendFileView() {
@@ -161,7 +156,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter file path: ");
         String message = scanner.nextLine();
 
-        WriteMessageView();
+        WriteMessageView(new User());
     }
 
     public static void DeleteMessageView() {
@@ -172,29 +167,66 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = scanner.nextInt();
 
-        WriteMessageView();
+        WriteMessageView(new User());
     }
 
 
 
 
-    public static void SearchUserView() throws JsonProcessingException {
-        Scanner scanner = new Scanner(System.in);
+    public  void SearchUserView() throws IOException {
+
         Component.pageTitleView("Search a User");
 
         Component.chooseOptionInputView("Search (User name): ");
         String query = scanner.nextLine();
+        String  key= "search_user";
+        Request request = new Request(new SearchRequestData(query),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Search results");
+        if(response.isSuccess()){
+            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (User user : users) {
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type user id to chat with: ");
+        int choice  = scanner.nextInt();
     }
 
     public void UserIdView() throws IOException {
         Component.pageTitleView("Get User");
 
+
         Component.chooseOptionInputView("Enter User Id: ");
-        int id = scanner.nextInt();
-        if (id == 2) {
-            WriteMessageView();
+        int query = scanner.nextInt();
+        String  key= "get_profile";
+        Request request = new Request(new ProfileRequestData(query),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Search results");
+        if(response.isSuccess()){
+            User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            WriteMessageView(user);
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("User not found");
         }
-//        FindUser(id);
+
+
+
     }
 
     public static void GetAllGroupsView() {
@@ -219,7 +251,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter Group Id: ");
         int id = scanner.nextInt();
         if (id == 1) {
-            WriteMessageView();
+            WriteMessageView(new User());
         }
     }
 
@@ -265,8 +297,8 @@ public class SendMessageView {
         }
     }
 
-    public static void WriteMessageView() {
-        Component.pageTitleView("Write Message");
+    public static void WriteMessageView(User user) {
+        Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
 
 
         CommonUtil.addTabs(11, true);
