@@ -20,6 +20,7 @@ import java.util.List;
  * passwords resets repository
  *
  * @author Ntwari Clarance Liberiste
+ * @since 1.0
  */
 public class PasswordResetsRepository {
 
@@ -31,7 +32,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws an sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public static long create(PasswordResets pr) throws SQLException{
+    public long create(PasswordResets pr) throws SQLException{
 
         try{
 
@@ -72,7 +73,7 @@ public class PasswordResetsRepository {
      * @throws SQLException sql exception
      * @author Ntwari Clarance Liberi
      */
-    public static List<PasswordResets> getAllPasswordResets() throws SQLException{
+    public List<PasswordResets> getAllPasswordResets() throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement = connection.createStatement();
@@ -109,7 +110,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public static List<PasswordResets> getAllPasswordResets(PasswordResetsStatusesEnum status) throws SQLException{
+    public List<PasswordResets> getAllPasswordResets(PasswordResetsStatusesEnum status) throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement = connection.createStatement();
@@ -150,7 +151,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public static PasswordResets getPasswordResetsById(int passwordResetsId) throws SQLException{
+    public PasswordResets getPasswordResetsById(int passwordResetsId) throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
@@ -192,7 +193,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public static PasswordResets getPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
+    public PasswordResets getPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
@@ -234,7 +235,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws sql Exception
      * @author Ntwari Clarance Liberiste
      */
-    public static PasswordResets getPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
+    public PasswordResets getPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
@@ -276,7 +277,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public static List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
+    public List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
@@ -328,7 +329,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws an sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public static List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
+    public List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
         try{
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
