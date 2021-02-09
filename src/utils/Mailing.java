@@ -58,7 +58,7 @@ public class Mailing {
      * @param  to  the receiver of the email
      * @param  subject  subject of the email
      * @param  content  this is the body of the email
-     * @return      void
+     *
      */
     public Mailing(String from ,String password, String to, String subject , String content){
         this.setFrom(from);
