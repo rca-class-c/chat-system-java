@@ -221,4 +221,18 @@ public class MessagesRepository {
         }
         return null;
     }
+
+    public boolean DeleteMessages(int id) throws SQLException {
+        int affectedRows = 0;
+
+        Connection connection = Config.getConnection();
+        String query = String.format("DELETE FROM messages WHERE id = ? ;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, id);
+        if (affectedRows > 0) {
+            return  true;
+        }
+        return false;
+
+    }
 }

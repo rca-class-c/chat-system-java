@@ -43,4 +43,8 @@ public class MessagesService {
     public Messages ReplyDirectly(Messages messages) throws SQLException{
         return messagesRepository.ReplyGroupMessage(messages);
     }
+
+    public boolean DeleteMessage(int id) throws SQLException {
+        return messagesRepository.DeleteMessages(id);
+    }
 }
