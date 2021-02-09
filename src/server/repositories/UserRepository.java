@@ -93,7 +93,33 @@ public class UserRepository {
         }
         return null;
     }
+    public List<User> getUserSearchList(String search) throws SQLException {
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
 
+            String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' username = '%s' ORDER BY user_id ASC;",search,search,search);
+            ResultSet rs = statement.executeQuery(query);
+            System.out.println("Reading users ....");
+            List<User> users=new ArrayList<User>();
+            while(rs.next()){
+                users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
+            }
+            System.out.println(users.size());
+            return users;
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
     public List<User> getAllOtherUsers(int id) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -157,7 +183,7 @@ public class UserRepository {
     }
 
 
-    public int updateUser(User user,int userId) throws SQLException{
+    public User updateUser(User user,int userId) throws SQLException{
         int affectedRows = 0;
 
             Connection connection = Config.getConnection();
@@ -175,9 +201,9 @@ public class UserRepository {
             statement.setInt(user.getUserID(),userId);
             affectedRows = statement.executeUpdate();
             if(affectedRows > 0) {
-                System.out.println("  User updated successfully   ");
+                return user;
             }
-            return affectedRows;
+            return null;
     }
 
     public int deleteUser(int userId) throws SQLException{

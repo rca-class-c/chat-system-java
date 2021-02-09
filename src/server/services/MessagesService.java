@@ -29,18 +29,18 @@ public class MessagesService {
     public List<Messages> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
-    public void sendInGroup(Messages messages) throws SQLException{
-        messagesRepository.sendGroupMessage(messages);
+    public Messages sendInGroup(Messages messages) throws SQLException{
+        return messagesRepository.sendGroupMessage(messages);
     }
 
-    public void sendDirectly(Messages messages) throws SQLException{
-        messagesRepository.sendDirectMessage(messages);
+    public Messages sendDirectly(Messages messages) throws SQLException{
+        return messagesRepository.sendDirectMessage(messages);
     }
-    public void ReplyInGroup(Messages messages) throws SQLException{
-        messagesRepository.ReplyDirectMessage(messages);
+    public Messages ReplyInGroup(Messages messages) throws SQLException{
+        return messagesRepository.ReplyDirectMessage(messages);
     }
 
-    public void ReplyDirectly(Messages messages) throws SQLException{
-        messagesRepository.ReplyGroupMessage(messages);
+    public Messages ReplyDirectly(Messages messages) throws SQLException{
+        return messagesRepository.ReplyGroupMessage(messages);
     }
 }

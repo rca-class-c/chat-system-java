@@ -120,7 +120,7 @@ public class MessagesRepository {
 
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  int sendGroupMessage(Messages message) throws SQLException {
+    public  Messages sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -131,7 +131,10 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 
     public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
@@ -160,7 +163,7 @@ public class MessagesRepository {
         return messages;
     }
    //sending a direct message
-    public  int sendDirectMessage(Messages message) throws SQLException {
+    public  Messages sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -171,12 +174,15 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
     //----------------------------Reply direct messages-----------------------------
     // author : Melissa
 
-    public static int ReplyDirectMessage(Messages message) throws SQLException {
+    public Messages ReplyDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -187,7 +193,10 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 
 
@@ -196,7 +205,7 @@ public class MessagesRepository {
     // author : Melissa
 
 
-    public static int ReplyGroupMessage(Messages message) throws SQLException {
+    public Messages ReplyGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -207,6 +216,9 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 }
