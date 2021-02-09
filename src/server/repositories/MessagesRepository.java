@@ -97,7 +97,8 @@ public class MessagesRepository {
         return null;
     }
 
-    //-------------------------------------------------------------------------------
+    //-------------------------------------Getting Notifications------------------------------------------
+    //author : Souvede & Chanelle
 
     public List<Messages> getNotifications(int user_id)throws Exception{
 		List<Messages>  notis = new ArrayList<>();

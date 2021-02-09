@@ -445,6 +445,9 @@ public class SendMessageView {
 
     }
 
+    // --------------------Notifications View-----------
+    // author : Souvede & Chanelle
+
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
         String  key= "get_my_notifications";
