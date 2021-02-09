@@ -38,7 +38,13 @@ public class UserService {
     public int deleteUser(int userId) throws SQLException{
         return userRepository.deleteUser(userId);
     }
-    public int deactiveUser(int userId) throws SQLException{
-        return userRepository.deactivateUser(userId);
+    public boolean changePasswordById(int userId, String password) throws SQLException{
+        return userRepository.changePasswordById(userId, password);
+    }
+    public boolean changePasswordByEmail(String email,String password) throws SQLException{
+        return userRepository.changePasswordByEmail(email,password);
+    }
+    public boolean changePasswordByUsername(String username, String password) throws SQLException{
+        return userRepository.changePasswordByUsername(username, password);
     }
 }
