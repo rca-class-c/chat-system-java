@@ -232,7 +232,16 @@ public class UserRepository {
         return affectedRows;
     }
 
-    public static boolean changePassword(int userId, String password) throws Exception{
+    /**
+     * changing user password
+     *
+     * @param userId user id
+     * @param password user new proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public static boolean changePassword(int userId, String password) throws SQLException{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE user_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -245,7 +254,16 @@ public class UserRepository {
         return affectedRows > 0;
     }
 
-    public static boolean changePassword(String email, String password) throws Exception{
+    /**
+     *  changing user password
+     *
+     * @param email user email
+     * @param password new user proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public static boolean changePassword(String email, String password) throws SQLException{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -259,7 +277,17 @@ public class UserRepository {
     }
 
 
-    public static boolean changePassword(String username, String password, boolean usingUsername) throws Exception{
+    /**
+     * changing user password
+     *
+     * @param username user username
+     * @param password new user proposed password
+     * @param usingUsername true when you want to username to search user
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public static boolean changePassword(String username, String password, boolean usingUsername) throws SQLException{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
