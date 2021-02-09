@@ -10,31 +10,15 @@ import java.util.ArrayList;
 import utils.OTP;
 import server.repositories.sendInvitationRepositories;
 public class  sendInvitations{
-    public static  int sendingInvitations(final String email,final  String password) throws MessagingException, SQLException, ClassNotFoundException {
-        ArrayList<String> to= new ArrayList<String>();
+    public static  int sendingInvitations(final String email,final  String password,ArrayList<String> to) throws MessagingException, SQLException, ClassNotFoundException {
         ArrayList<Integer> verificationCodes= new ArrayList<Integer>();
         // REPOSITORY
         sendInvitationRepositories repositories =new sendInvitationRepositories();
-        // LIMIT OF THE EMAILS
-        int sendlimit=0;
-        Scanner scanner =new Scanner(System.in);
-        System.out.println("\t \t Click 1 To Stop Inserting Emails"+"\t\tto:");
-// GIVING EMAILS WHERE THE INVITATION IS SENT
-        while (sendlimit!=1){
-            String sentTo=scanner.next();
-            if (sentTo.equals("1")){
-                sendlimit=1;
-            }
-            else {
-                to.add(sentTo);
-            }
-        }
         // VARIABLES OF TOTAL NUMBER OF  EMAILS SELECTED , ID OF THE USER , STATUS OF THE EMAIL
         int numberOfEmails= to.size();
         int id=0;
         int ok;
         // OTP
-
         for (int i = 0; i < numberOfEmails; i++) {
             char [] otp= OTP.OTP(5);
             int sentOtp=Integer.parseInt(String.valueOf(otp));
