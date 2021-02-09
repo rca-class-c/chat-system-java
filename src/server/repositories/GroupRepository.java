@@ -98,15 +98,16 @@ public class GroupRepository  {
         return group;
     }
 
-    public void delete(Group group) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         String sql="delete from groups where group_id=?";
 
         Connection connection= Config.getConnection();
         PreparedStatement statement=connection.prepareStatement(sql);
-        statement.setInt(1,group.getId());
+        statement.setInt(1,id);
 
         statement.close();
         connection.close();
+        return true;
     }
     public List<Group> getUserSearchList(String search){
         try{
