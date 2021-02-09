@@ -226,7 +226,7 @@ public class PasswordResetsRepository {
     }
 
     /**
-     * get password resets by email and status
+     * get new password resets by email and status
      *
      * @param passwordResetsEmail email to be used while searching password reset
      * @param status status to be used when searching password reset
@@ -240,7 +240,7 @@ public class PasswordResetsRepository {
             Statement statement =  connection.createStatement();
 
 
-            String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' AND status = '%s",passwordResetsEmail,status);
+            String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' AND status = '%s ORDER BY ID DESC LIMIT 1",passwordResetsEmail,status);
             ResultSet rs = statement.executeQuery(query);
 
             System.out.println("Reading password reset ....");
@@ -266,6 +266,104 @@ public class PasswordResetsRepository {
 
         }
         return null;
+    }
+
+
+
+
+
+    public static List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+
+            String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' ",passwordResetsEmail);
+            ResultSet rs = statement.executeQuery(query);
+
+            System.out.println("Reading password reset ....");
+            List<PasswordResets> passwordResets = new ArrayList<PasswordResets>();
+
+            while(rs.next()){
+                passwordResets.add(
+                        new PasswordResets(
+                                rs.getString("email"),
+                                rs.getInt("otp"),
+                                rs.getString("expiration_date"),
+                                PasswordResetsStatusesEnum.valueOf(rs.getString("status")))
+
+                );
+            }
+
+            if(passwordResets.size() > 0)
+                System.out.println("All Password Resets Found");
+            else
+                System.out.println("No Password resets found with " + passwordResetsEmail);
+
+
+            return passwordResets;
+
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+
+    public static List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
+        try{
+            Connection connection = Config.getConnection();
+            Statement statement =  connection.createStatement();
+
+
+            String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' AND status = '%s';",passwordResetsEmail,status);
+            ResultSet rs = statement.executeQuery(query);
+
+            System.out.println("Reading password reset ....");
+            List<PasswordResets> passwordResets  = new ArrayList<PasswordResets>();
+
+
+            while(rs.next()){
+                  passwordResets.add(
+                          new PasswordResets(
+                                  rs.getString("email"),
+                                  rs.getInt("otp"),
+                                  rs.getString("expiration_date"),
+                                  PasswordResetsStatusesEnum.valueOf(rs.getString("status")))
+
+                  );
+            }
+            if(passwordResets.size() > 0)
+                System.out.println("All Password Resets Found");
+            else
+                System.out.println("No Password resets found with " + passwordResetsEmail + " and status : " + status);
+
+            return passwordResets;
+        }
+        catch ( Exception e ) {
+
+            System.out.println(" No password reset record with " + passwordResetsEmail);
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+
+    public static void main(String[] args) throws Exception{
+         List<PasswordResets> pr= PasswordResetsRepository.getAllPasswordResetsByEmail("liberintwari@gmail.com",PasswordResetsStatusesEnum.USED);
+
+         for(PasswordResets prs:pr){
+             System.out.println(prs.getEmail() + ": " + prs.getStatus());
+         }
+
     }
 
 }
