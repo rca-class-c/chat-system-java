@@ -69,7 +69,7 @@ public class Mailing {
     }
 
     /**
-     * these are setter and getter of class variables
+     * these are setter and getter of instance variable
      *
      */
     public String getFilepath() {
