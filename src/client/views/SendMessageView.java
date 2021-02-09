@@ -1,12 +1,10 @@
 package client.views;
 
-import client.interfaces.UserResponseDataDecoder;
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
+import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Messages;
 import server.models.User;
 import utils.CommonUtil;
 
@@ -44,7 +42,6 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        CommonUtil.resetColor();
                         DirectMessageView();
                     }
                     case 2 -> {
@@ -145,11 +142,48 @@ public class SendMessageView {
 
 
 
+    public static void TypeMessageView() {
+        Component.pageTitleView("Type a message");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Your Message: ");
+        String message = scanner.nextLine();
+
+        WriteMessageView();
+    }
+
+    public static void SendFileView() {
+        Component.pageTitleView("Send a file");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Enter file path: ");
+        String message = scanner.nextLine();
+
+        WriteMessageView();
+    }
+
+    public static void DeleteMessageView() {
+        Component.pageTitleView("Delete a Message");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Enter message id: ");
+        int messageId = scanner.nextInt();
+
+        WriteMessageView();
+    }
+
+
+
 
     public static void SearchUserView() throws JsonProcessingException {
+        Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("Search a User");
 
-        Component.chooseOptionInputView("Search: ");
+        Component.chooseOptionInputView("Search (User name): ");
+        String query = scanner.nextLine();
     }
 
     public void UserIdView() throws IOException {
@@ -157,8 +191,10 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter User Id: ");
         int id = scanner.nextInt();
-        FindUser(id);
-
+        if (id == 2) {
+            WriteMessageView();
+        }
+//        FindUser(id);
     }
 
     public static void GetAllGroupsView() {
@@ -178,7 +214,13 @@ public class SendMessageView {
     public static void GroupIdView() {
         Component.pageTitleView("Get Group");
 
+        Scanner scanner = new Scanner(System.in);
+
         Component.chooseOptionInputView("Enter Group Id: ");
+        int id = scanner.nextInt();
+        if (id == 1) {
+            WriteMessageView();
+        }
     }
 
     public void allActiveUsers() throws IOException {
@@ -221,6 +263,169 @@ public class SendMessageView {
             CommonUtil.addTabs(10, false);
             System.out.println("User not found");
         }
+    }
+
+    public static void WriteMessageView() {
+        Component.pageTitleView("Write Message");
+
+
+        CommonUtil.addTabs(11, true);
+        System.out.println("1. Write a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. Send a file");
+        CommonUtil.addTabs(11, false);
+        System.out.println("3. Delete a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("4. Replies");
+
+        Component.chooseOptionInputView("Choose an option: ");
+
+        int action;
+        do {
+            action = Component.getChooseOptionChoice();
+            try {
+                switch (action) {
+                    case 1 -> {
+                        TypeMessageView();
+                    }
+                    case 2 -> {
+                        SendFileView();
+                    }
+                    case 3 -> {
+                        DeleteMessageView();
+                    }
+                    case 4 -> {
+                        ViewRepliesView();
+                    }
+
+                    default -> {
+                        action = -1;
+
+                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+
+                    }
+                }
+            } catch (Exception e) {
+                Component.showErrorMessage(e.getMessage());
+            }
+        } while (action == -1);
+
+    }
+
+    public void ViewNotifications() throws IOException {
+        Component.pageTitleView("My notifications");
+        String  key= "get_my_notifications";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages messages : messageList) {
+                System.out.println(messages.getSender()+". "+messages.getContent()+" "+messages.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to get notifications, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = scanner.nextInt();
+    }
+    public static void SendReplyView() {
+        Component.pageTitleView("Send reply");
+
+
+        CommonUtil.addTabs(11, true);
+        System.out.println("1. Write a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. Send a file");
+
+        Component.chooseOptionInputView("Choose an option: ");
+
+        int action;
+        do {
+            action = Component.getChooseOptionChoice();
+            try {
+                switch (action) {
+                    case 1 -> {
+                        TypeMessageView();
+                    }
+                    case 2 -> {
+                        SendFileView();
+                    }
+
+                    default -> {
+                        action = -1;
+//                        CommonUtil.addTabs(10, false);
+//                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+//                        System.out.print("Enter a valid choice (1, 2): ");
+//                        CommonUtil.resetColor();
+                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+
+                    }
+                }
+            } catch (Exception e) {
+                Component.showErrorMessage(e.getMessage());
+            }
+        } while (action == -1);
+    }
+
+    public static void ViewRepliesView() {
+        Scanner scanner = new Scanner(System.in);
+        Component.pageTitleView("View Replies");
+
+        System.out.println("Replies list");
+
+        MessageRepliesView();
+
+    }
+
+    public static void MessageRepliesView() {
+        Component.pageTitleView("Message Replies a Group");
+
+        CommonUtil.addTabs(11, false);
+        System.out.println("1. Send a reply");
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. View replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("3. Delete a reply");
+
+        Component.chooseOptionInputView("Choose an option: ");
+
+        int action;
+        do {
+            action = Component.getChooseOptionChoice();
+            try {
+                switch (action) {
+                    case 1 -> {
+                        SendReplyView();
+                    }
+                    case 2 -> {
+                        ViewRepliesView();
+                    }
+                    case 3 -> {
+                        DeleteMessageView();
+                    }
+
+
+                    default -> {
+                        action = -1;
+//                        CommonUtil.addTabs(10, false);
+//                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+//                        System.out.print("Enter a valid choice (1, 2): ");
+//                        CommonUtil.resetColor();
+                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+
+                    }
+                }
+            } catch (Exception e) {
+                Component.showErrorMessage(e.getMessage());
+            }
+        } while (action == -1);
+
     }
 
 }

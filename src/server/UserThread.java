@@ -7,7 +7,6 @@ import server.requestHandlers.UserRequestHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.SQLException;
 
 /**
  * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
@@ -53,12 +52,36 @@ public class UserThread extends Thread {
                 else if(request_type.equals("get_messages_between_two")){
                     new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper,server);
                 }
+                else if(request_type.equals("get_my_notifications")){
+                    new MessageRequestHandler().HandleNotification(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("view_my_groups")){
+                    System.out.println("Not yet done request");
+                }
+                else if(request_type.equals("delete_group")){
+                    System.out.println("Not yet done request");
+                }
+                else if(request_type.equals("add_member_to_group")){
+                    System.out.println("Not yet done request");
+                }
+                else if(request_type.equals("remove_member_from_group")){
+                    System.out.println("Not yet done request");
+                }
+                else if(request_type.equals("send_message")){
+                    System.out.println("Not yet done request");
+                }
+                else if(request_type.equals("view_reports")){
+                    System.out.println("Not yet done request");
+                }
+                else if(request_type.equals("delete_user")){
+                    System.out.println("Not yet done request");
+                }
                 else{
                     writer.println("Request type not known");
                 }
             } while (!clientMessage.equals("bye"));
             socket.close();
-        } catch (IOException | SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
         }

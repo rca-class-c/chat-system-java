@@ -6,10 +6,8 @@ import utils.ChatBetweenTwo;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User Services provider
@@ -28,7 +26,7 @@ public class MessagesService {
     public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
         return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
     }
-    public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
+    public List<Messages> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
     public void sendInGroup(Messages messages) throws SQLException{
