@@ -181,7 +181,7 @@ public class MessagesRepository {
         return null;
     }
     //----------------------------Reply direct messages-----------------------------
-    // author : Melissa
+    // author :  bella Melissa
 
     public Messages ReplyDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
@@ -203,7 +203,7 @@ public class MessagesRepository {
 
 
     //----------------------------Reply group messages--------------------------------
-    // author : Melissa
+    // author : bella Melissa
 
 
     public Messages ReplyGroupMessage(Messages message) throws SQLException {
