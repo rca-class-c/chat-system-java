@@ -49,10 +49,6 @@ public class SendMessageView {
                     }
                     default -> {
                         action = -1;
-//                        CommonUtil.addTabs(10, false);
-//                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                        System.out.print("Enter a valid choice (1, 2): ");
-//                        CommonUtil.resetColor();
                         Component.showErrorMessage("Enter a valid choice (1, 2): ");
 
                     }
