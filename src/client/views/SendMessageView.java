@@ -139,14 +139,28 @@ public class SendMessageView {
 
 
 
-    public  void TypeMessageView() throws IOException {
+    public  void TypeMessageView(int reciever) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
+        String key = "send_direct_message";
+        Messages newMessage = new Messages(0,message,userId,reciever,0,0,null);
+        Request request = new Request(newMessage,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
 
+            CommonUtil.addTabs(10, true);
+            System.out.println("Message sent");
+
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to send");
+        }
         //WriteMessageView(new User());
     }
 
@@ -419,7 +433,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView();
+                        TypeMessageView(user.getUserID());
                     }
                     case 2 -> {
                         SendFileView();
@@ -487,7 +501,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView();
+                        TypeMessageView(4);
                     }
                     case 2 -> {
                         SendFileView();
