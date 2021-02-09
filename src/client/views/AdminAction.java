@@ -287,6 +287,7 @@ public class AdminAction {
                             CommonUtil.resetColor();
                         }
                     }
+
                 } catch (Exception var3) {
                     CommonUtil.addTabs(10, false);
                     CommonUtil.useColor("\u001b[1;31m");
