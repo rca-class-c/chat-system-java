@@ -12,8 +12,8 @@ import java.util.Date;
 public class MessagesRepository {
 
 
-    //-------------------------------View Messages-----------------------------------------
-
+    //-------------------------------View Direct Messages-----------------------------------------
+    // author : Loraine
     public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
         List<DirectMessage> allMessagesDM = new ArrayList<DirectMessage>();
 
@@ -43,7 +43,10 @@ public class MessagesRepository {
         conn.close();
         return allMessagesDM;
     }
+    //-------------------------------------------------------------------------------
 
+    //-------------------------------View Group Messages-----------------------------------------
+    // author : Loraine
     public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
         List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
@@ -72,6 +75,30 @@ public class MessagesRepository {
         conn.close();
         return allMessagesGrp;
     }
+    //-------------------------------------------------------------------------------
+
+    //-------------------------------Edit Direct Messages-----------------------------------------
+    // author : Loraine
+    public Messages updateMessage (Messages message) throws Exception{
+
+        Connection conn = Config.getConnection();
+        String query = String.format("UPDATE messages SET content = ? WHERE id = ?;");
+        PreparedStatement statement =  conn.prepareStatement(query);
+
+        statement.setString(1, message.getContent());
+        statement.setInt(2, message.getId());
+
+        boolean rowUpdated = statement.executeUpdate() > 1;
+        statement.close();
+        conn.close();
+        if(rowUpdated){
+            return message;
+        }
+        return null;
+    }
+
+    //-------------------------------------------------------------------------------
+
     public List<Messages> getNotifications(int user_id)throws Exception{
 		List<Messages>  notis = new ArrayList<>();
 		Connection conn = Config.getConnection();
