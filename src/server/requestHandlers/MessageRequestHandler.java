@@ -7,9 +7,7 @@ import server.dataDecoders.MessageDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
-import server.models.User;
 import server.services.MessagesService;
-import server.services.UserService;
 import utils.DirectMessage;
 
 import java.io.PrintWriter;
@@ -108,6 +106,8 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    //-------------------------------------Handle Notifications request ------------------------------------------
+    //author : Souvede & Chanelle
 
     public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
         List<Messages> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
