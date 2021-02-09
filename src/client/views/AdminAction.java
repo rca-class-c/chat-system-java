@@ -261,7 +261,9 @@ public class AdminAction {
                     CommonUtil.resetColor();
                     int choiceOperation = this.insertAdminChoice();
                     switch (choiceOperation) {
-                        case 1 -> System.out.println("choice 1");
+                        case 1 -> {
+                            new AdminInput().inviteUser() ;
+                        }
                         case 2 -> System.out.println("choice 2");
                         case 3 -> System.out.println("choice 3");
                         case 4 -> {
