@@ -12,20 +12,35 @@ import java.sql.SQLException;
  * @author: Pretty Diane
  */
 public class Authorization {
-    public int id_DeleteUser = 1;
-    public int id_createGroup = 2;
-    public int id_Invite=3;
-    public int id_DeleteGroup=4;
-    public int id_DeActivateUser=5;
-    public int id_viewStatistics=7;
-    public int id_RemoveFromGroup=8;
-    public int id_AddToGroup=9;
+    private int id_DeleteUser = 1;
+    private int id_createGroup = 2;
+    private int id_Invite=3;
+    private int id_DeleteGroup=4;
+    private int id_DeActivateUser=5;
+    private int id_viewStatistics=7;
+    private int id_RemoveFromGroup=8;
+    private int id_AddToGroup=9;
 
 
 
 
     //Checking if a user with a certain category id is allowed to delete a user. We pass the category id to the
     // function and it returns a boolean
+
+    public void getIds() throws SQLException{
+
+        String sql = "select name from permissions ";
+        Connection connection = Config.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String store=resultSet.getString("name");
+          System.out.println(store);
+        }
+
+
+    }
+
 
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
