@@ -269,9 +269,13 @@ public class PasswordResetsRepository {
     }
 
 
-
-
-
+    /**
+     * get all password resets record by email
+     * @param passwordResetsEmail email to use while searching
+     * @return List<PasswordResets>
+     * @throws SQLException throws sql exception
+     * @author Ntwari Clarance Liberiste
+     */
     public static List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -315,6 +319,15 @@ public class PasswordResetsRepository {
     }
 
 
+    /**
+     * get all password resets records based on email and status
+     *
+     * @param passwordResetsEmail email to search
+     * @param status status to use while searching
+     * @return List<PasswordResets>
+     * @throws SQLException throws an sql exception
+     * @author Ntwari Clarance Liberiste
+     */
     public static List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -357,13 +370,5 @@ public class PasswordResetsRepository {
     }
 
 
-    public static void main(String[] args) throws Exception{
-         List<PasswordResets> pr= PasswordResetsRepository.getAllPasswordResetsByEmail("liberintwari@gmail.com",PasswordResetsStatusesEnum.USED);
-
-         for(PasswordResets prs:pr){
-             System.out.println(prs.getEmail() + ": " + prs.getStatus());
-         }
-
-    }
 
 }
