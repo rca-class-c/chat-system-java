@@ -1,5 +1,6 @@
 package server.services;
 
+import client.interfaces.MessageResponseDataFormat;
 import server.models.Messages;
 import server.repositories.MessagesRepository;
 import utils.ChatBetweenTwo;
@@ -45,5 +46,9 @@ public class MessagesService {
 
     public Messages ReplyDirectly(Messages messages) throws SQLException{
         return messagesRepository.ReplyGroupMessage(messages);
+    }
+
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+        return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
 }

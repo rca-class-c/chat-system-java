@@ -50,9 +50,11 @@ public class UserView {
             CommonUtil.addTabs(10, false);
             System.out.println("4. USERS LIST");
             CommonUtil.addTabs(10, false);
-            System.out.println("5. PROFILE SETTINGS");
+            System.out.println("5. ADMIN ACTIONS");
             CommonUtil.addTabs(10, false);
-            System.out.println("6. LOGOUT");
+            System.out.println("6. PROFILE SETTINGS");
+            CommonUtil.addTabs(10, false);
+            System.out.println("7. LOGOUT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -62,6 +64,9 @@ public class UserView {
                 new SendMessageView(userId, writer, reader).ViewNotifications();
             }
             else if(choice == 5){
+                new AdminAction();
+            }
+            else if(choice == 6){
                 MyProfile();
             }
             else if(choice == 4){

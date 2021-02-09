@@ -107,7 +107,7 @@ public class MessagesRepository {
 		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
 		ResultSet result = null;
 		while(gr.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
 				//notis.add(grm);
                 while (result.next()){
 
@@ -122,9 +122,9 @@ public class MessagesRepository {
                 }
             }
 		ResultSet rs;
-		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
+		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
         while(rs.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
             //notis.add(grm);
             while (result.next()){
 
@@ -171,7 +171,7 @@ public class MessagesRepository {
         List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
                 first, last,first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
@@ -248,5 +248,23 @@ public class MessagesRepository {
             return message;
         }
         return null;
+    }
+
+    //Deleting a message
+
+
+    public boolean DeleteMessages(int userid,int message_id) throws SQLException {
+        int affectedRows = 0;
+
+        Connection connection = Config.getConnection();
+        String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userid);
+        statement.setInt(1, message_id);
+        if (affectedRows > 0) {
+            return  true;
+        }
+        return false;
+
     }
 }
