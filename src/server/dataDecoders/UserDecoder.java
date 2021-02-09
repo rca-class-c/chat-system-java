@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.AuthInput;
+import server.models.File;
 import server.models.User;
 
 
@@ -20,6 +21,7 @@ public class UserDecoder {
     public AuthInput LoginDecode() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
+
         return new AuthInput(dataDecrypt.get("username").asText(),dataDecrypt.get("password").asText());
     }
 
