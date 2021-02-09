@@ -232,7 +232,7 @@ public class UserRepository {
         return affectedRows;
     }
 
-    public boolean changePassword(int userId, String password) throws Exception{
+    public static boolean changePassword(int userId, String password) throws Exception{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE user_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -245,7 +245,7 @@ public class UserRepository {
         return affectedRows > 0;
     }
 
-    public boolean changePassword(String email, String password) throws Exception{
+    public static boolean changePassword(String email, String password) throws Exception{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -259,7 +259,7 @@ public class UserRepository {
     }
 
 
-    public boolean changePassword(String username, String password, boolean usingUsername) throws Exception{
+    public static boolean changePassword(String username, String password, boolean usingUsername) throws Exception{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
