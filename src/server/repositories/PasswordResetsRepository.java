@@ -409,5 +409,31 @@ public class PasswordResetsRepository {
         return passwordResetRecord.getFetchSize() > 0;
     }
 
+    public boolean isOtpExpired(String userEmail, int otp) throws SQLException{
+        Connection connection = Config.getConnection();
+        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,userEmail);
+        statement.setInt(2,otp);
+
+        ResultSet passwordResetRecord = statement.executeQuery();
+
+        if(passwordResetRecord.next()){
+            Timestamp otpExpirationDate = passwordResetRecord.getTimestamp("expiration_date");
+            Timestamp currentNowTime = new Timestamp(System.currentTimeMillis());
+
+            int timeComparison = currentNowTime.compareTo(otpExpirationDate);
+
+            return timeComparison < 0;
+
+        } else{
+            System.out.println("Not found");
+        }
+
+        return true;
+    }
+
+
 
 }
