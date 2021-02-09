@@ -3,13 +3,10 @@ package client.views;
 import client.views.components.Component;
 import client.views.components.TableView;
 import utils.CommonUtil;
+import utils.Mailing;
 
 import java.util.Locale;
 import java.util.Scanner;
-
-import utils.CommonUtil;
-import client.views.components.TableView;
-import utils.Mailing;
 
 public class AdminAction {
     public AdminAction() {
