@@ -3,10 +3,7 @@ package client.views;
 import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.models.File;
-import server.models.FileSizeTypeEnum;
-import server.models.Messages;
-import server.models.User;
+import server.models.*;
 import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -258,32 +255,78 @@ public class SendMessageView {
         }
     }
 
-    public static void GetAllGroupsView() {
+    public  void GetAllGroupsView() throws IOException {
+        String  key= "get_groups_list";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
-
-        System.out.println("1. All groups list");
+        if(response.isSuccess()){
+            Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Group group : groups) {
+                System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = scanner.nextInt();
     }
 
 
+        public void SearchGroupView() throws IOException {
+            Component.pageTitleView("Search a Group");
 
-    public  void SearchGroupView() {
-        Component.pageTitleView("Search a Group");
+            Component.chooseOptionInputView("Search (Group name or group description): ");
+            String query = scanner.nextLine();
+            String  key= "search_group";
+            Request request = new Request(new SearchRequestData(query),key);
+            String requestAsString = new ObjectMapper().writeValueAsString(request);
+            writer.println(requestAsString);
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            Component.pageTitleView("Search results");
+            if(response.isSuccess()){
+                Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
+                CommonUtil.addTabs(10, true);
+                for (Group group : groups) {
+                    System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
+                    CommonUtil.addTabs(10, false);
+                }
+            }else {
+                CommonUtil.addTabs(10, true);
+                System.out.println("Failed to read users list, sorry for the inconvenience");
+            }
+            System.out.println("");
+            Component.chooseOptionInputView("Type user id to chat with: ");
+            int choice  = scanner.nextInt();
+        }
 
-        Component.chooseOptionInputView("Search: ");
-    }
-
-    public  void GroupIdView() throws IOException {
+    public void GroupIdView() throws IOException {
         Component.pageTitleView("Get Group");
 
-        Scanner scanner = new Scanner(System.in);
 
-        Component.chooseOptionInputView("Enter Group Id: ");
-        int id = scanner.nextInt();
-        if (id == 5) {
-            //WriteMessageView(new User());
+        Component.chooseOptionInputView("Enter User Id: ");
+        int query = scanner.nextInt();
+        String  key= "get_group";
+        Request request = new Request(new ProfileRequestData(query),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Group BY ID GETTING");
+        if(response.isSuccess()){
+            Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
+            WriteMessageView(new User());
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Group not found");
         }
-    }
 
+    }
     public void allActiveUsers() throws IOException {
         String  key= "get_users_list";
         Request request = new Request(new ProfileRequestData(userId),key);
