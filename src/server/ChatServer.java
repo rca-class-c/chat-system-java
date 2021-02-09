@@ -1,5 +1,10 @@
 package server;
 
+import client.views.components.Component;
+import server.models.ActiveUser;
+import utils.CommonUtil;
+import utils.ConsoleColor;
+
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
@@ -9,21 +14,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-import config.Config;
 /**
- * This is the chat server program. Press Ctrl + C to terminate the program.
- *
+ * This the main server that runs out to connect new users and calls the user thread
+ *@Author: Shallon Kobusinge
  */
 public class ChatServer {
     private int port;
-    private Set<String> userNames = new HashSet<>();
+    private Set<ActiveUser> activeUsers = new HashSet<>();
     private Set<UserThread> userThreads = new HashSet<>();
     public ChatServer(int port) {
         this.port = port;
     }
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Chat Server is listening on port " + port);
+            Component.pageTitleView("SERVER");
+            System.out.println();
+
+
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.WHITE_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.BLACK_BOLD);
+            System.out.print(" Chat Server is listening on port "  + port + " ");
+            CommonUtil.resetColor();
+
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New user connected");
@@ -43,16 +55,9 @@ public class ChatServer {
     public static void main(String[] args) {
      
     	//connecting to the database
-        try (Connection conn = Config.getConnection()) {
-            
-            // print out a message
-            System.out.println(String.format("Connected to database %s "
-                    + "successfully.", conn.getCatalog()));
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+
         
-        int port = 6900;
+        int port = 9812;
         ChatServer server = new ChatServer(port);
         server.execute();	
         
@@ -70,27 +75,27 @@ public class ChatServer {
     /**
      * Stores username of the newly connected client will read.
      */
-    void addUserName(String userName) {
-        userNames.add(userName);
+    public void addUserName(int id, String userName) {
+        activeUsers.add(new ActiveUser(id,userName));
     }
     /**
      * When a client is disconneted, removes the associated username and UserThread
      */
-    void removeUser(String userName, UserThread aUser) {
-        boolean removed = userNames.remove(userName);
+    void removeUser(String userName, int id,UserThread aUser) {
+        boolean removed = activeUsers.remove(new ActiveUser(id,userName));
         if (removed) {
             userThreads.remove(aUser);
             System.out.println("The user " + userName + " quitted");
         }
     }
-    Set<String> getUserNames() {
-        return this.userNames;
+    Set<ActiveUser> getUserNames() {
+        return this.activeUsers;
     }
     /**
      * Returns true if there are other users connected (not count the currently
      * connected user)
      */
     boolean hasUsers() {
-        return !this.userNames.isEmpty();
+        return !this.activeUsers.isEmpty();
     }
 }

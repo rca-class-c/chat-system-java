@@ -1,5 +1,14 @@
-.idea/*
-chat_system.iml
+#ignoring db properties
 src/config/db.properties
-out
-chat-system-java-1.iml
+
+# ignoring production folder
+./out
+
+
+#avoiding intelije idea deafult folders and files configs
+.idea
+*.iml
+
+#avoiding eclipse  deafult folders and files configs
+.classpath
+.project

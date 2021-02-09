@@ -1,12 +1,18 @@
 package server;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import server.requestHandlers.FileRequestHandler;
+import server.requestHandlers.GroupRequestHandler;
+import server.requestHandlers.MessageRequestHandler;
+import server.requestHandlers.UserRequestHandler;
+
 import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.net.Socket;
+
 /**
- * This thread handles connection for each connected client, so the server
- * can handle multiple clients at the same time.
- *
+ * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
+ * @Author: Didier Munezero
  */
 public class UserThread extends Thread {
     private Socket socket;
@@ -20,30 +26,104 @@ public class UserThread extends Thread {
         try {
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-//            Scanner reader = new Scanner(System.in);
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
 
-            //ok now caught after the username is flushed server sets it good now
-            printUsers();
-            String userName = reader.readLine();
-            server.addUserName(userName);
-            String serverMessage = "New user connected: " + userName;
-            //passing message and user to exclude who is the sender
-            server.broadcast(serverMessage, this);
             String clientMessage;
             do {
                 clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
-                server.broadcast(serverMessage, this);
+                System.out.println(clientMessage);
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(clientMessage);
+                String request_type = jsonNode.get("request_type").asText();
+                String data = jsonNode.get("data").toString();
+
+                if(request_type.equals("login")){
+                    new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("register")){
+                    new UserRequestHandler().HandleRegister(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_profile")){
+                    new UserRequestHandler().HandleGetProfile(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_users_list")){
+                    new UserRequestHandler().HandleUsersList(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_messages_between_two")){
+                    new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("search_user")){
+                    new UserRequestHandler().HandlerSearchUser(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("create_group")){
+                    new GroupRequestHandler().HandleCreateGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("search_group")){
+                    new GroupRequestHandler().HandlerSearchGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_groups_list")){
+                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_group")){
+                    new GroupRequestHandler().HandleGetGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_direct_message")){
+                    new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_group_message")){
+                    new MessageRequestHandler().HandleSaveMessageInGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_direct_reply")){
+                    new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_group_reply")){
+                    new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("update_profile")){
+                    new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("update_group")){
+                    new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("get_group_members")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("get_my_groups")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("remove_group_member")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("add_group_member")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("send_file")){
+                    new FileRequestHandler().HandleSaveFile(data, writer, objectMapper, server);
+                }
+                else if(request_type.equals("delete_message")){
+                    new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper,server);
+                }
+                else if(request_type.equals("send_verification_code")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("verify_code")){
+                    System.out.println("Not yet done");
+                }
+                else if(request_type.equals("get_my_notifications")){
+                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper,server);
+                }
+
+                else if(request_type.equals("delete_group")){
+                    new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper,server);
+                }
+                else{
+                    writer.println("Request type not known");
+                }
             } while (!clientMessage.equals("bye"));
-            server.removeUser(userName, this);
             socket.close();
-            //passing message to remaining users that one has quitted
-            serverMessage = userName + " has quitted.";
-            server.broadcast(serverMessage, this);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
         }
