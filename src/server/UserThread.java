@@ -102,7 +102,7 @@ public class UserThread extends Thread {
                     System.out.println("Not yet done");
                 }
                 else if(request_type.equals("delete_message")){
-                   // new MessageRequestHandler().HandleDeleteMessage(data,writer,objectMapper,server);
+                    new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("send_verification_code")){
                     System.out.println("Not yet done");
