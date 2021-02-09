@@ -144,7 +144,7 @@ public class MessagesRepository {
         List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
                 first, last,first, last);
 
         ResultSet result = statement.executeQuery(readQuery);

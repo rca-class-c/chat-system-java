@@ -1,14 +1,13 @@
 package client.views;
 
-import client.ChatClient;
 import client.interfaces.*;
 import client.views.components.Component;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.File;
 import server.models.FileSizeTypeEnum;
 import server.models.Messages;
 import server.models.User;
+import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 import utils.FileUtil;
@@ -143,7 +142,7 @@ public class SendMessageView {
 
 
 
-    public  void TypeMessageView() {
+    public  void TypeMessageView() throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
@@ -151,7 +150,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
 
-        WriteMessageView(new User());
+        //WriteMessageView(new User());
     }
 
     public void SendFileView() throws IOException {
@@ -184,7 +183,7 @@ public class SendMessageView {
             System.out.print(" File saved successfully ");
             CommonUtil.resetColor();
 
-            WriteMessageView(new User());
+            //ageView(new User());
         }
         else{
             CommonUtil.addTabs(10, true);
@@ -193,10 +192,10 @@ public class SendMessageView {
             System.out.print("  File not saved, try again! ");
             CommonUtil.resetColor();
         }
-        WriteMessageView(new User());
+        //View(new User());
     }
 
-    public  void DeleteMessageView() {
+    public  void DeleteMessageView() throws IOException {
         Component.pageTitleView("Delete a Message");
 
         Scanner scanner = new Scanner(System.in);
@@ -204,7 +203,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = scanner.nextInt();
 
-        WriteMessageView(new User());
+        //WriteMessageView(new User());
     }
 
 
@@ -273,15 +272,15 @@ public class SendMessageView {
         Component.chooseOptionInputView("Search: ");
     }
 
-    public  void GroupIdView() {
+    public  void GroupIdView() throws IOException {
         Component.pageTitleView("Get Group");
 
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Enter Group Id: ");
         int id = scanner.nextInt();
-        if (id == 1) {
-            WriteMessageView(new User());
+        if (id == 5) {
+            //WriteMessageView(new User());
         }
     }
 
@@ -327,7 +326,24 @@ public class SendMessageView {
         }
     }
 
-    public  void WriteMessageView(User user) {
+    public  void WriteMessageView(User user) throws IOException {
+        String key = "get_messages_between_two";
+        Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Your recent chat");
+        if(response.isSuccess()){
+            Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages message : messages) {
+                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
         Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
 
 
