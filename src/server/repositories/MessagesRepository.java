@@ -71,20 +71,46 @@ public class MessagesRepository {
         conn.close();
         return allMessagesGrp;
     }
-    public Set<ResultSet> getNotifications(int user_id)throws Exception{
-		Set<ResultSet>  notis = new HashSet<ResultSet>();
+    public List<Messages> getNotifications(int user_id)throws Exception{
+		List<Messages>  notis = new ArrayList<>();
 		Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 		ResultSet gr;
 		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
-		ResultSet grm = null;
-		while(gr.next()) {				
-				grm = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
-				notis.add(grm);
-		}
+		ResultSet result = null;
+		while(gr.next()) {
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+				//notis.add(grm);
+                while (result.next()){
+
+                    Integer id = result.getInt(1);
+                    String content = result.getString(2);
+                    Integer sender = result.getInt(3);
+                    Integer user_receiver = result.getInt(4);
+                    Integer group_receiver = result.getInt(4);
+                    Integer original_message = result.getInt(6);
+                    Date sent_at = result.getDate(7);
+                    notis.add(new Messages(id,content,sender,user_receiver,group_receiver,original_message,sent_at));
+                }
+            }
 		ResultSet rs;
 		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
-		notis.add(rs);
+        while(rs.next()) {
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            //notis.add(grm);
+            while (result.next()){
+
+                Integer id = result.getInt(1);
+                String content = result.getString(2);
+                Integer sender = result.getInt(3);
+                Integer user_receiver = result.getInt(4);
+                Integer group_receiver = result.getInt(4);
+                Integer original_message = result.getInt(6);
+                Date sent_at = result.getDate(7);
+                notis.add(new Messages(id,content,sender,user_receiver,group_receiver,original_message,sent_at));
+            }
+        }
+		//notis.add(rs);
 		
 		statement.close();
         conn.close();

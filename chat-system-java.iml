@@ -11,5 +11,7 @@
     <orderEntry type="library" name="postgresql-42.2.182" level="project" />
     <orderEntry type="library" name="javax.persistence" level="project" />
     <orderEntry type="library" name="activation" level="project" />
+    <orderEntry type="library" name="activation1" level="project" />
+    <orderEntry type="library" name="javax.mail" level="project" />
   </component>
 </module>
