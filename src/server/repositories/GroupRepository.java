@@ -10,11 +10,14 @@ import java.util.stream.Collectors;
 
 /**
  * Group queries repository
- * @author: Phinah Mahoro
+ * @author: Gahamanyi yvette
  */
+
+
 public class GroupRepository  {
     private List<Group> groupList= new ArrayList<>();
-    public Group get(int id) throws SQLException {
+
+    public Group getGroupById(int id) throws SQLException {
         String sql = "select * from groups where group_id = ?";
         Connection connection= Config.getConnection();
 
@@ -41,7 +44,7 @@ public class GroupRepository  {
         return null;
     }
 
-    public List<Group> getAll() throws SQLException {
+    public List<Group> getAllGroups() throws SQLException {
         String sql= "select * from group";
         Connection connection= Config.getConnection();
 
@@ -65,7 +68,7 @@ public class GroupRepository  {
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
-    public Group create(Group group) throws SQLException {
+    public Group createGroup(Group group) throws SQLException {
         String sql ="insert into groups (group_name, description,group_creator) values(?,?,?)";
         Connection connection= Config.getConnection();
 
@@ -84,7 +87,7 @@ public class GroupRepository  {
          return null;
     }
 
-    public Group update(Group group) throws SQLException {
+    public Group updateGroup(Group group) throws SQLException {
         String sql="update groups set name=?, description=?" +
                 "where group_id=?";
         Connection connection=Config.getConnection();
@@ -93,22 +96,26 @@ public class GroupRepository  {
         statement.setString(2,group.getDescription());
         statement.setInt(3,group.getCreator());
 
+        boolean rowUpdated= statement.executeUpdate()>0;
         statement.close();
         connection.close();
+
         return group;
     }
 
-    public boolean delete(int id) throws SQLException {
+    public boolean deleteGroup(int id) throws SQLException {
         String sql="delete from groups where group_id=?";
 
         Connection connection= Config.getConnection();
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setInt(1,id);
 
+        boolean rowDeleted=statement.executeUpdate()>0;
         statement.close();
         connection.close();
-        return true;
+        return rowDeleted;
     }
+
     public List<Group> getUserSearchList(String search){
         try{
             Connection connection = Config.getConnection();

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.dataDecoders.MessageDecoder;
+import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
 import server.services.MessagesService;
@@ -88,6 +89,22 @@ public class MessageRequestHandler {
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(returned.getSender()+" added a reply");
+            writer.println(ResponseAsString);
+        }
+    }
+    
+    public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        boolean returned = new MessagesService().DeleteMessage(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println("Message is deleted");
             writer.println(ResponseAsString);
         }
     }
