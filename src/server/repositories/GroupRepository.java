@@ -45,7 +45,7 @@ public class GroupRepository  {
     }
 
     public List<Group> getAllGroups() throws SQLException {
-        String sql= "select * from group";
+        String sql= "select * from groups";
         Connection connection= Config.getConnection();
 
         Statement statement = connection.createStatement();
@@ -88,7 +88,7 @@ public class GroupRepository  {
     }
 
     public Group updateGroup(Group group) throws SQLException {
-        String sql="update groups set name=?, description=?" +
+        String sql="update groups set group_name=?, description=?" +
                 "where group_id=?";
         Connection connection=Config.getConnection();
         PreparedStatement statement=connection.prepareStatement(sql);
@@ -121,7 +121,7 @@ public class GroupRepository  {
             Connection connection = Config.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM groups where name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);
+            String query = String.format("SELECT * FROM groups where group_name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);
             ResultSet rs = statement.executeQuery(query);
             System.out.println("Reading users ....");
             List<Group> groups=new ArrayList<Group>();
