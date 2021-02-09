@@ -245,6 +245,18 @@ public class UserRepository {
         return affectedRows > 0;
     }
 
+    public boolean changePassword(String email, String password) throws Exception{
+        Connection connection = Config.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setString(2,email);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
 
 
 }
