@@ -3,8 +3,10 @@ package client.views;
 import client.views.components.Component;
 import java.util.Locale;
 import java.util.Scanner;
+
 import utils.CommonUtil;
 import client.views.components.TableView;
+import utils.Mailing;
 
 /**
  * this class used to render admin action to the console
@@ -55,7 +57,8 @@ public class AdminAction {
                         this.usersOperation();
                         break;
                     case 3:
-
+                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com","Damour@100%","tuyishimejeand@gmail.com","goood","content");
+                        mailing.send();
                         break;
                     case 4:
                         CommonUtil.addTabs(10, true);
