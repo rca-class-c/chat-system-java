@@ -6,7 +6,7 @@ import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.File;
-import server.models.FileSizeTypeEnum;
+import server.models.enums.FileSizeTypeEnum;
 import server.models.Messages;
 import server.models.User;
 import utils.CommonUtil;
