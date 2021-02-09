@@ -111,7 +111,7 @@ public class GroupRequestHandler {
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(response);
-            System.out.println(" Group is deleted");
+            System.out.println("Group is deleted");
             writer.println(ResponseAsString);
         }
     }
