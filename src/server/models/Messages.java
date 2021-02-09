@@ -2,6 +2,14 @@ package server.models;
 
 import java.util.Date;
 
+/**
+ *
+ * @description: this is a model that represents Messages entity or table
+ * @author: Loraine Mukezwa Irakoze
+ * @date: 29-1-2021
+ *
+ */
+
 public class Messages {
     public Integer id;
     public String content;

@@ -1,5 +1,6 @@
 package server.dataDecoders;
 
+import client.interfaces.MessageResponseDataFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,7 @@ public class MessageDecoder {
     public ChatBetweenTwo returnChatMembers() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
-        return new ChatBetweenTwo(dataDecrypt.get("first").asInt(),dataDecrypt.get("last").asInt());
+        return new ChatBetweenTwo(dataDecrypt.get("firstUser").asInt(),dataDecrypt.get("lastUser").asInt());
     }
 
     public Messages returnMessageContent() throws JsonProcessingException {
@@ -24,10 +25,17 @@ public class MessageDecoder {
         JsonNode dataDecrypt = objectMapper.readTree(data);
         return new Messages(dataDecrypt.get("content").asText(),dataDecrypt.get("sender").asInt(),dataDecrypt.get("user_receiver").asInt(),dataDecrypt.get("group_receiver").asInt(),dataDecrypt.get("original_message").asInt());
     }
+<<<<<<< HEAD
 
     public Messages returnMessageReplies() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
         return new Messages(dataDecrypt.get("content").asText(),dataDecrypt.get("sender").asInt(),dataDecrypt.get("user_receiver").asInt(),dataDecrypt.get("group_receiver").asInt(),dataDecrypt.get("original_message").asInt());
+=======
+    public MessageResponseDataFormat returnMessageDeleteData() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode dataDecrypt = objectMapper.readTree(data);
+        return new MessageResponseDataFormat(dataDecrypt.get("user").asInt(),dataDecrypt.get("message_id").asInt());
+>>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
     }
 }

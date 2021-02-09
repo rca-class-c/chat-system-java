@@ -1,5 +1,6 @@
 package server.services;
 
+import client.interfaces.MessageResponseDataFormat;
 import server.models.Messages;
 import server.repositories.MessagesRepository;
 import utils.ChatBetweenTwo;
@@ -26,6 +27,9 @@ public class MessagesService {
     public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
         return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
     }
+    public Messages editMessage(Messages messages) throws Exception {
+        return messagesRepository.updateMessage(messages);
+    }
     public List<Messages> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
@@ -44,11 +48,16 @@ public class MessagesService {
         return messagesRepository.ReplyGroupMessage(messages);
     }
 
+<<<<<<< HEAD
     public boolean DeleteReply(int id) throws SQLException{
         return messagesRepository.DeleteReplies(id);
     }
 
     public boolean DeleteMessage(int id) throws SQLException {
         return messagesRepository.DeleteMessages(id);
+=======
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+        return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
+>>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
     }
 }
