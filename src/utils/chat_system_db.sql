@@ -165,7 +165,8 @@ CREATE TABLE public.messages (
     user_receiver integer,
     group_receiver integer,
     original_message integer,
-    sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    message_status public.message_status DEFAULT 'UNSEEN'::public.message_status
 );
 
 
@@ -342,7 +343,8 @@ CREATE TABLE public.users (
     dob date,
     created_at date DEFAULT now() NOT NULL,
     updated_at date DEFAULT now() NOT NULL,
-    status public.status DEFAULT 'ACTIVE'::public.status
+    status public.status DEFAULT 'ACTIVE'::public.status,
+    categoryid integer NOT NULL
 );
 
 
@@ -441,11 +443,12 @@ COPY public.groups (group_id, group_name, description, group_creator, created_at
 -- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.messages (id, content, sender, user_receiver, group_receiver, original_message, sent_at) FROM stdin;
-3	Hello	1	\N	1	\N	2021-02-05 13:10:42.605528
-5	Hey	2	\N	1	3	2021-02-05 13:11:58.257878
-6	Dear Student	2	1	\N	\N	2021-02-05 13:13:02.403584
-7	Dear tester	1	2	\N	6	2021-02-05 13:14:19.194834
+COPY public.messages (id, content, sender, user_receiver, group_receiver, original_message, sent_at, message_status) FROM stdin;
+3	Hello	1	\N	1	\N	2021-02-05 13:10:42.605528	UNSEEN
+5	Hey	2	\N	1	3	2021-02-05 13:11:58.257878	SEEN
+6	Dear Student	2	1	\N	\N	2021-02-05 13:13:02.403584	UNSEEN
+7	Dear tester	1	2	\N	6	2021-02-05 13:14:19.194834	UNSEEN
+8	Welcome to chat	1	\N	1	7	2021-02-09 21:43:09.392622	UNSEEN
 \.
 
 
@@ -501,9 +504,9 @@ COPY public.user_group (group_id, user_id) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (user_id, first_name, last_name, username, email, gender, pass_word, dob, created_at, updated_at, status) FROM stdin;
-1	Student	classC	classC	c@gmail.com	male	2021	2021-01-01	2021-02-05	2021-02-05	ACTIVE
-2	Test	Tester	test	test@gmail.com	female	test	2020-12-12	2021-02-05	2021-02-05	ACTIVE
+COPY public.users (user_id, first_name, last_name, username, email, gender, pass_word, dob, created_at, updated_at, status, categoryid) FROM stdin;
+1	Student	classC	classC	c@gmail.com	male	2021	2021-01-01	2021-02-05	2021-02-05	ACTIVE	1
+2	Test	Tester	test	test@gmail.com	female	test	2020-12-12	2021-02-05	2021-02-05	ACTIVE	2
 \.
 
 
@@ -525,7 +528,7 @@ SELECT pg_catalog.setval('public.groups_group_id_seq', 1, true);
 -- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.messages_id_seq', 7, true);
+SELECT pg_catalog.setval('public.messages_id_seq', 8, true);
 
 
 --
@@ -730,6 +733,14 @@ ALTER TABLE ONLY public.user_group
 
 ALTER TABLE ONLY public.user_group
     ADD CONSTRAINT user_group_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: users users_categoryid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_categoryid_fkey FOREIGN KEY (categoryid) REFERENCES public.user_categories(categoryid);
 
 
 --

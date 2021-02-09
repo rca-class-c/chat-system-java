@@ -12,17 +12,18 @@ import java.util.Date;
 public class MessagesRepository {
 
 
-    //-------------------------------View Messages-----------------------------------------
-
-    public List<DirectMessage> getDirectMessages(Messages messages) throws SQLException {
-        List<DirectMessage> allMessagesDM = new ArrayList<>();
+    //-------------------------------View Direct Messages-----------------------------------------
+    // author : Loraine
+    public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
+        List<DirectMessage> allMessagesDM = new ArrayList<DirectMessage>();
 
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d;",
-                messages.getSender(), messages.getUser_receiver());
+                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                first, last, first, last
+        );
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -42,16 +43,19 @@ public class MessagesRepository {
         conn.close();
         return allMessagesDM;
     }
+    //-------------------------------------------------------------------------------
 
-    public List<GroupMessage> getGroupMessages(Messages messages) throws SQLException {
-        List<GroupMessage> allMessagesGrp = new ArrayList<>();
+    //-------------------------------View Group Messages-----------------------------------------
+    // author : Loraine
+    public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
+        List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && group_receiver = %d;",
-                messages.getSender(), messages.getUser_receiver());
+                "SELECT * from messages where sender = %d && group_receiver = %d or sender = %d && group_receiver = %d;",
+                first, last, first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -71,6 +75,31 @@ public class MessagesRepository {
         conn.close();
         return allMessagesGrp;
     }
+    //-------------------------------------------------------------------------------
+
+    //-------------------------------Edit Direct Messages-----------------------------------------
+    // author : Loraine
+    public Messages updateMessage (Messages message) throws Exception{
+
+        Connection conn = Config.getConnection();
+        String query = String.format("UPDATE messages SET content = ? WHERE id = ?;");
+        PreparedStatement statement =  conn.prepareStatement(query);
+
+        statement.setString(1, message.getContent());
+        statement.setInt(2, message.getId());
+
+        boolean rowUpdated = statement.executeUpdate() > 1;
+        statement.close();
+        conn.close();
+        if(rowUpdated){
+            return message;
+        }
+        return null;
+    }
+
+    //-------------------------------------Getting Notifications------------------------------------------
+    //author : Souvede & Chanelle
+
     public List<Messages> getNotifications(int user_id)throws Exception{
 		List<Messages>  notis = new ArrayList<>();
 		Connection conn = Config.getConnection();
@@ -79,7 +108,7 @@ public class MessagesRepository {
 		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
 		ResultSet result = null;
 		while(gr.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
 				//notis.add(grm);
                 while (result.next()){
 
@@ -94,9 +123,9 @@ public class MessagesRepository {
                 }
             }
 		ResultSet rs;
-		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
+		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
         while(rs.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
             //notis.add(grm);
             while (result.next()){
 
@@ -120,7 +149,7 @@ public class MessagesRepository {
 
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  int sendGroupMessage(Messages message) throws SQLException {
+    public  Messages sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -131,7 +160,10 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 
     public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
@@ -140,7 +172,7 @@ public class MessagesRepository {
         List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
                 first, last,first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
@@ -160,7 +192,7 @@ public class MessagesRepository {
         return messages;
     }
    //sending a direct message
-    public  int sendDirectMessage(Messages message) throws SQLException {
+    public  Messages sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -171,12 +203,15 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
     //----------------------------Reply direct messages-----------------------------
     // author : Melissa
 
-    public static int ReplyDirectMessage(Messages message) throws SQLException {
+    public Messages ReplyDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -187,7 +222,10 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 
 
@@ -196,7 +234,7 @@ public class MessagesRepository {
     // author : Melissa
 
 
-    public static int ReplyGroupMessage(Messages message) throws SQLException {
+    public Messages ReplyGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -207,6 +245,27 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
+    }
+
+    //Deleting a message
+
+
+    public boolean DeleteMessages(int userid,int message_id) throws SQLException {
+        int affectedRows = 0;
+
+        Connection connection = Config.getConnection();
+        String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userid);
+        statement.setInt(1, message_id);
+        if (affectedRows > 0) {
+            return  true;
+        }
+        return false;
+
     }
 }

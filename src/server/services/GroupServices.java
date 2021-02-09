@@ -4,8 +4,7 @@ import server.models.Group;
 import server.repositories.GroupRepository;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Group services provider
@@ -14,23 +13,27 @@ import java.util.Optional;
 public class GroupServices {
     private final GroupRepository groupRepository = new GroupRepository();
 
-    public Optional<Group> get(int id) throws SQLException {
-        return groupRepository.get(id);
+    public Group getGroupById(int id) throws SQLException {
+        return groupRepository.getGroupById(id);
+    }
+    //
+    public List<Group> SearchGroups(String search_data) throws SQLException {
+        return groupRepository.getUserSearchList(search_data);
+    }
+    public List<Group> getAllGroups() throws SQLException {
+        return groupRepository.getAllGroups();
     }
 
-    public Collection<Group> getAll() throws SQLException {
-        return groupRepository.getAll();
+    public Group createGroup(Group group) throws SQLException {
+        return groupRepository.createGroup(group);
     }
 
-    public boolean create(Group group) throws SQLException {
-        return groupRepository.create(group);
+    public Group updateGroup(Group group) throws SQLException {
+        return groupRepository.updateGroup(group);
     }
 
-    public void update(Group group) throws SQLException {
-        groupRepository.update(group);
+    public boolean deleteGroup(int id) throws SQLException {
+        return groupRepository.deleteGroup(id);
     }
 
-    public void delete(Group group) throws SQLException {
-        groupRepository.delete(group);
-    }
 }

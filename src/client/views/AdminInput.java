@@ -20,4 +20,5 @@ class AdminInput {
         ArrayList<String> emailLists = new ArrayList<String>(Arrays.asList(email).subList(0, emails.split(" ").length));
         sendInvitations.sendingInvitations(emailLists);
     }
+
 }

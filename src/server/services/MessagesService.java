@@ -1,5 +1,6 @@
 package server.services;
 
+import client.interfaces.MessageResponseDataFormat;
 import server.models.Messages;
 import server.repositories.MessagesRepository;
 import utils.ChatBetweenTwo;
@@ -17,30 +18,37 @@ import java.util.List;
 public class MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
 
-    public List<DirectMessage> viewDirectMessages(Messages messages) throws SQLException {
-        return messagesRepository.getDirectMessages(messages);
+    public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
+        return messagesRepository.getDirectMessages(members.getFirstUser(), members.getLastUser());
     }
     public List<DirectMessage> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }
-    public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
-        return messagesRepository.getGroupMessages(messages);
+    public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
+        return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
+    }
+    public Messages editMessage(Messages messages) throws Exception {
+        return messagesRepository.updateMessage(messages);
     }
     public List<Messages> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
-    public void sendInGroup(Messages messages) throws SQLException{
-        messagesRepository.sendGroupMessage(messages);
+    public Messages sendInGroup(Messages messages) throws SQLException{
+        return messagesRepository.sendGroupMessage(messages);
     }
 
-    public void sendDirectly(Messages messages) throws SQLException{
-        messagesRepository.sendDirectMessage(messages);
+    public Messages sendDirectly(Messages messages) throws SQLException{
+        return messagesRepository.sendDirectMessage(messages);
     }
-    public void ReplyInGroup(Messages messages) throws SQLException{
-        messagesRepository.ReplyDirectMessage(messages);
+    public Messages ReplyInGroup(Messages messages) throws SQLException{
+        return messagesRepository.ReplyDirectMessage(messages);
     }
 
-    public void ReplyDirectly(Messages messages) throws SQLException{
-        messagesRepository.ReplyGroupMessage(messages);
+    public Messages ReplyDirectly(Messages messages) throws SQLException{
+        return messagesRepository.ReplyGroupMessage(messages);
+    }
+
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+        return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
 }
