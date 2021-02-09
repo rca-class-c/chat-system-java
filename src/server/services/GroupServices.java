@@ -31,7 +31,8 @@ public class GroupServices {
         return groupRepository.update(group);
     }
 
-    public void delete(Group group) throws SQLException {
-        groupRepository.delete(group);
+    public boolean delete(int id) throws SQLException {
+        return groupRepository.delete(id);
     }
+
 }

@@ -8,10 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="postgresql-42.2.182" level="project" />
-    <orderEntry type="library" name="javax.persistence" level="project" />
-    <orderEntry type="library" name="activation" level="project" />
-    <orderEntry type="library" name="activation1" level="project" />
-    <orderEntry type="library" name="javax.mail" level="project" />
+    <orderEntry type="library" name="activation2" level="project" />
   </component>
 </module>

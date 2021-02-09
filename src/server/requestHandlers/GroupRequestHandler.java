@@ -7,9 +7,7 @@ import server.dataDecoders.GroupDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Group;
 import server.models.Response;
-import server.models.User;
 import server.services.GroupServices;
-import server.services.UserService;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -94,6 +92,22 @@ public class GroupRequestHandler {
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(response);
             System.out.println(returned.getName()+" is being detailed");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleDeleteGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        boolean returned = new GroupServices().delete(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            System.out.println("Group not found");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(response);
+            System.out.println(" Group is deleted");
             writer.println(ResponseAsString);
         }
     }

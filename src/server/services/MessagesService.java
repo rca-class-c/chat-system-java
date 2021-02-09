@@ -17,14 +17,14 @@ import java.util.List;
 public class MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
 
-    public List<DirectMessage> viewDirectMessages(Messages messages) throws SQLException {
-        return messagesRepository.getDirectMessages(messages);
+    public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
+        return messagesRepository.getDirectMessages(members.getFirstUser(), members.getLastUser());
     }
     public List<DirectMessage> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }
-    public List<GroupMessage> viewGroupMessages(Messages messages) throws SQLException{
-        return messagesRepository.getGroupMessages(messages);
+    public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
+        return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
     }
     public List<Messages> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
