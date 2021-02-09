@@ -6,11 +6,18 @@ import java.util.Scanner;
 import utils.CommonUtil;
 import client.views.components.TableView;
 
+/**
+ * this class used to render admin action to the console
+ * @author damour
+ */
 public class AdminAction {
     public AdminAction() {
         this.starts();
     }
 
+    /**
+     * the first menu the admin see when he/she select the admin action
+     */
     public void starts() {
         Component.pageTitleView("ADMIN ACTIVITIES");
         CommonUtil.addTabs(10, true);
@@ -21,9 +28,14 @@ public class AdminAction {
         System.out.println("3. Go back");
         CommonUtil.addTabs(10, false);
         System.out.println("4. Quit");
+
+        
         this.insertChoice();
     }
 
+    /**
+     * method to choose the  option form starts() menu
+     */
     private void insertChoice() {
         while(true) {
             try {
@@ -43,7 +55,7 @@ public class AdminAction {
                         this.usersOperation();
                         break;
                     case 3:
-                        System.out.println("back to profile setting");
+
                         break;
                     case 4:
                         CommonUtil.addTabs(10, true);
@@ -66,6 +78,9 @@ public class AdminAction {
         }
     }
 
+    /**
+     * method used to display statistics option that are variable
+     */
     private void chooseStat() {
         Component.pageTitleView("VIEW STATISTICS OF THE APP");
         CommonUtil.addTabs(10, true);
@@ -123,6 +138,10 @@ public class AdminAction {
         }
     }
 
+    /**
+     * shared function of accepting user choice through scanner class
+     * @return int
+     */
     private int insertAdminChoice() {
         CommonUtil.useColor("\u001b[1;37m");
         Scanner scanner = new Scanner(System.in);
@@ -131,6 +150,10 @@ public class AdminAction {
         return num;
     }
 
+    /**
+     * this method used to  choose statistics of which period
+     * @param range
+     */
     private void choosePeriod(String range) {
         Component.pageTitleView("CHOOSE " + range.toUpperCase(Locale.ROOT) + " REPORT");
         CommonUtil.addTabs(10, true);
@@ -203,6 +226,9 @@ public class AdminAction {
         }
     }
 
+    /**
+     * method that is used to show the operation on user
+     */
     private void usersOperation() {
         Component.pageTitleView("USER OPERATIONS");
         CommonUtil.addTabs(10, true);
@@ -231,17 +257,11 @@ public class AdminAction {
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
                     int choiceOperation = this.insertAdminChoice();
-                    switch(choiceOperation) {
-                        case 1:
-                            System.out.println("choice 1");
-                            break;
-                        case 2:
-                            System.out.println("choice 2");
-                            break;
-                        case 3:
-                            System.out.println("choice 3");
-                            break;
-                        case 4:
+                    switch (choiceOperation) {
+                        case 1 -> System.out.println("choice 1");
+                        case 2 -> System.out.println("choice 2");
+                        case 3 -> System.out.println("choice 3");
+                        case 4 -> {
                             TableView st = new TableView();
                             st.setShowVerticalLines(true);
                             st.setHeaders("one", "two", "three", "four");
@@ -249,25 +269,22 @@ public class AdminAction {
                             st.addRow("assumption", "announcement", "reflection", "");
                             st.addRow("logic", "pleasant", "wild", "weel doen all ");
                             st.print();
-                            break;
-                        case 5:
-                            System.out.println("choice 5");
-                            break;
-                        case 6:
-                            this.starts();
-                            break;
-                        case 7:
+                        }
+                        case 5 -> System.out.println("choice 5");
+                        case 6 -> this.starts();
+                        case 7 -> {
                             CommonUtil.addTabs(10, true);
                             Component.byeBye();
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
-                            break;
-                        default:
+                        }
+                        default -> {
                             CommonUtil.addTabs(10, false);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.print("Enter a valid choice (1,5): ");
                             CommonUtil.resetColor();
+                        }
                     }
                 } catch (Exception var3) {
                     CommonUtil.addTabs(10, false);
