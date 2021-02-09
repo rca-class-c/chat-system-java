@@ -1,10 +1,11 @@
 package client.views;
 
 import client.views.components.Component;
+import client.views.components.TableView;
+import utils.CommonUtil;
+
 import java.util.Locale;
 import java.util.Scanner;
-import utils.CommonUtil;
-import client.views.components.TableView;
 
 public class AdminAction {
     public AdminAction() {

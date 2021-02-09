@@ -66,11 +66,9 @@ public class sendInvitationRepositories {
        prepared.close();
        conn.close();
        if (row!=-1) {
-           System.out.println("Code Verified And Is True");
            return 1;
        }
        else {
-           System.out.println("Code Verified Not Correct");
            return 0;
        }
     }

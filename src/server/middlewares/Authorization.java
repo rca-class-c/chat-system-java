@@ -22,23 +22,25 @@ public class Authorization {
     private int id_AddToGroup=9;
 
 
-    public void getIds()throws SQLException{
-        String sql = "select name from permissions";
+
+
+    //Checking if a user with a certain category id is allowed to delete a user. We pass the category id to the
+    // function and it returns a boolean
+
+    public void getIds() throws SQLException{
+
+        String sql = "select name from permissions ";
         Connection connection = Config.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             String store=resultSet.getString("name");
-            System.out.println(store);
-
+          System.out.println(store);
         }
+
+
     }
 
-
-
-
-    //Checking if a user with a certain category id is allowed to delete a user. We pass the category id to the
-    // function and it returns a boolean
 
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
@@ -193,8 +195,7 @@ public class Authorization {
     };
     public static void main(String[] args) throws SQLException {
         Authorization auth=new Authorization();
-//        boolean b=  auth.canRemoveFromGroup(5);
-//        System.out.println(b);
-        auth.getIds();
+        boolean b=  auth.canRemoveFromGroup(5);
+        System.out.println(b);
     }
 }

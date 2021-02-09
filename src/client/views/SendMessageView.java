@@ -1,14 +1,10 @@
 package client.views;
 
-import client.ChatClient;
 import client.interfaces.*;
 import client.views.components.Component;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.models.File;
-import server.models.FileSizeTypeEnum;
-import server.models.Messages;
-import server.models.User;
+import server.models.*;
+import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 import utils.FileUtil;
@@ -143,15 +139,29 @@ public class SendMessageView {
 
 
 
-    public  void TypeMessageView() {
+    public  void TypeMessageView(int reciever) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
+        String key = "send_direct_message";
+        Messages newMessage = new Messages(0,message,userId,reciever,0,0,null);
+        Request request = new Request(newMessage,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
 
-        WriteMessageView(new User());
+            CommonUtil.addTabs(10, true);
+            System.out.println("Message sent");
+
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to send");
+        }
+        //WriteMessageView(new User());
     }
 
     public void SendFileView() throws IOException {
@@ -184,7 +194,7 @@ public class SendMessageView {
             System.out.print(" File saved successfully ");
             CommonUtil.resetColor();
 
-            WriteMessageView(new User());
+            //ageView(new User());
         }
         else{
             CommonUtil.addTabs(10, true);
@@ -193,10 +203,10 @@ public class SendMessageView {
             System.out.print("  File not saved, try again! ");
             CommonUtil.resetColor();
         }
-        WriteMessageView(new User());
+        //View(new User());
     }
 
-    public  void DeleteMessageView() {
+    public  void DeleteMessageView() throws IOException {
         Component.pageTitleView("Delete a Message");
 
         Scanner scanner = new Scanner(System.in);
@@ -204,7 +214,19 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = scanner.nextInt();
 
-        WriteMessageView(new User());
+        String  key= "delete_message";
+        Request request = new Request(new MessageResponseDataFormat(userId,messageId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            CommonUtil.addTabs(10, false);
+            System.out.println("Message deleted successfully");
+
+        }
+        else{
+            System.out.println("Message not found!");
+        }
     }
 
 
@@ -259,32 +281,78 @@ public class SendMessageView {
         }
     }
 
-    public static void GetAllGroupsView() {
+    public  void GetAllGroupsView() throws IOException {
+        String  key= "get_groups_list";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
-
-        System.out.println("1. All groups list");
+        if(response.isSuccess()){
+            Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Group group : groups) {
+                System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = scanner.nextInt();
     }
 
 
+        public void SearchGroupView() throws IOException {
+            Component.pageTitleView("Search a Group");
 
-    public  void SearchGroupView() {
-        Component.pageTitleView("Search a Group");
+            Component.chooseOptionInputView("Search (Group name or group description): ");
+            String query = scanner.nextLine();
+            String  key= "search_group";
+            Request request = new Request(new SearchRequestData(query),key);
+            String requestAsString = new ObjectMapper().writeValueAsString(request);
+            writer.println(requestAsString);
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            Component.pageTitleView("Search results");
+            if(response.isSuccess()){
+                Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
+                CommonUtil.addTabs(10, true);
+                for (Group group : groups) {
+                    System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
+                    CommonUtil.addTabs(10, false);
+                }
+            }else {
+                CommonUtil.addTabs(10, true);
+                System.out.println("Failed to read users list, sorry for the inconvenience");
+            }
+            System.out.println("");
+            Component.chooseOptionInputView("Type user id to chat with: ");
+            int choice  = scanner.nextInt();
+        }
 
-        Component.chooseOptionInputView("Search: ");
-    }
-
-    public  void GroupIdView() {
+    public void GroupIdView() throws IOException {
         Component.pageTitleView("Get Group");
 
-        Scanner scanner = new Scanner(System.in);
 
-        Component.chooseOptionInputView("Enter Group Id: ");
-        int id = scanner.nextInt();
-        if (id == 1) {
+        Component.chooseOptionInputView("Enter User Id: ");
+        int query = scanner.nextInt();
+        String  key= "get_group";
+        Request request = new Request(new ProfileRequestData(query),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Group BY ID GETTING");
+        if(response.isSuccess()){
+            Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
             WriteMessageView(new User());
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Group not found");
         }
-    }
 
+    }
     public void allActiveUsers() throws IOException {
         String  key= "get_users_list";
         Request request = new Request(new ProfileRequestData(userId),key);
@@ -327,7 +395,24 @@ public class SendMessageView {
         }
     }
 
-    public  void WriteMessageView(User user) {
+    public  void WriteMessageView(User user) throws IOException {
+        String key = "get_messages_between_two";
+        Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Your recent chat");
+        if(response.isSuccess()){
+            Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages message : messages) {
+                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
         Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
 
 
@@ -348,7 +433,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView();
+                        TypeMessageView(user.getUserID());
                     }
                     case 2 -> {
                         SendFileView();
@@ -373,6 +458,9 @@ public class SendMessageView {
         } while (action == -1);
 
     }
+
+    // --------------------Notifications View-----------
+    // author : Souvede & Chanelle
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
@@ -413,7 +501,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView();
+                        TypeMessageView(4);
                     }
                     case 2 -> {
                         SendFileView();

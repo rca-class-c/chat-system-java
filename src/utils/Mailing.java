@@ -10,6 +10,7 @@
  * <li>The subject of the email
  * <li>The content of the email whether text all html content
  * <li>The file or attachment the sender want to sent
+ *
  * </ul>
  * <p>
  *
@@ -27,47 +28,51 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
-
+//construction
 public class Mailing {
     private  String from;
     private String to;
     private String subject;
     private String content;
-    private String port;
-    private String host;
+    private String port = "8080";
+    private String host ="localhost";
     private String filepath;
+    private String password ;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
     /**
      * this is used to set the requirement to send email without attachment
-     *
+     * <h3 color="red">remember  to enable   this properties of (sender)email inorder to send email from untrusted</h5>
+     *  <ul>
+     *    <li><a href="https://myaccount.google.com/lesssecureapps">click to allow your sending email from non google app</a></li>
+     *    <li><a href="https://accounts.google.com/DisplayUnlockCaptcha">click to allow to access your google account</a></li>
+     *  * </ul>
      * @param  from  the sender of the email
      * @param  to  the receiver of the email
      * @param  subject  subject of the email
      * @param  content  this is the body of the email
-     * @return      void
-     */
-    public Mailing(String from, String to, String subject , String content){
-        this.setFrom(from);
-        this.setTo(to);
-        this.setSubject(subject);
-        this.setContent(content);
-    }
-    /**
-     * this is used to set the requirement to send email without attachment
      *
-     * @param  from  the sender of the email
-     * @param  to  the receiver of the email
-     * @param  subject  subject of the email
-     * @param  content  this is the body of the email
-     * @param  absolutePath  this is the body of the email
-     * @return      void
      */
-    public Mailing(String from, String to, String subject , String content, String absolutePath){
+    public Mailing(String from ,String password, String to, String subject , String content){
         this.setFrom(from);
         this.setTo(to);
         this.setSubject(subject);
         this.setContent(content);
-        this.setFilepath(absolutePath);
+        this.setPassword(password);
     }
+
+    /**
+     * these are setter and getter of instance variable
+     *
+     */
     public String getFilepath() {
         return filepath;
     }
@@ -123,146 +128,38 @@ public class Mailing {
         this.content = content;
     }
 
-    /**
-     * this is function tha will be used to send email ?? plain texts
-     */
-  public void sendMailText(String choice){
-      // Getting system properties
-      Properties properties = System.getProperties();
+    //end of getter and setter functions
 
-      // Setting up the mail server
-      properties.setProperty("mail.smtp.host", host);
-      properties.setProperty("mail.smtp.port", port);
-
-      // Get default session object
-      Session session = Session.getDefaultInstance(properties);
-
-      switch(choice){
-          case "text":
-              System.out.println(this.sendText(session));
-              break;
-          case "html":
-              System.out.println(this.sentHtml(session));
-          case "attachment":
-              System.out.println(this.sendAttachment(session));
-              break;
-          default:
-              System.out.println("invalid choice");
-      }
-
-  }
 
     /**
-     * Send the email with text only.
+     * this is function used to send email to gmail account
      */
-   private  String sendText(Session session ){
-       try
-       {
-           // Create MimeMessage object
-           MimeMessage message = new MimeMessage(session);
-
-           // Set the Senders mail to From
-           message.setFrom(new InternetAddress(this.from));
-
-           // Set the recipients email address
-           message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.to));
-
-           // Subject of the email
-           message.setSubject(this.subject);
-
-           // Body of the email
-           message.setText(this.content);
-
-           // Send email
-           Transport.send(message);
-
-       } catch (MessagingException me)
-       {
-           me.printStackTrace();
-       }
-       return "Mail sent successfully";
-   }
-    /**
-     * Send the email with html content.
-     */
-   private String sentHtml(Session session){
+   public void send(){
+       Properties props = new Properties();
+       props.put("mail.smtp.host", "smtp.gmail.com");
+       props.put("mail.smtp.socketFactory.port", "465");
+       props.put("mail.smtp.socketFactory.class",
+               "javax.net.ssl.SSLSocketFactory");
+       props.put("mail.smtp.auth", "true");
+       props.put("mail.smtp.port", "465");
+       //get Session
+       Session session = Session.getDefaultInstance(props,
+               new javax.mail.Authenticator() {
+                   protected PasswordAuthentication getPasswordAuthentication() {
+                       return new PasswordAuthentication(from,password);
+                   }
+               });
+       //compose message
        try {
-           // Create a default MimeMessage object.
            MimeMessage message = new MimeMessage(session);
-
-           // Set From: header field of the header.
-           message.setFrom(new InternetAddress(from));
-
-           // Set To: header field of the header.
-           message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-           // Set Subject: header field
-           message.setSubject(this.subject);
-
-           // Send the actual HTML message, as big as you like
-           message.setContent(this.content, "text/html");
-
-           // Send message
-           Transport.send(message);
-       } catch (MessagingException mex) {
-           mex.printStackTrace();
-       }
-       return "mail send successful ...";
-   }
-    /**
-     * Send the email with content and even attachment.
-     */
-   private String sendAttachment(Session session){
-       try {
-           // Create a default MimeMessage object.
-           MimeMessage message = new MimeMessage(session);
-
-           // Set From: header field of the header.
-           message.setFrom(new InternetAddress(from));
-
-           // Set To: header field of the header.
            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
-
-           // Set Subject: header field
            message.setSubject(this.subject);
-
-           // Create the message part
-           BodyPart messageBodyPart = new MimeBodyPart();
-
-           // Fill the message
-           messageBodyPart.setText(this.content);
-
-           // Create a multipar message
-           Multipart multipart = new MimeMultipart();
-
-           // Set text message part
-           multipart.addBodyPart(messageBodyPart);
-
-           // Part two is attachment
-           messageBodyPart = new MimeBodyPart();
-           String filename = this.filename(this.filepath);
-           DataSource source = new FileDataSource(this.filepath);
-           messageBodyPart.setDataHandler(new DataHandler(source));
-           messageBodyPart.setFileName(filename);
-           multipart.addBodyPart(messageBodyPart);
-
-           // Send the complete message parts
-           message.setContent(multipart );
-
-           // Send message
+           message.setText(this.content);
+           //send message
            Transport.send(message);
+           System.out.println("message sent successfully");
+       } catch (MessagingException e) {throw new RuntimeException(e);}
 
-       } catch (MessagingException mex) {
-           mex.printStackTrace();
-       }
 
-       return  "Sent message successfully....";
-   }
-    /**
-     * it is used to split file path given and return the last filename
-     */
-   private String filename(String filepath){
-       String[] split = filepath.split("/");
-       return split[split.length-1];
-   }
+}
 }

@@ -111,6 +111,10 @@ public class UserThread extends Thread {
                 else if(request_type.equals("verify_code")){
                     System.out.println("Not yet done");
                 }
+                else if(request_type.equals("get_my_notifications")){
+                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper,server);
+                }
+
                 else if(request_type.equals("delete_group")){
                     new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper,server);
                 }

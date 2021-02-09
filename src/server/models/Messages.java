@@ -2,6 +2,14 @@ package server.models;
 
 import java.util.Date;
 
+/**
+ *
+ * @description: this is a model that represents Messages entity or table
+ * @author: Loraine Mukezwa Irakoze
+ * @date: 29-1-2021
+ *
+ */
+
 public class Messages {
     public Integer id;
     public String content;
@@ -59,4 +67,10 @@ public class Messages {
     public Date getSent_at(){ return sent_at; }
 
     public void setSent_at(Date sent_at) { this.sent_at = sent_at; }
+
+    public Messages(String content, Integer sender, Integer user_receiver) {
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+    }
 }
