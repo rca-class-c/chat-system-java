@@ -3,7 +3,6 @@ package server.repositories;
 
 import server.config.Config;
 import server.models.PasswordResets;
-import server.models.User;
 import server.models.enums.PasswordResetsStatusesEnum;
 import utils.Mailing;
 
@@ -11,8 +10,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
