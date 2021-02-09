@@ -80,7 +80,7 @@ public class MessagesRepository {
 		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
 		ResultSet result = null;
 		while(gr.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
 				//notis.add(grm);
                 while (result.next()){
 
@@ -95,9 +95,9 @@ public class MessagesRepository {
                 }
             }
 		ResultSet rs;
-		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
+		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
         while(rs.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
             //notis.add(grm);
             while (result.next()){
 
@@ -222,6 +222,9 @@ public class MessagesRepository {
         }
         return null;
     }
+
+    //Deleting a message
+
 
     public boolean DeleteMessages(int id) throws SQLException {
         int affectedRows = 0;
