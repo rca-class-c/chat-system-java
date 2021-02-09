@@ -20,5 +20,8 @@ public class GroupMemberService {
     public boolean deleteMember(GroupMember group_member) throws SQLException {
         return groupMemberRepository.deleteMember(group_member);
     }
+    public int[] createMembers(int group_id,List<GroupMember> groupMembers ) throws SQLException{
+        return groupMemberRepository.createMembers(group_id,groupMembers);
+    }
 
 }
