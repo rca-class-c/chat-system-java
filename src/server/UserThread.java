@@ -2,6 +2,7 @@ package server;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.requestHandlers.FileRequestHandler;
 import server.requestHandlers.GroupRequestHandler;
 import server.requestHandlers.MessageRequestHandler;
 import server.requestHandlers.UserRequestHandler;
@@ -99,7 +100,7 @@ public class UserThread extends Thread {
                     System.out.println("Not yet done");
                 }
                 else if(request_type.equals("send_file")){
-                    System.out.println("Not yet done");
+                    new FileRequestHandler().HandleSaveFile(data, writer, objectMapper, server);
                 }
                 else if(request_type.equals("delete_message")){
                     new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper,server);

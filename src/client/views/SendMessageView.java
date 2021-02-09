@@ -1,11 +1,17 @@
 package client.views;
 
+import client.ChatClient;
 import client.interfaces.*;
 import client.views.components.Component;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.File;
+import server.models.FileSizeTypeEnum;
 import server.models.Messages;
 import server.models.User;
 import utils.CommonUtil;
+import utils.ConsoleColor;
+import utils.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +20,7 @@ import java.util.Scanner;
 
 
 public class SendMessageView {
-    int userId;
+    public int userId;
     public PrintWriter writer;
     public BufferedReader reader;
     Scanner scanner = new Scanner(System.in);
@@ -97,7 +103,7 @@ public class SendMessageView {
         } while (action == -1);
     }
 
-    public static void GroupMessageView() {
+    public  void GroupMessageView() {
         Component.pageTitleView("Group Message");
 
         CommonUtil.addTabs(11, true);
@@ -137,7 +143,7 @@ public class SendMessageView {
 
 
 
-    public static void TypeMessageView() {
+    public  void TypeMessageView() {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
@@ -148,18 +154,49 @@ public class SendMessageView {
         WriteMessageView(new User());
     }
 
-    public static void SendFileView() {
+    public void SendFileView() throws IOException {
         Component.pageTitleView("Send a file");
 
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Enter file path: ");
-        String message = scanner.nextLine();
+        String fileLocalPath = scanner.nextLine();
 
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+            String fileName = FileUtil.getFileNameFromFilePath(fileLocalPath);
+            String fileType = FileUtil.getFileTypeFromFilePath(fileLocalPath);
+            String fileSizeType = FileUtil.getFileSizeTypeFromFileSize(FileUtil.getFileSizeFromPath(fileLocalPath));
+            int fileSize = FileUtil.getFormattedFileSizeFromFileSize(FileUtil.getFileSizeFromPath(fileLocalPath), FileSizeTypeEnum.valueOf(fileSizeType));
+
+
+        File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
+        String key = "send_file";
+        Request request = new Request(file, key);
+        String requestAsString = objectMapper.writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print(" File saved successfully ");
+            CommonUtil.resetColor();
+
+            WriteMessageView(new User());
+        }
+        else{
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print("  File not saved, try again! ");
+            CommonUtil.resetColor();
+        }
         WriteMessageView(new User());
     }
 
-    public static void DeleteMessageView() {
+    public  void DeleteMessageView() {
         Component.pageTitleView("Delete a Message");
 
         Scanner scanner = new Scanner(System.in);
@@ -220,9 +257,6 @@ public class SendMessageView {
             CommonUtil.addTabs(10, true);
             System.out.println("User not found");
         }
-
-
-
     }
 
     public static void GetAllGroupsView() {
@@ -233,13 +267,13 @@ public class SendMessageView {
 
 
 
-    public static void SearchGroupView() {
+    public  void SearchGroupView() {
         Component.pageTitleView("Search a Group");
 
         Component.chooseOptionInputView("Search: ");
     }
 
-    public static void GroupIdView() {
+    public  void GroupIdView() {
         Component.pageTitleView("Get Group");
 
         Scanner scanner = new Scanner(System.in);
@@ -293,7 +327,7 @@ public class SendMessageView {
         }
     }
 
-    public static void WriteMessageView(User user) {
+    public  void WriteMessageView(User user) {
         Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
 
 
@@ -362,7 +396,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = scanner.nextInt();
     }
-    public static void SendReplyView() {
+    public void SendReplyView() {
         Component.pageTitleView("Send reply");
 
 
@@ -401,7 +435,7 @@ public class SendMessageView {
         } while (action == -1);
     }
 
-    public static void ViewRepliesView() {
+    public  void ViewRepliesView() {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("View Replies");
 
@@ -411,7 +445,7 @@ public class SendMessageView {
 
     }
 
-    public static void MessageRepliesView() {
+    public  void MessageRepliesView() {
         Component.pageTitleView("Message Replies a Group");
 
         CommonUtil.addTabs(11, false);
