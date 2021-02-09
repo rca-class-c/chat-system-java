@@ -32,20 +32,79 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
-    public void HandleNotification(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
-        List<Messages> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
-        //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
-        if(messages == null){
-            System.out.println("Query failed recheck your db");
+    public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("message not saved");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }
         else{
-            Response response = new Response(messages,true);
+            Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(ResponseAsString);
-            System.out.println("Notification list is provided");
+            System.out.println(returned.getSender()+" sent a message");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("message not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getSender()+" sent a message");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().ReplyInGroup(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getSender()+" added a reply");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().ReplyDirectly(new MessageDecoder(data).returnMessageContent());
+        if(returned == null){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(returned.getSender()+" added a reply");
+            writer.println(ResponseAsString);
+        }
+    }
+    
+    public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        boolean returned = new MessagesService().DeleteMessage(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println("Message is deleted");
             writer.println(ResponseAsString);
         }
     }

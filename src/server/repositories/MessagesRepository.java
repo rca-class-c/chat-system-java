@@ -14,15 +14,16 @@ public class MessagesRepository {
 
     //-------------------------------View Messages-----------------------------------------
 
-    public List<DirectMessage> getDirectMessages(Messages messages) throws SQLException {
-        List<DirectMessage> allMessagesDM = new ArrayList<>();
+    public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
+        List<DirectMessage> allMessagesDM = new ArrayList<DirectMessage>();
 
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d;",
-                messages.getSender(), messages.getUser_receiver());
+                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                first, last, first, last
+        );
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -43,15 +44,15 @@ public class MessagesRepository {
         return allMessagesDM;
     }
 
-    public List<GroupMessage> getGroupMessages(Messages messages) throws SQLException {
-        List<GroupMessage> allMessagesGrp = new ArrayList<>();
+    public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
+        List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
         Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && group_receiver = %d;",
-                messages.getSender(), messages.getUser_receiver());
+                "SELECT * from messages where sender = %d && group_receiver = %d or sender = %d && group_receiver = %d;",
+                first, last, first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -120,7 +121,7 @@ public class MessagesRepository {
 
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  int sendGroupMessage(Messages message) throws SQLException {
+    public  Messages sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -131,7 +132,10 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 
     public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
@@ -140,7 +144,7 @@ public class MessagesRepository {
         List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
                 first, last,first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
@@ -160,7 +164,7 @@ public class MessagesRepository {
         return messages;
     }
    //sending a direct message
-    public  int sendDirectMessage(Messages message) throws SQLException {
+    public  Messages sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -171,12 +175,15 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
     //----------------------------Reply direct messages-----------------------------
     // author : Melissa
 
-    public static int ReplyDirectMessage(Messages message) throws SQLException {
+    public Messages ReplyDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -187,7 +194,10 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
     }
 
 
@@ -196,7 +206,7 @@ public class MessagesRepository {
     // author : Melissa
 
 
-    public static int ReplyGroupMessage(Messages message) throws SQLException {
+    public Messages ReplyGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -207,6 +217,23 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();
-        return 0;
+        if(rowInsert){
+            return message;
+        }
+        return null;
+    }
+
+    public boolean DeleteMessages(int id) throws SQLException {
+        int affectedRows = 0;
+
+        Connection connection = Config.getConnection();
+        String query = String.format("DELETE FROM messages WHERE id = ? ;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, id);
+        if (affectedRows > 0) {
+            return  true;
+        }
+        return false;
+
     }
 }

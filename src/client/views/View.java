@@ -39,7 +39,7 @@ public class View
                         System.out.println("You requested for help");
                     }
                     case 7 -> {
-                        new SendMessageView(1, writer, reader).OptionsView();
+                        new SendMessageView(3, writer, reader).OptionsView();
                     }
                     case -1 -> {
                         System.out.println();

@@ -29,7 +29,10 @@ public class UserService {
     public User getUserById(int userId) throws SQLException{
         return userRepository.getUserById(userId);
     }
-    public int updateUser(User user,int userId) throws SQLException{
+    public List<User> SearchUsers(String search_data) throws SQLException {
+        return userRepository.getUserSearchList(search_data);
+    }
+    public User updateUser(User user,int userId) throws SQLException{
         return userRepository.updateUser(user,userId);
     }
     public int deleteUser(int userId) throws SQLException{
