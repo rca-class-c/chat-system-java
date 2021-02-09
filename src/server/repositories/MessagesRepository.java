@@ -8,6 +8,10 @@ import utils.GroupMessage;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
+//authors:
+// edine
+// loraine
+// mellisa
 
 public class MessagesRepository {
 
@@ -148,6 +152,7 @@ public class MessagesRepository {
 
     //-------------------------------sending messages--------------------------
     //sending group message
+    //author:edine
     public  Messages sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
         Connection conn = Config.getConnection();
@@ -191,14 +196,15 @@ public class MessagesRepository {
         return messages;
     }
    //sending a direct message
+   //author:edine
     public  Messages sendDirectMessage(Messages message) throws SQLException {
-        String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
+        String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
         statement.setInt(3, message.getUser_receiver() );
-        statement.setDate(4, (java.sql.Date) message.getSent_at());
+       // statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
         conn.close();

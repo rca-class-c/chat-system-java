@@ -147,7 +147,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
 
-        //WriteMessageView(new User());
+        WriteMessageView(new User());
     }
 
     public void SendFileView() throws IOException {

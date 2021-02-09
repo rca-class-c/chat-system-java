@@ -12,6 +12,9 @@ import java.util.List;
 /**
  * User Services provider
  * @author: Bella Mellissa  Ineza
+ * @author: Edine noella
+ * @author: Mukezwa rolaine
+ *
  */
 
 public class MessagesService {
