@@ -241,7 +241,7 @@ public class UserRepository {
      * @throws SQLException throws sql exception for any error
      * @author Ntwari Clarance Liberiste
      */
-    public boolean changePassword(int userId, String password) throws SQLException{
+    public boolean changePasswordById(int userId, String password) throws SQLException{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE user_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -263,7 +263,7 @@ public class UserRepository {
      * @throws SQLException throws sql exception for any error
      * @author Ntwari Clarance Liberiste
      */
-    public boolean changePassword(String email, String password) throws SQLException{
+    public boolean changePasswordByEmail(String email, String password) throws SQLException{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -282,12 +282,11 @@ public class UserRepository {
      *
      * @param username user username
      * @param password new user proposed password
-     * @param usingUsername true when you want to username to search user
      * @return true when password is updated, false when password not updated
      * @throws SQLException throws sql exception for any error
      * @author Ntwari Clarance Liberiste
      */
-    public boolean changePassword(String username, String password, boolean usingUsername) throws SQLException{
+    public boolean changePasswordByUsername(String username, String password) throws SQLException{
         Connection connection = Config.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
