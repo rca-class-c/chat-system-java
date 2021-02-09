@@ -16,6 +16,7 @@ public class GroupServices {
     public Group getGroupById(int id) throws SQLException {
         return groupRepository.getGroupById(id);
     }
+    //
     public List<Group> SearchGroups(String search_data) throws SQLException {
         return groupRepository.getUserSearchList(search_data);
     }

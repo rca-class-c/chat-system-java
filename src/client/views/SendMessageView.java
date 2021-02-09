@@ -212,13 +212,9 @@ public class SendMessageView {
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("Search results");
+        Component.pageTitleView("USER BY ID GETTING");
         if(response.isSuccess()){
             User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-            CommonUtil.addTabs(10, true);
-
-                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
-                CommonUtil.addTabs(10, false);
             WriteMessageView(user);
         }else {
             CommonUtil.addTabs(10, true);
