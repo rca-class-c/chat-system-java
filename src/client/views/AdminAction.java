@@ -1,10 +1,11 @@
 package client.views;
 
 import client.views.components.Component;
+import client.views.components.TableView;
+import utils.CommonUtil;
+
 import java.util.Locale;
 import java.util.Scanner;
-import utils.CommonUtil;
-import client.views.components.TableView;
 
 /**
  * this class used to render admin action to the console
@@ -142,7 +143,7 @@ public class AdminAction {
      * shared function of accepting user choice through scanner class
      * @return int
      */
-    private int insertAdminChoice() {
+    public static int insertAdminChoice() {
         CommonUtil.useColor("\u001b[1;37m");
         Scanner scanner = new Scanner(System.in);
         int num = scanner.nextInt();
