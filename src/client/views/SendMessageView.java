@@ -200,7 +200,19 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = scanner.nextInt();
 
-        //WriteMessageView(new User());
+        String  key= "delete_message";
+        Request request = new Request(new MessageResponseDataFormat(userId,messageId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            CommonUtil.addTabs(10, false);
+            System.out.println("Message deleted successfully");
+
+        }
+        else{
+            System.out.println("Message not found!");
+        }
     }
 
 

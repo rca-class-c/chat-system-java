@@ -28,7 +28,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
-
+//construction
 public class Mailing {
     private  String from;
     private String to;

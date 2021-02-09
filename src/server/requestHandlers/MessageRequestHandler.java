@@ -93,7 +93,7 @@ public class MessageRequestHandler {
     }
 
     public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
-        boolean returned = new MessagesService().DeleteMessage(new UserDecoder(data).GetProfileDecode());
+        boolean returned = new MessagesService().DeleteMessage(new MessageDecoder(data).returnMessageDeleteData());
         if (!returned) {
             System.out.println("reply not saved");
             Response response = new Response(null, false);
