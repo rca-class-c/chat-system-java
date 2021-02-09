@@ -12,8 +12,8 @@ import java.util.Date;
 public class MessagesRepository {
 
 
-    //-------------------------------View Messages-----------------------------------------
-
+    //-------------------------------View Direct Messages-----------------------------------------
+    // author : Loraine
     public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
         List<DirectMessage> allMessagesDM = new ArrayList<DirectMessage>();
 
@@ -43,7 +43,10 @@ public class MessagesRepository {
         conn.close();
         return allMessagesDM;
     }
+    //-------------------------------------------------------------------------------
 
+    //-------------------------------View Group Messages-----------------------------------------
+    // author : Loraine
     public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
         List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
@@ -72,6 +75,30 @@ public class MessagesRepository {
         conn.close();
         return allMessagesGrp;
     }
+    //-------------------------------------------------------------------------------
+
+    //-------------------------------Edit Direct Messages-----------------------------------------
+    // author : Loraine
+    public Messages updateMessage (Messages message) throws Exception{
+
+        Connection conn = Config.getConnection();
+        String query = String.format("UPDATE messages SET content = ? WHERE id = ?;");
+        PreparedStatement statement =  conn.prepareStatement(query);
+
+        statement.setString(1, message.getContent());
+        statement.setInt(2, message.getId());
+
+        boolean rowUpdated = statement.executeUpdate() > 1;
+        statement.close();
+        conn.close();
+        if(rowUpdated){
+            return message;
+        }
+        return null;
+    }
+
+    //-------------------------------------------------------------------------------
+
     public List<Messages> getNotifications(int user_id)throws Exception{
 		List<Messages>  notis = new ArrayList<>();
 		Connection conn = Config.getConnection();
@@ -80,7 +107,7 @@ public class MessagesRepository {
 		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
 		ResultSet result = null;
 		while(gr.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
 				//notis.add(grm);
                 while (result.next()){
 
@@ -95,9 +122,9 @@ public class MessagesRepository {
                 }
             }
 		ResultSet rs;
-		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and isRead=false and sender!="+user_id);
+		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
         while(rs.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
             //notis.add(grm);
             while (result.next()){
 
@@ -144,7 +171,7 @@ public class MessagesRepository {
         List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && user_receiver = %d or sender = %d && user_receiver = %d;",
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
                 first, last,first, last);
 
         ResultSet result = statement.executeQuery(readQuery);
@@ -222,6 +249,9 @@ public class MessagesRepository {
         }
         return null;
     }
+
+    //Deleting a message
+
 
     public boolean DeleteMessages(int id) throws SQLException {
         int affectedRows = 0;

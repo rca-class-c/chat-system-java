@@ -26,6 +26,9 @@ public class MessagesService {
     public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
         return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
     }
+    public Messages editMessage(Messages messages) throws Exception {
+        return messagesRepository.updateMessage(messages);
+    }
     public List<Messages> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
