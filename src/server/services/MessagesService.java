@@ -44,7 +44,7 @@ public class MessagesService {
         return messagesRepository.ReplyGroupMessage(messages);
     }
 
-    public Messages DeleteReply(Messages messages) throws SQLException{
+    public boolean DeleteReply(int id) throws SQLException{
         return messagesRepository.DeleteReplies(id);
     }
 

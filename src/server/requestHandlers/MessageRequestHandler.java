@@ -102,9 +102,25 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
         else{
-            Response response = new Response(returned,true);
+            Response response = new Response(true,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println("Message is deleted");
+            writer.println(ResponseAsString);
+        }
+    }
+
+    public void HandleDeleteReplies(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        boolean returned = new MessagesService().DeleteReply(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(true,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println("Reply is deleted");
             writer.println(ResponseAsString);
         }
     }
