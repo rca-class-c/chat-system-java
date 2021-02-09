@@ -9,10 +9,15 @@ import utils.Mailing;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Date;
+import java.text.DateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -390,12 +395,19 @@ public class PasswordResetsRepository {
         return null;
     }
 
+    public boolean isOtpValid(String userEmail, int otp) throws SQLException{
+        Connection connection = Config.getConnection();
+        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ";
+        PreparedStatement statement = connection.prepareStatement(query);
 
-    public static void main(String[] args) throws Exception{
-        PasswordResetsRepository pr = new PasswordResetsRepository();
+        statement.setString(1,userEmail);
+        statement.setInt(2,otp);
 
-        PasswordResets ps = new PasswordResets("ntwaricliberi@gmail.com",234213 ,Instant.now().plus(1, ChronoUnit.DAYS).toString());
-        pr.create(ps);
+        ResultSet passwordResetRecord = statement.executeQuery();
+
+
+        return passwordResetRecord.getFetchSize() > 0;
     }
+
 
 }
