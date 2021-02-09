@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * User Services provider
- * @author: Shallon Kobusinge
+ * @author Shallon Kobusinge
  */
 
 public class UserService {
