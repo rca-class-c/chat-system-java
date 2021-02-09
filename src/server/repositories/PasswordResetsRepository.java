@@ -6,12 +6,14 @@ import server.models.PasswordResets;
 import server.models.enums.PasswordResetsStatusesEnum;
 import utils.Mailing;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.*;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * passwords resets repository
@@ -41,8 +43,11 @@ public class PasswordResetsRepository {
 
             long createdPasswordReset = statement.executeLargeUpdate(query);
 
+
             statement.close();
             connection.close();
+
+//            !c@L#2a0s2s1&C%6
 
             //TODO send email on password reset
             if(createdPasswordReset > 0){
@@ -50,15 +55,33 @@ public class PasswordResetsRepository {
                 String mailContent = "You have requested password reset on our servers" +
                         "so use " + pr.getOtp() + " to reset";
 
-                Mailing mail = new Mailing("ntwaricliberi@gmail.com",pr.getEmail(),mailSubject,mailContent);
 
-                mail.sendMailText("text");
+                try (FileInputStream f = new FileInputStream("src/server/server.properties")) {
+
+                    // load the properties file
+                    Properties pros = new Properties();
+                    pros.load(f);
+
+                    // assign migrations.sql parameters
+                    String MailerEmail = pros.getProperty("MailerEmail");
+                    String MailerPassword = pros.getProperty("MailerPassword");
+
+                    Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailContent);
+
+                    mail.send();
+
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+
+
             }
 
             return createdPasswordReset;
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
+
 
         return 0;
     }
@@ -368,5 +391,11 @@ public class PasswordResetsRepository {
     }
 
 
+    public static void main(String[] args) throws Exception{
+        PasswordResetsRepository pr = new PasswordResetsRepository();
+
+        PasswordResets ps = new PasswordResets("ntwaricliberi@gmail.com",234213 ,Instant.now().plus(1, ChronoUnit.DAYS).toString());
+        pr.create(ps);
+    }
 
 }
