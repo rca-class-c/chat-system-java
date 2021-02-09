@@ -8,7 +8,6 @@ import server.requestHandlers.UserRequestHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.SQLException;
 
 /**
  * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
@@ -116,7 +115,7 @@ public class UserThread extends Thread {
                 }
             } while (!clientMessage.equals("bye"));
             socket.close();
-        } catch (IOException | SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
         }
