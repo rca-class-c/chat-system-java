@@ -36,16 +36,15 @@ public class GroupMemberRequestHandler {
     }
 
     public void handlerGetGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
-        List<GroupMember> returned= new GroupMemberService().listGroupMembers(1);
-
-        if (returned == null){
+        List<GroupMember> groupMembers=new GroupMemberService().listGroupMembers(new GroupMemberDecoder(data).getGroupMembersDecoder());
+        if (groupMembers == null){
             System.out.println("query failed recheck your db");
             Response response= new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }
         else{
-            Response response = new Response(returned,true);
+            Response response = new Response(groupMembers,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(ResponseAsString);
             System.out.println("Group list is provided");
@@ -53,25 +52,25 @@ public class GroupMemberRequestHandler {
         }
     }
 
-    public void HandleDeleteGroupMember(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void handleDeleteGroupMember(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
         boolean returned = new GroupMemberService().deleteMember(new GroupMemberDecoder(data).deleteGroupMemberDecoder());
         if(!returned){
-            System.out.println("Group not found");
+            System.out.println("GroupMember not found");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }
         else{
-            Response response = new Response(returned,true);
+            Response response = new Response(true,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(response);
-            System.out.println("Group is deleted");
+            System.out.println(" GroupMember is deleted");
             writer.println(ResponseAsString);
         }
     }
 
     public void handleCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException{
-       int[] returned = new GroupMemberService().createMembers(new GroupMemberDecoder(data).createGroupMembersDecoder());
+        int[] returned = new GroupMemberService().createMembers(new GroupMemberDecoder(data).createGroupMembersDecoder());
         if(returned == null){
             System.out.println("Group members not added");
             Response response = new Response(null,false);

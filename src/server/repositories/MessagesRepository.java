@@ -97,55 +97,42 @@ public class MessagesRepository {
         return null;
     }
 
-    //-------------------------------------------------------------------------------
+    //-------------------------------------Getting Notifications------------------------------------------
+    //author : Souvede & Chanelle
 
-    public List<Messages> getNotifications(int user_id)throws Exception{
-		List<Messages>  notis = new ArrayList<>();
-		Connection conn = Config.getConnection();
+    public Set<ResultSet> getNotifications(int user_id)throws SQLException{
+        Set<ResultSet>  notis = new HashSet<>();
+        Connection conn = Config.getConnection();
         Statement statement = conn.createStatement();
-		ResultSet gr;
-		gr = statement.executeQuery("select * from user_group where user_id="+user_id);
-		ResultSet result = null;
-		while(gr.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
-				//notis.add(grm);
-                while (result.next()){
-
-                    Integer id = result.getInt(1);
-                    String content = result.getString(2);
-                    Integer sender = result.getInt(3);
-                    Integer user_receiver = result.getInt(4);
-                    Integer group_receiver = result.getInt(4);
-                    Integer original_message = result.getInt(6);
-                    Date sent_at = result.getDate(7);
-                    notis.add(new Messages(id,content,sender,user_receiver,group_receiver,original_message,sent_at));
-                }
-            }
-		ResultSet rs;
-		rs = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
-        while(rs.next()) {
-            result = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and message_status='UNSEEN' and sender!="+user_id);
-            //notis.add(grm);
-            while (result.next()){
-
-                Integer id = result.getInt(1);
-                String content = result.getString(2);
-                Integer sender = result.getInt(3);
-                Integer user_receiver = result.getInt(4);
-                Integer group_receiver = result.getInt(4);
-                Integer original_message = result.getInt(6);
-                Date sent_at = result.getDate(7);
-                notis.add(new Messages(id,content,sender,user_receiver,group_receiver,original_message,sent_at));
-            }
+        ResultSet groups;
+        groups = statement.executeQuery("select * from user_group where user_id="+user_id);
+        ResultSet group_message = null;
+        while(groups.next()) {
+//            group_message = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
+            group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+groups.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
+//				grm = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
+            notis.add(group_message);
         }
-		//notis.add(rs);
-		
-		statement.close();
-        conn.close();
-		return notis;
-	}
-
-
+        ResultSet direct_message;
+        direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
+        notis.add(direct_message);
+        return notis;
+    }
+    public String getGroupName(int id) throws  SQLException{
+        Connection conn = Config.getConnection();
+        Statement statement = conn.createStatement();
+        ResultSet grn;
+        grn = statement.executeQuery("select group_name from groups where group_id="+id);
+        String gr_name;
+        grn.next();
+        gr_name = grn.getString(1);
+        return  gr_name;
+    }
+    //                    Statement statement = connect.createStatement();
+//                    ResultSet grn;
+//                    grn = statement.executeQuery("select group_name from groups where group_id="+g_rec);
+//                    grn.next();
+//                    String gr_name = grn.getString(1);
     //-------------------------------sending messages--------------------------
     //sending group message
     public  Messages sendGroupMessage(Messages message) throws SQLException {
@@ -253,13 +240,14 @@ public class MessagesRepository {
     //Deleting a message
 
 
-    public boolean DeleteMessages(int id) throws SQLException {
+    public boolean DeleteMessages(int userid,int message_id) throws SQLException {
         int affectedRows = 0;
 
         Connection connection = Config.getConnection();
-        String query = String.format("DELETE FROM messages WHERE id = ? ;");
+        String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, id);
+        statement.setInt(1, userid);
+        statement.setInt(1, message_id);
         if (affectedRows > 0) {
             return  true;
         }

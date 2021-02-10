@@ -1,13 +1,16 @@
 package server.services;
 
+import client.interfaces.MessageResponseDataFormat;
 import server.models.Messages;
 import server.repositories.MessagesRepository;
 import utils.ChatBetweenTwo;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User Services provider
@@ -29,8 +32,11 @@ public class MessagesService {
     public Messages editMessage(Messages messages) throws Exception {
         return messagesRepository.updateMessage(messages);
     }
-    public List<Messages> viewUserNotifications(int user_id) throws Exception {
+    public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
+    }
+    public String viewGroupName(int id)throws SQLException{
+        return messagesRepository.getGroupName(id);
     }
     public Messages sendInGroup(Messages messages) throws SQLException{
         return messagesRepository.sendGroupMessage(messages);
@@ -47,7 +53,7 @@ public class MessagesService {
         return messagesRepository.ReplyGroupMessage(messages);
     }
 
-    public boolean DeleteMessage(int id) throws SQLException {
-        return messagesRepository.DeleteMessages(id);
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+        return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
 }
