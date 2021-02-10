@@ -2,6 +2,7 @@ package client.views;
 
 import client.views.components.Component;
 import client.views.components.TableView;
+import server.services.sendInvitations;
 import utils.CommonUtil;
 import utils.Mailing;
 
@@ -41,8 +42,7 @@ public class AdminAction {
                     case 1 -> this.chooseStat();
                     case 2 -> this.usersOperation();
                     case 3 -> {
-                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com", "Damour@100%", "tuyishimejeand@gmail.com", "goood", "content");
-                        mailing.send();
+                        AdminInput.inviteUser();
                         System.out.println("back to profile setting");
                     }
                     case 4 -> {

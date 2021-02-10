@@ -47,17 +47,15 @@ public class MessagesService {
     public Messages ReplyDirectly(Messages messages) throws SQLException{
         return messagesRepository.ReplyGroupMessage(messages);
     }
-
-<<<<<<< HEAD
+    //HEAD
     public boolean DeleteReply(int id) throws SQLException{
         return messagesRepository.DeleteReplies(id);
     }
 
     public boolean DeleteMessage(int id) throws SQLException {
         return messagesRepository.DeleteMessages(id);
-=======
-    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException{
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
->>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
     }
 }
