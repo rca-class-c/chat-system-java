@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import utils.CommonUtil;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,13 +62,13 @@ public class ChannelSettings {
     public void channelMenu(){
         Component.pageTitleView("CHANNEL SETTINGS");
         CommonUtil.addTabs(10, true);
-        System.out.println("1. View channels");
+        System.out.println("1. Existing channels");
         CommonUtil.addTabs(10, false);
-        System.out.println("2. Create channel");
+        System.out.println("2. New channel");
         CommonUtil.addTabs(10, false);
-        System.out.println("0. Go back");
+        System.out.println("44. Go back");
         CommonUtil.addTabs(10, false);
-        System.out.println("4. Quit");
+        System.out.println("55. Quit");
         while(true) {
             try {
                 CommonUtil.addTabs(10, false);
@@ -80,13 +81,12 @@ public class ChannelSettings {
                 int choice = AdminAction.insertAdminChoice();
                 switch(choice) {
                     case 1:
-                        System.out.println("channels");
+                       new SendMessageView(userId,writer, reader).GetAllGroupsView();
                         break;
                     case 2:
-                        System.out.println("chann");
+                        CreateChanel();
                         break;
                         case 3:
-                            CreateChanel();
                     case 0:
                         System.out.println("you should return back");
                         break;
@@ -110,9 +110,60 @@ public class ChannelSettings {
             }
         }
     }
+    public void ExistingChanelOptions() throws IOException {
+        int choice = 3;
+        while(choice != 44 && choice != 55) {
+            Component.pageTitleView("Chanells");
+            CommonUtil.addTabs(10, true);
+            System.out.println("1. Channels list");
+            CommonUtil.addTabs(10, false);
+            System.out.println("2. Search Channel");
+            CommonUtil.addTabs(10, false);
+            System.out.println("3. ID Channel");
+            CommonUtil.addTabs(10, false);
+            System.out.println("44. Go back");
+            CommonUtil.addTabs(10, false);
+            System.out.println("55. Quit");
+            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor("\u001b[43m");
+            System.out.print("  ");
+            CommonUtil.resetColor();
+            CommonUtil.useColor("\u001b[0;33m");
+            System.out.print(" Choose an option: ");
+            CommonUtil.resetColor();
+            choice = AdminAction.insertAdminChoice();
+            switch(choice) {
+                case 1:
+                    new SendMessageView(userId,writer, reader).GetAllGroupsView();
+                    break;
+                case 2:
+                    CreateChanel();
+                    break;
+                case 3:
+                    new SendMessageView(userId,writer, reader).GroupIdView();
+                case 44:
+                    System.out.println("Going back");
+                    break;
+                case 55:
+                    CommonUtil.addTabs(10, true);
+                    CommonUtil.useColor("\u001b[1;31m");
+                    System.out.println("SYSTEM CLOSED !");
+                    System.exit(1);
+                    break;
+                default:
+                    CommonUtil.addTabs(10, false);
+                    CommonUtil.useColor("\u001b[1;31m");
+                    System.out.println("Enter a valid choice: ");
+                    CommonUtil.resetColor();
+            }
+            if(choice == 44) {
+                break;
+            }
+        }
+    }
   public void CreateChanel(){
       Scanner scanner = new Scanner(System.in);
-      Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
+      Component.pageTitleView("CREATE Group IN CLASS_C CHAT");
 
 
       CommonUtil.addTabs(10, false);
@@ -120,15 +171,6 @@ public class ChannelSettings {
       String group_name = scanner.nextLine();
       System.out.print("Enter your Group description: ");
       String group_desc = scanner.nextLine();
+      System.out.println("Group created successful");
   }
-    public void listChannel() throws JsonProcessingException {
-        String  key= "get_my_groups";
-        Request request = new Request(new ProfileRequestData(userId),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-       writer.println(requestAsString);
-
-
-
-
-    }
 }
