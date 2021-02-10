@@ -9,8 +9,10 @@ import java.util.stream.Collectors;
 
 
 /**
+ *
  * Group queries repository
  * @author: Gahamanyi yvette
+ *
  */
 
 
@@ -66,6 +68,29 @@ public class GroupRepository  {
         return groupList.stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+    }
+
+    public Group getGroupsByUserId(int user_id) throws SQLException {
+        String sql = "select groups.name from groups inner join user_group on user_group.user_id= ? where user_group.group_id=groups.id;";
+        Connection connection= Config.getConnection();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1,user_id);
+
+        ResultSet resultSet= statement.executeQuery();
+
+        if(resultSet.next()){
+            int g_id = resultSet.getInt("group_id");
+            String name = resultSet.getString("group_name");
+
+            return new Group(g_id,name);
+
+        }
+        resultSet.close();
+        statement.close();
+        connection.close();
+
+        return null;
     }
 
     public Group createGroup(Group group) throws SQLException {

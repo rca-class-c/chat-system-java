@@ -457,8 +457,15 @@ COPY public.messages (id, content, sender, user_receiver, group_receiver, origin
 --
 
 COPY public.permissions (permission_id, name, status, created_at, updated_at) FROM stdin;
-1	CREATE_GROUP	ACTIVE	2021-02-05	2021-02-05
-2	DELETE_GROUP	ACTIVE	2021-02-05	2021-02-05
+1	DELETE_USER	ACTIVE	2021-02-05	2021-02-05
+2	CREATE_GROUP	ACTIVE	2021-02-05	2021-02-05
+4	INVITE_USER	ACTIVE	2021-02-09	2021-02-09
+5	DELETE_GROUP	ACTIVE	2021-02-09	2021-02-09
+6	DEACTIVATE_USER	ACTIVE	2021-02-09	2021-02-09
+7	VIEW_STATISTICS	ACTIVE	2021-02-09	2021-02-09
+8	REMOVE_FROM_GROUP	ACTIVE	2021-02-09	2021-02-09
+9	ADD_TO_GROUP	ACTIVE	2021-02-09	2021-02-09
+10	SEND_MESSAGE	ACTIVE	2021-02-09	2021-02-09
 \.
 
 
@@ -478,6 +485,7 @@ COPY public.sent_invitations (sent_id, admin_id, sent_to, verificationcode, stat
 COPY public.user_categories (categoryid, name, created_at, updated_at) FROM stdin;
 1	ADMIN	2021-02-05	2021-02-05
 2	USER	2021-02-05	2021-02-05
+3	GROUP_CREATOR	2021-02-09	2021-02-09
 \.
 
 
@@ -486,7 +494,15 @@ COPY public.user_categories (categoryid, name, created_at, updated_at) FROM stdi
 --
 
 COPY public.user_category_permissions (category_id, permission_id) FROM stdin;
-2	1
+1	1
+2	2
+1	4
+3	5
+1	6
+1	7
+3	8
+3	9
+2	10
 \.
 
 
@@ -535,7 +551,7 @@ SELECT pg_catalog.setval('public.messages_id_seq', 8, true);
 -- Name: permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.permissions_permission_id_seq', 2, true);
+SELECT pg_catalog.setval('public.permissions_permission_id_seq', 10, true);
 
 
 --
@@ -549,7 +565,7 @@ SELECT pg_catalog.setval('public.sent_invitations_sent_id_seq', 1, true);
 -- Name: user_categories_categoryid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_categories_categoryid_seq', 2, true);
+SELECT pg_catalog.setval('public.user_categories_categoryid_seq', 3, true);
 
 
 --

@@ -20,7 +20,8 @@ class AdminInput {
         String emails = scan.nextLine();
         String[] email = emails.split(" ");
         ArrayList<String> emailLists = new ArrayList<String>(Arrays.asList(email).subList(0, emails.split(" ").length));
-        sendInvitations.sendingInvitations("tuyishimejeand88@gmail.com","123",emailLists);
+        sendInvitations.sendingInvitations("hello","munezero",emailLists);
+
     }
 
 }
