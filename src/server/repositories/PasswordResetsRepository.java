@@ -428,7 +428,7 @@ public class PasswordResetsRepository {
 
     public boolean isOtpExpired(String userEmail, int otp) throws SQLException{
         Connection connection = Config.getConnection();
-        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? AND status='PENDING' ORDER BY created_at DESC LIMIT 1 ";
+        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1 ";
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1,userEmail);
@@ -443,6 +443,8 @@ public class PasswordResetsRepository {
 
             int timeComparison = currentNowTime.compareTo(otpExpirationDate);
 
+            if(timeComparison > 0)
+                this.changePasswordResetStatus(userEmail,otp,PasswordResetsStatusesEnum.EXPIRED);
 
             return timeComparison > 0;
 
