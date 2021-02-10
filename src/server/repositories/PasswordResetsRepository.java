@@ -398,7 +398,7 @@ public class PasswordResetsRepository {
 
     public boolean changePasswordResetStatus(String email,int otp, PasswordResetsStatusesEnum status) throws SQLException{
         Connection connection = Config.getConnection();
-        String query = "UPDATE user_password_resets SET status = ? WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1";
+        String query = "UPDATE user_password_resets SET status = ?::user_password_resets_statuses WHERE id IN (SELECT id FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY id DESC LIMIT 1);";
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1,status.toString());
@@ -413,7 +413,7 @@ public class PasswordResetsRepository {
 
     public boolean isOtpValid(String userEmail, int otp) throws SQLException{
         Connection connection = Config.getConnection();
-        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ?  AND status='PENDING' ORDER BY created_at DESC LIMIT 1 ;";
+        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ?  AND status = 'PENDING' ORDER BY created_at DESC LIMIT 1 ;";
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1,userEmail);
@@ -473,15 +473,6 @@ public class PasswordResetsRepository {
         UserRepository user = new UserRepository();
 
         return user.changePasswordByEmail(userEmail,newPassword);
-    }
-
-    public static void main(String[] args) throws Exception{
-        PasswordResetsRepository pr = new PasswordResetsRepository();
-
-        PasswordResets ps = new PasswordResets("ntwaricliberi@gmail.com",234213 ,Instant.now().plus(1, ChronoUnit.DAYS).toString());
-//        pr.create(ps);
-
-        pr.resetPassword("ntwaricliberi@gmail.com",234213, "ntwarithe pass");
     }
 
 }
