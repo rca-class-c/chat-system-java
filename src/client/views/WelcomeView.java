@@ -153,6 +153,7 @@ public class WelcomeView {
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
             System.out.print("  Account not created, try again! ");
             CommonUtil.resetColor();
+
         }
     }
 }
