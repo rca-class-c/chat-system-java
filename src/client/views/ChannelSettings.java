@@ -1,5 +1,6 @@
 package client.views;
 
+import client.interfaces.Request;
 import client.views.components.Component;
 import utils.CommonUtil;
 
@@ -59,6 +60,7 @@ public class ChannelSettings {
         Component.pageTitleView("Create new channel");
         CommonUtil.addTabs(10, true);
         System.out.println("Type channel:");
+        Request request = new Request(new Object(),"get_my_groups");
 
     }
 }
