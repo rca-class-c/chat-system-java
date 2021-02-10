@@ -375,7 +375,7 @@ public class SendMessageView {
         Component.pageTitleView("Group BY ID GETTING");
         if(response.isSuccess()){
             Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
-            WriteMessageView(new User());
+            WriteMessageViewInGroup(group);
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Group not found");
@@ -463,6 +463,70 @@ public class SendMessageView {
                 switch (action) {
                     case 1 -> {
                         TypeMessageView(user.getUserID());
+                    }
+                    case 2 -> {
+                        SendFileView();
+                    }
+                    case 3 -> {
+                        DeleteMessageView();
+                    }
+                    case 4 -> {
+                        ViewRepliesView();
+                    }
+
+                    default -> {
+                        action = -1;
+
+                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+
+                    }
+                }
+            } catch (Exception e) {
+                Component.showErrorMessage(e.getMessage());
+            }
+        } while (action == -1);
+
+    }
+
+    public  void WriteMessageViewInGroup(Group group) throws IOException {
+        String key = "get_group_message";
+        Request request = new Request(new ProfileRequestData(userId), key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Your recent chat");
+        if(response.isSuccess()){
+            Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages message : messages) {
+                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        Component.pageTitleView("Write Message to "+ group.getName()+" Group");
+
+
+        CommonUtil.addTabs(11, true);
+        System.out.println("1. Write a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. Send a file");
+        CommonUtil.addTabs(11, false);
+        System.out.println("3. Delete a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("4. Replies");
+
+        Component.chooseOptionInputView("Choose an option: ");
+
+        int action;
+        do {
+            action = Component.getChooseOptionChoice();
+            try {
+                switch (action) {
+                    case 1 -> {
+                        TypeMessageView(group.getId());
                     }
                     case 2 -> {
                         SendFileView();
