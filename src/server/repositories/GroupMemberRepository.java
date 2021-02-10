@@ -56,14 +56,14 @@ public class GroupMemberRepository {
         return memberList;
     }
 
-    public boolean deleteMember(GroupMember group_member) throws SQLException {
+    public boolean deleteMember(GroupMember groupMember) throws SQLException {
         String sql= "delete from user_group where group_id=? && user_id=?";
 
         Connection connection = Config.getConnection();
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1,group_member.getGroup_id());
-        statement.setInt(2,group_member.getMember_id());
+        statement.setInt(1,groupMember.getGroup_id());
+        statement.setInt(2,groupMember.getMember_id());
 
         boolean rowDeleted=statement.executeUpdate()>0;
 
