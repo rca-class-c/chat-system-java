@@ -55,13 +55,12 @@ public class UserView {
             System.out.println("6. PROFILE SETTINGS");
             CommonUtil.addTabs(10, false);
             System.out.println("7. LOGOUT");
+            CommonUtil.addTabs(10, false);
+            System.out.println("0. BACK");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
                 new SendMessageView(userId, writer, reader).OptionsView();
-            }
-            else if(choice == 2){
-                new ChannelSettings().channelMenu();
             }
             else if(choice == 3){
                 new SendMessageView(userId, writer, reader).ViewNotifications();
@@ -75,7 +74,14 @@ public class UserView {
             else if(choice == 4){
                 allActiveUsers();
             }
-        }while(choice != 6);
+            else if (choice == 7){
+                CommonUtil.addTabs(10, true);
+                Component.byeBye();
+                CommonUtil.useColor("\u001b[1;31m");
+                System.out.println("SYSTEM CLOSED !");
+                System.exit(1);
+            }
+        }while(choice != -1);
 
     }
 
@@ -122,7 +128,7 @@ public class UserView {
            CommonUtil.addTabs(10, false);
            System.out.println("GENDER:  "+profile.getGender());
            CommonUtil.addTabs(10, false);
-           System.out.println("PASSWORD:   "+profile.getPassword());
+           System.out.println("PASSWORD:  ***********");
 
        }
        else{

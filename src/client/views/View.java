@@ -7,8 +7,7 @@ import utils.CommonUtil;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-public class View
-{
+public class View {
 
     public static void WelcomeView(ChatClient client, PrintWriter writer, BufferedReader reader) {
         Component.pageTitleView("Welcome to chat system");
@@ -20,6 +19,7 @@ public class View
         CommonUtil.addTabs(10, false);
         System.out.println("\t  3. HELP   \t");
         CommonUtil.addTabs(10, false);
+
         System.out.println("\t -1. QUIT   \t");
         Component.chooseOptionInputView("Choose an option: ");
 

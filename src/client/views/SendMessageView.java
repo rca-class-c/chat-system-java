@@ -9,6 +9,7 @@ import utils.CommonUtil;
 import utils.ConsoleColor;
 import utils.FileUtil;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,6 +35,8 @@ public class SendMessageView {
         System.out.println("1. Direct Message");
         CommonUtil.addTabs(11, false);
         System.out.println("2. Message a group");
+        CommonUtil.addTabs(10, false);
+        System.out.println("0. BACK");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -47,6 +50,9 @@ public class SendMessageView {
                     }
                     case 2 -> {
                          GroupMessageView();
+                    }
+                    case 0 ->{
+                        new UserView(userId,writer,reader).viewOptions();
                     }
                     default -> {
                         action = -1;
@@ -69,6 +75,8 @@ public class SendMessageView {
         System.out.println("2. Search a User (names)");
         CommonUtil.addTabs(11, false);
         System.out.println("3. Enter a user ID");
+        CommonUtil.addTabs(10, false);
+        System.out.println("0. BACK");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -87,6 +95,9 @@ public class SendMessageView {
                     }
                     case 3 -> {
                         UserIdView();
+                    }
+                    case 0 ->{
+                        new UserView(userId,writer,reader).viewOptions();
                     }
                     default -> {
                         action = -1;
@@ -108,6 +119,8 @@ public class SendMessageView {
         System.out.println("2. Search a Group (name)");
         CommonUtil.addTabs(11, false);
         System.out.println("3. Enter a group ID");
+        CommonUtil.addTabs(10, false);
+        System.out.println("0. BACK");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -125,6 +138,9 @@ public class SendMessageView {
                     }
                     case 3 -> {
                         GroupIdView();
+                    }
+                    case 0 ->{
+                        new UserView(userId,writer,reader).viewOptions();
                     }
                     default -> {
                         action = -1;
