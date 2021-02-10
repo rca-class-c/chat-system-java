@@ -37,36 +37,27 @@ public class AdminAction {
                 CommonUtil.useColor("\u001b[0;33m");
                 System.out.print(" Choose an option: ");
                 CommonUtil.resetColor();
-                choice = this.insertAdminChoice();
-                switch(choice) {
-                    case 1:
-                        this.chooseStat();
-                        break;
-                    case 2:
-                        this.usersOperation();
-                        break;
-                    case 3:
-                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com","Damour@100%","tuyishimejeand@gmail.com","goood","content");
-                        mailing.send();
-                        System.out.println("back to profile setting");
-                        break;
-                    case 44:
+                choice = insertAdminChoice();
+                switch (choice) {
+                    case 1 -> this.chooseStat();
+                    case 2 -> this.usersOperation();
+                    case 3 -> System.out.println("back to profile setting");
+                    case 44 -> {
                         CommonUtil.addTabs(10, true);
                         System.out.println("Going back");
-                        break;
-
-                    case 55:
+                    }
+                    case 55 -> {
                         CommonUtil.addTabs(10, true);
                         CommonUtil.useColor("\u001b[1;31m");
                         System.out.println("SYSTEM CLOSED !");
                         System.exit(1);
-                        break;
-
-                    default:
+                    }
+                    default -> {
                         CommonUtil.addTabs(10, false);
                         CommonUtil.useColor("\u001b[1;31m");
                         System.out.println("Enter a valid choice (1,5): ");
                         CommonUtil.resetColor();
+                    }
                 }
             } catch (Exception var2) {
                 CommonUtil.addTabs(10, false);
@@ -255,18 +246,12 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
-                    switch(choice) {
-                        case 1:
-                            System.out.println("choice 1");
-                            break;
-                        case 2:
-                            System.out.println("choice 2");
-                            break;
-                        case 3:
-                            System.out.println("choice 3");
-                            break;
-                        case 4:
+                    choice = insertAdminChoice();
+                    switch (choice) {
+                        case 1 -> System.out.println("choice 1");
+                        case 2 -> System.out.println("choice 2");
+                        case 3 -> System.out.println("choice 3");
+                        case 4 -> {
                             TableView st = new TableView();
                             st.setShowVerticalLines(true);
                             st.setHeaders("one", "two", "three", "four");
@@ -274,28 +259,25 @@ public class AdminAction {
                             st.addRow("assumption", "announcement", "reflection", "");
                             st.addRow("logic", "pleasant", "wild", "weel doen all ");
                             st.print();
-                            break;
-                        case 5:
-                            System.out.println("choice 5");
-                            break;
-                        case 6:
-                            this.starts();
-                            break;
-                        case 44:
+                        }
+                        case 5 -> System.out.println("choice 5");
+                        case 6 -> this.starts();
+                        case 44 -> {
                             CommonUtil.addTabs(10, true);
                             System.out.println("Going back");
-                            break;
-                        case 55:
+                        }
+                        case 55 -> {
                             CommonUtil.addTabs(10, true);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
-                            break;
-                        default:
+                        }
+                        default -> {
                             CommonUtil.addTabs(10, false);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.print("Enter a valid choice (1,5): ");
                             CommonUtil.resetColor();
+                        }
                     }
 
                 } catch (Exception var3) {
