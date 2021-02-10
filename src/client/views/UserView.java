@@ -61,7 +61,7 @@ public class UserView {
                 new SendMessageView(userId, writer, reader).OptionsView();
             }
             else if(choice == 2){
-                new ChannelSettings().channelMenu();
+                new ChannelSettings(userId,writer,reader).channelMenu();
             }
             else if(choice == 3){
                 new SendMessageView(userId, writer, reader).ViewNotifications();

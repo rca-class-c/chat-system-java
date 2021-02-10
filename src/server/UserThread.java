@@ -92,7 +92,7 @@ public class UserThread extends Thread {
                    new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("get_my_groups")){
-                    System.out.println("Not yet done");
+                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("remove_group_members")){
                     new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper,server);
