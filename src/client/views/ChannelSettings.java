@@ -21,45 +21,14 @@ public class ChannelSettings {
     public BufferedReader reader;
 
     public ChannelSettings(int userId, PrintWriter writer, BufferedReader reader) {
-
         this.userId = userId;
         this.writer = writer;
-        this.reader = reader;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
-    public PrintWriter getWriter() {
-        return writer;
-    }
-
-    public void setWriter(PrintWriter writer) {
-        this.writer = writer;
-    }
-
-    public BufferedReader getReader() {
-        return reader;
-    }
-
-    public void setReader(BufferedReader reader) {
         this.reader = reader;
     }
 
     public void channelMenu(){
+        int choice = 0;
+        while(choice != 55 && choice != 44) {
         Component.pageTitleView("CHANNEL SETTINGS");
         CommonUtil.addTabs(10, true);
         System.out.println("1. Existing channels");
@@ -69,7 +38,7 @@ public class ChannelSettings {
         System.out.println("44. Go back");
         CommonUtil.addTabs(10, false);
         System.out.println("55. Quit");
-        while(true) {
+
             try {
                 CommonUtil.addTabs(10, false);
                 CommonUtil.useColor("\u001b[43m");
@@ -78,19 +47,19 @@ public class ChannelSettings {
                 CommonUtil.useColor("\u001b[0;33m");
                 System.out.print(" Choose an option: ");
                 CommonUtil.resetColor();
-                int choice = AdminAction.insertAdminChoice();
+                choice = AdminAction.insertAdminChoice();
                 switch(choice) {
                     case 1:
-                       new SendMessageView(userId,writer, reader).GetAllGroupsView();
+                        ExistingChanelOptions();
                         break;
                     case 2:
                         CreateChanel();
                         break;
-                        case 3:
-                    case 0:
-                        System.out.println("you should return back");
+                    case 44:
+                        CommonUtil.addTabs(10, true);
+                        System.out.println("Going back");
                         break;
-                    case 4:
+                    case 55:
                         CommonUtil.addTabs(10, true);
                         CommonUtil.useColor("\u001b[1;31m");
                         System.out.println("SYSTEM CLOSED !");
@@ -107,6 +76,9 @@ public class ChannelSettings {
                 CommonUtil.useColor("\u001b[1;31m");
                 System.out.println("is incorrect input");
                 CommonUtil.resetColor();
+            }
+            if(choice == 44){
+                break;
             }
         }
     }

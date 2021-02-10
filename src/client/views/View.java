@@ -20,7 +20,7 @@ public class View
         CommonUtil.addTabs(10, false);
         System.out.println("\t  3. HELP   \t");
         CommonUtil.addTabs(10, false);
-        System.out.println("\t -1. QUIT   \t");
+        System.out.println("\t 55. QUIT   \t");
         Component.chooseOptionInputView("Choose an option: ");
 
 
@@ -41,9 +41,9 @@ public class View
                     case 7 -> {
                         new SendMessageView(3, writer, reader).OptionsView();
                     }
-                    case -1 -> {
+                    case 55 -> {
                         System.out.println();
-                        Component.showErrorMessage("System Exited ");
+                        Component.showErrorMessage("System Closing");
                         System.exit(1);
                     }
                     default -> {
