@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 /**
- * @Author: Gahamanyi Yvette
+ * @Author: Gahamanyi Yvette, Mahoro Phinah
  * */
 
 public class GroupMemberRepository {

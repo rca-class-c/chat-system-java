@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * Group queries repository
- * @author: Gahamanyi yvette
+ * @author: Gahamanyi yvette, Mahoro Phinah
  */
 
 

@@ -20,8 +20,8 @@ import java.util.Scanner;
 
 public class WelcomeView {
     /**
-     * This a function that takes user login data
-     * @AUTHOR: Phinah Mahoro
+     * Front-end Development
+     * @author Divin,Damour,Phinah
      */
     public static void Login(ChatClient client, PrintWriter writer, BufferedReader reader) throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);

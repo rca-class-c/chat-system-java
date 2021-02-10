@@ -16,7 +16,10 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 //import utils.CommonUtil;
-
+/**
+ * Front-end Development
+ * @author Divin,Damour,Phinah
+ */
 public class UserView {
     public int userId;
     public PrintWriter writer;

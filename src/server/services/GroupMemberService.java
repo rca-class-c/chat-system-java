@@ -7,6 +7,10 @@ import server.repositories.GroupMemberRepository;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * this class creates, deletes and lists or group members in a certain group
+ * author Phinah Mahoro
+ */
 public class GroupMemberService {
     private final GroupMemberRepository groupMemberRepository = new GroupMemberRepository();
 

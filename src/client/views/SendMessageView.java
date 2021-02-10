@@ -15,7 +15,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-
+/**
+ * Front-end Development
+ * @author Divin,Phinah,Damour
+ */
 public class SendMessageView {
     public int userId;
     public PrintWriter writer;

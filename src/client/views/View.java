@@ -8,7 +8,10 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 public class View {
-
+    /**
+     * Front-end Development
+     * @author Divin,Damour,Phinah
+     */
     public static void WelcomeView(ChatClient client, PrintWriter writer, BufferedReader reader) {
         Component.pageTitleView("Welcome to chat system");
 
