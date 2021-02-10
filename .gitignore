@@ -1,5 +1,5 @@
 #ignoring db properties
-src/config/db.properties
+src/server/config/db.properties
 
 # ignoring production folder
 ./out
