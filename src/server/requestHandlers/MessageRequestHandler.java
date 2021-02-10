@@ -7,9 +7,7 @@ import server.dataDecoders.MessageDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
-import server.models.User;
 import server.services.MessagesService;
-import server.services.UserService;
 import utils.DirectMessage;
 
 import java.io.PrintWriter;
@@ -101,13 +99,36 @@ public class MessageRequestHandler {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
+<<<<<<< HEAD
+        }
+        else{
+            Response response = new Response(true,true);
+=======
         } else {
             Response response = new Response(returned, true);
+>>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println("Message is deleted");
             writer.println(ResponseAsString);
         }
     }
+<<<<<<< HEAD
+
+    public void HandleDeleteReplies(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+        boolean returned = new MessagesService().DeleteReply(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            System.out.println("reply not saved");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(true,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println("Reply is deleted");
+=======
+    //-------------------------------------Handle Notifications request ------------------------------------------
+    //author : Souvede & Chanelle
 
     public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
         List<Messages> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
@@ -122,6 +143,7 @@ public class MessageRequestHandler {
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(ResponseAsString);
             System.out.println("Notiications List");
+>>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
             writer.println(ResponseAsString);
         }
     }

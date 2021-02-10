@@ -1,5 +1,6 @@
 package server.services;
 
+import client.interfaces.AddMemberRequestData;
 import server.models.GroupMember;
 import server.repositories.GroupMemberRepository;
 
@@ -19,6 +20,9 @@ public class GroupMemberService {
 
     public boolean deleteMember(GroupMember group_member) throws SQLException {
         return groupMemberRepository.deleteMember(group_member);
+    }
+    public int[] createMembers(AddMemberRequestData newMembers) throws SQLException{
+        return groupMemberRepository.createMembers(newMembers.getGroup_id(),newMembers.getUsers());
     }
 
 }

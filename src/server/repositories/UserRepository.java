@@ -7,8 +7,13 @@ import server.models.User;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
-
+/**
+ * @Author: Kobusinge Shallon
+ * */
 public class UserRepository {
+    /**
+     * Method for saving the new User
+     * */
     public User save(User user) throws SQLException {
         int i= 0;
         try {
@@ -32,6 +37,9 @@ public class UserRepository {
         }
         return null;
     }
+    /**
+     * Method for logging in
+     * */
     public User login(AuthInput input) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -66,7 +74,9 @@ public class UserRepository {
         return null;
     }
 
-
+    /**
+     * Method for getting all users in our database
+     * */
     public List<User> getAllUsers() throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -93,6 +103,9 @@ public class UserRepository {
         }
         return null;
     }
+    /**
+     * Method for getting users search list
+     * */
     public List<User> getUserSearchList(String search) throws SQLException {
         try{
             Connection connection = Config.getConnection();
@@ -120,6 +133,9 @@ public class UserRepository {
         }
         return null;
     }
+    /**
+     * Method for getting all other users
+     * */
     public List<User> getAllOtherUsers(int id) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -148,7 +164,9 @@ public class UserRepository {
         return null;
     }
 
-
+    /**
+     * Method for getting all user by id
+     * */
     public User getUserById(int userID) throws SQLException{
         try{
             Connection connection = Config.getConnection();
@@ -161,7 +179,7 @@ public class UserRepository {
             System.out.println("Reading users ....");
             if(rs.next()){
                 System.out.println("User Found!");
-                User returnUser =  new User(rs.getString("first_name"),rs.getString("last_name"),
+                User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"));
@@ -182,7 +200,9 @@ public class UserRepository {
         return null;
     }
 
-
+    /**
+     * Method for updating user which accepts the user to update as input and his/her id
+     * */
     public User updateUser(User user,int userId) throws SQLException{
         int affectedRows = 0;
 
@@ -205,7 +225,9 @@ public class UserRepository {
             }
             return null;
     }
-
+    /**
+     * Method for deleting user using id
+     * */
     public int deleteUser(int userId) throws SQLException{
 
           int affectedRows = 0;
@@ -219,7 +241,9 @@ public class UserRepository {
           }
           return affectedRows;
     }
-
+    /**
+     * Method for deactivating user
+     * */
     public int deactivateUser(int userId) throws SQLException{
         int affectedRows = 0;
         Connection connection = Config.getConnection();
