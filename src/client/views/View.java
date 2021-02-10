@@ -6,6 +6,11 @@ import utils.CommonUtil;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.util.Scanner;
+import java.util.Set;
+
+import server.services.MessagesService;
 
 public class View
 {
@@ -38,8 +43,13 @@ public class View
                     case 3 -> {
                         System.out.println("You requested for help");
                     }
-                    case 7 -> {
-                        new SendMessageView(3, writer, reader).OptionsView();
+                    case 10 -> {
+                        Scanner scanner = new Scanner(System.in);
+                        System.out.println("Enter user id");
+                        int id = scanner.nextInt();
+                        MessagesService msg = new MessagesService();
+                        Set<ResultSet> notifications = msg.viewUserNotifications(id);
+                        CommonUtil.displayTray(notifications);
                     }
                     case 55 -> {
                         System.out.println();
