@@ -152,7 +152,7 @@ public class GroupRepository  {
             System.out.println("Reading users ....");
             List<Group> groups=new ArrayList<Group>();
             while(rs.next()){
-                groups.add(new Group(rs.getInt("group_id"),rs.getString("name"),rs.getString("description"),
+                groups.add(new Group(rs.getInt("group_id"),rs.getString("group_name"),rs.getString("description"),
                         rs.getInt("group_creator")));
             }
             System.out.println(groups.size());

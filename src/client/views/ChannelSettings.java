@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class ChannelSettings {
-    public int groupId;
     public int userId;
     public PrintWriter writer;
     public BufferedReader reader;
@@ -115,7 +114,7 @@ public class ChannelSettings {
                     new SendMessageView(userId,writer, reader).GetAllGroupsView();
                     break;
                 case 2:
-                    CreateChanel();
+                    new SendMessageView(userId,writer, reader).SearchGroupView();
                     break;
                 case 3:
                     new SendMessageView(userId,writer, reader).GroupIdView();
@@ -137,7 +136,7 @@ public class ChannelSettings {
         } catch (Exception var2) {
             CommonUtil.addTabs(10, false);
             CommonUtil.useColor("\u001b[1;31m");
-            System.out.println("is incorrect input");
+            System.out.println("is incorrect input"+var2.getMessage());
             CommonUtil.resetColor();
         }
             if(choice == 44) {
