@@ -229,6 +229,17 @@ public class SendMessageView {
         }
     }
 
+    public static void DeleteReplieView() {
+        Component.pageTitleView("Delete a reply");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Enter message id: ");
+        int messageId = scanner.nextInt();
+
+        WriteMessageView(new User());
+    }
+
 
 
 
