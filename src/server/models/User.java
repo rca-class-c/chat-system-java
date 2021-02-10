@@ -1,7 +1,14 @@
 package server.models;
-
+/**
+ *
+ * @AUTHOR: Shallon Kobusinge
+ * */
 
 public class User {
+    /**
+     * This is the general structure of the user with all the credentials that are required
+     * during the user registration
+     * */
     public int userID;
     public String fname;
     public String lname;
@@ -17,6 +24,9 @@ public class User {
 
     public User() {
     };
+    /**
+     * User Constructor that will be called with all user fields with exception of the user_id
+     * */
 
     public User(String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status) {
         this.fname = fname;
@@ -29,7 +39,10 @@ public class User {
         this.categoryID = categoryID;
         this.status = status;
     }
-
+    /**
+     * User Constructor that will be called with all user structure including the user_id also but with exception of
+     * createdAt and updatedAt
+     * */
     public User(int id,String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status) {
         this.fname = fname;
         this.lname = lname;
@@ -42,7 +55,9 @@ public class User {
         this.status = status;
         this.userID = id;
     }
-
+    /**
+     * User Constructor that will be called with all fields of the user
+     * */
     public User(int userID, String fname, String lname, String password, String email, String dob, String username, String gender, int categoryID, String status ,String createAt, String updatedAt) {
         this.userID = userID;
         this.fname = fname;
@@ -57,7 +72,9 @@ public class User {
         this.categoryID = categoryID;
         this.status = status;
     }
-
+/**
+ * Getters and setters for all the fields
+ * */
     public String getFname() {
         return fname;
     }
