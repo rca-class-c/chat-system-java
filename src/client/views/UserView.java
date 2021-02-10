@@ -80,6 +80,7 @@ public class UserView {
                 CommonUtil.useColor("\u001b[1;31m");
                 System.out.println("SYSTEM CLOSED !");
                 System.exit(1);
+
             }
         }while(choice != -1);
 
