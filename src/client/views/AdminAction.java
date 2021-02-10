@@ -7,6 +7,10 @@ import utils.CommonUtil;
 import java.util.Locale;
 import java.util.Scanner;
 
+import utils.CommonUtil;
+import client.views.components.TableView;
+import utils.Mailing;
+
 public class AdminAction {
     public AdminAction() {
         this.starts();
@@ -44,6 +48,8 @@ public class AdminAction {
                         this.usersOperation();
                         break;
                     case 3:
+                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com","Damour@100%","tuyishimejeand@gmail.com","goood","content");
+                        mailing.send();
                         System.out.println("back to profile setting");
                         break;
                     case 4:
