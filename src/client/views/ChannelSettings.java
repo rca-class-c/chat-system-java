@@ -55,8 +55,10 @@ public class ChannelSettings {
             }
         }
     }
-    public  static void listChannel(){
-
+    public void createChanel(){
+        Component.pageTitleView("Create new channel");
+        CommonUtil.addTabs(10, true);
+        System.out.println("Type channel:");
 
     }
 }
