@@ -135,6 +135,7 @@ public class WelcomeView {
         User user = new User(firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
         String key = "register";
         Request request = new Request(user,key);
+
         String requestAsString = objectMapper.writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
