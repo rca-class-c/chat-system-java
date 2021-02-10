@@ -9,6 +9,9 @@ import utils.CommonUtil;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class ChannelSettings {
     public int groupId;
@@ -55,7 +58,7 @@ public class ChannelSettings {
         this.reader = reader;
     }
 
-    public static void channelMenu(){
+    public void channelMenu(){
         Component.pageTitleView("CHANNEL SETTINGS");
         CommonUtil.addTabs(10, true);
         System.out.println("1. View channels");
@@ -82,6 +85,8 @@ public class ChannelSettings {
                     case 2:
                         System.out.println("chann");
                         break;
+                        case 3:
+                            CreateChanel();
                     case 0:
                         System.out.println("you should return back");
                         break;
@@ -105,41 +110,24 @@ public class ChannelSettings {
             }
         }
     }
-    ////    public void MyProfile() throws IOException {
-////        String  key= "get_profile";
-////        Request request = new Request(new ProfileRequestData(userId),key);
-////        String requestAsString = new ObjectMapper().writeValueAsString(request);
-////        writer.println(requestAsString);
-////        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-////            User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-////            Component.pageTitleView("MY PROFILE");
-////            CommonUtil.addTabs(10, false);
-////            System.out.println("FIRST NAME:  "+profile.getFname());
-////            CommonUtil.addTabs(10, false);
-////            System.out.println("LAST NAME:  "+profile.getLname());
-////            CommonUtil.addTabs(10, false);
-////            System.out.println("USERNAME:  "+profile.getUsername());
-////            CommonUtil.addTabs(10, false);
-////            System.out.println("EMAIL:  "+profile.getEmail());
-////            CommonUtil.addTabs(10, false);
-////            System.out.println("GENDER:  "+profile.getGender());
-////            CommonUtil.addTabs(10, false);
-////            System.out.println("PASSWORD:   "+profile.getPassword());
-////
-////        }
-////        else{
-////            System.out.println("No profile found!");
-////        }
-////
-////        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
-////        int choice  = scanner.nextInt();
-////
-////    }
+  public void CreateChanel(){
+      Scanner scanner = new Scanner(System.in);
+      Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
+
+
+      CommonUtil.addTabs(10, false);
+      System.out.print("Enter your Group name: ");
+      String group_name = scanner.nextLine();
+      System.out.print("Enter your Group description: ");
+      String group_desc = scanner.nextLine();
+  }
     public void listChannel() throws JsonProcessingException {
         String  key= "get_my_groups";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
        writer.println(requestAsString);
+
+
 
 
     }
