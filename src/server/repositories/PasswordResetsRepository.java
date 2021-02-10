@@ -1,23 +1,20 @@
 package server.repositories;
 
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import server.config.Config;
 import server.models.PasswordResets;
 import server.models.enums.PasswordResetsStatusesEnum;
 import utils.Mailing;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
-import java.util.Date;
-import java.text.DateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -67,14 +64,36 @@ public class PasswordResetsRepository {
                     Properties pros = new Properties();
                     pros.load(f);
 
-                    // assign migrations.sql parameters
-                    String MailerEmail = pros.getProperty("MailerEmail");
-                    String MailerPassword = pros.getProperty("MailerPassword");
+//
+//                    try(BufferedReader br = new BufferedReader(new FileReader("src/utils/mailingTemplates/otpActivation.html"))) {
+//                        StringBuilder sb = new StringBuilder();
+//                        String line = br.readLine();
+//
+//                        while (line != null) {
+//                            sb.append(line);
+//                            sb.append(System.lineSeparator());
+//                            line = br.readLine();
+//                        }
+//
+//                        Document doc = Jsoup.parse(sb.toString());
+//                        Element otpCodeContainer = doc.getElementById("otp-code");
+//                        otpCodeContainer.text("" + pr.getOtp());
+//
+//                        String mailingTemplate = doc.html();
+//
+//                        System.out.println(mailingTemplate);
 
-                    System.out.println("Sending otp to " + pr.getEmail() + "...");
-                    Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailContent);
+                        String MailerEmail = pros.getProperty("MailerEmail");
+                        String MailerPassword = pros.getProperty("MailerPassword");
 
-                    mail.send();
+                        System.out.println("Sending otp to " + pr.getEmail() + "...");
+                        Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailContent);
+
+                        mail.send();
+//                    }
+
+
+
 
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
@@ -475,4 +494,12 @@ public class PasswordResetsRepository {
         return user.changePasswordByEmail(userEmail,newPassword);
     }
 
+    public static void main(String[] args) throws Exception{
+        PasswordResetsRepository pr = new PasswordResetsRepository();
+
+        PasswordResets ps = new PasswordResets("liberintwari@gmail.com",234213 , Instant.now().plus(1, ChronoUnit.DAYS).toString());
+        pr.create(ps);
+
+//        pr.resetPassword("ntwaricliberi@gmail.com",234213, "ntwarithe pass");
+    }
 }
