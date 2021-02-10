@@ -28,7 +28,7 @@ public class UserResponseDataDecoder {
     public User returnUserDecoded(String data)throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode value = objectMapper.readTree(data);
-        return new User(value.get("fname").asText(),value.get("lname").asText(),value.get("password").asText(),value.get("email").asText(),value.get("dob").asText(),value.get("username").asText(),value.get("gender").asText(),value.get("categoryID").asInt(),value.get("status").asText());
+        return new User(value.get("userID").asInt(),value.get("fname").asText(),value.get("lname").asText(),value.get("password").asText(),value.get("email").asText(),value.get("dob").asText(),value.get("username").asText(),value.get("gender").asText(),value.get("categoryID").asInt(),value.get("status").asText());
     }
     public User[] returnUsersListDecoded(String data)throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
