@@ -365,7 +365,7 @@ public class SendMessageView {
         Component.pageTitleView("Get Group");
 
 
-        Component.chooseOptionInputView("Enter User Id: ");
+        Component.chooseOptionInputView("Enter User group Id: ");
         int query = scanner.nextInt();
         String  key= "get_group";
         Request request = new Request(new ProfileRequestData(query),key);
