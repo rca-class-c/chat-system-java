@@ -41,9 +41,7 @@ public class AdminAction {
                     case 1 -> this.chooseStat();
                     case 2 -> this.usersOperation();
                     case 3 -> {
-                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com", "Damour@100%", "tuyishimejeand@gmail.com", "goood", "content");
-                        mailing.send();
-                        System.out.println("back to profile setting");
+                        System.out.println("choice 3");
                     }
                     case 4 -> {
                         CommonUtil.addTabs(10, true);
@@ -155,7 +153,7 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    int choicePeriod = this.insertAdminChoice();
+                    int choicePeriod = insertAdminChoice();
                     switch(choicePeriod) {
                         case 1:
                             if (range.contains("messaging")) {
@@ -231,7 +229,7 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    int choiceOperation = this.insertAdminChoice();
+                    int choiceOperation = insertAdminChoice();
                     switch (choiceOperation) {
                         case 1 -> AdminInput.inviteUser();
                         case 2 -> System.out.println("choice 2");
@@ -239,7 +237,7 @@ public class AdminAction {
                         case 4 -> {
                             TableView st = new TableView();
                             st.setShowVerticalLines(true);
-                            st.setHeaders("one", "two", "three", "four");
+                            st.setHeaders("group id", "two", "three", "four");
                             st.addRow("super", "broccoli", "flexible", "there we are");
                             st.addRow("assumption", "announcement", "reflection", "");
                             st.addRow("logic", "pleasant", "wild", "weel doen all ");
