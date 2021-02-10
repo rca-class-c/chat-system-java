@@ -443,6 +443,7 @@ public class PasswordResetsRepository {
 
             int timeComparison = currentNowTime.compareTo(otpExpirationDate);
 
+            //when OTP have expired set status to EXPIRED
             if(timeComparison > 0)
                 this.changePasswordResetStatus(userEmail,otp,PasswordResetsStatusesEnum.EXPIRED);
 
@@ -465,6 +466,9 @@ public class PasswordResetsRepository {
         if(this.isOtpExpired(userEmail,otp)){
             System.out.println("OTP have expired");
         }
+
+        //automatically change password reset status to USED
+        this.changePasswordResetStatus(userEmail,otp, PasswordResetsStatusesEnum.USED);
 
         UserRepository user = new UserRepository();
 
