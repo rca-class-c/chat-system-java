@@ -6,9 +6,13 @@ import javax.mail.internet.MimeMessage;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.ArrayList;
-
+import utils.Mailing;
 import utils.OTP;
 import server.repositories.sendInvitationRepositories;
+
+/**
+ * @author Cyusa Munezero Keny
+ */
 public class  sendInvitations{
     public static  int sendingInvitations(final String email,final  String password,ArrayList<String> to) throws MessagingException, SQLException, ClassNotFoundException {
         ArrayList<Integer> verificationCodes= new ArrayList<Integer>();
@@ -24,7 +28,6 @@ public class  sendInvitations{
             int sentOtp=Integer.parseInt(String.valueOf(otp));
             verificationCodes.add(sentOtp);
         }
-
         // SEARCH FOR THE ADMIN
      id=repositories.searchForAdmin(email);
 // SEND INVITATIONS TO THE SELECTED EMAILS

@@ -14,5 +14,6 @@
     <orderEntry type="library" name="javax.mail" level="project" />
     <orderEntry type="library" name="postgresql-42.2.18" level="project" />
     <orderEntry type="library" name="jackson-annotations-2.11.2" level="project" />
+    <orderEntry type="library" name="jackson-databind-2.11.2" level="project" />
   </component>
 </module>

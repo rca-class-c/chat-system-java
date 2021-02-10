@@ -6,6 +6,9 @@ import server.config.Config;
 import java.sql.*;
 import java.util.LinkedList;
 
+/**
+ * @author  Cyusa Munezero Keny . Github : UnrealDriftij8
+ */
 public class categoryRepository {
     public categories saveCategory(categories categories) throws SQLException {
         Connection connection = Config.getConnection();

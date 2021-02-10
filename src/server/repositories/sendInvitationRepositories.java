@@ -59,7 +59,7 @@ public class sendInvitationRepositories {
    public int AcceptingInvitation(int verificationCode) throws SQLException {
        Connection conn=Config.getConnection();
        int id=SearchForInvited(verificationCode);
-       final String sql="UPDATE sent_invitations SET status='activated' , verificationcode=0 where sent_id=? ";
+       final String sql="UPDATE sent_invitations SET status='ACTIVATED' , verificationcode=0 where sent_id=? ";
        PreparedStatement prepared=conn.prepareStatement(sql);
        prepared.setInt(1,id);
        int row = prepared.executeUpdate();
