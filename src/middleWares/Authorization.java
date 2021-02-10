@@ -1,7 +1,7 @@
 // @author Diane Pretty
 package middleWares;
 
-import config.Config;
+import server.config.Config;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,8 +1,6 @@
 package server.dataDecoders;
 
 import client.interfaces.AddMemberRequestData;
-import client.interfaces.DeleteMemberRequestData;
-import client.interfaces.GetGroupMembersRequestData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,18 +33,18 @@ public class GroupMemberDecoder {
 
     }
 
-    public DeleteMemberRequestData deleteGroupMemberDecoder() throws JsonProcessingException {
+    public GroupMember deleteGroupMemberDecoder() throws JsonProcessingException {
         ObjectMapper objectMapper= new ObjectMapper();
         JsonNode dataDecrypt=objectMapper.readTree(data);
         int group_id =  dataDecrypt.get("group_id").asInt();
         int user_id = dataDecrypt.get("user_id").asInt();
-        return new DeleteMemberRequestData(group_id,user_id);
+        return new GroupMember(group_id,user_id);
     }
-    public GetGroupMembersRequestData getGroupMembersDecoder() throws JsonProcessingException{
+    public int getGroupMembersDecoder() throws JsonProcessingException{
         ObjectMapper objectMapper= new ObjectMapper();
         JsonNode dataDecrypt=objectMapper.readTree(data);
         int group_id = dataDecrypt.get("group_id").asInt();
-        return new GetGroupMembersRequestData(group_id);
+        return  group_id;
     }
 
 }
