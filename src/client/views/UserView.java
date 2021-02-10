@@ -54,7 +54,9 @@ public class UserView {
             CommonUtil.addTabs(10, false);
             System.out.println("6. PROFILE SETTINGS");
             CommonUtil.addTabs(10, false);
-            System.out.println("7. LOGOUT");
+            System.out.println("44. LOGOUT");
+            CommonUtil.addTabs(10, false);
+            System.out.println("55. QUIT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -75,7 +77,18 @@ public class UserView {
             else if(choice == 4){
                 allActiveUsers();
             }
-        }while(choice != 6);
+            else if(choice == 44){
+                CommonUtil.addTabs(10, true);
+                System.out.println("Going back");
+                break;
+            }
+            else if(choice == 55){
+                CommonUtil.addTabs(10, true);
+                CommonUtil.useColor("\u001b[1;31m");
+                System.out.println("SYSTEM CLOSED !");
+                System.exit(1);
+            }
+        }while(choice != 44 && choice != 55);
 
     }
 
