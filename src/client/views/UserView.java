@@ -55,8 +55,6 @@ public class UserView {
             System.out.println("6. PROFILE SETTINGS");
             CommonUtil.addTabs(10, false);
             System.out.println("7. LOGOUT");
-            CommonUtil.addTabs(10, false);
-            System.out.println("0. BACK");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -105,7 +103,7 @@ public class UserView {
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
+        Component.chooseOptionInputView("Type any number to go back: ");
         int choice  = scanner.nextInt();
     }
 

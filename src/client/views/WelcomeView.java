@@ -91,7 +91,7 @@ public class WelcomeView {
         }
 
     }
-    public static void Signup(ChatClient client, PrintWriter writer, BufferedReader reader) throws  IOException {
+    public static void Signup(ChatClient client, PrintWriter writer, BufferedReader reader) throws IOException, SQLException {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("CREATE ACCOUNT IN CLASS_C CHAT");
 

@@ -316,7 +316,7 @@ public class SendMessageView {
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
+        Component.chooseOptionInputView("Type any numberto go back: ");
         int choice  = scanner.nextInt();
     }
 
@@ -388,7 +388,7 @@ public class SendMessageView {
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
+        Component.chooseOptionInputView("Type any number to go back: ");
         int choice  = scanner.nextInt();
     }
 
@@ -497,7 +497,7 @@ public class SendMessageView {
             System.out.println("Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
+        Component.chooseOptionInputView("Type any number to go back: ");
         int choice  = scanner.nextInt();
     }
     public void SendReplyView() {
