@@ -7,9 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
+    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="postgresql-42.2.181" level="project" />
-=======
     <orderEntry type="library" name="lib1" level="project" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="activation2" level="project" />
@@ -17,6 +16,5 @@
     <orderEntry type="library" name="javax.mail" level="project" />
     <orderEntry type="library" name="postgresql-42.2.18" level="project" />
     <orderEntry type="library" name="jackson-annotations-2.11.2" level="project" />
->>>>>>> 2e55ed685c96e71d0666946136cddb7f297246be
   </component>
 </module>

@@ -122,7 +122,7 @@ public class UserView {
            CommonUtil.addTabs(10, false);
            System.out.println("GENDER:  "+profile.getGender());
            CommonUtil.addTabs(10, false);
-           System.out.println("PASSWORD:  ***********");
+           System.out.println("PASSWORD:   "+profile.getPassword());
 
        }
        else{
