@@ -1,5 +1,6 @@
 package client.views;
 
+import client.interfaces.Request;
 import client.views.components.Component;
 import utils.CommonUtil;
 
@@ -23,6 +24,7 @@ public class ChannelSettings {
                 CommonUtil.resetColor();
                 CommonUtil.useColor("\u001b[0;33m");
                 System.out.print(" Choose an option: ");
+                //This one works
                 CommonUtil.resetColor();
                 int choice = AdminAction.insertAdminChoice();
                 switch(choice) {
@@ -55,8 +57,11 @@ public class ChannelSettings {
             }
         }
     }
-    public  static void listChannel(){
-
+    public void createChanel(){
+        Component.pageTitleView("Create new channel");
+        CommonUtil.addTabs(10, true);
+        System.out.println("Type channel:");
+        Request request = new Request(new Object(),"get_my_groups");
 
     }
 }
