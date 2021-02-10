@@ -124,7 +124,7 @@ public class AdminAction {
         }
     }
 
-    private int insertAdminChoice() {
+    public static int insertAdminChoice() {
         CommonUtil.useColor("\u001b[1;37m");
         Scanner scanner = new Scanner(System.in);
         int num = scanner.nextInt();
