@@ -297,6 +297,7 @@ public class AdminAction {
                             System.out.print("Enter a valid choice (1,5): ");
                             CommonUtil.resetColor();
                     }
+
                 } catch (Exception var3) {
                     CommonUtil.addTabs(10, false);
                     CommonUtil.useColor("\u001b[1;31m");

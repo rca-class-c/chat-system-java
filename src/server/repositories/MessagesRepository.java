@@ -195,7 +195,7 @@ public class MessagesRepository {
         return null;
     }
     //----------------------------Reply direct messages-----------------------------
-    // author : Melissa
+    // author :  bella Melissa
 
     public Messages ReplyDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
@@ -217,7 +217,7 @@ public class MessagesRepository {
 
 
     //----------------------------Reply group messages--------------------------------
-    // author : Melissa
+    // author : bella Melissa
 
 
     public Messages ReplyGroupMessage(Messages message) throws SQLException {
@@ -237,12 +237,34 @@ public class MessagesRepository {
         return null;
     }
 
+<<<<<<< HEAD
+
+    //Delete replies
+
+    // author:melissa
+
+    public boolean DeleteReplies(int id) throws SQLException{
+        int affectedRow = 0;
+        Connection connection = Config.getConnection();
+        String query = String.format("DELETE FROM messages WHERE id= ?;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1,id);
+
+        if(affectedRow > 0 ){
+            return true;
+        }
+
+        return  false;
+    }
+
+    public boolean DeleteMessages(int id) throws SQLException {
+=======
     //Deleting a message
 
 
     public boolean DeleteMessages(int userid,int message_id) throws SQLException {
+>>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
         int affectedRows = 0;
-
         Connection connection = Config.getConnection();
         String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
         PreparedStatement statement = connection.prepareStatement(query);
