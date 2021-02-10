@@ -71,6 +71,7 @@ public class PasswordResetsRepository {
                     String MailerEmail = pros.getProperty("MailerEmail");
                     String MailerPassword = pros.getProperty("MailerPassword");
 
+                    System.out.println("Sending otp to " + pr.getEmail() + "...");
                     Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailContent);
 
                     mail.send();
@@ -395,9 +396,24 @@ public class PasswordResetsRepository {
         return null;
     }
 
+    public boolean changePasswordResetStatus(String email,int otp, PasswordResetsStatusesEnum status) throws SQLException{
+        Connection connection = Config.getConnection();
+        String query = "UPDATE user_password_resets SET status = ? WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,status.toString());
+        statement.setString(2,email);
+        statement.setInt(3,otp);
+
+        int statusUpdated = statement.executeUpdate();
+
+        return statusUpdated > 0;
+
+    }
+
     public boolean isOtpValid(String userEmail, int otp) throws SQLException{
         Connection connection = Config.getConnection();
-        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ";
+        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1 ;";
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1,userEmail);
@@ -405,17 +421,19 @@ public class PasswordResetsRepository {
 
         ResultSet passwordResetRecord = statement.executeQuery();
 
+        passwordResetRecord.next();
 
-        return passwordResetRecord.getFetchSize() > 0;
+        return passwordResetRecord.getRow() > 0;
     }
 
     public boolean isOtpExpired(String userEmail, int otp) throws SQLException{
         Connection connection = Config.getConnection();
-        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ";
+        String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1 ";
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1,userEmail);
         statement.setInt(2,otp);
+        //TODO update status to expired when OTP is expired
 
         ResultSet passwordResetRecord = statement.executeQuery();
 
@@ -425,7 +443,8 @@ public class PasswordResetsRepository {
 
             int timeComparison = currentNowTime.compareTo(otpExpirationDate);
 
-            return timeComparison < 0;
+
+            return timeComparison > 0;
 
         } else{
             System.out.println("Not found");
@@ -434,6 +453,21 @@ public class PasswordResetsRepository {
         return true;
     }
 
+    public boolean resetPassword(String userEmail,int otp,String newPassword) throws Exception{
+
+        if(!this.isOtpValid(userEmail,otp)){
+            System.out.println("OTP not valid");
+            return false;
+        }
+
+        if(this.isOtpExpired(userEmail,otp)){
+            System.out.println("OTP have expired");
+        }
+
+        UserRepository user = new UserRepository();
+
+        return user.changePasswordByEmail(userEmail,newPassword);
+    }
 
 
 }
