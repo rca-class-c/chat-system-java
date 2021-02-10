@@ -24,6 +24,7 @@ public class ChannelSettings {
                 CommonUtil.resetColor();
                 CommonUtil.useColor("\u001b[0;33m");
                 System.out.print(" Choose an option: ");
+                //This one works
                 CommonUtil.resetColor();
                 int choice = AdminAction.insertAdminChoice();
                 switch(choice) {
