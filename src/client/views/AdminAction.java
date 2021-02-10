@@ -94,7 +94,7 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
+                    choice = insertAdminChoice();
                     switch (choice) {
                         case 1 -> {
                             CommonUtil.clearScreen();
@@ -109,14 +109,12 @@ public class AdminAction {
                         case 44->{
                             CommonUtil.addTabs(10, true);
                             System.out.println("Going back");
-                            break;
                         }
                         case 55->{
                             CommonUtil.addTabs(10, true);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
-                            break;
                         }
                     }
                 } catch (Exception var2) {
@@ -164,7 +162,7 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
+                    choice = insertAdminChoice();
                     switch(choice) {
                         case 1:
                             if (range.contains("messaging")) {
