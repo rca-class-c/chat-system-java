@@ -3,6 +3,7 @@ package server;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.requestHandlers.FileRequestHandler;
+import server.requestHandlers.GroupMemberRequestHandler;
 import server.requestHandlers.GroupRequestHandler;
 import server.requestHandlers.MessageRequestHandler;
 import server.requestHandlers.UserRequestHandler;
@@ -88,16 +89,16 @@ public class UserThread extends Thread {
                     new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("get_group_members")){
-                    System.out.println("Not yet done");
+                   new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("get_my_groups")){
-                    System.out.println("Not yet done");
+                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper,server);
                 }
-                else if(request_type.equals("remove_group_member")){
-                    System.out.println("Not yet done");
+                else if(request_type.equals("remove_group_members")){
+                    new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper,server);
                 }
-                else if(request_type.equals("add_group_member")){
-                    System.out.println("Not yet done");
+                else if(request_type.equals("add_group_members")){
+                    new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("send_file")){
                     new FileRequestHandler().HandleSaveFile(data, writer, objectMapper, server);
