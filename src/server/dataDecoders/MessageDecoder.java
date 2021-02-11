@@ -13,7 +13,6 @@ public class MessageDecoder {
     public MessageDecoder(String data) {
         this.data = data;
     }
-
     public ChatBetweenTwo returnChatMembers() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);

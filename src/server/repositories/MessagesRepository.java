@@ -11,7 +11,6 @@ import java.util.Date;
 
 public class MessagesRepository {
 
-
     //-------------------------------View Direct Messages-----------------------------------------
     // author : Loraine
     public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
