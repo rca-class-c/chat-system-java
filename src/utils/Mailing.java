@@ -134,6 +134,7 @@ public class Mailing {
      * methods used to send text email
      * @option param  is  text|html
      */
+
     public void send(){
          sendImplement("text");
      }
