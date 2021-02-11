@@ -33,9 +33,15 @@ public class ChatClient {
 
             new client.WriteThread(socket, this).run(socket);
         } catch (UnknownHostException ex) {
+            CommonUtil.useColor(ConsoleColor.BackgroundColor.WHITE_BACKGROUND);
+            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+            System.out.print("  Invalid Username or Password  ");
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {
-            System.out.println("I/O Error: " + ex.getMessage());
+            CommonUtil.useColor(ConsoleColor.BackgroundColor.WHITE_BACKGROUND);
+            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+            System.out.print("  Invalid Username or Password  ");
+            System.out.println("Server Down!!!!! Try restarting: " + ex.getMessage());
         }
     }
 

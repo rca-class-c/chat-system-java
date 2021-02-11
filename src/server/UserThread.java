@@ -119,10 +119,16 @@ public class UserThread extends Thread {
                     writer.println("Request type not known");
                 }
             } while (!clientMessage.equals("bye"));
-            socket.close();
         } catch (Exception ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
+        }
+        finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     /**
