@@ -221,10 +221,32 @@ public class UserRepository {
             statement.setInt(8,user.getCategoryID());
             statement.setInt(9,user.getUserID());
             affectedRows = statement.executeUpdate();
-            if(affectedRows > 0) {
-                return user;
-            }
-            return null;
+
+//int i=0;
+//        try {
+//            Connection connection = Config.getConnection();
+//            Statement statement = connection.createStatement();
+//
+//            String query = String.format("UPDATE users SET (first_name ='%s' , last_name='%s'," +
+//                            " username ='%s' , email = '%s', " +
+//                    "gender = '%s', pass_word = '%s',dob = '%s',categoryid = '%d',status = '%d') WHERE user_id = '%d';",
+//                    user.getFname(), user.getLname(),
+//                    user.getUsername(), user.getEmail(), user.getGender(), user.getPassword(),user.getDob(),
+//                    user.getCategoryID(),user.getStatus(), user.getUserID());
+//
+//
+//            i = statement.executeUpdate(query);
+//            System.out.println("Rows inserted: "+i);
+//
+//            statement.close();
+//            connection.close();
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+        if(affectedRows > 0) {
+            return user;
+        }
+        return null;
     }
     /**
      * Method for deleting user using id

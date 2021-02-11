@@ -129,7 +129,7 @@ public class ProfileSettings {
             String email = scanner.nextLine();
 
             CommonUtil.addTabs(10, false);
-            System.out.print("EMAIL"+"["+profile.getDob()+"]:  ");
+            System.out.print("DOB"+"["+profile.getDob()+"]:  ");
             String dob = scanner.nextLine();
 
 
