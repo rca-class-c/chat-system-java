@@ -27,7 +27,7 @@ public class SendInvitationHandler {
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(response);
-            System.out.println("Invitations are sent to new users to join this system requested profile");
+            System.out.println("Invitations are sent to new users to join this system");
             writer.println(ResponseAsString);
         }
     }
