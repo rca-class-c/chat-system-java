@@ -16,6 +16,10 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import client.views.components.Component;
 
+/**
+ * @AUTHOR: Shallon Kobusinge
+ * The view for user updating profile
+ * */
 public class ProfileSettings {
     public int userid;
     public PrintWriter writer;

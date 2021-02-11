@@ -37,6 +37,10 @@ public class UserDecoder {
         return new User(dataDecrypt.get("fname").asText(),dataDecrypt.get("lname").asText(),dataDecrypt.get("password").asText(),dataDecrypt.get("email").asText(),dataDecrypt.get("dob").asText(),dataDecrypt.get("username").asText(),dataDecrypt.get("gender").asText(),dataDecrypt.get("categoryID").asInt(),dataDecrypt.get("status").asText());
 
     }
+    /**
+     * @AUTHOR: Shallon Kobusinge
+     * Decoder for updating user-profile
+     * */
     public User UpdateUserDecode() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);

@@ -165,7 +165,7 @@ CREATE TABLE public.messages (
     user_receiver integer,
     group_receiver integer,
     original_message integer,
-    sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    sent_at date DEFAULT now(),
     message_status public.message_status DEFAULT 'UNSEEN'::public.message_status
 );
 

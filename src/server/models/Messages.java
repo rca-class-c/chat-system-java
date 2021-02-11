@@ -18,7 +18,7 @@ public class Messages {
     public Integer group_receiver;
     public Integer original_message;
     public Date sent_at;
-
+public Messages(){};
     //Message class constructor
     public Messages(String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message
     ){
@@ -37,6 +37,15 @@ public class Messages {
         this.group_receiver = group_receiver;
         this.original_message = original_message;
         this.sent_at = sent_at;
+    }
+
+    public Messages(Integer id, String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+        this.group_receiver = group_receiver;
+        this.original_message = original_message;
     }
 
     //Setters and getters

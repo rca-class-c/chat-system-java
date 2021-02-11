@@ -35,6 +35,10 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    /**
+     * @AUTHOR: Shallon Kobusinge
+     * The User request handler for updating profile
+     * */
     public  void HandleProfileUpdate(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
         User decodedOne = new UserDecoder(data).UpdateUserDecode();
         User returned = new UserService().updateUser(decodedOne, decodedOne.getUserID());

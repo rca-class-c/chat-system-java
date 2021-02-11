@@ -176,7 +176,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
         String key = "send_direct_message";
-        Messages newMessage = new Messages(0,message,userId,reciever,0,0,null);
+        Messages newMessage = new Messages(0,message,userId,reciever,0,0);
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
