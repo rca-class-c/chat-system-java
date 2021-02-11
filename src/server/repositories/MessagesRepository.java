@@ -237,7 +237,6 @@ public class MessagesRepository {
         return null;
     }
 
-<<<<<<< HEAD
 
     //Delete replies
 
@@ -257,13 +256,11 @@ public class MessagesRepository {
         return  false;
     }
 
-    public boolean DeleteMessages(int id) throws SQLException {
-=======
+    public boolean DeleteMessages(int id) throws SQLException {}
     //Deleting a message
 
 
     public boolean DeleteMessages(int userid,int message_id) throws SQLException {
->>>>>>> d831b2bc982c737c9fe30e5fdf3c18b860a6795e
         int affectedRows = 0;
         Connection connection = Config.getConnection();
         String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
