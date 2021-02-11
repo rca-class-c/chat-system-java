@@ -1,9 +1,19 @@
 package client.views;
 
+import client.interfaces.Request;
+import client.interfaces.ResponseDataSuccessDecoder;
+import client.interfaces.UserResponseDataDecoder;
 import client.views.components.Component;
 import client.views.components.TableView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import utils.CommonUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -12,7 +22,14 @@ import client.views.components.TableView;
 import utils.Mailing;
 
 public class AdminAction {
-    public AdminAction() {
+    PrintWriter writer;
+    BufferedReader reader;
+    int userId;
+    public AdminAction(PrintWriter writer,BufferedReader reader,int userId)
+    {
+        this.reader = reader;
+        this.writer = writer;
+        this.userId = userId;
         this.starts();
     }
 
@@ -244,12 +261,18 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    choice = insertAdminChoice();
-                    switch (choice) {
-                        case 1 -> System.out.println("choice 1");
-                        case 2 -> System.out.println("choice 2");
-                        case 3 -> System.out.println("choice 3");
-                        case 4 -> {
+                    choice = this.insertAdminChoice();
+                    switch(choice) {
+                        case 1:
+                            InviteUsers();
+                            break;
+                        case 2:
+                            System.out.println("choice 2");
+                            break;
+                        case 3:
+                            System.out.println("choice 3");
+                            break;
+                        case 4:
                             TableView st = new TableView();
                             st.setShowVerticalLines(true);
                             st.setHeaders("one", "two", "three", "four");
@@ -257,25 +280,28 @@ public class AdminAction {
                             st.addRow("assumption", "announcement", "reflection", "");
                             st.addRow("logic", "pleasant", "wild", "weel doen all ");
                             st.print();
-                        }
-                        case 5 -> System.out.println("choice 5");
-                        case 6 -> this.starts();
-                        case 44 -> {
+                            break;
+                        
+                        case 5: System.out.println("choice 5");
+                        break;
+                        case 6 : this.starts();
+                        break;
+                        case 44 :
                             CommonUtil.addTabs(10, true);
                             System.out.println("Going back");
-                        }
-                        case 55 -> {
+                        
+                        case 55 :
                             CommonUtil.addTabs(10, true);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
-                        }
-                        default -> {
+                        break;
+                        default :
                             CommonUtil.addTabs(10, false);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.print("Enter a valid choice (1,5): ");
                             CommonUtil.resetColor();
-                        }
+                        break;
                     }
 
                 } catch (Exception var3) {
@@ -284,6 +310,42 @@ public class AdminAction {
                     System.out.println("is incorrect input");
                     CommonUtil.resetColor();
                 }
+            }
+        }
+
+        public void InviteUsers() throws IOException {
+            Component.pageTitleView("SEND INVITATION TO OTHERS TO JOIN CLASS_C CHAT");
+            Scanner scanner = new Scanner(System.in);
+            List<String> emails = new ArrayList<String>();
+            String email = "";
+            CommonUtil.addTabs(10, true);
+            System.out.println("Type quit to stop writing emails");
+            while(!email.equals("quit")){
+                CommonUtil.resetColor();
+                CommonUtil.useColor("\u001b[0;33m");
+                CommonUtil.addTabs(10, false);
+                System.out.print(" User email: ");
+                CommonUtil.resetColor();
+                email = scanner.nextLine();
+                CommonUtil.useColor("\u001b[0m");
+                if(!email.equals("quit")){
+                    emails.add(email);
+                }
+            }
+            String key = "send_email_invitation";
+            Request request  = new Request(emails,key);
+            String requestAsString = new ObjectMapper().writeValueAsString(request);
+            writer.println(requestAsString);
+            CommonUtil.addTabs(10, false);
+            System.out.println("Sending emails ...");
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            if(response.isSuccess()){
+                CommonUtil.addTabs(10, false);
+                System.out.println("Email sent successfully");
+            }
+            else{
+                CommonUtil.addTabs(10, false);
+                System.out.println("Email failed to send.");
             }
         }
     }
