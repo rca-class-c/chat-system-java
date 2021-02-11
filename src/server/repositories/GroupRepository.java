@@ -33,10 +33,10 @@ public class GroupRepository  {
             String name = resultSet.getString("group_name");
             String description = resultSet.getString("description");
             int creator = resultSet.getInt("group_creator");
-            java.sql.Date created_at = resultSet.getDate("created_at");
-            java.sql.Date updated_at = resultSet.getDate("updated_at");
+//            java.sql.Date created_at = resultSet.getDate("created_at");
+//            java.sql.Date updated_at = resultSet.getDate("updated_at");
 
-            return new Group(g_id,name,description,creator,created_at,updated_at);
+            return new Group(g_id,name,description,creator);
 
         }
         resultSet.close();
@@ -54,11 +54,12 @@ public class GroupRepository  {
         ResultSet resultSet= statement.executeQuery(sql);
 
         while(resultSet.next()){
+            int id = resultSet.getInt("group_id");
             String name = resultSet.getString("group_name");
             String description = resultSet.getString("description");
             int creator = resultSet.getInt("group_creator");
 
-            Group group= new Group(name,description,creator);
+            Group group= new Group(id,name,description,creator);
             groupList.add(group);
         }
 
@@ -71,7 +72,7 @@ public class GroupRepository  {
     }
 
     public Group getGroupsByUserId(int user_id) throws SQLException {
-        String sql = "select groups.name from groups inner join user_group on user_group.user_id= ? where user_group.group_id=groups.id;";
+        String sql = "select group_id,groups.name from groups inner join user_group on user_group.user_id= ? where user_group.group_id=groups.id;";
         Connection connection= Config.getConnection();
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -99,7 +100,7 @@ public class GroupRepository  {
 
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setString(1,group.getName());
-        statement.setString(2,group.getName());
+        statement.setString(2,group.getDescription());
         statement.setInt(3,group.getCreator());
 
         boolean rowCreated= statement.executeUpdate()>0;
@@ -151,7 +152,7 @@ public class GroupRepository  {
             System.out.println("Reading users ....");
             List<Group> groups=new ArrayList<Group>();
             while(rs.next()){
-                groups.add(new Group(rs.getInt("group_id"),rs.getString("name"),rs.getString("description"),
+                groups.add(new Group(rs.getInt("group_id"),rs.getString("group_name"),rs.getString("description"),
                         rs.getInt("group_creator")));
             }
             System.out.println(groups.size());
