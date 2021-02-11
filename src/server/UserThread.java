@@ -2,11 +2,7 @@ package server;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.requestHandlers.FileRequestHandler;
-import server.requestHandlers.GroupMemberRequestHandler;
-import server.requestHandlers.GroupRequestHandler;
-import server.requestHandlers.MessageRequestHandler;
-import server.requestHandlers.UserRequestHandler;
+import server.requestHandlers.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -106,8 +102,8 @@ public class UserThread extends Thread {
                 else if(request_type.equals("delete_message")){
                     new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper,server);
                 }
-                else if(request_type.equals("send_verification_code")){
-                    System.out.println("Not yet done");
+                else if(request_type.equals("send_email_invitation")){
+                    new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper,server);
                 }
                 else if(request_type.equals("verify_code")){
                     System.out.println("Not yet done");
