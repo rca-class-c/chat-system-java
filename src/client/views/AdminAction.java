@@ -90,7 +90,6 @@ public class AdminAction {
 
     }
 
-
     private void chooseStat() {
         int choice = 0;
         while(choice != 55 && choice != 44){

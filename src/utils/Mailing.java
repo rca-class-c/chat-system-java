@@ -124,6 +124,7 @@ public class Mailing {
         return content;
     }
 
+
     public void setContent(String content) {
         this.content = content;
     }
