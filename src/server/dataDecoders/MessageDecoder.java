@@ -13,7 +13,6 @@ public class MessageDecoder {
     public MessageDecoder(String data) {
         this.data = data;
     }
-
     public ChatBetweenTwo returnChatMembers() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
@@ -24,6 +23,12 @@ public class MessageDecoder {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
         return new Messages(dataDecrypt.get("content").asText(),dataDecrypt.get("sender").asInt(),dataDecrypt.get("user_receiver").asInt(),dataDecrypt.get("group_receiver").asInt(),dataDecrypt.get("original_message").asInt());
+    }
+
+    public Messages returnMessageReplies() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode dataDecrypt = objectMapper.readTree(data);
+        return new Messages(dataDecrypt.get("content").asText(), dataDecrypt.get("sender").asInt(), dataDecrypt.get("user_receiver").asInt(), dataDecrypt.get("group_receiver").asInt(), dataDecrypt.get("original_message").asInt());
     }
     public MessageResponseDataFormat returnMessageDeleteData() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

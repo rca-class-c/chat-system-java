@@ -124,17 +124,35 @@ public class Mailing {
         return content;
     }
 
+
     public void setContent(String content) {
         this.content = content;
     }
 
     //end of getter and setter functions
 
+    /**
+     * methods used to send text email
+     * @option param  is  text|html
+     */
+
+    public void send(){
+         sendImplement("text");
+     }
+
+    /**
+     * methods used to send  whether message or html content to email
+     * @param choice  text|html
+     * @option () for sending text email
+     */
+     public  void send(String choice){
+        sendImplement(choice);
+     }
 
     /**
      * this is function used to send email to gmail account
      */
-   public void send(){
+   public void sendImplement( String choice){
        Properties props = new Properties();
        props.put("mail.smtp.host", "smtp.gmail.com");
        props.put("mail.smtp.socketFactory.port", "465");
@@ -150,6 +168,19 @@ public class Mailing {
                    }
                });
        //compose message
+       if (choice.equals("text")){
+           this.sendtext(session);
+       }else if (choice.equals("html")){
+           this.sendHtml(session);
+       }
+
+   }
+
+    /**
+     * method use to send text email
+     * @param session
+     */
+   public void   sendtext(Session session){
        try {
            MimeMessage message = new MimeMessage(session);
            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
@@ -159,7 +190,21 @@ public class Mailing {
            Transport.send(message);
            System.out.println("message sent successfully");
        } catch (MessagingException e) {throw new RuntimeException(e);}
+   }
 
-
-}
+    /**
+     * method use to send html content in email
+     * @param session
+     */
+   public void  sendHtml(Session session){
+       try {
+           MimeMessage message = new MimeMessage(session);
+           message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+           message.setSubject(this.subject);
+           message.setContent(this.content, "text/html");
+           //send message
+           Transport.send(message);
+           System.out.println("message sent successfully");
+       } catch (MessagingException e) {throw new RuntimeException(e);}
+   }
 }
