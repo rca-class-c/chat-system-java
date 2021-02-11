@@ -70,7 +70,7 @@ public class GroupMemberRequestHandler {
     }
 
     public void handleCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException{
-       int[] returned = new GroupMemberService().createMembers(new GroupMemberDecoder(data).createGroupMembersDecoder());
+        int[] returned = new GroupMemberService().createMembers(new GroupMemberDecoder(data).createGroupMembersDecoder());
         if(returned == null){
             System.out.println("Group members not added");
             Response response = new Response(null,false);

@@ -178,21 +178,17 @@ public class MessagesRepository {
         return messages;
     }
    //sending a direct message
-    public  Messages sendDirectMessage(Messages message) throws SQLException {
-        String sql= "insert into messages(content,sender,user_receiver,sent_at) values (?,?,?,?)";
+    public  Boolean sendDirectMessage(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
         Connection conn = Config.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
         statement.setInt(3, message.getUser_receiver() );
-        statement.setDate(4, (java.sql.Date) message.getSent_at());
-        boolean rowInsert= statement.executeUpdate()>1;
+        boolean rowInsert= statement.executeUpdate()>0;
         statement.close();
         conn.close();
-        if(rowInsert){
-            return message;
-        }
-        return null;
+        return rowInsert;
     }
     //----------------------------Reply direct messages-----------------------------
     // author : Melissa

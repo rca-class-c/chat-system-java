@@ -35,8 +35,9 @@ public class MessageRequestHandler {
     }
 
     public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
-        Messages returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
-        if (returned == null) {
+        Boolean returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
+        System.out.println(" Returned  "+returned);
+        if (!returned) {
             System.out.println("message not saved");
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
@@ -44,7 +45,7 @@ public class MessageRequestHandler {
         } else {
             Response response = new Response(returned, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(returned.getSender() + " sent a message");
+            System.out.println("sent a message");
             writer.println(ResponseAsString);
         }
     }
