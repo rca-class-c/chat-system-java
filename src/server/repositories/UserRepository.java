@@ -204,6 +204,7 @@ public class UserRepository {
      * Method for updating user which accepts the user to update as input and his/her id
      * */
     public User updateUser(User user,int userId) throws SQLException{
+        System.out.println("Reached    ");
         int affectedRows = 0;
 
             Connection connection = Config.getConnection();
@@ -218,7 +219,7 @@ public class UserRepository {
             statement.setString(6,user.getPassword());
             statement.setString(7,user.getDob());
             statement.setInt(8,user.getCategoryID());
-            statement.setInt(user.getUserID(),userId);
+            statement.setInt(9,user.getUserID());
             affectedRows = statement.executeUpdate();
             if(affectedRows > 0) {
                 return user;

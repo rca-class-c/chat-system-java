@@ -72,7 +72,6 @@ public class UserView {
                 new AdminAction();
             }
             else if(choice == 6){
-//                MyProfile();
                new ProfileSettings(userId,writer,reader).viewProfileSettingsOptions();
             }
             else if(choice == 4){
