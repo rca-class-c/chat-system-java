@@ -40,6 +40,7 @@ public class Group {
         this.creator = creator;
     }
 
+
     public int getId() {
         return id;
     }
