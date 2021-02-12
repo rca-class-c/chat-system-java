@@ -30,14 +30,10 @@ public class ChatServer {
     }
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            Component.pageTitleView("SERVER");
             System.out.println();
-
-
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.CYAN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
             CommonUtil.addTabs(10, false);
-            System.out.print(" Chat Server is listening on port "  + port + " ");
+            CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
+            System.out.print("Chat Server is listening on port "  + port + " ");
             CommonUtil.resetColor();
 
             while (true) {
@@ -62,16 +58,20 @@ public class ChatServer {
      
     	//connecting to the database
         Jedis jedis = new JedicConfig().conn();
-        if(jedis != null ){
-            CommonUtil.addTabs(10, false);
-            System.out.println("Jedis connection established");
-        }
+
         Connection conn  = new PostegresConfig().getConnection();
         if(conn != null){
-            CommonUtil.addTabs(10, false);
-            System.out.println("Postgres connection established");
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
+            System.out.print("Postgres connection established");
         }
-        
+        System.out.println();
+        if(jedis != null ){
+            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+            System.out.println("Jedis connection established");
+        }
+        CommonUtil.resetColor();
         int port = 9812;
         ChatServer server = new ChatServer(port);
         server.execute();	
