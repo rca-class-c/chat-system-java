@@ -1,7 +1,7 @@
 package server.repositories;
 
 import server.models.Messages;
-import server.config.Config;
+import server.config.PostegresConfig;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
@@ -17,7 +17,7 @@ public class MessagesRepository {
     public List<DirectMessage> getDirectMessages(int first, int last) throws SQLException {
         List<DirectMessage> allMessagesDM = new ArrayList<DirectMessage>();
 
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
@@ -50,7 +50,7 @@ public class MessagesRepository {
     public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
         List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
@@ -81,7 +81,7 @@ public class MessagesRepository {
     // author : Loraine
     public Messages updateMessage (Messages message) throws Exception{
 
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         String query = String.format("UPDATE messages SET content = ? WHERE id = ?;");
         PreparedStatement statement =  conn.prepareStatement(query);
 
@@ -102,7 +102,7 @@ public class MessagesRepository {
 
     public Set<ResultSet> getNotifications(int user_id)throws SQLException{
         Set<ResultSet>  notis = new HashSet<>();
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
         ResultSet groups;
         groups = statement.executeQuery("select * from user_group where user_id="+user_id);
@@ -119,7 +119,7 @@ public class MessagesRepository {
         return notis;
     }
     public String getGroupName(int id) throws  SQLException{
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
         ResultSet grn;
         grn = statement.executeQuery("select group_name from groups where group_id="+id);
@@ -137,7 +137,7 @@ public class MessagesRepository {
     //sending group message
     public  Messages sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
@@ -153,7 +153,7 @@ public class MessagesRepository {
     }
 
     public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
         List <DirectMessage> messages = new ArrayList<DirectMessage>();
 
@@ -180,7 +180,7 @@ public class MessagesRepository {
    //sending a direct message
     public  Boolean sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
@@ -195,7 +195,7 @@ public class MessagesRepository {
 
     public Messages ReplyDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
@@ -218,7 +218,7 @@ public class MessagesRepository {
 
     public Messages ReplyGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
-        Connection conn = Config.getConnection();
+        Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
@@ -239,7 +239,7 @@ public class MessagesRepository {
     public boolean DeleteMessages(int userid,int message_id) throws SQLException {
         int affectedRows = 0;
 
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, userid);
