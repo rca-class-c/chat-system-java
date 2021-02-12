@@ -1,0 +1,897 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
+
+-- Started on 2021-02-08 11:29:02
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE "chat_system_db";
+--
+-- TOC entry 3113 (class 1262 OID 16540)
+-- Name: chat_system_db; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "chat_system_db" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'English_United States.1252';
+
+
+ALTER DATABASE "chat_system_db" OWNER TO "postgres";
+
+\connect "chat_system_db"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 640 (class 1247 OID 16542)
+-- Name: gender_enum; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE "public"."gender_enum" AS ENUM (
+    'female',
+    'male',
+    'other'
+);
+
+
+ALTER TYPE "public"."gender_enum" OWNER TO "postgres";
+
+--
+-- TOC entry 684 (class 1247 OID 24966)
+-- Name: invite_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE "public"."invite_status" AS ENUM (
+    'PENDING',
+    'ACCEPTED',
+    'DENIED'
+);
+
+
+ALTER TYPE "public"."invite_status" OWNER TO "postgres";
+
+--
+-- TOC entry 668 (class 1247 OID 16621)
+-- Name: message_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE "public"."message_status" AS ENUM (
+    'SEEN',
+    'UNSEEN',
+    'DELETED',
+    'EDITED',
+    'UNSEEN_EDITED',
+    'SEEN_EDITED',
+    'UNSEEN_DELETED',
+    'SEEN_DELETED'
+);
+
+
+ALTER TYPE "public"."message_status" OWNER TO "postgres";
+
+--
+-- TOC entry 643 (class 1247 OID 16550)
+-- Name: status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE "public"."status" AS ENUM (
+    'ACTIVE',
+    'INACTIVE'
+);
+
+
+ALTER TYPE "public"."status" OWNER TO "postgres";
+
+SET default_table_access_method = "heap";
+
+--
+-- TOC entry 210 (class 1259 OID 16637)
+-- Name: files; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."files" (
+    "id" integer NOT NULL,
+    "url" character varying(255) NOT NULL,
+    "file_name" character varying(50) NOT NULL,
+    "file_type" character varying(50) NOT NULL,
+    "file_size" character varying(50) NOT NULL,
+    "file_size_type" character varying(50) NOT NULL,
+    "sender_id" integer,
+    "created_at" "date" DEFAULT "now"() NOT NULL
+);
+
+
+ALTER TABLE "public"."files" OWNER TO "postgres";
+
+--
+-- TOC entry 213 (class 1259 OID 24880)
+-- Name: files_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."files_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."files_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 3114 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."files_id_seq" OWNED BY "public"."files"."id";
+
+
+--
+-- TOC entry 200 (class 1259 OID 16555)
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."groups" (
+    "group_id" integer NOT NULL,
+    "group_name" character varying(40) NOT NULL,
+    "description" character varying(40) NOT NULL,
+    "group_creator" integer
+);
+
+
+ALTER TABLE "public"."groups" OWNER TO "postgres";
+
+--
+-- TOC entry 214 (class 1259 OID 24882)
+-- Name: groups_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."groups_group_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."groups_group_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 3115 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: groups_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."groups_group_id_seq" OWNED BY "public"."groups"."group_id";
+
+
+--
+-- TOC entry 201 (class 1259 OID 16558)
+-- Name: groups_groupid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."groups_groupid_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."groups_groupid_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 3116 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: groups_groupid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."groups_groupid_seq" OWNED BY "public"."groups"."group_id";
+
+
+--
+-- TOC entry 211 (class 1259 OID 16641)
+-- Name: messages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."messages" (
+    "id" integer NOT NULL,
+    "content" "text" NOT NULL,
+    "sender" integer NOT NULL,
+    "user_receiver" integer,
+    "group_receiver" integer,
+    "original_message" integer,
+    "sender_id" integer,
+    "sent_at" "date" DEFAULT "now"() NOT NULL
+);
+
+
+ALTER TABLE "public"."messages" OWNER TO "postgres";
+
+--
+-- TOC entry 215 (class 1259 OID 24884)
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."messages_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."messages_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 3117 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."messages_id_seq" OWNED BY "public"."messages"."id";
+
+
+--
+-- TOC entry 202 (class 1259 OID 16560)
+-- Name: permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."permissions" (
+    "permission_id" integer NOT NULL,
+    "name" character varying(24) NOT NULL,
+    "status" character varying(20) NOT NULL,
+    "created_at" "date",
+    "updated_at" "date"
+);
+
+
+ALTER TABLE "public"."permissions" OWNER TO "postgres";
+
+--
+-- TOC entry 203 (class 1259 OID 16563)
+-- Name: permissions_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE "public"."permissions" ALTER COLUMN "permission_id" ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME "public"."permissions_permission_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 216 (class 1259 OID 24973)
+-- Name: sent_invitations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."sent_invitations" (
+    "sent_id" integer NOT NULL,
+    "admin_id" integer NOT NULL,
+    "sent_to" character varying(255) NOT NULL,
+    "verificationcode" integer NOT NULL,
+    "status" "public"."invite_status" DEFAULT 'PENDING'::"public"."invite_status" NOT NULL
+);
+
+
+ALTER TABLE "public"."sent_invitations" OWNER TO "postgres";
+
+--
+-- TOC entry 217 (class 1259 OID 24977)
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."sent_invitations_sent_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."sent_invitations_sent_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 3118 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."sent_invitations_sent_id_seq" OWNED BY "public"."sent_invitations"."sent_id";
+
+
+--
+-- TOC entry 208 (class 1259 OID 16576)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."users" (
+    "user_id" integer NOT NULL,
+    "first_name" character varying(40) NOT NULL,
+    "last_name" character varying(40) NOT NULL,
+    "username" character varying(40) NOT NULL,
+    "email" character varying(40) NOT NULL,
+    "gender" "public"."gender_enum" NOT NULL,
+    "pass_word" character varying(40) NOT NULL,
+    "dob" "date",
+    "created_at" "date",
+    "updated_at" "date",
+    "status" "public"."status",
+    "categoryid" integer
+);
+
+
+ALTER TABLE "public"."users" OWNER TO "postgres";
+
+--
+-- TOC entry 212 (class 1259 OID 16697)
+-- Name: test_view; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW "public"."test_view" AS
+ SELECT "users"."user_id",
+    "users"."last_name",
+    "users"."first_name"
+   FROM "public"."users";
+
+
+ALTER TABLE "public"."test_view" OWNER TO "postgres";
+
+--
+-- TOC entry 204 (class 1259 OID 16565)
+-- Name: user_categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."user_categories" (
+    "categoryid" integer NOT NULL,
+    "name" character varying(255) NOT NULL,
+    "created_at" "date" NOT NULL,
+    "updated_at" "date" NOT NULL
+);
+
+
+ALTER TABLE "public"."user_categories" OWNER TO "postgres";
+
+--
+-- TOC entry 205 (class 1259 OID 16568)
+-- Name: user_categories_categoryid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."user_categories_categoryid_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."user_categories_categoryid_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 3119 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: user_categories_categoryid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."user_categories_categoryid_seq" OWNED BY "public"."user_categories"."categoryid";
+
+
+--
+-- TOC entry 206 (class 1259 OID 16570)
+-- Name: user_category_permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."user_category_permissions" (
+    "user_permission_id" integer NOT NULL,
+    "category_id" integer,
+    "permission_id" integer,
+    "created_at" "date",
+    "updated_at" "date"
+);
+
+
+ALTER TABLE "public"."user_category_permissions" OWNER TO "postgres";
+
+--
+-- TOC entry 207 (class 1259 OID 16573)
+-- Name: user_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."user_group" (
+    "group_id" integer NOT NULL,
+    "user_id" integer NOT NULL
+);
+
+
+ALTER TABLE "public"."user_group" OWNER TO "postgres";
+
+--
+-- TOC entry 209 (class 1259 OID 16579)
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE "public"."users" ALTER COLUMN "user_id" ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME "public"."users_user_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 2916 (class 2604 OID 24904)
+-- Name: files id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."files" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."files_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2913 (class 2604 OID 24905)
+-- Name: groups group_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."groups" ALTER COLUMN "group_id" SET DEFAULT "nextval"('"public"."groups_group_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2918 (class 2604 OID 24906)
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."messages_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2920 (class 2604 OID 24979)
+-- Name: sent_invitations sent_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sent_invitations" ALTER COLUMN "sent_id" SET DEFAULT "nextval"('"public"."sent_invitations_sent_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2914 (class 2604 OID 24907)
+-- Name: user_categories categoryid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_categories" ALTER COLUMN "categoryid" SET DEFAULT "nextval"('"public"."user_categories_categoryid_seq"'::"regclass");
+
+
+--
+-- TOC entry 3101 (class 0 OID 16637)
+-- Dependencies: 210
+-- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3091 (class 0 OID 16555)
+-- Dependencies: 200
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3102 (class 0 OID 16641)
+-- Dependencies: 211
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3093 (class 0 OID 16560)
+-- Dependencies: 202
+-- Data for Name: permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."permissions" ("permission_id", "name", "status", "created_at", "updated_at") OVERRIDING SYSTEM VALUE VALUES (1, 'CAN_SEND_INVITATION', 'ACTIVE', NULL, NULL);
+INSERT INTO "public"."permissions" ("permission_id", "name", "status", "created_at", "updated_at") OVERRIDING SYSTEM VALUE VALUES (2, 'ACTIVATE_USER', 'ACTIVE
+', NULL, NULL);
+
+
+--
+-- TOC entry 3106 (class 0 OID 24973)
+-- Dependencies: 216
+-- Data for Name: sent_invitations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3095 (class 0 OID 16565)
+-- Dependencies: 204
+-- Data for Name: user_categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."user_categories" ("categoryid", "name", "created_at", "updated_at") VALUES (1, 'USER', '2020-12-21', '2020-12-21');
+
+
+--
+-- TOC entry 3097 (class 0 OID 16570)
+-- Dependencies: 206
+-- Data for Name: user_category_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3098 (class 0 OID 16573)
+-- Dependencies: 207
+-- Data for Name: user_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3099 (class 0 OID 16576)
+-- Dependencies: 208
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (5, 'munezero', 'didier', 'Didien', 'didier@gmail.com', 'male', 'hello123', '2000-12-12', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (6, 'dfsaf', 'dsfaf', 'fdsaf', 'dfsafasd', 'male', 'sdaf', '2020-12-12', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (7, 'Kobusinge', 'Shallon', 'Shallon', 'shallo041@gmail.com', 'female', 'hello123', '2020-12-12', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (8, 'fdas', 'fdsa', 'fsda', 'sad', 'female', 'jdls', '2002-12-12', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (9, 'fsda', 'dfsa', 'dfsaf', 'sdaf', 'male', 'fasdf', '2020-12-12', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (10, 'Yvette', 'Gahamanyi', 'Gahay', 'gahamanyi@gmail.com', 'female', 'yvette2004', '2006-08-10', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (3, 'Hortance', 'Irakoze', 'Hortis', 'irakoze@gmail.com', 'female', 'rakoze', '2020-12-12', NULL, NULL, 'ACTIVE', 1);
+INSERT INTO "public"."users" ("user_id", "first_name", "last_name", "username", "email", "gender", "pass_word", "dob", "created_at", "updated_at", "status", "categoryid") OVERRIDING SYSTEM VALUE VALUES (4, 'murenzi', 'confinfi', 'Tracy', 'confiance@gmail.com', 'female', 'am_tracy', '2003-10-20', NULL, NULL, 'ACTIVE', 1);
+
+
+--
+-- TOC entry 3120 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."files_id_seq"', 1, false);
+
+
+--
+-- TOC entry 3121 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: groups_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."groups_group_id_seq"', 1, true);
+
+
+--
+-- TOC entry 3122 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: groups_groupid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."groups_groupid_seq"', 1, false);
+
+
+--
+-- TOC entry 3123 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."messages_id_seq"', 7, true);
+
+
+--
+-- TOC entry 3124 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."permissions_permission_id_seq"', 2, true);
+
+
+--
+-- TOC entry 3125 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."sent_invitations_sent_id_seq"', 1, true);
+
+
+--
+-- TOC entry 3126 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: user_categories_categoryid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."user_categories_categoryid_seq"', 2, true);
+
+
+--
+-- TOC entry 3127 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."users_user_id_seq"', 5, true);
+
+
+--
+-- TOC entry 2938 (class 2606 OID 16651)
+-- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."files"
+    ADD CONSTRAINT "files_pkey" PRIMARY KEY ("id");
+
+
+--
+-- TOC entry 2940 (class 2606 OID 16653)
+-- Name: files files_url_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."files"
+    ADD CONSTRAINT "files_url_key" UNIQUE ("url");
+
+
+--
+-- TOC entry 2922 (class 2606 OID 16584)
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."groups"
+    ADD CONSTRAINT "groups_pkey" PRIMARY KEY ("group_id");
+
+
+--
+-- TOC entry 2942 (class 2606 OID 16655)
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages"
+    ADD CONSTRAINT "messages_pkey" PRIMARY KEY ("id");
+
+
+--
+-- TOC entry 2924 (class 2606 OID 16586)
+-- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."permissions"
+    ADD CONSTRAINT "permissions_pkey" PRIMARY KEY ("permission_id");
+
+
+--
+-- TOC entry 2944 (class 2606 OID 24981)
+-- Name: sent_invitations sent_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sent_invitations"
+    ADD CONSTRAINT "sent_invitations_pkey" PRIMARY KEY ("sent_id");
+
+
+--
+-- TOC entry 2926 (class 2606 OID 16588)
+-- Name: user_categories user_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_categories"
+    ADD CONSTRAINT "user_categories_pkey" PRIMARY KEY ("categoryid");
+
+
+--
+-- TOC entry 2930 (class 2606 OID 24891)
+-- Name: user_group user_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_group"
+    ADD CONSTRAINT "user_group_pkey" PRIMARY KEY ("group_id", "user_id");
+
+
+--
+-- TOC entry 2928 (class 2606 OID 16590)
+-- Name: user_category_permissions user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_category_permissions"
+    ADD CONSTRAINT "user_permissions_pkey" PRIMARY KEY ("user_permission_id");
+
+
+--
+-- TOC entry 2932 (class 2606 OID 16592)
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."users"
+    ADD CONSTRAINT "users_email_key" UNIQUE ("email");
+
+
+--
+-- TOC entry 2934 (class 2606 OID 16594)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."users"
+    ADD CONSTRAINT "users_pkey" PRIMARY KEY ("user_id");
+
+
+--
+-- TOC entry 2936 (class 2606 OID 24893)
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."users"
+    ADD CONSTRAINT "users_username_key" UNIQUE ("username");
+
+
+--
+-- TOC entry 2952 (class 2606 OID 16692)
+-- Name: users category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."users"
+    ADD CONSTRAINT "category" FOREIGN KEY ("categoryid") REFERENCES "public"."user_categories"("categoryid");
+
+
+--
+-- TOC entry 2953 (class 2606 OID 16656)
+-- Name: files files_sender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."files"
+    ADD CONSTRAINT "files_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2945 (class 2606 OID 24894)
+-- Name: groups groups_group_creator_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."groups"
+    ADD CONSTRAINT "groups_group_creator_fkey" FOREIGN KEY ("group_creator") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2954 (class 2606 OID 16661)
+-- Name: messages messages_group_receiver_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages"
+    ADD CONSTRAINT "messages_group_receiver_fkey" FOREIGN KEY ("group_receiver") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2955 (class 2606 OID 16666)
+-- Name: messages messages_original_message_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages"
+    ADD CONSTRAINT "messages_original_message_fkey" FOREIGN KEY ("original_message") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2956 (class 2606 OID 16671)
+-- Name: messages messages_sender_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages"
+    ADD CONSTRAINT "messages_sender_fkey" FOREIGN KEY ("sender") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2957 (class 2606 OID 16676)
+-- Name: messages messages_sender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages"
+    ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "public"."messages"("id");
+
+
+--
+-- TOC entry 2958 (class 2606 OID 16681)
+-- Name: messages messages_user_receiver_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."messages"
+    ADD CONSTRAINT "messages_user_receiver_fkey" FOREIGN KEY ("user_receiver") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2959 (class 2606 OID 24982)
+-- Name: sent_invitations sent_invitations_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sent_invitations"
+    ADD CONSTRAINT "sent_invitations_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2946 (class 2606 OID 16595)
+-- Name: user_category_permissions user_category_permissions_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_category_permissions"
+    ADD CONSTRAINT "user_category_permissions_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "public"."user_categories"("categoryid");
+
+
+--
+-- TOC entry 2949 (class 2606 OID 24899)
+-- Name: user_category_permissions user_category_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_category_permissions"
+    ADD CONSTRAINT "user_category_permissions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "public"."permissions"("permission_id");
+
+
+--
+-- TOC entry 2950 (class 2606 OID 16600)
+-- Name: user_group user_group_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_group"
+    ADD CONSTRAINT "user_group_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("group_id");
+
+
+--
+-- TOC entry 2951 (class 2606 OID 16605)
+-- Name: user_group user_group_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_group"
+    ADD CONSTRAINT "user_group_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2947 (class 2606 OID 16610)
+-- Name: user_category_permissions user_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_category_permissions"
+    ADD CONSTRAINT "user_permissions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "public"."permissions"("permission_id");
+
+
+--
+-- TOC entry 2948 (class 2606 OID 16615)
+-- Name: user_category_permissions user_permissions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."user_category_permissions"
+    ADD CONSTRAINT "user_permissions_user_id_fkey" FOREIGN KEY ("category_id") REFERENCES "public"."users"("user_id");
+
+
+-- Completed on 2021-02-08 11:29:03
+
+--
+-- PostgreSQL database dump complete
+--
+

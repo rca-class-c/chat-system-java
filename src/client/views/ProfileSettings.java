@@ -113,43 +113,77 @@ public class ProfileSettings {
         if(profileResponse.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
             Component.pageTitleView("MY PROFILE");
-
+            CommonUtil.addTabs(10, false);
+            System.out.print("If you don't want to change any of your data, type [-1] ");
             CommonUtil.addTabs(10, false);
             System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
             String firstName = scanner.nextLine();
+            if(!firstName.equals("-1")){
+                CommonUtil.addTabs(10, false);
+                System.out.print("First name changed!");
+                profile.setFname(firstName);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("LAST NAME"+"["+profile.getLname()+"]:  ");
             String lastName = scanner.nextLine();
+            if(!lastName.equals("-1")){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Last name changed!");
+                profile.setLname(lastName);
+            }
 
             CommonUtil.addTabs(10, false);
             System.out.print("USERNAME"+"["+profile.getUsername()+"]: ");
             String username = scanner.nextLine();
+            if(!username.equals("-1")){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Username changed!");
+                profile.setUsername(username);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("EMAIL"+"["+profile.getEmail()+"]:  ");
             String email = scanner.nextLine();
+            if(!email.equals("-1")){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Email changed!");
+                profile.setEmail(email);
+            }
 
             CommonUtil.addTabs(10, false);
             System.out.print("DOB"+"["+profile.getDob()+"]:  ");
             String dob = scanner.nextLine();
+            if(!email.equals("-1")){
+                CommonUtil.addTabs(10, false);
+                System.out.print("DOB changed!");
+                profile.setDob(dob);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
             String gender = scanner.nextLine();
+            if(!gender.equals("-1")){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Gender changed!");
+                profile.setGender(gender);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
             String password = scanner.nextLine();
+            if(!password.equals("-1")){
+                profile.setPassword(password);
+            }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            User user = new User(userid,firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
+            //User user = new User(userid,firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
             String updateKey = "update_profile";
-            Request request = new Request(user,updateKey);
+            Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
