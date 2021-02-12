@@ -1,6 +1,6 @@
 package server.repositories;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.File;
 import utils.FileUtil;
 
@@ -13,7 +13,7 @@ public class FileRepository {
     public File save(File file) {
       try {
 
-          Connection connection = Config.getConnection();
+          Connection connection = PostegresConfig.getConnection();
           Statement statement = connection.createStatement();
 
           file.setUrl(uploadFileToServer(file));
