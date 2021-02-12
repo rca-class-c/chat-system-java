@@ -98,7 +98,7 @@ public class ProfileSettings {
             System.out.println("No profile found!");
         }
 
-        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
+        Component.chooseOptionInputView("Type number to continue: ");
         int choice  = scanner.nextInt();
 
     }
