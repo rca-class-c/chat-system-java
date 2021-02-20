@@ -69,7 +69,7 @@ public class UserView {
                 new SendMessageView(userId, writer, reader).ViewNotifications();
             }
             else if(choice == 5){
-                new AdminAction(writer,reader,userId);
+                new AdminAction(writer, reader,userId);
             }
             else if(choice == 6){
                new ProfileSettings(userId,writer,reader).viewProfileSettingsOptions();

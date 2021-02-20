@@ -26,7 +26,7 @@ public class  sendInvitations{
             verificationCodes.add(sentOtp);
         }
         // SEARCH FOR THE ADMIN
-     id=repositories.searchForAdmin(email);
+        id=repositories.searchForAdmin(email);
 // SEND INVITATIONS TO THE SELECTED EMAILS
         if (id!=0) {
             Properties prop = new Properties();

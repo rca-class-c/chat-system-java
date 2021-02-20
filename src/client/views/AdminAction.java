@@ -25,7 +25,7 @@ public class AdminAction {
     PrintWriter writer;
     BufferedReader reader;
     int userId;
-    public AdminAction(PrintWriter writer,BufferedReader reader,int userId)
+    public AdminAction(PrintWriter writer, BufferedReader reader, int userId)
     {
         this.reader = reader;
         this.writer = writer;
@@ -275,7 +275,7 @@ public class AdminAction {
                     choice = this.insertAdminChoice();
                     switch(choice) {
                         case 1:
-                            InviteUsers();
+                            System.out.println("choice 1");
                             break;
                         case 2:
                             System.out.println("choice 2");
@@ -322,40 +322,39 @@ public class AdminAction {
                 }
             }
         }
-
-        public void InviteUsers() throws IOException {
-            Component.pageTitleView("SEND INVITATION TO OTHERS TO JOIN CLASS_C CHAT");
-            Scanner scanner = new Scanner(System.in);
-            List<String> emails = new ArrayList<String>();
-            String email = "";
-            CommonUtil.addTabs(10, true);
-            System.out.println("Type quit to stop writing emails");
-            while(!email.equals("quit")){
-                CommonUtil.resetColor();
-                CommonUtil.useColor("\u001b[0;33m");
-                CommonUtil.addTabs(10, false);
-                System.out.print(" User email: ");
-                CommonUtil.resetColor();
-                email = scanner.nextLine();
-                CommonUtil.useColor("\u001b[0m");
-                if(!email.equals("quit")){
-                    emails.add(email);
-                }
-            }
-            String key = "send_email_invitation";
-            Request request  = new Request(emails,key);
-            String requestAsString = new ObjectMapper().writeValueAsString(request);
-            writer.println(requestAsString);
+    public void InviteUsers() throws IOException, JsonProcessingException {
+        Component.pageTitleView("SEND INVITATION TO OTHERS TO JOIN CLASS_C CHAT");
+        Scanner scanner = new Scanner(System.in);
+        List<String> emails = new ArrayList<String>();
+        String email = "";
+        CommonUtil.addTabs(10, true);
+        System.out.println("Type quit to stop writing emails");
+        while(!email.equals("quit")){
+            CommonUtil.resetColor();
+            CommonUtil.useColor("\u001b[0;33m");
             CommonUtil.addTabs(10, false);
-            System.out.println("Sending emails ...");
-            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-            if(response.isSuccess()){
-                CommonUtil.addTabs(10, false);
-                System.out.println("Email sent successfully");
-            }
-            else{
-                CommonUtil.addTabs(10, false);
-                System.out.println("Email failed to send.");
+            System.out.print(" User email: ");
+            CommonUtil.resetColor();
+            email = scanner.nextLine();
+            CommonUtil.useColor("\u001b[0m");
+            if(!email.equals("quit")){
+                emails.add(email);
             }
         }
+        String key = "send_email_invitation";
+        Request request  = new Request(emails,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        CommonUtil.addTabs(10, false);
+        System.out.println("Sending emails ...");
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            CommonUtil.addTabs(10, false);
+            System.out.println("Email sent successfully");
+        }
+        else{
+            CommonUtil.addTabs(10, false);
+            System.out.println("Email failed to send.");
+        }
+    }
     }

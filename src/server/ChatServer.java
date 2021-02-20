@@ -1,6 +1,9 @@
 package server;
 
 import client.views.components.Component;
+import redis.clients.jedis.Jedis;
+import server.config.JedicConfig;
+import server.config.PostegresConfig;
 import server.models.ActiveUser;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -27,17 +30,15 @@ public class ChatServer {
     }
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            Component.pageTitleView("SERVER");
             System.out.println();
-
-
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.WHITE_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.BLACK_BOLD);
-            System.out.print(" Chat Server is listening on port "  + port + " ");
+            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
+            System.out.print("Chat Server is listening on port "  + port + " ");
             CommonUtil.resetColor();
 
             while (true) {
                 Socket socket = serverSocket.accept();
+                CommonUtil.addTabs(10, false);
                 System.out.println("New user connected");
                 // passing socket and server to the userthread
                 UserThread newUser = new UserThread(socket, this);
@@ -47,16 +48,30 @@ public class ChatServer {
                 newUser.start();
             }
         } catch (IOException ex) {
+            CommonUtil.addTabs(10, false);
             System.out.println("Error in the server: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
      
     	//connecting to the database
+        Jedis jedis = new JedicConfig().conn();
 
-        
+        Connection conn  = new PostegresConfig().getConnection();
+        if(conn != null){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
+            System.out.print("Postgres connection established");
+        }
+        System.out.println();
+        if(jedis != null ){
+            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+            System.out.println("Jedis connection established");
+        }
+        CommonUtil.resetColor();
         int port = 9812;
         ChatServer server = new ChatServer(port);
         server.execute();	

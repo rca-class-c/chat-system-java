@@ -1,7 +1,7 @@
 package utils;
 
 import server.models.enums.FileSizeTypeEnum;
-import server.config.Config;
+import server.config.PostegresConfig;
 
 import java.io.File;
 import java.io.IOException;

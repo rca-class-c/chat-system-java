@@ -1,6 +1,6 @@
 package server.middlewares;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +30,7 @@ public class Authorization {
     public void getIds() throws SQLException{
 
         String sql = "select name from permissions ";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
@@ -45,7 +45,7 @@ public class Authorization {
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -63,7 +63,7 @@ public class Authorization {
     public  boolean canCreateGroup(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -83,7 +83,7 @@ public class Authorization {
     public  boolean canInvite(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -103,7 +103,7 @@ public class Authorization {
     public  boolean canDeleteGroup(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -122,7 +122,7 @@ public class Authorization {
     public  boolean canViewStatistics(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -141,7 +141,7 @@ public class Authorization {
     public  boolean canDeactivateUser(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -161,7 +161,7 @@ public class Authorization {
     public  boolean canAddToGroup(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();
@@ -181,7 +181,7 @@ public class Authorization {
     public  boolean canRemoveFromGroup(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, cat_Id);
         ResultSet resultSet = statement.executeQuery();

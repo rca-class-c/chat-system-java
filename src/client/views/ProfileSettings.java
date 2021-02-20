@@ -98,7 +98,7 @@ public class ProfileSettings {
             System.out.println("No profile found!");
         }
 
-        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
+        Component.chooseOptionInputView("Type number to continue: ");
         int choice  = scanner.nextInt();
 
     }
@@ -113,43 +113,77 @@ public class ProfileSettings {
         if(profileResponse.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
             Component.pageTitleView("MY PROFILE");
-
+            CommonUtil.addTabs(10, false);
+            System.out.print("If you don't want to change any of your data, type [-1] ");
             CommonUtil.addTabs(10, false);
             System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
             String firstName = scanner.nextLine();
+            if(!firstName.equals("-1") && !firstName.equals(profile.getFname())){
+                CommonUtil.addTabs(10, false);
+                System.out.print("First name changed!");
+                profile.setFname(firstName);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("LAST NAME"+"["+profile.getLname()+"]:  ");
             String lastName = scanner.nextLine();
+            if(!lastName.equals("-1") && !lastName.equals(profile.getLname())){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Last name changed!");
+                profile.setLname(lastName);
+            }
 
             CommonUtil.addTabs(10, false);
             System.out.print("USERNAME"+"["+profile.getUsername()+"]: ");
             String username = scanner.nextLine();
+            if(!username.equals("-1") && !username.equals(profile.getUsername())){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Username changed!");
+                profile.setUsername(username);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("EMAIL"+"["+profile.getEmail()+"]:  ");
             String email = scanner.nextLine();
+            if(!email.equals("-1") && !email.equals(profile.getEmail())){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Email changed!");
+                profile.setEmail(email);
+            }
 
             CommonUtil.addTabs(10, false);
             System.out.print("DOB"+"["+profile.getDob()+"]:  ");
             String dob = scanner.nextLine();
+            if(!dob.equals("-1") && !dob.equals(profile.getDob())){
+                CommonUtil.addTabs(10, false);
+                System.out.print("DOB changed!");
+                profile.setDob(dob);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
             String gender = scanner.nextLine();
+            if(!gender.equals("-1") && !gender.equals(profile.getGender())){
+                CommonUtil.addTabs(10, false);
+                System.out.print("Gender changed!");
+                profile.setGender(gender);
+            }
 
 
             CommonUtil.addTabs(10, false);
             System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
             String password = scanner.nextLine();
+            if(!password.equals("-1") && !password.equals(profile.getPassword())){
+                profile.setPassword(password);
+            }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            User user = new User(userid,firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
+            //User user = new User(userid,firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
             String updateKey = "update_profile";
-            Request request = new Request(user,updateKey);
+            Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());

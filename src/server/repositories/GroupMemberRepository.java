@@ -1,6 +1,6 @@
 package server.repositories;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.GroupMember;
 
 import java.sql.Connection;
@@ -21,7 +21,7 @@ public class GroupMemberRepository {
 
     public GroupMember createMember(GroupMember group_member) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setInt(1,group_member.getGroup_id());
@@ -39,7 +39,7 @@ public class GroupMemberRepository {
 
     public int[] createMembers(List<GroupMember> groupMembers) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement= connection.prepareStatement(sql);
 
@@ -68,7 +68,7 @@ public class GroupMemberRepository {
     public List<GroupMember> getAllMembers(int id) throws SQLException {
         List<GroupMember> memberList= new ArrayList<>();
         String sql= "select user_id from user_group where group_id=?";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1,id);
@@ -91,7 +91,7 @@ public class GroupMemberRepository {
     public boolean deleteMember(GroupMember groupMember) throws SQLException {
         String sql= "delete from user_group where group_id=? && user_id=?";
 
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1,groupMember.getGroup_id());
@@ -106,7 +106,7 @@ public class GroupMemberRepository {
 
     public int[] createMembers(int group_id,List<Integer> groupMembers) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
         PreparedStatement statement= connection.prepareStatement(sql);
         for (Iterator<Integer> iterator = groupMembers.iterator(); iterator.hasNext();){
             Integer groupMember= iterator.next();
