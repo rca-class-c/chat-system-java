@@ -44,7 +44,6 @@ public class UserDecoder {
     public User UpdateUserDecode() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
-        System.out.println(dataDecrypt.get("gender").asText());
         return new User(dataDecrypt.get("userID").asInt(),dataDecrypt.get("fname").asText(),dataDecrypt.get("lname").asText(),dataDecrypt.get("password").asText(),dataDecrypt.get("email").asText(),dataDecrypt.get("dob").asText(),dataDecrypt.get("username").asText(),dataDecrypt.get("gender").asText(),dataDecrypt.get("categoryID").asInt(),dataDecrypt.get("status").asText());
 
 
