@@ -19,8 +19,12 @@ public class JedisConfig {
 
 			// assign migrations.sql parameters
 			String url = pros.getProperty("REDIS_URL");
+			int port = Integer.parseUnsignedInt(pros.getProperty("REDIS_PORT"));
 
-			conn = new Jedis(url);
+			if(port == 0)
+				conn = new Jedis(url);
+			else
+				conn = new Jedis(url,port);
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
