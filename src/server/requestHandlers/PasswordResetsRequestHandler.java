@@ -18,6 +18,15 @@ import java.io.PrintWriter;
  */
 public class PasswordResetsRequestHandler {
 
+    /**
+     * handling password reset initiation request
+     *
+     * @param data data needed to initiate password reset
+     * @param writer writer instance
+     * @param objectMapper object mapper instance
+     * @throws JsonProcessingException json proccess exception
+     * @throws SQLException sql exception
+     */
     public void handlePasswordResetInitiation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException{
         PasswordResets passwordReset = new PasswordResetService().create(new PasswordResetsDecoder(data).initiatePasswordResetDecode());
 
