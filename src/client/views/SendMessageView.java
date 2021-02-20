@@ -400,6 +400,7 @@ public class SendMessageView {
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
             }
+            System.out.println("");
             Component.chooseOptionInputView("Type user id to chat with: ");
             int choice  = scanner.nextInt();
             do{
