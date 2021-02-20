@@ -42,7 +42,7 @@ public class MessagesService {
         return messagesRepository.sendGroupMessage(messages);
     }
 
-    public Messages sendDirectly(Messages messages) throws SQLException{
+    public Boolean sendDirectly(Messages messages) throws SQLException{
         return messagesRepository.sendDirectMessage(messages);
     }
     public Messages ReplyInGroup(Messages messages) throws SQLException{

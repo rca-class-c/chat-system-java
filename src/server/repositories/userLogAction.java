@@ -1,5 +1,5 @@
 package  server.repositories;
-import  server.config.Config;
+import server.config.PostegresConfig;
 import  server.models.UserLog;
 import  server.models.Response;
 
@@ -19,7 +19,7 @@ import java.util.TimeZone;
 public class userLogAction {
     String getAllUserLogsQuery="SELECT * FROM user_logs";
     public  List<Object> getAllUserLogs() throws Exception{
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
         Statement stmt=connection.createStatement();
         ResultSet rs=stmt.executeQuery(getAllUserLogsQuery);
         List<Object> userLogList=new ArrayList<>();
@@ -47,7 +47,7 @@ public class userLogAction {
     public  Response recordUserLogs(UserLog userLog)  throws  Exception{
         String recordUserLogsQuery="INSERT into user_logs(user_id, date_Time_logged_In,Action, date_Time_logged_Out,Total_In, Total_out) values (?, ?, ?, ?, ?, ?)";
         String getPreviousRowQuery="SELECT Total_in,Total_out FROM user_logs ORDER by id DESC LIMIT 1";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
         Statement stmt=connection.createStatement();
         ResultSet rs=stmt.executeQuery(getPreviousRowQuery);
         while (rs.next()){

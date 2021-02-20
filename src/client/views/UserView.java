@@ -69,10 +69,10 @@ public class UserView {
                 new SendMessageView(userId, writer, reader).ViewNotifications();
             }
             else if(choice == 5){
-                new AdminAction();
+                new AdminAction(writer, reader,userId);
             }
             else if(choice == 6){
-                MyProfile();
+               new ProfileSettings(userId,writer,reader).viewProfileSettingsOptions();
             }
             else if(choice == 4){
                 allActiveUsers();
@@ -115,37 +115,6 @@ public class UserView {
         int choice  = scanner.nextInt();
     }
 
-    public void MyProfile() throws IOException {
-        String  key= "get_profile";
-        Request request = new Request(new ProfileRequestData(userId),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-       if(response.isSuccess()){
-           User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-           Component.pageTitleView("MY PROFILE");
-           CommonUtil.addTabs(10, false);
-           System.out.println("FIRST NAME:  "+profile.getFname());
-           CommonUtil.addTabs(10, false);
-           System.out.println("LAST NAME:  "+profile.getLname());
-           CommonUtil.addTabs(10, false);
-           System.out.println("USERNAME:  "+profile.getUsername());
-           CommonUtil.addTabs(10, false);
-           System.out.println("EMAIL:  "+profile.getEmail());
-           CommonUtil.addTabs(10, false);
-           System.out.println("GENDER:  "+profile.getGender());
-           CommonUtil.addTabs(10, false);
-           System.out.println("PASSWORD:   "+profile.getPassword());
-
-       }
-       else{
-           System.out.println("No profile found!");
-       }
-
-        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
-        int choice  = scanner.nextInt();
-
-    }
 
     public static  void sendInvitations() throws ClassNotFoundException,  SQLException {
         Scanner scanner = new Scanner(System.in);

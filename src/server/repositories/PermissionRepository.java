@@ -1,6 +1,6 @@
 package server.repositories;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.Permission;
 
 import java.sql.*;
@@ -26,7 +26,7 @@ public class PermissionRepository {
     public Permission getPermission(int id) throws SQLException {
         Permission permission=null;
         String sql="select * from Permissions where permission_id = ?";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setInt(1,id);
@@ -50,7 +50,7 @@ public class PermissionRepository {
 
     public List<Permission> getAllPermission() throws SQLException {
         String sql="select * from Permissions ";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         Statement statement=connection.createStatement();
         ResultSet resultSet=statement.executeQuery(sql);
@@ -78,7 +78,7 @@ public class PermissionRepository {
 
     public boolean createPermission(Permission permission) throws SQLException {
         String sql ="insert into Permissions(name,status) values (?,?)";
-        Connection connection=Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,permission.getPermission_name());
@@ -93,7 +93,7 @@ public class PermissionRepository {
 
     public boolean deletePermission(Permission permission) throws SQLException {
         String sql="delete from permissions where id=?";
-        Connection connection=Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setInt(1,permission.getPermission_id());
@@ -107,7 +107,7 @@ public class PermissionRepository {
 
     public  boolean updatePermission(Permission permission) throws SQLException {
         String sql="update permissions set name=? where permission_id=?";
-        Connection connection=Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,permission.getPermission_name());
@@ -122,7 +122,7 @@ public class PermissionRepository {
 
     public boolean changeStatus(int id) throws SQLException {
         String sql="update permissions set status=? where permission_id=?";
-        Connection connection=Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement=connection.prepareStatement(sql);
         //statement.setString(1,permission.getPermission_name());

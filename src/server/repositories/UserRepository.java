@@ -1,6 +1,6 @@
 package server.repositories;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.AuthInput;
 import server.models.User;
 
@@ -17,7 +17,7 @@ public class UserRepository {
     public User save(User user) throws SQLException {
         int i= 0;
         try {
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement = connection.createStatement();
 
             String query = String.format("INSERT INTO users(first_name, last_name, username, email, gender, pass_word,dob,status,categoryid) VALUES (" +
@@ -42,7 +42,7 @@ public class UserRepository {
      * */
     public User login(AuthInput input) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
@@ -79,7 +79,7 @@ public class UserRepository {
      * */
     public List<User> getAllUsers() throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users;");
@@ -108,7 +108,7 @@ public class UserRepository {
      * */
     public List<User> getUserSearchList(String search) throws SQLException {
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' or username = '%s' ORDER BY user_id ASC;",search,search,search);
@@ -138,7 +138,7 @@ public class UserRepository {
      * */
     public List<User> getAllOtherUsers(int id) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM users where user_id != '%d' ORDER BY user_id ASC;",id);
@@ -169,7 +169,7 @@ public class UserRepository {
      * */
     public User getUserById(int userID) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
 
 
             String query = String.format("SELECT * FROM users  WHERE user_id = '%d' ;",userID);
@@ -204,9 +204,10 @@ public class UserRepository {
      * Method for updating user which accepts the user to update as input and his/her id
      * */
     public User updateUser(User user,int userId) throws SQLException{
+        System.out.println("Reached    ");
         int affectedRows = 0;
 
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             String query = String.format("UPDATE users SET first_name = ?,last_name = ?," +
                     "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ;");
             PreparedStatement statement =  connection.prepareStatement(query);
@@ -218,12 +219,34 @@ public class UserRepository {
             statement.setString(6,user.getPassword());
             statement.setString(7,user.getDob());
             statement.setInt(8,user.getCategoryID());
-            statement.setInt(user.getUserID(),userId);
+            statement.setInt(9,user.getUserID());
             affectedRows = statement.executeUpdate();
-            if(affectedRows > 0) {
-                return user;
-            }
-            return null;
+
+//int i=0;
+//        try {
+//            Connection connection = Config.getConnection();
+//            Statement statement = connection.createStatement();
+//
+//            String query = String.format("UPDATE users SET (first_name ='%s' , last_name='%s'," +
+//                            " username ='%s' , email = '%s', " +
+//                    "gender = '%s', pass_word = '%s',dob = '%s',categoryid = '%d',status = '%d') WHERE user_id = '%d';",
+//                    user.getFname(), user.getLname(),
+//                    user.getUsername(), user.getEmail(), user.getGender(), user.getPassword(),user.getDob(),
+//                    user.getCategoryID(),user.getStatus(), user.getUserID());
+//
+//
+//            i = statement.executeUpdate(query);
+//            System.out.println("Rows inserted: "+i);
+//
+//            statement.close();
+//            connection.close();
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+        if(affectedRows > 0) {
+            return user;
+        }
+        return null;
     }
     /**
      * Method for deleting user using id
@@ -232,7 +255,7 @@ public class UserRepository {
 
           int affectedRows = 0;
 
-          Connection connection = Config.getConnection();
+          Connection connection = PostegresConfig.getConnection();
           String query = String.format("DELETE FROM users WHERE user_id = ? ;");
           PreparedStatement statement = connection.prepareStatement(query);
           statement.setInt(1, userId);
@@ -246,7 +269,7 @@ public class UserRepository {
      * */
     public int deactivateUser(int userId) throws SQLException{
         int affectedRows = 0;
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d';",userId);
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,userId);

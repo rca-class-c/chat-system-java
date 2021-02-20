@@ -1,6 +1,6 @@
 package server.repositories;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.Group;
 
 import java.sql.*;
@@ -21,7 +21,7 @@ public class GroupRepository  {
 
     public Group getGroupById(int id) throws SQLException {
         String sql = "select * from groups where group_id = ?";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1,id);
@@ -48,7 +48,7 @@ public class GroupRepository  {
 
     public List<Group> getAllGroups() throws SQLException {
         String sql= "select * from groups";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         Statement statement = connection.createStatement();
         ResultSet resultSet= statement.executeQuery(sql);
@@ -73,7 +73,7 @@ public class GroupRepository  {
 
     public Group getGroupsByUserId(int user_id) throws SQLException {
         String sql = "select group_id,groups.name from groups inner join user_group on user_group.user_id= ? where user_group.group_id=groups.id;";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1,user_id);
@@ -96,7 +96,7 @@ public class GroupRepository  {
 
     public Group createGroup(Group group) throws SQLException {
         String sql ="insert into groups (group_name, description,group_creator) values(?,?,?)";
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setString(1,group.getName());
@@ -116,7 +116,7 @@ public class GroupRepository  {
     public Group updateGroup(Group group) throws SQLException {
         String sql="update groups set group_name=?, description=?" +
                 "where group_id=?";
-        Connection connection=Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,group.getName());
         statement.setString(2,group.getDescription());
@@ -132,7 +132,7 @@ public class GroupRepository  {
     public boolean deleteGroup(int id) throws SQLException {
         String sql="delete from groups where group_id=?";
 
-        Connection connection= Config.getConnection();
+        Connection connection= PostegresConfig.getConnection();
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setInt(1,id);
 
@@ -144,7 +144,7 @@ public class GroupRepository  {
 
     public List<Group> getUserSearchList(String search){
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
             String query = String.format("SELECT * FROM groups where group_name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);

@@ -1,7 +1,7 @@
 package server.repositories;
 import server.models.Permission;
 import server.models.categories;
-import server.config.Config;
+import server.config.PostegresConfig;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
  */
 public class categoryRepository {
     public categories saveCategory(categories categories) throws SQLException {
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = " Insert into user_categories (name,created_at,updated_at) VALUES(?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, categories.getCategoryName());
@@ -29,7 +29,7 @@ public class categoryRepository {
     }
 
     public int updateCategory(categories categories, int id) throws SQLException {
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE user_categories SET name = ? ,updated_at=? WHERE categoryid=? ";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, categories.getCategoryName());
@@ -48,7 +48,7 @@ public class categoryRepository {
 
     public categories getCategory(int id) throws SQLException {
         categories categories = new categories();
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "SELECT name  from user_categories WHERE category_id=? ";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
@@ -67,7 +67,7 @@ public class categoryRepository {
 
     public LinkedList<categories> getAllCategories() throws SQLException {
         categories categories = new categories();
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "SELECT *  from user_categories ";
         LinkedList<categories> linkedList = new LinkedList<>();
         PreparedStatement statement = connection.prepareStatement(query);
@@ -88,7 +88,7 @@ public class categoryRepository {
     }
 
     public int deleteCategory(int id) throws SQLException {
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = " DELETE from user_categories where category_id=?";
         PreparedStatement statement = connection.prepareStatement(query);
         int rows = statement.executeUpdate();
@@ -104,7 +104,7 @@ public class categoryRepository {
     public int AssignPermissionToCategory(int categoryId, int permissionId) throws SQLException {
         int flag=0;
         PermissionRepository PermRepository = new PermissionRepository();
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         categories categories = getCategory(categoryId);
         Permission permission = PermRepository.getPermission(permissionId);
         if (categories.getCategoryName()!=null && permission.getPermission_name()!=null) {

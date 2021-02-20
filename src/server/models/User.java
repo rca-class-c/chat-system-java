@@ -72,7 +72,10 @@ public class User {
         this.categoryID = categoryID;
         this.status = status;
     }
-/**
+
+
+
+    /**
  * Getters and setters for all the fields
  * */
     public String getFname() {
