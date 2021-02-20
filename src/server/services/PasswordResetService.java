@@ -1,10 +1,14 @@
 package server.services;
 
 
+import server.config.PostegresConfig;
 import server.models.PasswordResets;
 import server.models.enums.PasswordResetsStatusesEnum;
 import server.repositories.PasswordResetsRepository;
+import server.repositories.UserRepository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -114,5 +118,32 @@ public class PasswordResetService {
         return passwordResetsRepository.getAllPasswordResetsByEmail(passwordResetsEmail,status);
     }
 
+    /**
+     * changing password reset record status
+     *
+     * @param email email of the password reset record
+     * @param otp OTP code of the password reset record
+     * @param status new status of the password reset record
+     * @return true when update, false when not updated
+     * @throws SQLException throws an sql exception
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordResetStatus(String email,int otp, PasswordResetsStatusesEnum status) throws SQLException{
+        return passwordResetsRepository.changePasswordResetStatus(email,otp,status);
+    }
+
+
+    /**
+     * resetting password
+     * @param userEmail user email to reset password reset for
+     * @param otp OTP code sent to email, corresponds to user
+     * @param newPassword new password
+     * @return true when user password updated, false when not updated
+     * @throws Exception sql exception is thrown
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean resetPassword(String userEmail,int otp,String newPassword) throws Exception{
+        return passwordResetsRepository.resetPassword(userEmail,otp,newPassword);
+    }
 
 }
