@@ -162,16 +162,21 @@ public class ProfileSettings {
                 profile.setDob(dob);
             }
 
-
+            String gender = "";
+            do {
             CommonUtil.addTabs(10, true);
             System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
-            String gender = scanner.nextLine();
+            gender = scanner.nextLine();
             if(!gender.equals("-1") && !gender.equals(profile.getGender())){
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(10, true);
                 System.out.print("Gender changed!");
                 profile.setGender(gender);
+                if(!gender.equals("male") && !gender.equals("female")){
+                    CommonUtil.addTabs(10, false);
+                    System.out.println(gender +"Gender not valid");
+                }
             }
-
+            }while(!gender.equals("-1") && !gender.equals("male") && !gender.equals("female"));
 
             CommonUtil.addTabs(10, true);
             System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
