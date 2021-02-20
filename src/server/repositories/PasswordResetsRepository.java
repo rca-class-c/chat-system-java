@@ -49,9 +49,7 @@ public class PasswordResetsRepository {
             statement.close();
             connection.close();
 
-//            !c@L#2a0s2s1&C%6
 
-            //TODO send email on password reset
             if(createdPasswordReset > 0){
                 String mailSubject = "Chat System Password Reset";
                 String mailContent = "You have requested password reset on our servers" +
@@ -413,6 +411,15 @@ public class PasswordResetsRepository {
         return null;
     }
 
+    /**
+     * changing password reset record status
+     *
+     * @param email email of the password reset record
+     * @param otp OTP code of the password reset record
+     * @param status new status of the password reset record
+     * @return true when update, false when not updated
+     * @throws SQLException throws an sql exception
+     */
     public boolean changePasswordResetStatus(String email,int otp, PasswordResetsStatusesEnum status) throws SQLException{
         Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE user_password_resets SET status = ?::user_password_resets_statuses WHERE id IN (SELECT id FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY id DESC LIMIT 1);";
@@ -428,6 +435,13 @@ public class PasswordResetsRepository {
 
     }
 
+    /**
+     * checking whether the OTP is valid
+     * @param userEmail user email to find in user_password_resets records
+     * @param otp OTP code that corresponds to user
+     * @return true when is valid, false when is invalid
+     * @throws SQLException an sql Exception is thrown
+     */
     public boolean isOtpValid(String userEmail, int otp) throws SQLException{
         Connection connection = PostegresConfig.getConnection();
         String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ?  AND status = 'PENDING' ORDER BY created_at DESC LIMIT 1 ;";
@@ -443,6 +457,13 @@ public class PasswordResetsRepository {
         return passwordResetRecord.getRow() > 0;
     }
 
+    /**
+     * checking whether the OTP has expired
+     * @param userEmail user email to find in user_password_resets records
+     * @param otp OTP code corresponds to user
+     * @return true when it is expired, false when it is not ye expired
+     * @throws SQLException sql exception is thrown
+     */
     public boolean isOtpExpired(String userEmail, int otp) throws SQLException{
         Connection connection = PostegresConfig.getConnection();
         String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1 ";
@@ -472,6 +493,14 @@ public class PasswordResetsRepository {
         return true;
     }
 
+    /**
+     * resetting password
+     * @param userEmail user email to reset password reset for
+     * @param otp OTP code sent to email, corresponds to user
+     * @param newPassword new password
+     * @return true when user password updated, false when not updated
+     * @throws Exception sql exception is thrown
+     */
     public boolean resetPassword(String userEmail,int otp,String newPassword) throws Exception{
 
         if(!this.isOtpValid(userEmail,otp)){
