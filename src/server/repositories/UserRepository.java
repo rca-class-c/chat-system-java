@@ -224,7 +224,7 @@ public class UserRepository {
 
 //int i=0;
 //        try {
-//            Connection connection = Config.getConnection();
+//            Connection connection = PostegresConfig.getConnection();
 //            Statement statement = connection.createStatement();
 //
 //            String query = String.format("UPDATE users SET (first_name ='%s' , last_name='%s'," +
@@ -289,7 +289,7 @@ public class UserRepository {
      * @author Ntwari Clarance Liberiste
      */
     public boolean changePasswordById(int userId, String password) throws SQLException{
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE user_id = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
 
@@ -311,7 +311,7 @@ public class UserRepository {
      * @author Ntwari Clarance Liberiste
      */
     public boolean changePasswordByEmail(String email, String password) throws SQLException{
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
 
@@ -334,7 +334,7 @@ public class UserRepository {
      * @author Ntwari Clarance Liberiste
      */
     public boolean changePasswordByUsername(String username, String password) throws SQLException{
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
         PreparedStatement statement = connection.prepareStatement(query);
 

@@ -1,6 +1,6 @@
 package server.repositories;
 
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.User;
 import utils.Token;
 
@@ -38,7 +38,7 @@ public class AuthenticationRepository {
     public String login(String username, String password){
 
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             String query = "SELECT * FROM users where username  = ? and  pass_word = ?;";
 
             PreparedStatement statement =  connection.prepareStatement(query);
