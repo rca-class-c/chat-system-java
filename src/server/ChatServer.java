@@ -2,7 +2,7 @@ package server;
 
 import client.views.components.Component;
 import redis.clients.jedis.Jedis;
-import server.config.JedicConfig;
+import server.config.JedisConfig;
 import server.config.PostegresConfig;
 import server.models.ActiveUser;
 import utils.CommonUtil;
@@ -57,9 +57,9 @@ public class ChatServer {
     public static void main(String[] args) throws SQLException {
      
     	//connecting to the database
-        Jedis jedis = new JedicConfig().conn();
+        Jedis jedis = new JedisConfig().conn();
 
-        Connection conn  = new PostegresConfig().getConnection();
+        Connection conn  = PostegresConfig.getConnection();
         if(conn != null){
             CommonUtil.addTabs(10, true);
             CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
