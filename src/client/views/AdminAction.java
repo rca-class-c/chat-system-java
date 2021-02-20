@@ -63,8 +63,7 @@ public class AdminAction {
                         this.usersOperation();
                         break;
                     case 3:
-                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com","Damour@100%","tuyishimejeand@gmail.com","goood","content");
-                        mailing.send();
+                       AdminInput.InviteUser();
                         System.out.println("back to profile setting");
                         break;
                     case 44:
