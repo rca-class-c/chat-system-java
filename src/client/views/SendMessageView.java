@@ -275,20 +275,33 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Search results");
+        List<Integer> ids= new ArrayList<Integer>();
         if(response.isSuccess()){
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(10, true);
             for (User user : users) {
+                ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
+            }
+            System.out.println("");
+            Component.chooseOptionInputView("Type user id to chat with: ");
+            int choice  = 0;
+            do{
+                choice  = scanner.nextInt();
+                if(!ids.contains(choice)){
+                    System.out.println("User not found");
+                }
+            }while(!ids.contains(choice));
+            for (User user : users) {
+                if(user.getUserID() == choice){
+                    WriteMessageView(user);
+                }
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type user id to chat with: ");
-        int choice  = scanner.nextInt();
     }
 
     public void UserIdView() throws IOException {
@@ -330,8 +343,9 @@ public class SendMessageView {
             }
             System.out.println("");
             Component.chooseOptionInputView("Type group id to chat in: ");
-            int choice  = scanner.nextInt();
+            int choice = 0;
             do{
+                choice  = scanner.nextInt();
                 if(!ids.contains(choice)){
                     System.out.println("Invalid group id");
                 }
@@ -370,8 +384,9 @@ public class SendMessageView {
                 }
                 System.out.println("");
                 Component.chooseOptionInputView("Type group id to chat in: ");
-                int choice  = scanner.nextInt();
+                int choice =  0;
                 do{
+                    choice = scanner.nextInt();
                     if(!ids.contains(choice)){
                         System.out.println("Invalid group id");
                     }
@@ -383,11 +398,8 @@ public class SendMessageView {
                 }
             }else {
                 CommonUtil.addTabs(10, true);
-                System.out.println("Failed to read users list, sorry for the inconvenience");
+                System.out.println("Failed to read groups list, sorry for the inconvenience");
             }
-            System.out.println("");
-            Component.chooseOptionInputView("Type user id to chat with: ");
-            int choice  = scanner.nextInt();
         }
 
     public void GroupIdView() throws IOException {
@@ -429,8 +441,9 @@ public class SendMessageView {
             }
             System.out.println("");
             Component.chooseOptionInputView("Type user id to chat with: ");
-            int choice  = scanner.nextInt();
+            int choice = 0;
             do{
+                choice = scanner.nextInt();
                 if(!ids.contains(choice)){
                     System.out.println("User not found");
                 }
