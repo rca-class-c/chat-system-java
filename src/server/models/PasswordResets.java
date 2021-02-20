@@ -97,6 +97,25 @@ public class PasswordResets {
     }
 
     /**
+     * Instantiates a new Password reset model.
+     *
+     * @param email           the email
+     * @param expiration_date the expiration date
+     * @author Ntwari Clarance Liberiste
+     */
+    public PasswordResets(String email, String expiration_date) {
+        int min = 100000;
+        int max = 999999;
+
+        this.email = email;
+        this.otp = (int)(Math.random() * (max - min + 1) + min) ;
+        this.expiration_date = expiration_date;
+        this.status = PasswordResetsStatusesEnum.PENDING;
+        this.created_at = Instant.now().toString();
+        this.updated_at = Instant.now().toString();
+    }
+
+    /**
      * Gets id.
      *
      * @return the id
