@@ -33,7 +33,7 @@ public class PasswordResetsRepository {
      * @throws SQLException throws an sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public long create(PasswordResets pr) throws SQLException{
+    public PasswordResets create(PasswordResets pr) throws SQLException{
 
         try{
 
@@ -98,13 +98,13 @@ public class PasswordResetsRepository {
 
             }
 
-            return createdPasswordReset;
+            return pr;
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
 
 
-        return 0;
+        return null;
     }
 
     /**

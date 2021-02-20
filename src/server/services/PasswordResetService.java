@@ -31,7 +31,7 @@ public class PasswordResetService {
      * @throws SQLException throws an sql exception
      * @author Ntwari Clarance Liberiste
      */
-    public long create(PasswordResets pr) throws SQLException{
+    public PasswordResets create(PasswordResets pr) throws SQLException{
         return passwordResetsRepository.create(pr);
     }
 
