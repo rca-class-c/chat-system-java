@@ -65,7 +65,7 @@ public class PasswordResetsRepository {
                     pros.load(f);
 
 
-                    try(BufferedReader br = new BufferedReader(new FileReader("src/utils/mailingTemplates/otpActivation.html"))) {
+                    try(BufferedReader br = new BufferedReader(new FileReader("src/utils/mailingTemplates/otpActivations/otpActivation.html"))) {
                         StringBuilder sb = new StringBuilder();
                         String line = br.readLine();
 
@@ -81,15 +81,13 @@ public class PasswordResetsRepository {
 
                         String mailingTemplate = doc.html();
 
-                        System.out.println(mailingTemplate);
-
                         String MailerEmail = pros.getProperty("MailerEmail");
                         String MailerPassword = pros.getProperty("MailerPassword");
 
                         System.out.println("Sending otp to " + pr.getEmail() + "...");
-                        Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailContent);
+                        Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailingTemplate);
 
-                        mail.send();
+                        mail.send("html");
                     }
 
 
@@ -452,7 +450,6 @@ public class PasswordResetsRepository {
 
         statement.setString(1,userEmail);
         statement.setInt(2,otp);
-        //TODO update status to expired when OTP is expired
 
         ResultSet passwordResetRecord = statement.executeQuery();
 
