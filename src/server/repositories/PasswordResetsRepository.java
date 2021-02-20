@@ -4,7 +4,7 @@ package server.repositories;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import server.config.Config;
+import server.config.PostegresConfig;
 import server.models.PasswordResets;
 import server.models.enums.PasswordResetsStatusesEnum;
 import utils.Mailing;
@@ -37,7 +37,7 @@ public class PasswordResetsRepository {
 
         try{
 
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement = connection.createStatement();
 
             String query = String.format("INSERT INTO user_password_resets (email, otp, expiration_date, status, created_at, update_at)" +
@@ -64,24 +64,24 @@ public class PasswordResetsRepository {
                     Properties pros = new Properties();
                     pros.load(f);
 
-//
-//                    try(BufferedReader br = new BufferedReader(new FileReader("src/utils/mailingTemplates/otpActivation.html"))) {
-//                        StringBuilder sb = new StringBuilder();
-//                        String line = br.readLine();
-//
-//                        while (line != null) {
-//                            sb.append(line);
-//                            sb.append(System.lineSeparator());
-//                            line = br.readLine();
-//                        }
-//
-//                        Document doc = Jsoup.parse(sb.toString());
-//                        Element otpCodeContainer = doc.getElementById("otp-code");
-//                        otpCodeContainer.text("" + pr.getOtp());
-//
-//                        String mailingTemplate = doc.html();
-//
-//                        System.out.println(mailingTemplate);
+
+                    try(BufferedReader br = new BufferedReader(new FileReader("src/utils/mailingTemplates/otpActivation.html"))) {
+                        StringBuilder sb = new StringBuilder();
+                        String line = br.readLine();
+
+                        while (line != null) {
+                            sb.append(line);
+                            sb.append(System.lineSeparator());
+                            line = br.readLine();
+                        }
+
+                        Document doc = Jsoup.parse(sb.toString());
+                        Element otpCodeContainer = doc.getElementById("otp-code");
+                        otpCodeContainer.text("" + pr.getOtp());
+
+                        String mailingTemplate = doc.html();
+
+                        System.out.println(mailingTemplate);
 
                         String MailerEmail = pros.getProperty("MailerEmail");
                         String MailerPassword = pros.getProperty("MailerPassword");
@@ -90,7 +90,7 @@ public class PasswordResetsRepository {
                         Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailContent);
 
                         mail.send();
-//                    }
+                    }
 
 
 
@@ -120,7 +120,7 @@ public class PasswordResetsRepository {
      */
     public List<PasswordResets> getAllPasswordResets() throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement = connection.createStatement();
 
             String query = "SELECT * FROM user_password_resets";
@@ -157,7 +157,7 @@ public class PasswordResetsRepository {
      */
     public List<PasswordResets> getAllPasswordResets(PasswordResetsStatusesEnum status) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement = connection.createStatement();
 
             String query = String.format("SELECT * FROM user_password_resets WHERE status = '%s'",status);
@@ -198,7 +198,7 @@ public class PasswordResetsRepository {
      */
     public PasswordResets getPasswordResetsById(int passwordResetsId) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
 
@@ -240,7 +240,7 @@ public class PasswordResetsRepository {
      */
     public PasswordResets getPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
 
@@ -282,7 +282,7 @@ public class PasswordResetsRepository {
      */
     public PasswordResets getPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
 
@@ -324,7 +324,7 @@ public class PasswordResetsRepository {
      */
     public List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
 
@@ -376,7 +376,7 @@ public class PasswordResetsRepository {
      */
     public List<PasswordResets> getAllPasswordResetsByEmail(String passwordResetsEmail,PasswordResetsStatusesEnum status) throws SQLException{
         try{
-            Connection connection = Config.getConnection();
+            Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
 
@@ -416,7 +416,7 @@ public class PasswordResetsRepository {
     }
 
     public boolean changePasswordResetStatus(String email,int otp, PasswordResetsStatusesEnum status) throws SQLException{
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE user_password_resets SET status = ?::user_password_resets_statuses WHERE id IN (SELECT id FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY id DESC LIMIT 1);";
         PreparedStatement statement = connection.prepareStatement(query);
 
@@ -431,7 +431,7 @@ public class PasswordResetsRepository {
     }
 
     public boolean isOtpValid(String userEmail, int otp) throws SQLException{
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ?  AND status = 'PENDING' ORDER BY created_at DESC LIMIT 1 ;";
         PreparedStatement statement = connection.prepareStatement(query);
 
@@ -446,7 +446,7 @@ public class PasswordResetsRepository {
     }
 
     public boolean isOtpExpired(String userEmail, int otp) throws SQLException{
-        Connection connection = Config.getConnection();
+        Connection connection = PostegresConfig.getConnection();
         String query = "SELECT * FROM user_password_resets WHERE email = ? AND otp = ? ORDER BY created_at DESC LIMIT 1 ";
         PreparedStatement statement = connection.prepareStatement(query);
 
