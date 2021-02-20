@@ -319,12 +319,27 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
+        List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
             CommonUtil.addTabs(10, true);
             for (Group group : groups) {
+                ids.add(group.getId());
                 System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 CommonUtil.addTabs(10, false);
+            }
+            System.out.println("");
+            Component.chooseOptionInputView("Type user id to chat with: ");
+            int choice  = scanner.nextInt();
+            do{
+                if(!ids.contains(choice)){
+                    System.out.println("User not found");
+                }
+            }while(!ids.contains(choice));
+            for (Group group : groups) {
+                if(group.getId() == choice){
+                    WriteMessageViewInGroup(group);
+                }
             }
         }else {
             CommonUtil.addTabs(10, true);
