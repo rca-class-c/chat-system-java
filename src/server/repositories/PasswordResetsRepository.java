@@ -388,14 +388,14 @@ public class PasswordResetsRepository {
 
 
             while(rs.next()){
-                  passwordResets.add(
-                          new PasswordResets(
-                                  rs.getString("email"),
-                                  rs.getInt("otp"),
-                                  rs.getString("expiration_date"),
-                                  PasswordResetsStatusesEnum.valueOf(rs.getString("status")))
+              passwordResets.add(
+                  new PasswordResets(
+                      rs.getString("email"),
+                      rs.getInt("otp"),
+                      rs.getString("expiration_date"),
+                      PasswordResetsStatusesEnum.valueOf(rs.getString("status")))
 
-                  );
+              );
             }
             if(passwordResets.size() > 0)
                 System.out.println("All Password Resets Found");

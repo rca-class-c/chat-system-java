@@ -112,7 +112,7 @@ public class FileUtil {
         try {
             String fileName = generateUUID(originalFileName);
             File file = new File(String.valueOf(Paths.get(sourcePath)));
-            String PATH = Config.getPublicFilesDirectory() + fileName + getFileExtensionFromFile(file);
+            String PATH = PostegresConfig.getPublicFilesDirectory() + fileName + getFileExtensionFromFile(file);
 
             Files.copy(Paths.get(sourcePath), Paths.get(PATH), StandardCopyOption.REPLACE_EXISTING);
             return PATH;

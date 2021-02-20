@@ -68,6 +68,8 @@ public class AuthenticationRepository {
         return null;
     }
 
+//    public User currentUser()
+
     public static void main(String[] args){
         AuthenticationRepository au = new AuthenticationRepository();
 
