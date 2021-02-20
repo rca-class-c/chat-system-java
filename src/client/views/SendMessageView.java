@@ -329,11 +329,11 @@ public class SendMessageView {
                 CommonUtil.addTabs(10, false);
             }
             System.out.println("");
-            Component.chooseOptionInputView("Type user id to chat with: ");
+            Component.chooseOptionInputView("Type group id to chat in: ");
             int choice  = scanner.nextInt();
             do{
                 if(!ids.contains(choice)){
-                    System.out.println("User not found");
+                    System.out.println("Invalid group id");
                 }
             }while(!ids.contains(choice));
             for (Group group : groups) {
@@ -345,9 +345,6 @@ public class SendMessageView {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = scanner.nextInt();
     }
 
 
@@ -360,14 +357,29 @@ public class SendMessageView {
             Request request = new Request(new SearchRequestData(query),key);
             String requestAsString = new ObjectMapper().writeValueAsString(request);
             writer.println(requestAsString);
+            List ids = new ArrayList<Integer>();
             ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             Component.pageTitleView("Search results");
             if(response.isSuccess()){
                 Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
                 CommonUtil.addTabs(10, true);
                 for (Group group : groups) {
+                    ids.add(group.getId());
                     System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                     CommonUtil.addTabs(10, false);
+                }
+                System.out.println("");
+                Component.chooseOptionInputView("Type group id to chat in: ");
+                int choice  = scanner.nextInt();
+                do{
+                    if(!ids.contains(choice)){
+                        System.out.println("Invalid group id");
+                    }
+                }while(!ids.contains(choice));
+                for (Group group : groups) {
+                    if(group.getId() == choice){
+                        WriteMessageViewInGroup(group);
+                    }
                 }
             }else {
                 CommonUtil.addTabs(10, true);
