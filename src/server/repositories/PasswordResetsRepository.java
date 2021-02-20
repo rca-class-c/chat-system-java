@@ -419,6 +419,7 @@ public class PasswordResetsRepository {
      * @param status new status of the password reset record
      * @return true when update, false when not updated
      * @throws SQLException throws an sql exception
+     * @author Ntwari Clarance Liberiste
      */
     public boolean changePasswordResetStatus(String email,int otp, PasswordResetsStatusesEnum status) throws SQLException{
         Connection connection = PostegresConfig.getConnection();
@@ -441,6 +442,7 @@ public class PasswordResetsRepository {
      * @param otp OTP code that corresponds to user
      * @return true when is valid, false when is invalid
      * @throws SQLException an sql Exception is thrown
+     * @author Ntwari Clarance Liberiste
      */
     public boolean isOtpValid(String userEmail, int otp) throws SQLException{
         Connection connection = PostegresConfig.getConnection();
@@ -463,6 +465,7 @@ public class PasswordResetsRepository {
      * @param otp OTP code corresponds to user
      * @return true when it is expired, false when it is not ye expired
      * @throws SQLException sql exception is thrown
+     * @author Ntwari Clarance Liberiste
      */
     public boolean isOtpExpired(String userEmail, int otp) throws SQLException{
         Connection connection = PostegresConfig.getConnection();
@@ -500,6 +503,7 @@ public class PasswordResetsRepository {
      * @param newPassword new password
      * @return true when user password updated, false when not updated
      * @throws Exception sql exception is thrown
+     * @author Ntwari Clarance Liberiste
      */
     public boolean resetPassword(String userEmail,int otp,String newPassword) throws Exception{
 
