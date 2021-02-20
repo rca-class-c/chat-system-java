@@ -26,6 +26,7 @@ public class PasswordResetsRequestHandler {
      * @param objectMapper object mapper instance
      * @throws JsonProcessingException json proccess exception
      * @throws SQLException sql exception
+     * @author Ntwari Clarance Liberiste
      */
     public void handlePasswordResetInitiation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException{
         PasswordResets passwordReset = new PasswordResetService().create(new PasswordResetsDecoder(data).initiatePasswordResetDecode());
@@ -42,4 +43,5 @@ public class PasswordResetsRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+
 }
