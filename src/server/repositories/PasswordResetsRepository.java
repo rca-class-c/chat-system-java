@@ -481,6 +481,7 @@ public class PasswordResetsRepository {
 
         if(this.isOtpExpired(userEmail,otp)){
             System.out.println("OTP have expired");
+            return false;
         }
 
         //automatically change password reset status to USED
@@ -491,12 +492,4 @@ public class PasswordResetsRepository {
         return user.changePasswordByEmail(userEmail,newPassword);
     }
 
-    public static void main(String[] args) throws Exception{
-        PasswordResetsRepository pr = new PasswordResetsRepository();
-
-        PasswordResets ps = new PasswordResets("liberintwari@gmail.com",234213 , Instant.now().plus(1, ChronoUnit.DAYS).toString());
-        pr.create(ps);
-
-//        pr.resetPassword("ntwaricliberi@gmail.com",234213, "ntwarithe pass");
-    }
 }
