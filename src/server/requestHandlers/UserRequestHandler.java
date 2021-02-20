@@ -39,7 +39,7 @@ public class UserRequestHandler {
      * @AUTHOR: Shallon Kobusinge
      * The User request handler for updating profile
      * */
-    public  void HandleProfileUpdate(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public  void HandleProfileUpdate(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         User decodedOne = new UserDecoder(data).UpdateUserDecode();
         User returned = new UserService().updateUser(decodedOne, decodedOne.getUserID());
         if(returned == null){
@@ -55,7 +55,7 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
-    public void HandleRegister(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleRegister(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         User returned = new UserService().saveUser(new UserDecoder(data).CreateUserDecode());
         if(returned == null){
             System.out.println("Account not created");
@@ -71,7 +71,7 @@ public class UserRequestHandler {
         }
     }
 
-    public void HandleGetProfile(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException,SQLException {
+    public void HandleGetProfile(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
         User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if(returned == null){
             System.out.println("Account not found");
@@ -87,7 +87,7 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
-    public void HandleUsersList(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException,SQLException {
+    public void HandleUsersList(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
         List<User> users = new UserService().getAllOtherUsers(new UserDecoder(data).GetProfileDecode());
         //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if(users == null){
@@ -104,7 +104,7 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
-    public  void HandlerSearchUser(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public  void HandlerSearchUser(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<User> users = new UserService().SearchUsers(new UserDecoder(data).GetSearchDecode());
         if(users == null){
             System.out.println("Query failed recheck your db");
