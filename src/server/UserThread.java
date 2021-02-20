@@ -115,6 +115,9 @@ public class UserThread extends Thread {
                 else if(request_type.equals("delete_group")){
                     new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper,server);
                 }
+                else if(request_type.equals("passwordReset_initiate")){
+                    new PasswordResetsRequestHandler().handlePasswordResetInitiation(data,writer,objectMapper);
+                }
                 else{
                     writer.println("Request type not known");
                 }
