@@ -1,14 +1,10 @@
 package server.services;
 
 
-import server.config.PostegresConfig;
 import server.models.PasswordResets;
 import server.models.enums.PasswordResetsStatusesEnum;
 import server.repositories.PasswordResetsRepository;
-import server.repositories.UserRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
