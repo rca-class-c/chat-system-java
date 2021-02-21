@@ -18,6 +18,16 @@ import java.util.Map;
  */
 public class AuthenticationRequestHandler {
 
+    /**
+     *handling user login
+     *
+     * @param data data needed to initiate password reset
+     * @param writer writer instance
+     * @param objectMapper object mapper instance
+     * @throws JsonProcessingException json proccess exception
+     * @throws SQLException sql exception
+     * @author Ntwari Clarance Liberiste
+     */
     public void handleLogin(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Map<String,String> authData = new AuthenticationDecoder(data).loginDecoder();
 
