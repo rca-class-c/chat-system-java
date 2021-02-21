@@ -21,6 +21,7 @@ public class AuthenticationRepository {
      * Gets token.
      *
      * @return the token
+     * @author Ntwari Clarance Liberiste
      */
     public String getToken() {
         return token;
@@ -30,6 +31,7 @@ public class AuthenticationRepository {
      * Sets token.
      *
      * @param token the token
+     * @author Ntwari Clarance Liberiste
      */
     public void setToken(String token) {
         this.token = token;
@@ -42,6 +44,7 @@ public class AuthenticationRepository {
      * @param username username of the user who is going to log in
      * @param password password of the user
      * @return token as String or null when credentials are not verified
+     * @author Ntwari Clarance Liberiste
      */
     public String login(String username, String password){
 
