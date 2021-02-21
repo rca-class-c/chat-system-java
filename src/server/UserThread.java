@@ -3,6 +3,8 @@ package server;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.requestHandlers.*;
+import server.routes.GroupsRoutes;
+import server.routes.MessagesRoutes;
 import server.routes.UserRoutes;
 
 import java.io.*;
@@ -39,6 +41,12 @@ public class UserThread extends Thread {
 
                 if(request_type.startsWith("users/")){
                     new UserRoutes(data,writer,objectMapper,server,request_type).Main();
+                }
+                else if(request_type.startsWith("groups/")){
+                    new GroupsRoutes(data,writer,objectMapper,server,request_type).Main();
+                }
+                else if(request_type.startsWith("messages/")){
+                    new MessagesRoutes(data,writer,objectMapper,server,request_type).Main();
                 }
 //                else if(request_type.equals("register")){
 //                    new UserRequestHandler().HandleRegister(data,writer,objectMapper);
@@ -79,29 +87,14 @@ public class UserThread extends Thread {
 //                else if(request_type.equals("send_group_reply")){
 //                    new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper);
 //                }
-//                else if(request_type.equals("update_profile")){
-//                    new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper);
-//                }
-//                else if(request_type.equals("update_group")){
-//                    new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper);
-//                }
 //                else if(request_type.equals("get_group_members")){
 //                   new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper);
 //                }
 //                else if(request_type.equals("get_my_groups")){
 //                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
 //                }
-//                else if(request_type.equals("remove_group_members")){
-//                    new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper);
-//                }
-//                else if(request_type.equals("add_group_members")){
-//                    new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper);
-//                }
 //                else if(request_type.equals("send_file")){
 //                    new FileRequestHandler().HandleSaveFile(data, writer, objectMapper);
-//                }
-//                else if(request_type.equals("delete_message")){
-//                    new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
 //                }
 //                else if(request_type.equals("send_email_invitation")){
 //                    new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
@@ -113,9 +106,6 @@ public class UserThread extends Thread {
 //                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
 //                }
 //
-//                else if(request_type.equals("delete_group")){
-//                    new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper);
-//                }
                 else{
                     writer.println("Request type not known");
                 }

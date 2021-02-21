@@ -43,5 +43,8 @@ public class UserRoutes {
         else if(request.equals("users/profile")){
             new UserRequestHandler().HandleGetProfile(data,writer,objectMapper);
         }
+        else if(request.equals("users/update")){
+            new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper);
+        }
     }
 }
