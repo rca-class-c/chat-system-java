@@ -3,8 +3,10 @@ package server.routes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
+import server.requestHandlers.SendInvitationHandler;
 import server.requestHandlers.UserRequestHandler;
 
+import javax.mail.MessagingException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
@@ -30,7 +32,7 @@ public class UserRoutes {
         this.request = request;
     }
 
-    public void Main() throws JsonProcessingException, SQLException {
+    public void Main() throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {
         if(request.equals("users/login")){
             new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
         }
@@ -45,6 +47,12 @@ public class UserRoutes {
         }
         else if(request.equals("users/update")){
             new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper);
+        }
+        else if(request.equals("users/search")){
+            new UserRequestHandler().HandlerSearchUser(data,writer,objectMapper);
+        }
+        else if(request.equals("users/invite")){
+            new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
         }
     }
 }

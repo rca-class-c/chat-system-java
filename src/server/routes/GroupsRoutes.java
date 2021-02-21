@@ -33,7 +33,7 @@ public class GroupsRoutes {
 
     public void Main() throws JsonProcessingException, SQLException {
         if(request.equals("groups/")){
-            new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
+            new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
         }
         else if(request.equals("groups/new")){
             new GroupRequestHandler().HandleCreateGroup(data,writer,objectMapper);
@@ -49,6 +49,12 @@ public class GroupsRoutes {
         }
         else if(request.equals("groups/update")){
             new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper);
+        }
+        else if(request.equals("groups/profile")){
+            new GroupRequestHandler().HandleGetGroup(data,writer,objectMapper);
+        }
+        else if(request.equals("groups/members")){
+            new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper);
         }
 
     }
