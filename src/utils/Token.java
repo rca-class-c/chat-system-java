@@ -47,6 +47,15 @@ public class Token {
         this.payload = new TreeMap<>();
     }
 
+    /**
+     * @author Ntwari Clarance Liberiste
+     * Token controller
+     */
+    public Token(){
+        this.subject = "";
+        this.payload = new TreeMap<>();
+    }
+
 
 
     /**
