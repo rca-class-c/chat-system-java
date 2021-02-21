@@ -48,16 +48,6 @@ public class UserThread extends Thread {
                 else if(request_type.startsWith("messages/")){
                     new MessagesRoutes(data,writer,objectMapper,server,request_type).Main();
                 }
-
-//                else if(request_type.equals("send_direct_reply")){
-//                    new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper);
-//                }
-//                else if(request_type.equals("send_group_reply")){
-//                    new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper);
-//                }
-//                else if(request_type.equals("send_file")){
-//                    new FileRequestHandler().HandleSaveFile(data, writer, objectMapper);
-//                }
 //                else if(request_type.equals("get_my_notifications")){
 //                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
 //                }
