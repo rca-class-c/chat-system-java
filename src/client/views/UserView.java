@@ -93,7 +93,7 @@ public class UserView {
     }
 
     public void allActiveUsers() throws IOException {
-        String  key= "/users";
+        String key= "users/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
