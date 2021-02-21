@@ -3,6 +3,7 @@ package server;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.requestHandlers.*;
+import server.routes.UserRoutes;
 
 import java.io.*;
 import java.net.Socket;
@@ -36,85 +37,85 @@ public class UserThread extends Thread {
                 String request_type = jsonNode.get("request_type").asText();
                 String data = jsonNode.get("data").toString();
 
-                if(request_type.equals("login")){
-                    new UserRequestHandler().HandleLogin(data,writer,objectMapper,server);
+                if(request_type.startsWith("users/")){
+                    new UserRoutes(data,writer,objectMapper,server,request_type).Main();
                 }
-                else if(request_type.equals("register")){
-                    new UserRequestHandler().HandleRegister(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_profile")){
-                    new UserRequestHandler().HandleGetProfile(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_users_list")){
-                    new UserRequestHandler().HandleUsersList(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_messages_between_two")){
-                    new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
-                }
-                else if(request_type.equals("search_user")){
-                    new UserRequestHandler().HandlerSearchUser(data,writer,objectMapper);
-                }
-                else if(request_type.equals("create_group")){
-                    new GroupRequestHandler().HandleCreateGroup(data,writer,objectMapper);
-                }
-                else if(request_type.equals("search_group")){
-                    new GroupRequestHandler().HandlerSearchGroup(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_groups_list")){
-                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_group")){
-                    new GroupRequestHandler().HandleGetGroup(data,writer,objectMapper);
-                }
-                else if(request_type.equals("send_direct_message")){
-                    new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper);
-                }
-                else if(request_type.equals("send_group_message")){
-                    new MessageRequestHandler().HandleSaveMessageInGroup(data,writer,objectMapper);
-                }
-                else if(request_type.equals("send_direct_reply")){
-                    new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper);
-                }
-                else if(request_type.equals("send_group_reply")){
-                    new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper);
-                }
-                else if(request_type.equals("update_profile")){
-                    new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper);
-                }
-                else if(request_type.equals("update_group")){
-                    new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_group_members")){
-                   new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper);
-                }
-                else if(request_type.equals("get_my_groups")){
-                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
-                }
-                else if(request_type.equals("remove_group_members")){
-                    new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper);
-                }
-                else if(request_type.equals("add_group_members")){
-                    new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper);
-                }
-                else if(request_type.equals("send_file")){
-                    new FileRequestHandler().HandleSaveFile(data, writer, objectMapper);
-                }
-                else if(request_type.equals("delete_message")){
-                    new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
-                }
-                else if(request_type.equals("send_email_invitation")){
-                    new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
-                }
-                else if(request_type.equals("verify_code")){
-                    System.out.println("Not yet done");
-                }
-                else if(request_type.equals("get_my_notifications")){
-                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
-                }
-
-                else if(request_type.equals("delete_group")){
-                    new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper);
-                }
+//                else if(request_type.equals("register")){
+//                    new UserRequestHandler().HandleRegister(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_profile")){
+//                    new UserRequestHandler().HandleGetProfile(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_users_list")){
+//                    new UserRequestHandler().HandleUsersList(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_messages_between_two")){
+//                    new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("search_user")){
+//                    new UserRequestHandler().HandlerSearchUser(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("create_group")){
+//                    new GroupRequestHandler().HandleCreateGroup(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("search_group")){
+//                    new GroupRequestHandler().HandlerSearchGroup(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_groups_list")){
+//                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_group")){
+//                    new GroupRequestHandler().HandleGetGroup(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("send_direct_message")){
+//                    new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("send_group_message")){
+//                    new MessageRequestHandler().HandleSaveMessageInGroup(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("send_direct_reply")){
+//                    new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("send_group_reply")){
+//                    new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("update_profile")){
+//                    new UserRequestHandler().HandleProfileUpdate(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("update_group")){
+//                    new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_group_members")){
+//                   new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("get_my_groups")){
+//                    new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("remove_group_members")){
+//                    new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("add_group_members")){
+//                    new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("send_file")){
+//                    new FileRequestHandler().HandleSaveFile(data, writer, objectMapper);
+//                }
+//                else if(request_type.equals("delete_message")){
+//                    new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("send_email_invitation")){
+//                    new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
+//                }
+//                else if(request_type.equals("verify_code")){
+//                    System.out.println("Not yet done");
+//                }
+//                else if(request_type.equals("get_my_notifications")){
+//                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
+//                }
+//
+//                else if(request_type.equals("delete_group")){
+//                    new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper);
+//                }
                 else{
                     writer.println("Request type not known");
                 }

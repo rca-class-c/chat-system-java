@@ -37,8 +37,8 @@ public class WelcomeView {
 
         ObjectMapper objectMapper = new ObjectMapper();
         AuthInput loginData = new AuthInput(userName,password);
-        String key = "login";
-        Request request = new Request(loginData,key);
+        String url = "users/login";
+        Request request = new Request(loginData,url);
 
         String LoginDataAsString = objectMapper.writeValueAsString(request);
         writer.println(LoginDataAsString);
