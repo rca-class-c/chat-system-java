@@ -243,7 +243,7 @@ public class SendMessageView {
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Enter message id: ");
-        int messageId = scanner.nextInt();
+        int messageId = Component.getChooseOptionChoice();
 
         String  key= "delete_message";
         Request request = new Request(new MessageResponseDataFormat(userId,messageId),key);
@@ -288,7 +288,7 @@ public class SendMessageView {
             do{
                 System.out.println("");
                 Component.chooseOptionInputView("Type user id to chat with: ");
-                choice  = scanner.nextInt();
+                choice  = Component.getChooseOptionChoice();
                 if(!ids.contains(choice)){
                     CommonUtil.addTabs(10, true);
                     System.out.println("User not found, try another!");
@@ -310,7 +310,7 @@ public class SendMessageView {
 
 
         Component.chooseOptionInputView("Enter User Id: ");
-        int query = scanner.nextInt();
+        int query = Component.getChooseOptionChoice();
         String  key= "get_profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -346,7 +346,7 @@ public class SendMessageView {
             do{
                 System.out.println("");
                 Component.chooseOptionInputView("Type group id to chat in: ");
-                choice  = scanner.nextInt();
+                choice  = Component.getChooseOptionChoice();
                 if(!ids.contains(choice)){
                     CommonUtil.addTabs(10, true);
                     System.out.println("Invalid group id. Try again!");
@@ -388,7 +388,7 @@ public class SendMessageView {
                 do{
                     System.out.println("");
                     Component.chooseOptionInputView("Type group id to chat in: ");
-                    choice = scanner.nextInt();
+                    choice = Component.getChooseOptionChoice();
                     if(!ids.contains(choice)){
                         CommonUtil.addTabs(10, true);
                         System.out.println("Invalid group id. Try again!");
@@ -410,7 +410,7 @@ public class SendMessageView {
 
 
         Component.chooseOptionInputView("Enter Group Id: ");
-        int query = scanner.nextInt();
+        int query = Component.getChooseOptionChoice();
         String  key= "get_group";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -447,7 +447,7 @@ public class SendMessageView {
             do{
                 System.out.println("");
                 Component.chooseOptionInputView("Type user id to chat with: ");
-                choice  = scanner.nextInt();
+                choice  = Component.getChooseOptionChoice();
                 if(!ids.contains(choice)){
                     CommonUtil.addTabs(10, true);
                     System.out.println("User not found, try another!");
@@ -619,7 +619,7 @@ public class SendMessageView {
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = scanner.nextInt();
+        int choice  = Component.getChooseOptionChoice();
     }
     public void SendReplyView() {
         Component.pageTitleView("Send reply");
