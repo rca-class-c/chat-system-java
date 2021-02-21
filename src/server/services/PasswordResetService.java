@@ -139,10 +139,10 @@ public class PasswordResetService {
      * @param otp OTP code sent to email, corresponds to user
      * @param newPassword new password
      * @return true when user password updated, false when not updated
-     * @throws Exception sql exception is thrown
+     * @throws SQLException sql exception is thrown
      * @author Ntwari Clarance Liberiste
      */
-    public boolean resetPassword(String userEmail,int otp,String newPassword) throws Exception{
+    public boolean resetPassword(String userEmail,int otp,String newPassword) throws SQLException{
         return passwordResetsRepository.resetPassword(userEmail,otp,newPassword);
     }
 
