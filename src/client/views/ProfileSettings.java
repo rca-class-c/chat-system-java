@@ -71,7 +71,7 @@ public class ProfileSettings {
 
     }
     public void MyProfile() throws IOException {
-        String  key= "get_profile";
+        String  key= "users/profile";
         Request request = new Request(new ProfileRequestData(userid),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -103,7 +103,7 @@ public class ProfileSettings {
 
     }
     public void updateUser(int userid) throws IOException{
-        String  key= "get_profile";
+        String key= "users/profile";
         Request profileRequest = new Request(new ProfileRequestData(userid),key);
         String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
         writer.println(requestAsString);
@@ -186,8 +186,7 @@ public class ProfileSettings {
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            //User user = new User(userid,firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
-            String updateKey = "update_profile";
+            String updateKey = "users/update";
             Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
