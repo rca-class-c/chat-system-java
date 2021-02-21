@@ -106,7 +106,7 @@ public class UserThread extends Thread {
                     new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
                 }
                 else if(request_type.equals("verify_code")){
-                    new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper,server);
+                    new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
                 }
                 else if(request_type.equals("get_my_notifications")){
                     new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
