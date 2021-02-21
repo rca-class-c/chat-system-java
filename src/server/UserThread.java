@@ -118,6 +118,9 @@ public class UserThread extends Thread {
                 else if(request_type.equals("passwordReset_initiate")){
                     new PasswordResetsRequestHandler().handlePasswordResetInitiation(data,writer,objectMapper);
                 }
+                else if(request_type.equals("passwordReset")){
+                    new PasswordResetsRequestHandler().handlePasswordReset(data,writer,objectMapper);
+                }
                 else{
                     writer.println("Request type not known");
                 }
