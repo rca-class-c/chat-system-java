@@ -14,6 +14,9 @@ import java.util.Map;
 
 /**
  * The type Authentication repository.
+ *
+ * @author Ntwari Clarance Liberiste
+ * @since 1.0
  */
 public class AuthenticationRepository {
     private String token;
@@ -37,6 +40,13 @@ public class AuthenticationRepository {
     }
 
 
+    /**
+     * login with user credentials
+     *
+     * @param username username of the user who is going to log in
+     * @param password password of the user
+     * @return token as String or null when credentials are not verified
+     */
     public String login(String username, String password){
 
         try{
@@ -71,15 +81,13 @@ public class AuthenticationRepository {
     }
 
 
+    /**
+     * check if token is valid token, it may be invalid due to that it is invalid or it has expired
+     *
+     * @author Ntwari clarance Liberiste
+     * @return true when it is valid, false when it is invalid
+     */
     public boolean isAuthTokenValid(){
         return new Token().isValidToken(this.token);
-    }
-
-//    public User currentUser()
-
-    public static void main(String[] args){
-        AuthenticationRepository au = new AuthenticationRepository();
-
-        au.login("liberi","liberi");
     }
 }
