@@ -1,16 +1,12 @@
 package server.repositories;
 
 import server.config.PostegresConfig;
-import server.models.User;
 import utils.Token;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The type Authentication repository.
