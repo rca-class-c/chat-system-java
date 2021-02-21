@@ -245,7 +245,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = Component.getChooseOptionChoice();
 
-        String  key= "delete_message";
+        String key= "messages/delete";
         Request request = new Request(new MessageResponseDataFormat(userId,messageId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -269,7 +269,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Search (User name): ");
         String query = scanner.nextLine();
-        String  key= "search_user";
+        String  key= "users/search";
         Request request = new Request(new SearchRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -311,7 +311,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter User Id: ");
         int query = Component.getChooseOptionChoice();
-        String  key= "get_profile";
+        String key= "users/profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -327,7 +327,7 @@ public class SendMessageView {
     }
 
     public  void GetAllGroupsView() throws IOException {
-        String  key= "get_groups_list";
+        String key= "groups/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -369,7 +369,7 @@ public class SendMessageView {
 
             Component.chooseOptionInputView("Search (Group name or group description): ");
             String query = scanner.nextLine();
-            String  key= "search_group";
+            String  key= "group/search";
             Request request = new Request(new SearchRequestData(query),key);
             String requestAsString = new ObjectMapper().writeValueAsString(request);
             writer.println(requestAsString);
@@ -411,7 +411,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter Group Id: ");
         int query = Component.getChooseOptionChoice();
-        String  key= "get_group";
+        String  key= "groups/profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -427,7 +427,7 @@ public class SendMessageView {
 
     }
     public void allActiveUsers() throws IOException {
-        String  key= "get_users_list";
+        String  key= "users/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
