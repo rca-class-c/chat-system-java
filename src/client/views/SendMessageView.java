@@ -177,7 +177,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
-        String key = "send_direct_message";
+        String key = "messages/send/direct";
         Messages newMessage = new Messages(0,message,userId,reciever,0,0);
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -213,7 +213,7 @@ public class SendMessageView {
 
 
         File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
-        String key = "send_file";
+        String key = "file/send";
         Request request = new Request(file, key);
         String requestAsString = objectMapper.writeValueAsString(request);
         writer.println(requestAsString);
@@ -469,7 +469,7 @@ public class SendMessageView {
 
 
     public  void WriteMessageView(User user) throws IOException {
-        String key = "get_messages_between_two";
+        String key = "messages/direct";
         Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -533,7 +533,7 @@ public class SendMessageView {
     }
 
     public  void WriteMessageViewInGroup(Group group) throws IOException {
-        String key = "get_group_message";
+        String key = "messages/group";
         Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);

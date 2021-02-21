@@ -33,6 +33,9 @@ public class MessagesRoutes {
         if(request.equals("messages/direct")){
             new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
         }
+        if(request.equals("messages/group")){
+            new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
+        }
         else if(request.equals("messages/send/direct")){
             new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper);
         }

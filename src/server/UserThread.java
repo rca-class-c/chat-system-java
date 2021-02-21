@@ -3,9 +3,7 @@ package server;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.requestHandlers.*;
-import server.routes.GroupsRoutes;
-import server.routes.MessagesRoutes;
-import server.routes.UserRoutes;
+import server.routes.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -47,6 +45,12 @@ public class UserThread extends Thread {
                 }
                 else if(request_type.startsWith("messages/")){
                     new MessagesRoutes(data,writer,objectMapper,server,request_type).Main();
+                }
+                else if(request_type.startsWith("replies/")){
+                    new RepliesRoutes(data,writer,objectMapper,server,request_type).Main();
+                }
+                else if(request_type.startsWith("file/")){
+                    new FileRoutes(data,writer,objectMapper,server,request_type).Main();
                 }
 //                else if(request_type.equals("get_my_notifications")){
 //                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);

@@ -133,7 +133,7 @@ public class WelcomeView {
         String password = scanner.nextLine();
         ObjectMapper objectMapper = new ObjectMapper();
         User user = new User(firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
-        String key = "register";
+        String key = "users/register";
         Request request = new Request(user,key);
 
         String requestAsString = objectMapper.writeValueAsString(request);

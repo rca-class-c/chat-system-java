@@ -93,7 +93,7 @@ public class UserView {
     }
 
     public void allActiveUsers() throws IOException {
-        String  key= "get_users_list";
+        String  key= "/users";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -128,13 +128,6 @@ public class UserView {
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Password: ");
         Integer password = scanner.nextInt();
-//        try {
-//            sendInvitations.sendingInvitations(email,password);
-//        }
-//        catch (SQLException  e){
-//            System.out.println(e);
-//        }
-
     }
 
 }
