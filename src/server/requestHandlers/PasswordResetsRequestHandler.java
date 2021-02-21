@@ -9,6 +9,7 @@ import server.models.Response;
 import server.services.PasswordResetService;
 
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  * password reset request handling class
@@ -44,4 +45,22 @@ public class PasswordResetsRequestHandler {
         }
     }
 
+
+    public void handlePasswordReset(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException{
+        Map<String,String> passwordResetObject = new PasswordResetsDecoder(data).resetPasswordDecode();
+
+        boolean passwordReset = new PasswordResetService().resetPassword(passwordResetObject.get("userEmail"),Integer.parseUnsignedInt(passwordResetObject.get("otp")),passwordResetObject.get("newPassword"));
+
+        if(!passwordReset){
+            System.out.println("can't reset password");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }else{
+            Response response = new Response(passwordResetObject, true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(passwordResetObject.get("userEmail")+ " changed password successfully");
+            writer.println(ResponseAsString);
+        }
+    }
 }
