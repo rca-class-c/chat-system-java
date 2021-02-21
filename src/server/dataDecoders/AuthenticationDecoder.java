@@ -7,5 +7,8 @@ package server.dataDecoders;
  * @since 1.0
  */
 public class AuthenticationDecoder {
-
+    String data;
+    public AuthenticationDecoder(String data){
+        this.data = data;
+    };
 }
