@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.requestHandlers.GroupMemberRequestHandler;
 import server.requestHandlers.GroupRequestHandler;
-import server.requestHandlers.MessageRequestHandler;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;

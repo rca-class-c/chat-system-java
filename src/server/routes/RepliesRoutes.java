@@ -3,7 +3,6 @@ package server.routes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
-import server.requestHandlers.GroupRequestHandler;
 import server.requestHandlers.MessageRequestHandler;
 
 import java.io.PrintWriter;
