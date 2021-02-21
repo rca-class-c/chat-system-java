@@ -115,7 +115,7 @@ public class ProfileSettings {
             Component.pageTitleView("MY PROFILE");
             CommonUtil.addTabs(10, false);
             System.out.print("If you don't want to change any of your data, type [-1] ");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(10, true);
             System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
             String firstName = scanner.nextLine();
             if(!firstName.equals("-1") && !firstName.equals(profile.getFname())){
@@ -125,7 +125,7 @@ public class ProfileSettings {
             }
 
 
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(10, true);
             System.out.print("LAST NAME"+"["+profile.getLname()+"]:  ");
             String lastName = scanner.nextLine();
             if(!lastName.equals("-1") && !lastName.equals(profile.getLname())){
@@ -134,7 +134,7 @@ public class ProfileSettings {
                 profile.setLname(lastName);
             }
 
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(10, true);
             System.out.print("USERNAME"+"["+profile.getUsername()+"]: ");
             String username = scanner.nextLine();
             if(!username.equals("-1") && !username.equals(profile.getUsername())){
@@ -144,7 +144,7 @@ public class ProfileSettings {
             }
 
 
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(10, true);
             System.out.print("EMAIL"+"["+profile.getEmail()+"]:  ");
             String email = scanner.nextLine();
             if(!email.equals("-1") && !email.equals(profile.getEmail())){
@@ -153,7 +153,7 @@ public class ProfileSettings {
                 profile.setEmail(email);
             }
 
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(10, true);
             System.out.print("DOB"+"["+profile.getDob()+"]:  ");
             String dob = scanner.nextLine();
             if(!dob.equals("-1") && !dob.equals(profile.getDob())){
@@ -162,18 +162,23 @@ public class ProfileSettings {
                 profile.setDob(dob);
             }
 
-
-            CommonUtil.addTabs(10, false);
+            String gender = "";
+            do {
+            CommonUtil.addTabs(10, true);
             System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
-            String gender = scanner.nextLine();
+            gender = scanner.nextLine();
             if(!gender.equals("-1") && !gender.equals(profile.getGender())){
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(10, true);
                 System.out.print("Gender changed!");
                 profile.setGender(gender);
+                if(!gender.equals("male") && !gender.equals("female")){
+                    CommonUtil.addTabs(10, false);
+                    System.out.println(gender +"Gender not valid");
+                }
             }
+            }while(!gender.equals("-1") && !gender.equals("male") && !gender.equals("female"));
 
-
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(10, true);
             System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
             String password = scanner.nextLine();
             if(!password.equals("-1") && !password.equals(profile.getPassword())){

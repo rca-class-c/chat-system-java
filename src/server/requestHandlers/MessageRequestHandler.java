@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class MessageRequestHandler {
 
-    public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<DirectMessage> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());
         if (messagesList == null) {
             System.out.println("Query failed recheck your db");
@@ -34,7 +34,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Boolean returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
         System.out.println(" Returned  "+returned);
         if (!returned) {
@@ -50,7 +50,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Messages returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
         if (returned == null) {
             System.out.println("message not saved");
@@ -65,7 +65,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Messages returned = new MessagesService().ReplyInGroup(new MessageDecoder(data).returnMessageContent());
         if (returned == null) {
             System.out.println("reply not saved");
@@ -80,7 +80,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Messages returned = new MessagesService().ReplyDirectly(new MessageDecoder(data).returnMessageContent());
         if (returned == null) {
             System.out.println("reply not saved");
@@ -95,7 +95,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         boolean returned = new MessagesService().DeleteMessage(new MessageDecoder(data).returnMessageDeleteData());
         if (!returned) {
             System.out.println("reply not saved");
@@ -112,7 +112,7 @@ public class MessageRequestHandler {
     //-------------------------------------Handle Notifications request ------------------------------------------
     //author : Souvede & Chanelle
 
-    public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
+    public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper) throws Exception {
         Set<ResultSet> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
         //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if (messages == null) {

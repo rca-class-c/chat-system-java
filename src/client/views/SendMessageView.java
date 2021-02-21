@@ -13,6 +13,8 @@ import utils.FileUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -242,7 +244,7 @@ public class SendMessageView {
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Enter message id: ");
-        int messageId = scanner.nextInt();
+        int messageId = Component.getChooseOptionChoice();
 
         String  key= "delete_message";
         Request request = new Request(new MessageResponseDataFormat(userId,messageId),key);
@@ -274,20 +276,34 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Search results");
+        List<Integer> ids= new ArrayList<Integer>();
         if(response.isSuccess()){
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(10, true);
             for (User user : users) {
+                ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
+            }
+            int choice  = 0;
+            do{
+                System.out.println("");
+                Component.chooseOptionInputView("Type user id to chat with: ");
+                choice  = Component.getChooseOptionChoice();
+                if(!ids.contains(choice)){
+                    CommonUtil.addTabs(10, true);
+                    System.out.println("User not found, try another!");
+                }
+            }while(!ids.contains(choice));
+            for (User user : users) {
+                if(user.getUserID() == choice){
+                    WriteMessageView(user);
+                }
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type user id to chat with: ");
-        int choice  = scanner.nextInt();
     }
 
     public void UserIdView() throws IOException {
@@ -295,7 +311,7 @@ public class SendMessageView {
 
 
         Component.chooseOptionInputView("Enter User Id: ");
-        int query = scanner.nextInt();
+        int query = Component.getChooseOptionChoice();
         String  key= "get_profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -318,20 +334,34 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
+        List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
             CommonUtil.addTabs(10, true);
             for (Group group : groups) {
+                ids.add(group.getId());
                 System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 CommonUtil.addTabs(10, false);
+            }
+            int choice = 0;
+            do{
+                System.out.println("");
+                Component.chooseOptionInputView("Type group id to chat in: ");
+                choice  = Component.getChooseOptionChoice();
+                if(!ids.contains(choice)){
+                    CommonUtil.addTabs(10, true);
+                    System.out.println("Invalid group id. Try again!");
+                }
+            }while(!ids.contains(choice));
+            for (Group group : groups) {
+                if(group.getId() == choice){
+                    WriteMessageViewInGroup(group);
+                }
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = scanner.nextInt();
     }
 
 
@@ -344,22 +374,36 @@ public class SendMessageView {
             Request request = new Request(new SearchRequestData(query),key);
             String requestAsString = new ObjectMapper().writeValueAsString(request);
             writer.println(requestAsString);
+            List ids = new ArrayList<Integer>();
             ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             Component.pageTitleView("Search results");
             if(response.isSuccess()){
                 Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
                 CommonUtil.addTabs(10, true);
                 for (Group group : groups) {
+                    ids.add(group.getId());
                     System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                     CommonUtil.addTabs(10, false);
                 }
+                int choice =  0;
+                do{
+                    System.out.println("");
+                    Component.chooseOptionInputView("Type group id to chat in: ");
+                    choice = Component.getChooseOptionChoice();
+                    if(!ids.contains(choice)){
+                        CommonUtil.addTabs(10, true);
+                        System.out.println("Invalid group id. Try again!");
+                    }
+                }while(!ids.contains(choice));
+                for (Group group : groups) {
+                    if(group.getId() == choice){
+                        WriteMessageViewInGroup(group);
+                    }
+                }
             }else {
                 CommonUtil.addTabs(10, true);
-                System.out.println("Failed to read users list, sorry for the inconvenience");
+                System.out.println("Failed to read groups list, sorry for the inconvenience");
             }
-            System.out.println("");
-            Component.chooseOptionInputView("Type user id to chat with: ");
-            int choice  = scanner.nextInt();
         }
 
     public void GroupIdView() throws IOException {
@@ -367,7 +411,7 @@ public class SendMessageView {
 
 
         Component.chooseOptionInputView("Enter Group Id: ");
-        int query = scanner.nextInt();
+        int query = Component.getChooseOptionChoice();
         String  key= "get_group";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -390,40 +434,40 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("USERS LIST");
+        List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(10, true);
             for (User user : users) {
+                ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
+            }
+
+            int choice = 0;
+            do{
+                System.out.println("");
+                Component.chooseOptionInputView("Type user id to chat with: ");
+                choice  = Component.getChooseOptionChoice();
+                if(!ids.contains(choice)){
+                    CommonUtil.addTabs(10, true);
+                    System.out.println("User not found, try another!");
+                }
+            }while(!ids.contains(choice));
+            for (User user : users) {
+                if(user.getUserID() == choice){
+                    WriteMessageView(user);
+                }
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = scanner.nextInt();
+
+
     }
 
-    public void FindUser(int id) throws IOException {
-        String key = "get_profile";
-        Request request = new Request(new ProfileRequestData(id), key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if (response.isSuccess()) {
-            User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-            Component.pageTitleView("Chat with " + profile.getUsername()+" "+profile.getFname());
-            CommonUtil.addTabs(10, false);
-            System.out.println("Type number message:  ");
-            CommonUtil.addTabs(10, false);
-            int message = scanner.nextInt();
-        } else {
-            CommonUtil.addTabs(10, false);
-            System.out.println("User not found");
-        }
-    }
 
     public  void WriteMessageView(User user) throws IOException {
         String key = "get_messages_between_two";
@@ -576,7 +620,7 @@ public class SendMessageView {
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = scanner.nextInt();
+        int choice  = Component.getChooseOptionChoice();
     }
     public void SendReplyView() {
         Component.pageTitleView("Send reply");

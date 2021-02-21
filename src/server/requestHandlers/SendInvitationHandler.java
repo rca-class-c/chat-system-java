@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 public class SendInvitationHandler {
-    public void HandleSendInvitation(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {
+    public void HandleSendInvitation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {
         int returned = new sendInvitations().sendingInvitations(new SendInvitationDecoder(data).retrieveEmails());
         if(returned == 0){
             System.out.println("Failed to send email");
