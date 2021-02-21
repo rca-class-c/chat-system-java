@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Authentication repository.
@@ -66,6 +68,11 @@ public class AuthenticationRepository {
 
         }
         return null;
+    }
+
+
+    public boolean isAuthTokenValid(){
+        return new Token().isValidToken(this.token);
     }
 
 //    public User currentUser()
