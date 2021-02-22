@@ -54,7 +54,8 @@ public class Authorization {
      System.out.println(id_SendMessage);
     }
 
-
+// checking if the user is allowed  to delete another user, if the function returns true then the person is allowed else
+    //user is unauthorized.
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
