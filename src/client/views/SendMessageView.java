@@ -4,6 +4,7 @@ import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.*;
+import server.models.enums.FileSizeTypeEnum;
 import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;

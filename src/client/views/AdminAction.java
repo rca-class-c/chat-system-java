@@ -275,7 +275,7 @@ public class AdminAction {
                     choice = this.insertAdminChoice();
                     switch(choice) {
                         case 1:
-                            InviteUsers();
+                            System.out.println("choice 1");
                             break;
                         case 2:
                             System.out.println("choice 2");
