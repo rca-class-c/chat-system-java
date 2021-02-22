@@ -214,7 +214,7 @@ public class UserRepository {
 
 
             i = statement.executeUpdate(query);
-            System.out.println("Rows inserted: "+i);
+            System.out.println("Rows updated: "+i);
 
             statement.close();
             connection.close();
