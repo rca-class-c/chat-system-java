@@ -114,7 +114,7 @@ public class ProfileSettings {
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
             Component.pageTitleView("MY PROFILE");
             CommonUtil.addTabs(10, false);
-            System.out.print("If you don't want to change any of your data, type [-1] ");
+            System.out.println("If you don't want to change any of your data, type [-1] ");
             CommonUtil.addTabs(10, false);
             System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
             String firstName = scanner.nextLine();
@@ -122,6 +122,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("First name changed!");
                 profile.setFname(firstName);
+                System.out.println();
             }
 
             CommonUtil.addTabs(10, false);
@@ -131,6 +132,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Last name changed!");
                 profile.setLname(lastName);
+                System.out.println();
             }
 
             CommonUtil.addTabs(10, false);
@@ -140,6 +142,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Username changed!");
                 profile.setUsername(username);
+                System.out.println();
             }
 
 
@@ -150,6 +153,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Email changed!");
                 profile.setEmail(email);
+                System.out.println();
             }
 
             CommonUtil.addTabs(10, false);
@@ -159,6 +163,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("DOB changed!");
                 profile.setDob(dob);
+                System.out.println();
             }
 
 
@@ -169,6 +174,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Gender changed!");
                 profile.setGender(gender);
+                System.out.println();
             }
 
 
@@ -190,7 +196,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, true);
                 CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
                 CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print(" Your account was updated successfully ");
+                System.out.println(" Your account was updated successfully ");
                 CommonUtil.resetColor();
 
 
