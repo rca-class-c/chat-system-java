@@ -124,7 +124,6 @@ public class ProfileSettings {
                 profile.setFname(firstName);
             }
 
-
             CommonUtil.addTabs(10, false);
             System.out.print("LAST NAME"+"["+profile.getLname()+"]:  ");
             String lastName = scanner.nextLine();
