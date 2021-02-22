@@ -21,7 +21,7 @@ import java.util.List;
  * @author: Divin Irakiza
  */
 public class FileRequestHandler {
-    public void HandleSaveFile(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleSaveFile(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         File returned = new FileService().saveFile(new FileDecoder(data).SaveFileDecode());
         if(returned == null){
             System.out.println("File not saved");

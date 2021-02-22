@@ -251,7 +251,7 @@ public class UserRepository {
 
 //int i=0;
 //        try {
-//            Connection connection = Config.getConnection();
+//            Connection connection = PostegresConfig.getConnection();
 //            Statement statement = connection.createStatement();
 //
 //            String query = String.format("UPDATE users SET (first_name ='%s' , last_name='%s'," +
@@ -305,6 +305,74 @@ public class UserRepository {
         }
         return affectedRows;
     }
+
+    /**
+     * changing user password
+     *
+     * @param userId user id
+     * @param password user new proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordById(int userId, String password) throws SQLException{
+        Connection connection = PostegresConfig.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE user_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setInt(2,userId);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
+    /**
+     *  changing user password
+     *
+     * @param email user email
+     * @param password new user proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordByEmail(String email, String password) throws SQLException{
+        Connection connection = PostegresConfig.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setString(2,email);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
+
+    /**
+     * changing user password
+     *
+     * @param username user username
+     * @param password new user proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordByUsername(String username, String password) throws SQLException{
+        Connection connection = PostegresConfig.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setString(2,username);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
 
 }
 

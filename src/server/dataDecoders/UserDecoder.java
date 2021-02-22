@@ -46,6 +46,7 @@ public class UserDecoder {
         JsonNode dataDecrypt = objectMapper.readTree(data);
         return new User(dataDecrypt.get("userID").asInt(),dataDecrypt.get("fname").asText(),dataDecrypt.get("lname").asText(),dataDecrypt.get("password").asText(),dataDecrypt.get("email").asText(),dataDecrypt.get("dob").asText(),dataDecrypt.get("username").asText(),dataDecrypt.get("gender").asText(),dataDecrypt.get("categoryID").asInt(),dataDecrypt.get("status").asText());
 
+
     }
     public String GetSearchDecode() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

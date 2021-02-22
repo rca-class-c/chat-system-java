@@ -19,7 +19,7 @@ import java.util.List;
  * @AUTHOR: Gahamanyi YVette
  * */
 public class GroupMemberRequestHandler {
-    public void handlerCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void handlerCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         GroupMember returned = new GroupMemberService().saveGroupMember(new GroupMemberDecoder(data).createGroupMemberDecode());
         if (returned == null){
             System.out.println("Group not created");
@@ -35,7 +35,7 @@ public class GroupMemberRequestHandler {
         }
     }
 
-    public void handlerGetGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void handlerGetGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<GroupMember> groupMembers=new GroupMemberService().listGroupMembers(new GroupMemberDecoder(data).getGroupMembersDecoder());
         if (groupMembers == null){
             System.out.println("query failed recheck your db");
@@ -52,7 +52,7 @@ public class GroupMemberRequestHandler {
         }
     }
 
-    public void handleDeleteGroupMember(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void handleDeleteGroupMember(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         boolean returned = new GroupMemberService().deleteMember(new GroupMemberDecoder(data).deleteGroupMemberDecoder());
         if(!returned){
             System.out.println("GroupMember not found");
@@ -69,7 +69,7 @@ public class GroupMemberRequestHandler {
         }
     }
 
-    public void handleCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException{
+    public void handleCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException{
         int[] returned = new GroupMemberService().createMembers(new GroupMemberDecoder(data).createGroupMembersDecoder());
         if(returned == null){
             System.out.println("Group members not added");
