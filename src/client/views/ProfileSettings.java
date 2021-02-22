@@ -137,7 +137,7 @@ public class ProfileSettings {
             }
 
 
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(10, false);
             System.out.print("USERNAME"+"["+profile.getUsername()+"]: ");
             String username = scanner.nextLine();
             if(!username.equals("-1") && !username.equals(profile.getUsername())){
@@ -149,7 +149,7 @@ public class ProfileSettings {
             }
 
 
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(10, false);
             System.out.print("EMAIL"+"["+profile.getEmail()+"]:  ");
             String email = scanner.nextLine();
             if(!email.equals("-1") && !email.equals(profile.getEmail())){
@@ -159,7 +159,7 @@ public class ProfileSettings {
 
             }
 
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(10, false);
             System.out.print("DOB"+"["+profile.getDob()+"]:  ");
             String dob = scanner.nextLine();
             if(!dob.equals("-1") && !dob.equals(profile.getDob())){
@@ -171,7 +171,7 @@ public class ProfileSettings {
 
             String gender = "";
             do {
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(10, false);
             System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
             gender = scanner.nextLine();
             if(!gender.equals("-1") && !gender.equals(profile.getGender())){
@@ -185,7 +185,7 @@ public class ProfileSettings {
             }
             }while(!gender.equals("-1") && !gender.equals("male") && !gender.equals("female"));
 
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(10, false);
             System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
             String password = scanner.nextLine();
             if(!password.equals("-1") && !password.equals(profile.getPassword())){
