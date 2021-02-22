@@ -178,7 +178,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
-        String key = "send_direct_message";
+        String key = "messages/send/direct";
         Messages newMessage = new Messages(0,message,userId,reciever,0,0);
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -214,7 +214,7 @@ public class SendMessageView {
 
 
         File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
-        String key = "send_file";
+        String key = "file/send";
         Request request = new Request(file, key);
         String requestAsString = objectMapper.writeValueAsString(request);
         writer.println(requestAsString);
@@ -246,7 +246,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = Component.getChooseOptionChoice();
 
-        String  key= "delete_message";
+        String key= "messages/delete";
         Request request = new Request(new MessageResponseDataFormat(userId,messageId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -257,6 +257,7 @@ public class SendMessageView {
 
         }
         else{
+            CommonUtil.addTabs(10, true);
             System.out.println("Message not found!");
         }
     }
@@ -270,7 +271,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Search (User name): ");
         String query = scanner.nextLine();
-        String  key= "search_user";
+        String  key= "users/search";
         Request request = new Request(new SearchRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -312,7 +313,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter User Id: ");
         int query = Component.getChooseOptionChoice();
-        String  key= "get_profile";
+        String key= "users/profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -328,7 +329,7 @@ public class SendMessageView {
     }
 
     public  void GetAllGroupsView() throws IOException {
-        String  key= "get_groups_list";
+        String key= "groups/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -370,7 +371,7 @@ public class SendMessageView {
 
             Component.chooseOptionInputView("Search (Group name or group description): ");
             String query = scanner.nextLine();
-            String  key= "search_group";
+            String  key= "group/search";
             Request request = new Request(new SearchRequestData(query),key);
             String requestAsString = new ObjectMapper().writeValueAsString(request);
             writer.println(requestAsString);
@@ -412,7 +413,7 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter Group Id: ");
         int query = Component.getChooseOptionChoice();
-        String  key= "get_group";
+        String  key= "groups/profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -428,7 +429,7 @@ public class SendMessageView {
 
     }
     public void allActiveUsers() throws IOException {
-        String  key= "get_users_list";
+        String  key= "users/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -470,7 +471,7 @@ public class SendMessageView {
 
 
     public  void WriteMessageView(User user) throws IOException {
-        String key = "get_messages_between_two";
+        String key = "messages/direct";
         Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -478,10 +479,17 @@ public class SendMessageView {
         Component.pageTitleView("Your recent chat");
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            CommonUtil.addTabs(10, true);
+            //CommonUtil.addTabs(10, true);
+            System.out.println("");
             for (Messages message : messages) {
-                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
                 CommonUtil.addTabs(10, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("Sender: "+message.getSender());
+                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
+                System.out.println("    sent at: "+message.getSent_at());
+                CommonUtil.resetColor();
+                CommonUtil.addTabs(10, false);
+                System.out.println("Body: " +message.getContent());
             }
         }else {
             CommonUtil.addTabs(10, true);
@@ -534,7 +542,7 @@ public class SendMessageView {
     }
 
     public  void WriteMessageViewInGroup(Group group) throws IOException {
-        String key = "get_group_message";
+        String key = "messages/group";
         Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);

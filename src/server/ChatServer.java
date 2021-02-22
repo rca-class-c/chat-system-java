@@ -1,6 +1,5 @@
 package server;
 
-import client.views.components.Component;
 import redis.clients.jedis.Jedis;
 import server.config.JedisConfig;
 import server.config.PostegresConfig;
@@ -11,10 +10,7 @@ import utils.ConsoleColor;
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 /**

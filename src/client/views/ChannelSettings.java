@@ -159,7 +159,7 @@ public class ChannelSettings {
       ObjectMapper objectMapper=new ObjectMapper();
       Group group=new Group(group_name,group_desc,userId);
 
-      String key="create_group";
+      String key="groups/new";
       Request request = new Request(group,key);
 
       String requestAsString = objectMapper.writeValueAsString(request);
