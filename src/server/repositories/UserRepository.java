@@ -55,9 +55,6 @@ public class UserRepository {
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at"));
                 System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
-//            while(rs.next()){
-//                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
-//            }
                 return returnUser;
             }
             else{
@@ -204,49 +201,31 @@ public class UserRepository {
      * Method for updating user which accepts the user to update as input and his/her id
      * */
     public User updateUser(User user,int userId) throws SQLException{
-        System.out.println("Reached    ");
-        int affectedRows = 0;
 
+        int i= 0;
+        try {
             Connection connection = PostegresConfig.getConnection();
-            String query = String.format("UPDATE users SET first_name = ?,last_name = ?," +
-                    "username=?,email=?,gender=?,pass_word=?,dob=?, categoryid = ?  WHERE user_id = ? ;");
-            PreparedStatement statement =  connection.prepareStatement(query);
-            statement.setString(1,user.getFname());
-            statement.setString(2,user.getLname());
-            statement.setString(3,user.getUsername());
-            statement.setString(4, user.getEmail());
-            statement.setString(5,user.getGender());
-            statement.setString(6,user.getPassword());
-            statement.setString(7,user.getDob());
-            statement.setInt(8,user.getCategoryID());
-            statement.setInt(9,user.getUserID());
-            affectedRows = statement.executeUpdate();
+            Statement statement = connection.createStatement();
 
-//int i=0;
-//        try {
-//            Connection connection = Config.getConnection();
-//            Statement statement = connection.createStatement();
-//
-//            String query = String.format("UPDATE users SET (first_name ='%s' , last_name='%s'," +
-//                            " username ='%s' , email = '%s', " +
-//                    "gender = '%s', pass_word = '%s',dob = '%s',categoryid = '%d',status = '%d') WHERE user_id = '%d';",
-//                    user.getFname(), user.getLname(),
-//                    user.getUsername(), user.getEmail(), user.getGender(), user.getPassword(),user.getDob(),
-//                    user.getCategoryID(),user.getStatus(), user.getUserID());
-//
-//
-//            i = statement.executeUpdate(query);
-//            System.out.println("Rows inserted: "+i);
-//
-//            statement.close();
-//            connection.close();
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-        if(affectedRows > 0) {
+            String query = String.format("UPDATE users SET first_name ='%s' , last_name = '%s', username = '%s'," +
+                            " email = '%s', gender = '%s', pass_word = '%s' ,dob = '%s',status = '%s'," +
+                            "categoryid = %d WHERE user_id = %d", user.getFname(), user.getLname(), user.getUsername(), user.getEmail(), user.getGender(),
+                    user.getPassword(),user.getDob(),user.getStatus(),user.getCategoryID(),userId);
+
+
+            i = statement.executeUpdate(query);
+            System.out.println("Rows updated: "+i);
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if(i > 0) {
             return user;
         }
         return null;
+       
     }
     /**
      * Method for deleting user using id
@@ -278,6 +257,74 @@ public class UserRepository {
         }
         return affectedRows;
     }
+
+    /**
+     * changing user password
+     *
+     * @param userId user id
+     * @param password user new proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordById(int userId, String password) throws SQLException{
+        Connection connection = PostegresConfig.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE user_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setInt(2,userId);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
+    /**
+     *  changing user password
+     *
+     * @param email user email
+     * @param password new user proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordByEmail(String email, String password) throws SQLException{
+        Connection connection = PostegresConfig.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE email = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setString(2,email);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
+
+    /**
+     * changing user password
+     *
+     * @param username user username
+     * @param password new user proposed password
+     * @return true when password is updated, false when password not updated
+     * @throws SQLException throws sql exception for any error
+     * @author Ntwari Clarance Liberiste
+     */
+    public boolean changePasswordByUsername(String username, String password) throws SQLException{
+        Connection connection = PostegresConfig.getConnection();
+        String query = "UPDATE users SET pass_word = ? WHERE username = ?;";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1,password);
+        statement.setString(2,username);
+
+        int affectedRows = statement.executeUpdate();
+
+        return affectedRows > 0;
+    }
+
 
 }
 

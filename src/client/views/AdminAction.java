@@ -275,7 +275,7 @@ public class AdminAction {
                     choice = this.insertAdminChoice();
                     switch(choice) {
                         case 1:
-                            InviteUsers();
+                            System.out.println("choice 1");
                             break;
                         case 2:
                             System.out.println("choice 2");
@@ -341,7 +341,7 @@ public class AdminAction {
                 emails.add(email);
             }
         }
-        String key = "send_email_invitation";
+        String key = "users/invite";
         Request request  = new Request(emails,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);

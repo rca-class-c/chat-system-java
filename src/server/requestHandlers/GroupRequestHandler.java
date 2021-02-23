@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GroupRequestHandler {
 
-    public  void HandlerSearchGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public  void HandlerSearchGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<Group> messages = new GroupServices().SearchGroups(new UserDecoder(data).GetSearchDecode());
 
         if(messages == null){
@@ -33,7 +33,7 @@ public class GroupRequestHandler {
         }
 
     }
-    public void HandleCreateGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleCreateGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Group returned = new GroupServices().createGroup(new GroupDecoder(data).CreateGroupDecode());
         if(returned == null){
             System.out.println("group not created");
@@ -49,7 +49,7 @@ public class GroupRequestHandler {
         }
     }
 
-    public  void HandleGroupUpdate(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public  void HandleGroupUpdate(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Group decodedOne = new GroupDecoder(data).UpdateGroupDecode();
         Group returned = new GroupServices().updateGroup(decodedOne);
         if(returned == null){
@@ -66,7 +66,7 @@ public class GroupRequestHandler {
         }
     }
 
-    public void HandleGetAllGroups(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleGetAllGroups(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<Group> messages = new GroupServices().getAllGroups();
         if(messages == null){
             System.out.println("Query failed recheck your db");
@@ -83,7 +83,7 @@ public class GroupRequestHandler {
         }
 
     }
-    public void HandleGetGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException,SQLException {
+    public void HandleGetGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
         Group returned = new GroupServices().getGroupById(new UserDecoder(data).GetProfileDecode());
         if(returned == null){
             System.out.println("Group not found");
@@ -99,7 +99,7 @@ public class GroupRequestHandler {
             writer.println(ResponseAsString);
         }
     }
-    public void HandleDeleteGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleDeleteGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         boolean returned = new GroupServices().deleteGroup(new UserDecoder(data).GetProfileDecode());
         if(!returned){
             System.out.println("Group not found");

@@ -71,7 +71,7 @@ public class ProfileSettings {
 
     }
     public void MyProfile() throws IOException {
-        String  key= "get_profile";
+        String  key= "users/profile";
         Request request = new Request(new ProfileRequestData(userid),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -103,7 +103,7 @@ public class ProfileSettings {
 
     }
     public void updateUser(int userid) throws IOException{
-        String  key= "get_profile";
+        String key= "users/profile";
         Request profileRequest = new Request(new ProfileRequestData(userid),key);
         String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
         writer.println(requestAsString);
@@ -114,7 +114,7 @@ public class ProfileSettings {
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
             Component.pageTitleView("MY PROFILE");
             CommonUtil.addTabs(10, false);
-            System.out.print("If you don't want to change any of your data, type [-1] ");
+            System.out.println("If you don't want to change any of your data, type [-1] ");
             CommonUtil.addTabs(10, false);
             System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
             String firstName = scanner.nextLine();
@@ -122,8 +122,9 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("First name changed!");
                 profile.setFname(firstName);
-            }
+                System.out.println();
 
+            }
 
             CommonUtil.addTabs(10, false);
             System.out.print("LAST NAME"+"["+profile.getLname()+"]:  ");
@@ -132,7 +133,9 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Last name changed!");
                 profile.setLname(lastName);
+                System.out.println();
             }
+
 
             CommonUtil.addTabs(10, false);
             System.out.print("USERNAME"+"["+profile.getUsername()+"]: ");
@@ -141,6 +144,8 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Username changed!");
                 profile.setUsername(username);
+                System.out.println();
+
             }
 
 
@@ -151,6 +156,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("Email changed!");
                 profile.setEmail(email);
+
             }
 
             CommonUtil.addTabs(10, false);
@@ -160,18 +166,24 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, false);
                 System.out.print("DOB changed!");
                 profile.setDob(dob);
+
             }
 
-
+            String gender = "";
+            do {
             CommonUtil.addTabs(10, false);
             System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
-            String gender = scanner.nextLine();
+            gender = scanner.nextLine();
             if(!gender.equals("-1") && !gender.equals(profile.getGender())){
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(10, true);
                 System.out.print("Gender changed!");
                 profile.setGender(gender);
+                if(!gender.equals("male") && !gender.equals("female")){
+                    CommonUtil.addTabs(10, false);
+                    System.out.println(gender +"Gender not valid");
+                }
             }
-
+            }while(!gender.equals("-1") && !gender.equals("male") && !gender.equals("female"));
 
             CommonUtil.addTabs(10, false);
             System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
@@ -181,8 +193,7 @@ public class ProfileSettings {
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            //User user = new User(userid,firstName,lastName,password,email,dob,username,gender,1,"ACTIVE");
-            String updateKey = "update_profile";
+            String updateKey = "users/update";
             Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
@@ -191,7 +202,7 @@ public class ProfileSettings {
                 CommonUtil.addTabs(10, true);
                 CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
                 CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print(" Your account was updated successfully ");
+                System.out.println(" Your account was updated successfully ");
                 CommonUtil.resetColor();
 
 

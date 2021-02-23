@@ -34,7 +34,7 @@ public class PostegresConfig {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         try (FileInputStream f = new FileInputStream("src/server/config/db.properties")) {
 
