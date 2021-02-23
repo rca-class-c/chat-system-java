@@ -52,6 +52,18 @@ public class UserThread extends Thread {
                 else if(request_type.startsWith("file/")){
                     new FileRoutes(data,writer,objectMapper,server,request_type).Main();
                 }
+                else if(request_type.equals("passwordReset_initiate")){
+                    new PasswordResetsRequestHandler().handlePasswordResetInitiation(data,writer,objectMapper);
+                }
+                else if(request_type.equals("passwordReset")){
+                    new PasswordResetsRequestHandler().handlePasswordReset(data,writer,objectMapper);
+                }
+                else if(request_type.equals("auth_login")){
+                    new AuthenticationRequestHandler().handleLogin(data,writer,objectMapper);
+                }
+                else if(request_type.startsWith("file/")){
+                    new FileRoutes(data,writer,objectMapper,server,request_type).Main();
+                }
 //                else if(request_type.equals("get_my_notifications")){
 //                    new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
 //                }

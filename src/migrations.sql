@@ -280,7 +280,7 @@ CREATE TABLE public.users (
     last_name character varying(40) NOT NULL,
     username character varying(40) NOT NULL,
     email character varying(40) NOT NULL,
-    gender public.gender_enum NOT NULL,
+    gender character varying(40) NOT NULL,
     pass_word character varying(40) NOT NULL,
     dob date,
     created_at date,

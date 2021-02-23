@@ -26,8 +26,8 @@ public class MessagesService {
     public List<DirectMessage> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }
-    public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
-        return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
+    public List<GroupMessage> viewGroupMessages(int groupId) throws SQLException{
+        return messagesRepository.getGroupMessages(groupId);
     }
     public Messages editMessage(Messages messages) throws Exception {
         return messagesRepository.updateMessage(messages);
@@ -38,7 +38,7 @@ public class MessagesService {
     public String viewGroupName(int id)throws SQLException{
         return messagesRepository.getGroupName(id);
     }
-    public Messages sendInGroup(Messages messages) throws SQLException{
+    public boolean sendInGroup(Messages messages) throws SQLException{
         return messagesRepository.sendGroupMessage(messages);
     }
 

@@ -65,7 +65,9 @@ public Messages(){};
 
     public void setUser_receiver(Integer user_receiver) { this.user_receiver = user_receiver; }
 
-    public int getGroup_receiver(Integer group_receiver) { return group_receiver; }
+    public Integer getGroup_receiver() {
+        return group_receiver;
+    }
 
     public void setGroup_receiver(Integer group_receiver) { this.group_receiver = group_receiver; }
 

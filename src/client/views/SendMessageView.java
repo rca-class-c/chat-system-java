@@ -4,6 +4,7 @@ import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.*;
+import server.models.enums.FileSizeTypeEnum;
 import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -168,7 +169,30 @@ public class SendMessageView {
         } while (action == -1);
     }
 
+    public  void TypeGroupMessageView(int group) throws IOException {
+        Component.pageTitleView("Type a message");
 
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Your Message: ");
+        String message = scanner.nextLine();
+        String key = "messages/send/group";
+        Messages newMessage = new Messages(0,message,userId,0,group,0);
+        Request request = new Request(newMessage,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+
+            CommonUtil.addTabs(10, true);
+            System.out.println("Message sent");
+
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to send");
+        }
+        //WriteMessageView(new User());
+    }
 
     public  void TypeMessageView(int reciever) throws IOException {
         Component.pageTitleView("Type a message");
@@ -381,7 +405,7 @@ public class SendMessageView {
 
             Component.chooseOptionInputView("Search (Group name or group description): ");
             String query = scanner.nextLine();
-            String  key= "group/search";
+            String  key= "groups/search";
             Request request = new Request(new SearchRequestData(query),key);
             String requestAsString = new ObjectMapper().writeValueAsString(request);
             writer.println(requestAsString);
@@ -391,10 +415,11 @@ public class SendMessageView {
             if(response.isSuccess()){
                 Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
                 CommonUtil.addTabs(10, true);
+                System.out.println("");
                 for (Group group : groups) {
                     ids.add(group.getId());
-                    System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                     CommonUtil.addTabs(10, false);
+                    System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 }
                 int choice =  0;
                 do{
@@ -553,7 +578,7 @@ public class SendMessageView {
 
     public  void WriteMessageViewInGroup(Group group) throws IOException {
         String key = "messages/group";
-        Request request = new Request(new ProfileRequestData(userId), key);
+        Request request = new Request(new ProfileRequestData(group.getId()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());

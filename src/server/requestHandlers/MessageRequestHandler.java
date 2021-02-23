@@ -7,8 +7,10 @@ import server.dataDecoders.MessageDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
+import server.models.User;
 import server.services.MessagesService;
 import utils.DirectMessage;
+import utils.GroupMessage;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -33,10 +35,22 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
-
+    public void HandleGroupMessages(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
+        List<GroupMessage> messages= new MessagesService().viewGroupMessages(new UserDecoder(data).GetProfileDecode());
+        if (messages == null) {
+            System.out.println("message not saved");
+            Response response = new Response(null, false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        } else {
+            Response response = new Response(messages, true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println("sent a message");
+            writer.println(ResponseAsString);
+        }
+    }
     public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Boolean returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
-        System.out.println(" Returned  "+returned);
         if (!returned) {
             System.out.println("message not saved");
             Response response = new Response(null, false);
@@ -51,8 +65,8 @@ public class MessageRequestHandler {
     }
 
     public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        Messages returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
-        if (returned == null) {
+        boolean returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
+        if (!returned) {
             System.out.println("message not saved");
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
@@ -60,7 +74,7 @@ public class MessageRequestHandler {
         } else {
             Response response = new Response(returned, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(returned.getSender() + " sent a message");
+            System.out.println("Message sent");
             writer.println(ResponseAsString);
         }
     }
