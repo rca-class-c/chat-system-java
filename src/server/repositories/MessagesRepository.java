@@ -47,15 +47,14 @@ public class MessagesRepository {
 
     //-------------------------------View Group Messages-----------------------------------------
     // author : Loraine
-    public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
+    public List<GroupMessage> getGroupMessages(int groupid) throws SQLException {
         List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && group_receiver = %d or sender = %d && group_receiver = %d;",
-                first, last, first, last);
+                "SELECT * from messages where group_receiver = %d",groupid);
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -135,21 +134,17 @@ public class MessagesRepository {
 //                    String gr_name = grn.getString(1);
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  Messages sendGroupMessage(Messages message) throws SQLException {
-        String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
+    public  boolean sendGroupMessage(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,group_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-       // statement.setInt(3, message.getGroup_receiver());
-        statement.setDate(4, (java.sql.Date) message.getSent_at());
-        boolean rowInsert= statement.executeUpdate()>1;
+        statement.setInt(3, message.getGroup_receiver() );
+        boolean rowInsert= statement.executeUpdate()>0;
         statement.close();
         conn.close();
-        if(rowInsert){
-            return message;
-        }
-        return null;
+        return rowInsert;
     }
 
     public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
@@ -199,7 +194,7 @@ public class MessagesRepository {
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver(null));
+        statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
@@ -222,7 +217,7 @@ public class MessagesRepository {
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver(null));
+        statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
