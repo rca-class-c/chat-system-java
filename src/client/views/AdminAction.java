@@ -274,7 +274,7 @@ public class AdminAction {
                     choice = this.insertAdminChoice();
                     switch(choice) {
                         case 1:
-                            System.out.println("choice 1");
+                            InviteUsers();
                             break;
                         case 2:
                             System.out.println("choice 2");
@@ -283,13 +283,7 @@ public class AdminAction {
                             System.out.println("choice 3");
                             break;
                         case 4:
-                            TableView st = new TableView();
-                            st.setShowVerticalLines(true);
-                            st.setHeaders("one", "two", "three", "four");
-                            st.addRow("super", "broccoli", "flexible", "there we are");
-                            st.addRow("assumption", "announcement", "reflection", "");
-                            st.addRow("logic", "pleasant", "wild", "weel doen all ");
-                            st.print();
+                            new UserView(userId,writer,reader).allActiveUsers();
                             break;
                         case 5:
                             System.out.println("choice 5");
