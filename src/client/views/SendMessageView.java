@@ -5,6 +5,7 @@ import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.*;
 import server.models.enums.FileSizeTypeEnum;
+import server.services.UserService;
 import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -13,6 +14,7 @@ import utils.FileUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -288,7 +290,7 @@ public class SendMessageView {
 
 
 
-    public  void SearchUserView() throws IOException {
+    public  void SearchUserView() throws IOException, SQLException {
 
         Component.pageTitleView("Search a User");
 
@@ -330,7 +332,7 @@ public class SendMessageView {
         }
     }
 
-    public void UserIdView() throws IOException {
+    public void UserIdView() throws IOException, SQLException {
         Component.pageTitleView("Get User");
 
 
@@ -452,7 +454,7 @@ public class SendMessageView {
         }
 
     }
-    public void allActiveUsers() throws IOException {
+    public void allActiveUsers() throws IOException, SQLException {
         String  key= "users/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -494,13 +496,13 @@ public class SendMessageView {
     }
 
 
-    public  void WriteMessageView(User user) throws IOException {
+    public  void WriteMessageView(User user) throws IOException, SQLException {
         String key = "messages/direct";
         Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("Your recent chat");
+        Component.pageTitleView("Chat Room");
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             //CommonUtil.addTabs(10, true);
@@ -508,6 +510,7 @@ public class SendMessageView {
             for (Messages message : messages) {
                 CommonUtil.addTabs(10, false);
                 CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(new UserService().getUserById(message.getSender()));
                 System.out.print("Sender: "+message.getSender());
                 CommonUtil.useColor(ConsoleColor.RegularColor.RED);
                 System.out.println("    sent at: "+message.getSent_at());

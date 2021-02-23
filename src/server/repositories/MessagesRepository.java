@@ -1,7 +1,9 @@
 package server.repositories;
 
+import server.models.File;
 import server.models.Messages;
 import server.config.PostegresConfig;
+import server.models.User;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
@@ -244,5 +246,26 @@ public class MessagesRepository {
         }
         return false;
 
+    }
+
+    public ResultSet getMessagingUser(int id) {
+        try {
+
+            Connection connection = PostegresConfig.getConnection();
+            Statement statement = connection.createStatement();
+
+
+            String query = String.format("SELECT * FROM users WHERE id = %d", id);
+            ResultSet resultSet = statement.executeQuery(query);
+
+            statement.close();
+            connection.close();
+
+            return resultSet;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

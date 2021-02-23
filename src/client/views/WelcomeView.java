@@ -28,15 +28,14 @@ public class WelcomeView {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
 
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.print("Your username: ");
         String userName = scanner.nextLine();
 
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.print("Your password: ");
         Console cons = System.console();
-//        String password = scanner.nextLine();
-        String password = CommonUtil.getMaskedInput(cons, "dsf");
+        String password = scanner.nextLine();
 
         ObjectMapper objectMapper = new ObjectMapper();
         AuthInput loginData = new AuthInput(userName,password);
@@ -103,7 +102,6 @@ public class WelcomeView {
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Username: ");
         String username = scanner.nextLine();
-
 
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your FirstName: ");

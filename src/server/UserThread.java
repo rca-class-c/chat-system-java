@@ -83,7 +83,13 @@ public class UserThread extends Thread {
             CommonUtil.addTabs(10, false);
             CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.RED_BACKGROUND_BRIGHT);
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print(" User Disconnected  " );
+            System.out.println();
+            if (ex.getMessage().equals("Connection reset")) {
+                System.out.print(" User Disconnected  ");
+            } else {
+                System.out.print(ex.getMessage());
+            }
+
             CommonUtil.resetColor();
         }
     }
