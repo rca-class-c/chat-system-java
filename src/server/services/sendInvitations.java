@@ -7,26 +7,26 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.ArrayList;
 
+import server.models.User;
+import utils.CommonUtil;
 import utils.OTP;
 import server.repositories.sendInvitationRepositories;
 public class  sendInvitations{
-    public static  int sendingInvitations(final String email,final  String password,ArrayList<String> to) throws MessagingException, SQLException, ClassNotFoundException {
+    public static  int sendingInvitations(String[] to) throws MessagingException, SQLException, ClassNotFoundException {
+        String email = "oclassc@gmail.com";
+        String password = "!C$l2a%s0s#2^1C&(";
         ArrayList<Integer> verificationCodes= new ArrayList<Integer>();
-        // REPOSITORY
         sendInvitationRepositories repositories =new sendInvitationRepositories();
-        // VARIABLES OF TOTAL NUMBER OF  EMAILS SELECTED , ID OF THE USER , STATUS OF THE EMAIL
-        int numberOfEmails= to.size();
         int id=0;
         int ok;
         // OTP
-        for (int i = 0; i < numberOfEmails; i++) {
+        for (String newEmail : to) {
             char [] otp= OTP.OTP(5);
             int sentOtp=Integer.parseInt(String.valueOf(otp));
             verificationCodes.add(sentOtp);
         }
-
         // SEARCH FOR THE ADMIN
-     id=repositories.searchForAdmin(email);
+        id=repositories.searchForAdmin(email);
 // SEND INVITATIONS TO THE SELECTED EMAILS
         if (id!=0) {
             Properties prop = new Properties();
@@ -40,12 +40,14 @@ public class  sendInvitations{
                             return new PasswordAuthentication(email, password);
                         }
                     });
-            for (int i = 0; i < numberOfEmails; i++) {
+            //for (int i = 0; i < numberOfEmails; i++) {
+            int i = 0;
+            for (String newEmail : to) {
                 MimeMessage message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(email));
                 message.setRecipients(
                         Message.RecipientType.TO,
-                        new InternetAddress[]{new InternetAddress(to.get(i))}
+                        new InternetAddress[]{new InternetAddress(newEmail)}
                 );
                 message.setSubject("Invitation to the chat System");
                 message.setText("Dear,"
@@ -53,7 +55,8 @@ public class  sendInvitations{
 
                 Transport.send(message);
                 // INSERT INTO DB INVITATIONS
-                repositories.InsertAnInvitation(id,to.get(i),verificationCodes.get(i));
+                repositories.InsertAnInvitation(id,newEmail,verificationCodes.get(i));
+                i++;
             }
         }
         ok=1;

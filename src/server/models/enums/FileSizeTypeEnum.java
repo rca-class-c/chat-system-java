@@ -1,4 +1,4 @@
-package server.models;
+package server.models.enums;
 
 /**
  * FileSizeTypeEnum

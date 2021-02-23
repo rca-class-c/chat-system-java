@@ -1,5 +1,5 @@
 #ignoring db properties
-src/config/db.properties
+src/server/config/db.properties
 
 # ignoring production folder
 ./out
@@ -12,3 +12,6 @@ src/config/db.properties
 #avoiding eclipse  deafult folders and files configs
 .classpath
 .project
+
+#ignoring properties
+./src/server/config/*.properties

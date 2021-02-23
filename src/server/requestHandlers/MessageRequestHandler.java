@@ -7,18 +7,18 @@ import server.dataDecoders.MessageDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
-import server.models.User;
 import server.services.MessagesService;
-import server.services.UserService;
 import utils.DirectMessage;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public class MessageRequestHandler {
 
-    public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<DirectMessage> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());
         if (messagesList == null) {
             System.out.println("Query failed recheck your db");
@@ -34,9 +34,10 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
-        Messages returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
-        if (returned == null) {
+    public void HandleSaveMessageDirect(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
+        Boolean returned = new MessagesService().sendDirectly(new MessageDecoder(data).returnMessageContent());
+        System.out.println(" Returned  "+returned);
+        if (!returned) {
             System.out.println("message not saved");
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
@@ -44,12 +45,12 @@ public class MessageRequestHandler {
         } else {
             Response response = new Response(returned, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(returned.getSender() + " sent a message");
+            System.out.println("sent a message");
             writer.println(ResponseAsString);
         }
     }
 
-    public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Messages returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
         if (returned == null) {
             System.out.println("message not saved");
@@ -64,7 +65,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Messages returned = new MessagesService().ReplyInGroup(new MessageDecoder(data).returnMessageContent());
         if (returned == null) {
             System.out.println("reply not saved");
@@ -79,7 +80,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         Messages returned = new MessagesService().ReplyDirectly(new MessageDecoder(data).returnMessageContent());
         if (returned == null) {
             System.out.println("reply not saved");
@@ -94,7 +95,7 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
+    public void HandleDeleteMessages(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         boolean returned = new MessagesService().DeleteMessage(new MessageDecoder(data).returnMessageDeleteData());
         if (!returned) {
             System.out.println("reply not saved");
@@ -108,9 +109,11 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    //-------------------------------------Handle Notifications request ------------------------------------------
+    //author : Souvede & Chanelle
 
-    public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
-        List<Messages> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
+    public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper) throws Exception {
+        Set<ResultSet> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
         //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if (messages == null) {
             System.out.println("Query failed recheck your db");

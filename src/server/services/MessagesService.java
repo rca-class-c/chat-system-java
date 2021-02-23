@@ -7,8 +7,10 @@ import utils.ChatBetweenTwo;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User Services provider
@@ -30,14 +32,17 @@ public class MessagesService {
     public Messages editMessage(Messages messages) throws Exception {
         return messagesRepository.updateMessage(messages);
     }
-    public List<Messages> viewUserNotifications(int user_id) throws Exception {
+    public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
+    }
+    public String viewGroupName(int id)throws SQLException{
+        return messagesRepository.getGroupName(id);
     }
     public Messages sendInGroup(Messages messages) throws SQLException{
         return messagesRepository.sendGroupMessage(messages);
     }
 
-    public Messages sendDirectly(Messages messages) throws SQLException{
+    public Boolean sendDirectly(Messages messages) throws SQLException{
         return messagesRepository.sendDirectMessage(messages);
     }
     public Messages ReplyInGroup(Messages messages) throws SQLException{

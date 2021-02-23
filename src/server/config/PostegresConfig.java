@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class Config {
+public class PostegresConfig {
 
     private static final String PUBLIC_FILES_DIRECTORY = System.getProperty("user.dir") + "/public/assets/";
 
@@ -34,7 +34,7 @@ public class Config {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         try (FileInputStream f = new FileInputStream("src/server/config/db.properties")) {
 
