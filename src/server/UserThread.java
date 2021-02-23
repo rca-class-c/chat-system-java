@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.requestHandlers.*;
 import server.routes.*;
+import utils.CommonUtil;
+import utils.ConsoleColor;
 
 import java.io.*;
 import java.net.Socket;
@@ -31,7 +33,11 @@ public class UserThread extends Thread {
             String clientMessage;
             do {
                 clientMessage = reader.readLine();
-                System.out.println(clientMessage);
+                CommonUtil.addTabs(10, true);
+                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+                System.out.println("REQUEST: " + clientMessage);
+                CommonUtil.resetColor();
+
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonNode = objectMapper.readTree(clientMessage);
                 String request_type = jsonNode.get("request_type").asText();
@@ -74,8 +80,11 @@ public class UserThread extends Thread {
             } while (!clientMessage.equals("bye"));
             socket.close();
         } catch (Exception ex) {
-            System.out.println("Error in UserThread: " + ex.getMessage());
-            ex.printStackTrace();
+            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.RED_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print(" User Disconnected  " );
+            CommonUtil.resetColor();
         }
     }
     /**

@@ -30,6 +30,7 @@ public class ChatClient {
             System.out.print(" Connected to Server Successfully " );
             CommonUtil.resetColor();
 
+            System.out.println();
 
             new client.WriteThread(socket, this).run(socket);
         } catch (UnknownHostException ex) {

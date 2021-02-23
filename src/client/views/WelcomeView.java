@@ -13,6 +13,7 @@ import utils.CommonUtil;
 import utils.ConsoleColor;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -33,7 +34,9 @@ public class WelcomeView {
 
         CommonUtil.addTabs(10, false);
         System.out.print("Your password: ");
-        String password = scanner.nextLine();
+        Console cons = System.console();
+//        String password = scanner.nextLine();
+        String password = CommonUtil.getMaskedInput(cons, "dsf");
 
         ObjectMapper objectMapper = new ObjectMapper();
         AuthInput loginData = new AuthInput(userName,password);
@@ -41,6 +44,7 @@ public class WelcomeView {
         Request request = new Request(loginData,url);
 
         String LoginDataAsString = objectMapper.writeValueAsString(request);
+
         writer.println(LoginDataAsString);
 
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
