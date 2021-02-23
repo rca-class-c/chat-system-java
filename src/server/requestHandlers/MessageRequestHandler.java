@@ -128,7 +128,6 @@ public class MessageRequestHandler {
             //author : Souvede & Chanelle
         }
     }
-    public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
     public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper) throws Exception {
         Set<ResultSet> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
         //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());

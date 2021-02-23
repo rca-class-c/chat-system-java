@@ -1,5 +1,5 @@
 package server.repositories;
-import server.config.Config;
+import server.config.PostegresConfig;
 import  server.models.Group;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,17 +18,18 @@ public class GroupLogAction{
     public  List<Object> viewAllGroups() throws Exception{
         List<Object> allGroups=new ArrayList<>();
         try{
-            Connection connection= Config.getConnection();
+            Connection connection= PostegresConfig.getConnection();
             Statement stmt=connection.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT group_creator,group_name,created_at,updated_at FROM groups");
 
             while(rs.next()){
                 Group group=new Group(
-                        rs.getString("group_creator"),
+                        rs.getInt("id"),
                         rs.getString("group_name"),
-                        rs.getString("created_at"),
-                        rs.getString("updated_at"),
-                        rs.getString("description")
+                        rs.getString("description"),
+                        rs.getInt("group_creator"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 );
                 allGroups.add((Object)group);
             }
@@ -42,7 +43,7 @@ public class GroupLogAction{
     public  static   void getGroupsByCreationDateInWeek(String date) throws  Exception{
         try{
             String query="SELECT * FROM GROUPS WHERE created_at=current_timestamp+7";
-            Connection connection= Config.getConnection();
+            Connection connection= PostegresConfig.getConnection();
             Statement stmt=connection.createStatement();
             ResultSet rs=stmt.executeQuery(query);
             ArrayList<Group> allGroups=new ArrayList<Group>();
@@ -66,7 +67,7 @@ public class GroupLogAction{
     }
     public  static void totalNumberOfCreatedGroups() throws Exception{
         try{
-            Connection connection= Config.getConnection();
+            Connection connection= PostegresConfig.getConnection();
             Statement stmt=connection.createStatement();
             String query="SELECT COUNT(*)  FROM groups";
             ResultSet rs=stmt.executeQuery(query);
@@ -82,7 +83,7 @@ public class GroupLogAction{
     public void  getGroupByName() throws Exception{
         try{
             Scanner sc=new Scanner(System.in);
-            Connection connection= Config.getConnection();
+            Connection connection= PostegresConfig.getConnection();
             Statement stmt=connection.createStatement();
             System.out.println("Enter the group name: ");
             String gName=sc.nextLine();
