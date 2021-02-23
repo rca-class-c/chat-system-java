@@ -409,7 +409,6 @@ public class SendMessageView {
                     ids.add(group.getId());
                     CommonUtil.addTabs(10, false);
                     System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
-                    CommonUtil.addTabs(10, false);
                 }
                 int choice =  0;
                 do{
