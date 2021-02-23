@@ -41,7 +41,7 @@ public class View
                         WelcomeView.VerificationCode(client, writer, reader);
                     }
                     case 3 -> {
-                        System.out.println("You requested for help");
+                        Help.Reach();
                     }
                     case 10 -> {
                         Scanner scanner = new Scanner(System.in);

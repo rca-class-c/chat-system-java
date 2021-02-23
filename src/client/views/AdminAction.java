@@ -340,7 +340,7 @@ public class AdminAction {
                 emails.add(email);
             }
         }
-        String key = "send_email_invitation";
+        String key = "users/invite";
         Request request  = new Request(emails,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
