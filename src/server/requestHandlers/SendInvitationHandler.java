@@ -31,4 +31,20 @@ public class SendInvitationHandler {
             writer.println(ResponseAsString);
         }
     }
+    public void HandleVerifyCode(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException {
+        boolean found = new sendInvitations().CheckIfVerificationCodeExist(new UserDecoder(data).GetProfileDecode());
+        if(!found){
+            System.out.println("Verification failed");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(found,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(response);
+            System.out.println("Code verification on going");
+            writer.println(ResponseAsString);
+        }
+    }
 }
