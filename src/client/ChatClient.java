@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  * This is the main Entry
@@ -48,7 +49,13 @@ public class ChatClient {
     }
 
     public static void main(String[] args) throws SQLException {
-        ChatClient client = new ChatClient("localhost", 9812);
+        System.out.println("Enter your hostname");
+        Scanner scanner = new Scanner(System.in);
+        String hname = scanner.nextLine();
+        System.out.println("Enter your port");
+        int hport = scanner.nextInt();
+        scanner.nextLine();
+        ChatClient client = new ChatClient(hname, hport);
         client.execute();
     }
 }
