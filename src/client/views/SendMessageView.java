@@ -285,6 +285,17 @@ public class SendMessageView {
         }
     }
 
+    public void DeleteReplieView() throws IOException {
+        Component.pageTitleView("Delete a reply");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Enter message id: ");
+        int messageId = scanner.nextInt();
+
+        WriteMessageView(new User());
+    }
+
 
 
 
