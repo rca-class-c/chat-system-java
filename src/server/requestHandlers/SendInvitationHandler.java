@@ -16,8 +16,8 @@ import java.sql.SQLException;
 
 public class SendInvitationHandler {
     public void HandleSendInvitation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {
-        int returned = new sendInvitations().sendingInvitations(new SendInvitationDecoder(data).retrieveEmails());
-        if(returned == 0){
+        boolean returned = new sendInvitations().sendingInvitations(new SendInvitationDecoder(data).retrieveEmails());
+        if(!returned){
             System.out.println("Failed to send email");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
