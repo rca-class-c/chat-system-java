@@ -14,6 +14,9 @@ import server.repositories.sendInvitationRepositories;
 import utils.SendInvitationEmail;
 
 public class  sendInvitations{
+    public static boolean CheckIfVerificationCodeExist(int code){
+        return true;
+    };
     public static  boolean sendingInvitations(String[] to) throws MessagingException, SQLException, ClassNotFoundException {
         String email = "oclassc@gmail.com";
         String password = "!C$l2a%s0s#2^1C&(";
