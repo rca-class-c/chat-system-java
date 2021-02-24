@@ -29,7 +29,7 @@ public class MessagesRoutes {
         this.request = request;
     }
 
-    public void Main() throws JsonProcessingException, SQLException {
+    public void Main() throws Exception {
         if(request.equals("messages/direct")){
             new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
         }
@@ -44,6 +44,9 @@ public class MessagesRoutes {
         }
         else if(request.equals("messages/delete")){
             new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
+        }
+        else if(request.equals("messages/viewNotifications")){
+            new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
         }
 
     }
