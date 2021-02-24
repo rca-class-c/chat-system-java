@@ -1,13 +1,11 @@
 package client.views;
 
-import client.interfaces.GroupResponseDataDecoder;
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
+import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Group;
+import server.models.GroupMember;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 
@@ -16,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ChannelSettings {
@@ -111,7 +110,7 @@ public class ChannelSettings {
 
             switch(choice) {
                 case 1:
-                    new SendMessageView(userId,writer, reader).GetAllGroupsView();
+                    new SendMessageView(userId,writer,reader).GetAllGroupsView();
                     break;
                 case 2:
                     new SendMessageView(userId,writer, reader).SearchGroupView();
@@ -184,4 +183,13 @@ public class ChannelSettings {
 
   }
 
+  public void createChannelMembers(){}
+
+
+
+  public void deleteChannelMember(){}
+
+
 }
+
+

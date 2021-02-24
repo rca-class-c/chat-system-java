@@ -115,4 +115,10 @@ public class File {
     public void setStatus(FileStatusEnum status) {
         this.status = status;
     }
+
+
+    public String toString(){
+        return "{ \"id\" : \""+this.getId()+"\", \"fileName\" : \"" + this.getFileName()+"\", \"fileSize\" : \"" +this.getFileSize()+ "\"," +
+                " \"fileSizeType\" : \""+this.getFileSizeType()+ "\", \"fileSenderId\" : \"" +this.getSenderId() + "\", \"url\" : \"" +this.getUrl()+ "\" }";
+    }
 }

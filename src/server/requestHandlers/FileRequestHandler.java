@@ -24,7 +24,6 @@ public class FileRequestHandler {
     public void HandleSaveFile(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         File returned = new FileService().saveFile(new FileDecoder(data).SaveFileDecode());
         if(returned == null){
-            System.out.println("File not saved");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
@@ -32,7 +31,6 @@ public class FileRequestHandler {
         else{
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println("File Saved: " + returned.getUrl());
             writer.println(ResponseAsString);
         }
     }
