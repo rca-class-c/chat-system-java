@@ -199,15 +199,23 @@ public class SendMessageView {
         //WriteMessageView(new User());
     }
 
-    public  void TypeMessageView(int reciever) throws IOException {
+    public  void TypeMessageView(String reciever_type,int reciever) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println(reciever_type+" "+reciever);
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
-        String key = "messages/send/direct";
-        Messages newMessage = new Messages(0,message,userId,reciever,0,0);
+        String key = "direct";
+        Messages newMessage = null;
+        if(reciever_type.equals("direct")){
+            newMessage = new Messages(0,userId,reciever,0,message);
+            key = "messages/send/direct";
+        }
+        else if(reciever_type.equals("group")){
+            newMessage = new Messages(0,message,userId,reciever,0);
+            key = "messages/send/group";
+        }
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -569,7 +577,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(user.getUserID());
+                        TypeMessageView("direct",user.getUserID());
                     }
                     case 2 -> {
                         SendFileView();
@@ -639,7 +647,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(group.getId());
+                        TypeMessageView("group",group.getId());
                     }
                     case 2 -> {
                         SendFileView();
@@ -707,7 +715,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(4);
+                        TypeMessageView("direct",4);
                     }
                     case 2 -> {
                         SendFileView();
