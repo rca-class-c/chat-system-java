@@ -115,6 +115,8 @@ public class MessagesRepository {
         ResultSet direct_message;
         direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
         notis.add(direct_message);
+        statement.close();
+        conn.close();
         return notis;
     }
     public String getGroupName(int id) throws  SQLException{
