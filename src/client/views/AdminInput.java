@@ -11,6 +11,17 @@ import java.util.Scanner;
 
 public
 class AdminInput {
-
-
+public  static  void InviteUser() throws ClassNotFoundException, MessagingException, SQLException {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Click 1  To Stop: ");
+    String to = null;
+    String[] sentTo=new String[]{};
+    int i=0;
+    while (to != "1") {
+        to = scanner.next();
+         sentTo[i]=to;
+         i++;
+    }
+   sendInvitations.sendingInvitations(sentTo);
+}
 }

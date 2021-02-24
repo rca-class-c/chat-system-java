@@ -8,8 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="activation" level="project" />
-    <orderEntry type="library" name="jedis-3.5.1" level="project" />
-    <orderEntry type="library" name="jsoup-1.13.1" level="project" />
+    <orderEntry type="library" name="postgresql-42.2.181" level="project" />
+    <orderEntry type="library" name="activation1" level="project" />
   </component>
 </module>

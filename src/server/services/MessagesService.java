@@ -52,8 +52,15 @@ public class MessagesService {
     public Messages ReplyDirectly(Messages messages) throws SQLException{
         return messagesRepository.ReplyGroupMessage(messages);
     }
+    //HEAD
+    public boolean DeleteReply(int id) throws SQLException{
+        return messagesRepository.DeleteMessages(id,3);
+    }
 
-    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+    public boolean DeleteMessage(int id) throws SQLException {
+        return messagesRepository.DeleteMessages(id,5);
+    }
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException{
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
 
