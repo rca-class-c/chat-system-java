@@ -5,10 +5,7 @@ import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.*;
 import server.models.enums.FileSizeTypeEnum;
-import utils.ChatBetweenTwo;
-import utils.CommonUtil;
-import utils.ConsoleColor;
-import utils.FileUtil;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -203,6 +200,30 @@ public class SendMessageView {
         String message = scanner.nextLine();
         String key = "messages/send/direct";
         Messages newMessage = new Messages(0,message,userId,reciever,0,0);
+        Request request = new Request(newMessage,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+
+            CommonUtil.addTabs(10, true);
+            System.out.println("Message sent");
+
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to send");
+        }
+        //WriteMessageView(new User());
+    }
+    public  void TypeMessageViewInGroup(int group) throws IOException {
+        Component.pageTitleView("Type a message");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Your Message: ");
+        String message = scanner.nextLine();
+        String key = "messages/send/group";
+        GroupMessage newMessage = new GroupMessage(message,userId,group,null);
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -614,7 +635,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(group.getId());
+                        TypeMessageViewInGroup(group.getId());
                     }
                     case 2 -> {
                         SendFileView();
