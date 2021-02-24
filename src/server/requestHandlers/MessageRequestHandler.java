@@ -116,16 +116,32 @@ public class MessageRequestHandler {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
-        } else {
+// HEAD
+        }
+         else {
             Response response = new Response(returned, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println("Message is deleted");
             writer.println(ResponseAsString);
         }
     }
-    //-------------------------------------Handle Notifications request ------------------------------------------
-    //author : Souvede & Chanelle
+// HEAD
 
+    public void HandleDeleteReplies(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {
+        boolean returned = new MessagesService().DeleteReply(new UserDecoder(data).GetProfileDecode());
+        if (!returned) {
+            System.out.println("reply not saved");
+            Response response = new Response(null, false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        } else {
+            Response response = new Response(true, true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println("Reply is deleted");
+            //-------------------------------------Handle Notifications request ------------------------------------------
+            //author : Souvede & Chanelle
+        }
+    }
     public void HandleViewNotifications(String data, PrintWriter writer, ObjectMapper objectMapper) throws Exception {
         Set<ResultSet> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
         //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
