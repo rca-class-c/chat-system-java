@@ -35,6 +35,9 @@ public class MessagesService {
     public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
+    public List<GroupMessage> viewUserNotis(int user_id) throws SQLException {
+        return  messagesRepository.getNotis(user_id);
+    }
     public String viewGroupName(int id)throws SQLException{
         return messagesRepository.getGroupName(id);
     }

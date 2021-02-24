@@ -71,6 +71,7 @@ public class MessagesRepository {
             GroupMessage message = (GroupMessage) result;
             allMessagesGrp.add(message);
         }
+
         statement.close();
         conn.close();
         return allMessagesGrp;
@@ -118,6 +119,62 @@ public class MessagesRepository {
         notis.add(direct_message);
         return notis;
     }
+
+
+//gukora Direct and group ukwabyo
+    public List<GroupMessage> getNotis(int user_id)throws SQLException{
+//        List<DirectMessage> messagess = new ArrayList<>();
+        List<GroupMessage> messages = new ArrayList<>();
+        Connection conn = PostegresConfig.getConnection();
+        Statement statement = conn.createStatement();
+
+        String readNotis = String.format("select * from user_group where user_id="+user_id);
+//        String readNotiss = String.format("select * from messages where user_id="+user_id);
+
+        ResultSet resultsGroup = statement.executeQuery(readNotis);
+//        ResultSet resultsDirect = statement.executeQuery(readNotiss);
+
+        ResultSet group_message = null;
+//        ResultSet direct_message;
+
+
+        while (resultsGroup.next()){
+            group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+resultsGroup.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
+
+
+            Integer id = resultsGroup.getInt(1);
+            String content = resultsGroup.getString(2);
+            Integer sender = resultsGroup.getInt(3);
+            Integer group_receiver = resultsGroup.getInt(4);
+            Integer original_message = resultsGroup.getInt(6);
+            Date sent_at = resultsGroup.getDate(7);
+
+            GroupMessage message = (GroupMessage) resultsGroup;
+            messages.add(message);
+        }
+
+//       while(resultsDirect.next()){
+//           direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
+//
+//           Integer id = resultsGroup.getInt(1);
+//           String content = resultsGroup.getString(2);
+//           Integer sender = resultsGroup.getInt(3);
+//           Integer original_message = resultsGroup.getInt(6);
+//           Date sent_at = resultsGroup.getDate(7);
+//
+//           DirectMessage message = (DirectMessage) resultsDirect;
+//           messagess.add(message);
+//       }
+
+        statement.close();
+        conn.close();
+        return messages;
+//        return  messagess;
+
+    }
+
+
+
     public String getGroupName(int id) throws  SQLException{
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();

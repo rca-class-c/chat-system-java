@@ -570,6 +570,8 @@ public class SendMessageView {
         System.out.println("3. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("4. Replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Notifications");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -589,6 +591,9 @@ public class SendMessageView {
                     }
                     case 4 -> {
                         ViewRepliesView();
+                    }
+                    case 5 -> {
+                        ViewNotifications();
                     }
 
                     default -> {
@@ -630,6 +635,8 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = Component.getChooseOptionChoice();
     }
+
+
     public void SendReplyView() {
         Component.pageTitleView("Send reply");
 

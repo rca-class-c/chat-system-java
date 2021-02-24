@@ -35,6 +35,7 @@ public class WelcomeView {
         System.out.print("Your password: ");
         String password = scanner.nextLine();
 
+
         ObjectMapper objectMapper = new ObjectMapper();
         AuthInput loginData = new AuthInput(userName,password);
         String url = "users/login";
