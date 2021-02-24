@@ -59,7 +59,7 @@ public class MessageRequestHandler {
     }
 
     public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        boolean returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
+        boolean returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContentGroup());
         if (!returned) {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
