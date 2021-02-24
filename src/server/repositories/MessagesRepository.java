@@ -134,7 +134,7 @@ public class MessagesRepository {
 //                    String gr_name = grn.getString(1);
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  boolean sendGroupMessage(Messages message) throws SQLException {
+    public  boolean sendGroupMessage(GroupMessage message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -165,8 +165,9 @@ public class MessagesRepository {
             Integer sender = result.getInt(3);
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
-            Date sent_at = result.getDate(7);
-            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message));
+            Date sent_at = result.getDate(8);
+            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message,sent_at));
+            System.out.println(sent_at);
         }
         statement.close();
         conn.close();

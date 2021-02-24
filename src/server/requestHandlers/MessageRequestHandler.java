@@ -65,7 +65,7 @@ public class MessageRequestHandler {
     }
 
     public void HandleSaveMessageInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        boolean returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContent());
+        boolean returned = new MessagesService().sendInGroup(new MessageDecoder(data).returnMessageContentGroup());
         if (!returned) {
             System.out.println("message not saved");
             Response response = new Response(null, false);
