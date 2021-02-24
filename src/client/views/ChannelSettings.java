@@ -195,7 +195,7 @@ public class ChannelSettings {
       List ids = new ArrayList<Integer>();
       if(response.isSuccess()){
           System.out.println("checking");
-          GroupMember[] groupMembers = new GetGroupMembersRequestData().returnGroupMemberListDecoded(response.getData());
+          GroupMember[] groupMembers = new GetGroupMembersRequestData(2).returnGroupMemberListDecoded(response.getData());
           CommonUtil.addTabs(10, true);
           for (GroupMember groupMember : groupMembers) {
               ids.add(groupMember.getGroup_id());
