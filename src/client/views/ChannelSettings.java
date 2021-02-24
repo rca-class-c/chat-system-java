@@ -185,44 +185,7 @@ public class ChannelSettings {
 
   public void createChannelMembers(){}
 
-  public void getChannelMembers() throws IOException {
-      String key= "groups/members";
-      Request request = new Request(new ProfileRequestData(userId),key);
-      String requestAsString = new ObjectMapper().writeValueAsString(request);
-      writer.println(requestAsString);
-      ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-      Component.pageTitleView("Groups members List");
-      List ids = new ArrayList<Integer>();
-      if(response.isSuccess()){
-          System.out.println("checking");
-          GroupMember[] groupMembers = new GetGroupMembersRequestData().returnGroupMemberListDecoded(response.getData());
-          CommonUtil.addTabs(10, true);
-          for (GroupMember groupMember : groupMembers) {
-              ids.add(groupMember.getGroup_id());
-              System.out.println(groupMember.getMember_id());
-              CommonUtil.addTabs(10, false);
-          }
-          int choice = 0;
-//          do{
-//              System.out.println("");
-//              Component.chooseOptionInputView("Type group id to chat in: ");
-//              choice  = Component.getChooseOptionChoice();
-//              if(!ids.contains(choice)){
-//                  CommonUtil.addTabs(10, true);
-//                  System.out.println("Invalid group id. Try again!");
-//              }
-//          }while(!ids.contains(choice));
 
-//          for (Group group : groups) {
-//              if(group.getId() == choice){
-//                  WriteMessageViewInGroup(group);
-//              }
-//          }
-      }else {
-          CommonUtil.addTabs(10, true);
-          System.out.println("Failed to read users list, sorry for the inconvenience");
-      }
-  }
 
   public void deleteChannelMember(){}
 
