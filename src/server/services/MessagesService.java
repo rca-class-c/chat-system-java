@@ -38,7 +38,7 @@ public class  MessagesService {
     public String viewGroupName(int id)throws SQLException{
         return messagesRepository.getGroupName(id);
     }
-    public boolean sendInGroup(Messages messages) throws SQLException{
+    public boolean sendInGroup(GroupMessage messages) throws SQLException{
         return messagesRepository.sendGroupMessage(messages);
     }
 
