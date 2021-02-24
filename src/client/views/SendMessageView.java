@@ -400,18 +400,18 @@ public class SendMessageView {
                 CommonUtil.addTabs(10, false);
             }
             int choice = 0;
-            do{
+
                 System.out.println("");
                 Component.chooseOptionInputView("Type group id to chat in: ");
-                choice  = Component.getChooseOptionChoice();
+                choice  = new Scanner(System.in).nextInt();
+
                 if(!ids.contains(choice)){
                     CommonUtil.addTabs(10, true);
                     System.out.println("Invalid group id. Try again!");
                 }
-            }while(!ids.contains(choice));
             for (Group group : groups) {
                 if(group.getId() == choice){
-                    WriteMessageViewInGroup(group);
+                   WriteMessageViewInGroup(group);
                 }
             }
         }else {
@@ -598,6 +598,7 @@ public class SendMessageView {
     }
 
     public  void WriteMessageViewInGroup(Group group) throws IOException {
+
         String key = "messages/group";
         Request request = new Request(new ProfileRequestData(group.getId()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
