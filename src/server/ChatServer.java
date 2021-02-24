@@ -1,5 +1,6 @@
 package server;
 
+import client.views.components.Component;
 import redis.clients.jedis.Jedis;
 import server.config.JedisConfig;
 import server.config.PostegresConfig;
@@ -26,7 +27,6 @@ public class ChatServer {
     }
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println();
             CommonUtil.addTabs(10, false);
             CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);
             System.out.print("Chat Server is listening on port "  + port + " ");
@@ -34,8 +34,14 @@ public class ChatServer {
 
             while (true) {
                 Socket socket = serverSocket.accept();
+                System.out.println();
+                System.out.println();
                 CommonUtil.addTabs(10, false);
-                System.out.println("New user connected");
+                CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.WHITE_BACKGROUND_BRIGHT);
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLACK_BOLD);
+                System.out.print(" New User Connected " );
+                CommonUtil.resetColor();
+
                 // passing socket and server to the userthread
                 UserThread newUser = new UserThread(socket, this);
                 if(userThreads.add(newUser)) {
@@ -44,9 +50,8 @@ public class ChatServer {
                 newUser.start();
             }
         } catch (IOException ex) {
-            CommonUtil.addTabs(10, false);
-            System.out.println("Error in the server: " + ex.getMessage());
-            ex.printStackTrace();
+            Component.showErrorMessage(ex.getMessage());
+
         }
     }
     
@@ -96,7 +101,8 @@ public class ChatServer {
         boolean removed = activeUsers.remove(new ActiveUser(id,userName));
         if (removed) {
             userThreads.remove(aUser);
-            System.out.println("The user " + userName + " quitted");
+            Component.showErrorMessage("The user " + userName + " quitted");
+
         }
     }
     Set<ActiveUser> getUserNames() {

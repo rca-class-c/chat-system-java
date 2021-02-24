@@ -21,6 +21,7 @@ public class MessageDecoder {
         return new ChatBetweenTwo(dataDecrypt.get("firstUser").asInt(),dataDecrypt.get("lastUser").asInt());
     }
 
+    //author: Edine Noella
     public Messages returnMessageContent() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);

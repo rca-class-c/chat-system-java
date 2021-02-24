@@ -4,9 +4,9 @@ import java.util.List;
 
 public class AddMemberRequestData {
     int group_id;
-    List<Integer> users;
+    Integer[] users;
 
-    public AddMemberRequestData(int group_id, List<Integer> users) {
+    public AddMemberRequestData(int group_id, Integer[] users) {
         this.group_id = group_id;
         this.users = users;
     }
@@ -19,11 +19,11 @@ public class AddMemberRequestData {
         this.group_id = group_id;
     }
 
-    public List<Integer> getUsers() {
+    public Integer[] getUsers() {
         return users;
     }
 
-    public void setUsers(List<Integer> users) {
+    public void setUsers(Integer[] users) {
         this.users = users;
     }
 }

@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.Console;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -113,6 +114,28 @@ public class CommonUtil {
 //            }
 //
 //        }
+            }
+        }
+    }
+
+    /**
+     * Handles console input when running outside of Eclipse.
+     *
+     * @param cons the console to use in order to receive input
+     * @param msg the prompt message
+     * @return the password input by the user
+     */
+    public static String getMaskedInput(Console cons, String msg)
+    {
+        char[] passwd;
+        while (true) {
+            passwd = cons.readPassword("%s", msg);
+            if (passwd != null) {
+                if (passwd.length > 0) {
+                    return new String(passwd);
+                } else {
+                    System.out.println("Invalid input\n");
+                }
             }
         }
     }
