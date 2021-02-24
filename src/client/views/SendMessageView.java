@@ -609,8 +609,14 @@ public class SendMessageView {
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages message : messages) {
-                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print(message.getSender());
+                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+                System.out.println("\t at "+message.getSent_at());
+                CommonUtil.resetColor();
                 CommonUtil.addTabs(10, false);
+                System.out.println("Message: "+message.getContent());
+                CommonUtil.addTabs(10, true);
             }
         }else {
             CommonUtil.addTabs(10, true);
