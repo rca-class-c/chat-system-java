@@ -168,6 +168,8 @@ public class MessagesRepository {
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
+
+            System.out.println(sent_at);
             messages.add(new DirectMessage(id,content,sender,user_receiver,original_message, sent_at));
         }
         statement.close();

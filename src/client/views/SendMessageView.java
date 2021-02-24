@@ -523,7 +523,6 @@ public class SendMessageView {
             System.out.println("");
             for (Messages message : messages) {
                 User sender = getUser(message.getSender());
-                User reciever = getUser(message.getUser_receiver());
 
                 CommonUtil.addTabs(10, false);
                 CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
@@ -584,7 +583,7 @@ public class SendMessageView {
                     default -> {
                         action = -1;
 
-                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+                        Component.showErrorMessage("Enter a valid choice (1, 2, 3, 4): ");
 
                     }
                 }

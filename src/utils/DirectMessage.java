@@ -8,19 +8,19 @@ public class DirectMessage {
   Integer sender;
   Integer user_receiver;
   Integer original_message;
-  Date sentAt;
+  Date sent_at;
 
-  public DirectMessage(Integer message_id,String content, Integer sender, Integer user_receiver, Integer original_message, Date sentAt) {
+  public DirectMessage(Integer message_id,String content, Integer sender, Integer user_receiver, Integer original_message, Date sent_at) {
     this.content = content;
     this.sender = sender;
     this.user_receiver = user_receiver;
     this.original_message = original_message;
-    this.sentAt = sentAt;
+    this.sent_at = sent_at;
     this.message_id = message_id;;
   }
 
   public Date getSentAt() {
-    return sentAt;
+    return sent_at;
   }
 
   public String getContent() {
