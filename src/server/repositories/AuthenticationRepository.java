@@ -1,5 +1,6 @@
 package server.repositories;
 
+import client.views.components.Component;
 import server.config.PostegresConfig;
 import utils.Token;
 
@@ -65,15 +66,9 @@ public class AuthenticationRepository {
 
                 return this.getToken();
             }
-            else{
-                System.out.println("Invalid credentials");
-            }
         }
         catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-
-            System.exit(0);
+            Component.showErrorMessage(e.getMessage());
 
         }
         return null;

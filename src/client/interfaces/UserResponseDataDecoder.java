@@ -19,9 +19,8 @@ public class UserResponseDataDecoder {
 
     public ResponseDataSuccessDecoder decodedResponse(String response) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println(response);
         JsonNode data = objectMapper.readTree(response);
-
-
         return new ResponseDataSuccessDecoder(data.get("data").toString(),data.get("success").asBoolean());
     }
 

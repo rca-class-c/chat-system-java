@@ -59,10 +59,10 @@ public class SendInvitationEmail {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: header field
-            message.setSubject("This is the Subject Line!");
+            message.setSubject("Verification Code to join Classc");
 
             // Now set the actual message
-            message.setText("This is your verification code: "+verificationCode);
+            message.setText("Hello this is your verification code to join classC: "+verificationCode);
 
             System.out.println("sending...");
             // Send message

@@ -66,8 +66,7 @@ public class MessagesRepository {
             Integer group_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-
-            GroupMessage message = (GroupMessage) result;
+            GroupMessage message = new GroupMessage(content,sender,group_receiver,original_message,sent_at,id);
             allMessagesGrp.add(message);
         }
         statement.close();
@@ -132,8 +131,11 @@ public class MessagesRepository {
 //                    grn = statement.executeQuery("select group_name from groups where group_id="+g_rec);
 //                    grn.next();
 //                    String gr_name = grn.getString(1);
+
+
     //-------------------------------sending messages--------------------------
     //sending group message
+    //author: Edine Noella
     public  boolean sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
@@ -166,13 +168,14 @@ public class MessagesRepository {
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message));
+            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message,sent_at));
         }
         statement.close();
         conn.close();
         return messages;
     }
    //sending a direct message
+   //author: Edine Noella
     public  Boolean sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();

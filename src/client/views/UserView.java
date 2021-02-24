@@ -38,24 +38,24 @@ public class UserView {
 
     Scanner scanner = new Scanner(System.in);
     public void viewOptions() throws  IOException{
-        Component.pageTitleView("USER Dashboard");
+        Component.pageTitleView("Dashboard");
         int choice = 0;
         do {
-            CommonUtil.addTabs(10, true);
-            System.out.println("1. SEND MESSAGE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("2. CHANNEL SETTINGS");
-            CommonUtil.addTabs(10, false);
-            System.out.println("3. NOTIFICATIONS");
-            CommonUtil.addTabs(10, false);
-            System.out.println("4. USERS LIST");
-            CommonUtil.addTabs(10, false);
-            System.out.println("5. ADMIN ACTIONS");
-            CommonUtil.addTabs(10, false);
-            System.out.println("6. PROFILE SETTINGS");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(12, true);
+            System.out.println("1. Send a Message");
+            CommonUtil.addTabs(12, false);
+            System.out.println("2. Channel Settings");
+            CommonUtil.addTabs(12, false);
+            System.out.println("3. Notifications");
+            CommonUtil.addTabs(12, false);
+            System.out.println("4. Users List");
+            CommonUtil.addTabs(12, false);
+            System.out.println("5. Admin Actions");
+            CommonUtil.addTabs(12, false);
+            System.out.println("6. Profile Settings");
+            CommonUtil.addTabs(12, false);
             System.out.println("44. LOGOUT");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(12, false);
             System.out.println("55. QUIT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();

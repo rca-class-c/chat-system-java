@@ -1,5 +1,7 @@
 package server.models;
 
+import server.services.UserService;
+
 import java.util.Date;
 
 /**

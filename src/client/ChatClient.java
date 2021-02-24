@@ -1,4 +1,5 @@
 package client;
+import client.views.components.Component;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 
@@ -31,10 +32,15 @@ public class ChatClient {
             System.out.print(" Connected to Server Successfully " );
             CommonUtil.resetColor();
 
+            System.out.println();
 
             new client.WriteThread(socket, this).run(socket);
         } catch (UnknownHostException ex) {
-            System.out.println("Server not found: " + ex.getMessage());
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print("  Server not found  ");
+            CommonUtil.resetColor();
         } catch (IOException ex) {
             System.out.println("I/O Error: " + ex.getMessage());
         }
@@ -49,14 +55,20 @@ public class ChatClient {
     }
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("Enter your hostname");
-        Scanner scanner = new Scanner(System.in);
-        String hname = scanner.nextLine();
-        System.out.println("Enter your port");
-        int hport = scanner.nextInt();
-        scanner.nextLine();
-        ChatClient client = new ChatClient(hname, hport);
-        client.execute();
+        try {
+            CommonUtil.addTabs(10, false);
+            System.out.print("Enter your hostname: ");
+            Scanner scanner = new Scanner(System.in);
+            String hname = scanner.nextLine();
+            CommonUtil.addTabs(10, false);
+            System.out.print("Enter your port: ");
+            int hport = scanner.nextInt();
+            scanner.nextLine();
+            ChatClient client = new ChatClient(hname, hport);
+            client.execute();
+        } catch (Exception e) {
+            Component.showErrorMessage("Server not found !");
+        }
     }
 }
 
