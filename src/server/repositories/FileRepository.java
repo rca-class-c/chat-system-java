@@ -21,8 +21,6 @@ public class FileRepository {
           String query = String.format("INSERT INTO files(url, file_name, file_type, file_size, file_size_type, sender_id) VALUES (" +
                   "'%s', '%s', '%s', '%s', '%s', %d);", file.getUrl(), file.getFileName(), file.getFileType(), file.getFileSize(), file.getFileSizeType(), file.getSenderId());
 
-          System.out.println(query);
-
           int i = statement.executeUpdate(query);
 
           if(i > 0) {

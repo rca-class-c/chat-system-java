@@ -51,7 +51,7 @@ public class GroupMemberRepository {
         }
 
         int[] updatedCounts = statement.executeBatch();
-        System.out.println(Arrays.toString(updatedCounts));
+
 
 
         statement.close();
@@ -115,7 +115,7 @@ public class GroupMemberRepository {
             statement.addBatch();
         }
         int[] updatedCounts = statement.executeBatch();
-        System.out.println(Arrays.toString(updatedCounts));
+
         statement.close();
         connection.close();
         if(updatedCounts != null ){

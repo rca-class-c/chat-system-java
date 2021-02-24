@@ -529,7 +529,7 @@ public class SendMessageView {
                 CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
                 System.out.print(sender.getFname() + " " + sender.getLname());
                 CommonUtil.addTabs(10, false);
-                System.out.print(message.());
+                System.out.print(message.getSent_at());
                 CommonUtil.resetColor();
 
                 System.out.println();

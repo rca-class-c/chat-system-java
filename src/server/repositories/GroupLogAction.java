@@ -1,6 +1,10 @@
 package server.repositories;
+import client.views.components.Component;
 import server.config.PostegresConfig;
 import  server.models.Group;
+import utils.CommonUtil;
+import utils.ConsoleColor;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -35,7 +39,14 @@ public class GroupLogAction{
             }
             connection.close();
         }catch (Exception e){
-            System.out.println("Error: " +e.getMessage());
+            System.out.println();
+            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.RED_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+
+            System.out.print(e.getMessage());
+
+            CommonUtil.resetColor();
         }
         return  allGroups;
     }
@@ -62,7 +73,9 @@ public class GroupLogAction{
             }
             connection.close();
         }catch(Exception e){
-            System.out.println("Error: "+e.getMessage());
+            Component.showErrorMessage(e.getMessage());
+
+            CommonUtil.resetColor();
         }
     }
     public  static void totalNumberOfCreatedGroups() throws Exception{
@@ -71,12 +84,10 @@ public class GroupLogAction{
             Statement stmt=connection.createStatement();
             String query="SELECT COUNT(*)  FROM groups";
             ResultSet rs=stmt.executeQuery(query);
-            while(rs.next()){
-                System.out.println("Total number of created groups is: "+rs.getInt(1));
-            }
+
             connection.close();
         }catch (Exception e){
-            System.out.println("Error: " + e.getMessage());
+            Component.showErrorMessage(e.getMessage());
         }
     }
 
@@ -90,7 +101,9 @@ public class GroupLogAction{
             String query="SELECT group_creator,group_description,created_at FROM groups WHERE group_name=gName";
             ResultSet rs=stmt.executeQuery(query);
         }catch (Exception  e){
-            System.out.println("Error: "+ e.getMessage());
+
+            Component.showErrorMessage(e.getMessage());
+
         }
     }
 }

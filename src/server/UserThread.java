@@ -55,9 +55,6 @@ public class UserThread extends Thread {
                 else if(request_type.startsWith("replies/")){
                     new RepliesRoutes(data,writer,objectMapper,server,request_type).Main();
                 }
-                else if(request_type.startsWith("file/")){
-                    new FileRoutes(data,writer,objectMapper,server,request_type).Main();
-                }
                 else if(request_type.equals("passwordReset_initiate")){
                     new PasswordResetsRequestHandler().handlePasswordResetInitiation(data,writer,objectMapper);
                 }

@@ -1,5 +1,6 @@
 package server;
 
+import client.views.components.Component;
 import redis.clients.jedis.Jedis;
 import server.config.JedisConfig;
 import server.config.PostegresConfig;
@@ -49,9 +50,8 @@ public class ChatServer {
                 newUser.start();
             }
         } catch (IOException ex) {
-            CommonUtil.addTabs(10, false);
-            System.out.println("Error in the server: " + ex.getMessage());
-            ex.printStackTrace();
+            Component.showErrorMessage(ex.getMessage());
+
         }
     }
     
@@ -101,7 +101,8 @@ public class ChatServer {
         boolean removed = activeUsers.remove(new ActiveUser(id,userName));
         if (removed) {
             userThreads.remove(aUser);
-            System.out.println("The user " + userName + " quitted");
+            Component.showErrorMessage("The user " + userName + " quitted");
+
         }
     }
     Set<ActiveUser> getUserNames() {
