@@ -546,7 +546,7 @@ public class SendMessageView {
                 System.out.print(ConsoleColor.BoldColor.YELLOW_BOLD + "[" + sender.getUserID() + "]: " + ConsoleColor.RESET + message.getContent());
                 CommonUtil.resetColor();
 
-
+                System.out.println("\n");
 //                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
 //                System.out.println("    sent at: "  + message.getSent_at());
 //                CommonUtil.resetColor();
