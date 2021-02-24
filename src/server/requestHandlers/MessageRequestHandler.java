@@ -137,6 +137,8 @@ public class MessageRequestHandler {
         } else {
             Response response = new Response(messages, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Notifications List");
             writer.println(ResponseAsString);
         }
     }
