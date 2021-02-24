@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-public class userLogActionRepository {
+/**
+ * @author hortance
+ * **/
+public class userLogAction {
     String getAllUserLogsQuery="SELECT * FROM user_logs";
     public  List<Object> getAllUserLogs() throws Exception{
         Connection connection= PostegresConfig.getConnection();
@@ -30,7 +32,7 @@ public class userLogActionRepository {
             userLog.setDateTimeLoggedOut(rs.getString("date_time_logged_out"));
             userLog.setTotalIn(rs.getInt("Total_in"));
             userLog.setTotalOut(rs.getInt("Total_out"));
-            userLogList.add((Object) userLog);
+            userLogList.add(userLog);
         }
         return  userLogList;
     }
@@ -38,9 +40,8 @@ public class userLogActionRepository {
         TimeZone tz=TimeZone.getTimeZone("UTC");
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
         df.setTimeZone(tz);
-        String nowAsISO=df.format((new Date()));
 
-        return  nowAsISO;
+        return df.format((new Date()));
     }
 
     public  Response recordUserLogs(UserLog userLog)  throws  Exception{
@@ -51,7 +52,6 @@ public class userLogActionRepository {
         ResultSet rs=stmt.executeQuery(getPreviousRowQuery);
         while (rs.next()){
             if(userLog.getAction().equals("logIn")){
-                System.out.println("Successful login");
                 int currentTotalIn=rs.getInt("Total_in");
                 int currentTotalOut=rs.getInt("Total_out");
                 userLog.setTotalIn(currentTotalIn+1);
@@ -59,7 +59,6 @@ public class userLogActionRepository {
             }else if(userLog.getAction().equals("logoUt")){
                 int currentTotalIn = rs.getInt("Total_in");
                 int currentTotalOut = rs.getInt("Total_out");
-                System.out.println("date: "+dateParser());
                 userLog.setDateTimeLoggedOut(dateParser());
                 userLog.setTotalIn(currentTotalIn-1);
                 userLog.setTotalOut(currentTotalOut+1);

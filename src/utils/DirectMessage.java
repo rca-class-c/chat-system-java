@@ -1,18 +1,31 @@
 package utils;
 
+
+import java.util.Date;
+
 public class DirectMessage {
   Integer message_id;
   String content;
   Integer sender;
   Integer user_receiver;
   Integer original_message;
+  Date sent_at;
 
-  public DirectMessage(Integer message_id,String content, Integer sender, Integer user_receiver, Integer original_message) {
+  public DirectMessage(Integer message_id,String content, Integer sender, Integer user_receiver, Integer original_message,Date sent_at) {
     this.content = content;
     this.sender = sender;
     this.user_receiver = user_receiver;
     this.original_message = original_message;
-    this.message_id = message_id;;
+    this.message_id = message_id;
+    this.sent_at = sent_at;
+  }
+
+  public Date getSent_at() {
+    return sent_at;
+  }
+
+  public void setSent_at(Date sent_at) {
+    this.sent_at = sent_at;
   }
 
   public String getContent() {

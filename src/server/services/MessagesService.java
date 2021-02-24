@@ -17,7 +17,7 @@ import java.util.Set;
  * @author: Bella Mellissa  Ineza
  */
 
-public class MessagesService {
+public class  MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
 
     public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
@@ -38,7 +38,7 @@ public class MessagesService {
     public String viewGroupName(int id)throws SQLException{
         return messagesRepository.getGroupName(id);
     }
-    public boolean sendInGroup(Messages messages) throws SQLException{
+    public boolean sendInGroup(GroupMessage messages) throws SQLException{
         return messagesRepository.sendGroupMessage(messages);
     }
 
@@ -52,8 +52,17 @@ public class MessagesService {
     public Messages ReplyDirectly(Messages messages) throws SQLException{
         return messagesRepository.ReplyGroupMessage(messages);
     }
+    //HEAD
+    public boolean DeleteReply(int id) throws SQLException{
+        return messagesRepository.DeleteMessages(id,3);
+    }
 
-    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+    public boolean DeleteMessage(int id) throws SQLException {
+        return messagesRepository.DeleteMessages(id,5);
+    }
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException{
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
+
+
 }

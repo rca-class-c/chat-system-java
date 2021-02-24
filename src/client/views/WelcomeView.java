@@ -1,6 +1,7 @@
 package client.views;
 
 import client.ChatClient;
+import client.interfaces.ProfileRequestData;
 import client.interfaces.UserResponseDataDecoder;
 import client.interfaces.Request;
 import client.interfaces.ResponseDataSuccessDecoder;
@@ -13,6 +14,7 @@ import utils.CommonUtil;
 import utils.ConsoleColor;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -27,12 +29,13 @@ public class WelcomeView {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
 
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.print("Your username: ");
         String userName = scanner.nextLine();
 
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.print("Your password: ");
+        Console cons = System.console();
         String password = scanner.nextLine();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -41,6 +44,7 @@ public class WelcomeView {
         Request request = new Request(loginData,url);
 
         String LoginDataAsString = objectMapper.writeValueAsString(request);
+
         writer.println(LoginDataAsString);
 
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
@@ -70,22 +74,30 @@ public class WelcomeView {
             System.out.println("");
             CommonUtil.addTabs(10, false);
             System.out.print("Enter the verification code: ");
-            String code = scanner.nextLine();
+            int code = scanner.nextInt();
+            scanner.nextLine();
 
-            if (code.equals("1234567890")) {
+            String  key= "users/verify";
+            Request request = new Request(new ProfileRequestData(code),key);
+            String requestAsString = new ObjectMapper().writeValueAsString(request);
+            writer.println(requestAsString);
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            if(response.isSuccess()){
                 CommonUtil.addTabs(10, true);
                 CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
                 CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
                 System.out.print(" Code verification worked out with success! ");
                 CommonUtil.resetColor();
                 Signup(client, writer, reader);
-            } else {
+            }
+            else{
                 CommonUtil.addTabs(10, true);
                 CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
                 CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print("  Invalid Verification code ");
+                System.out.print(" Invalid Verification code ");
                 CommonUtil.resetColor();
             }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -99,7 +111,6 @@ public class WelcomeView {
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Username: ");
         String username = scanner.nextLine();
-
 
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your FirstName: ");

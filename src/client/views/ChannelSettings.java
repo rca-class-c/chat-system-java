@@ -185,6 +185,7 @@ public class ChannelSettings {
 
   public void createChannelMembers(){}
 
+<<<<<<< HEAD
   public void getChannelMembers() throws IOException {
       String key= "groups/members";
       Request request = new Request(new ProfileRequestData(userId),key);
@@ -223,6 +224,9 @@ public class ChannelSettings {
           System.out.println("Failed to read users list, sorry for the inconvenience");
       }
   }
+=======
+
+>>>>>>> 13a749a91e42a310bf9d33c725a81c0077c9e66f
 
   public void deleteChannelMember(){}
 
