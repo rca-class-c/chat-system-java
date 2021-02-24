@@ -28,7 +28,7 @@ public class  sendInvitations{
             int sentOtp=Integer.parseInt(String.valueOf(otp));
             verificationCodes.add(sentOtp);
         }
-        id=10;
+        id=1;
 
             int i = 0;
             for (String newEmail : to) {
