@@ -297,7 +297,7 @@ public class ChannelSettings {
         Scanner input = new Scanner(System.in);
         System.out.println("How many user do you want to enter?");
         int num = input.nextInt();
-        int members[] = new int[num];
+        Integer members[] = new Integer[num];
         System.out.println("Enter the " + members + " numbers now.");
         for (int i = 0 ; i < members.length; i++ )
         {
@@ -306,7 +306,7 @@ public class ChannelSettings {
 
         String key = "group/members/create";
         ObjectMapper objectMapper=new ObjectMapper();
-        Request request=new Request(members,key);
+        Request request=new Request(new AddMemberRequestData(groupId,members),key);
   }
 
   public void getChannelMembers(int groupId) throws IOException {

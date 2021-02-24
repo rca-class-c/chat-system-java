@@ -109,14 +109,13 @@ public class GroupMemberRepository {
         return rowDeleted;
     }
 
-    public int[] createMembers(int group_id,List<Integer> groupMembers) throws SQLException {
+    public int[] createMembers(int group_id,Integer[] groupMembers) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
         Connection connection= PostegresConfig.getConnection();
         PreparedStatement statement= connection.prepareStatement(sql);
-        for (Iterator<Integer> iterator = groupMembers.iterator(); iterator.hasNext();){
-            Integer groupMember= iterator.next();
+        for(Integer user : groupMembers){
             statement.setInt(1,group_id);
-            statement.setInt(2,groupMember);
+            statement.setInt(2,user);
             statement.addBatch();
         }
         int[] updatedCounts = statement.executeBatch();
