@@ -66,8 +66,7 @@ public class MessagesRepository {
             Integer group_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-
-            GroupMessage message = (GroupMessage) result;
+            GroupMessage message = new GroupMessage(content,sender,group_receiver,original_message,sent_at,id);
             allMessagesGrp.add(message);
         }
         statement.close();
