@@ -21,6 +21,7 @@ public class Component {
      * @param title pageTitle
      */
     public static void pageTitleView(String title) {
+        System.out.println();
         title = title.toUpperCase(Locale.ROOT);
         CommonUtil.clearScreen();
         CommonUtil.useColor(ConsoleColor.BoldColor.GREEN_BOLD);

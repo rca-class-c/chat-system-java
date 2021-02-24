@@ -7,12 +7,17 @@ import java.util.Map;
 
 
 /**
- * Files Services provider
+ * FilesService Provider
  * @author: Divin Irakiza
  */
 public class FileService {
     private final FileRepository fileRepository = new FileRepository();
 
+    /**
+     * Saves File
+     * @param file File to save
+     * @return File
+     */
     public File saveFile(File file) {
         try {
             return fileRepository.save(file);

@@ -14,6 +14,7 @@ import utils.CommonUtil;
 import utils.ConsoleColor;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -28,12 +29,13 @@ public class WelcomeView {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
 
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.print("Your username: ");
         String userName = scanner.nextLine();
 
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.print("Your password: ");
+        Console cons = System.console();
         String password = scanner.nextLine();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -42,6 +44,7 @@ public class WelcomeView {
         Request request = new Request(loginData,url);
 
         String LoginDataAsString = objectMapper.writeValueAsString(request);
+
         writer.println(LoginDataAsString);
 
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
@@ -108,7 +111,6 @@ public class WelcomeView {
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Username: ");
         String username = scanner.nextLine();
-
 
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your FirstName: ");

@@ -1,5 +1,8 @@
 package server.config;
+import client.views.components.Component;
 import redis.clients.jedis.Jedis;
+import utils.CommonUtil;
+import utils.ConsoleColor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,7 +30,7 @@ public class JedisConfig {
 				conn = new Jedis(url,port);
 
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			Component.showErrorMessage(e.getMessage());
 		}
 
 	     return conn;
