@@ -34,7 +34,7 @@ public class GroupMemberRequestHandler {
     }
 
     public void handlerGetGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        List<GroupMember> groupMembers=new GroupMemberService().listGroupMembers(new GroupMemberDecoder(data).getGroupMembersDecoder());
+        List<User> groupMembers=new GroupMemberService().listGroupMembers(new UserDecoder(data).GetProfileDecode());
         if (groupMembers == null){
             Response response= new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
