@@ -25,6 +25,7 @@ public class MessageRequestHandler {
         if (messagesList == null) {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
+
             writer.println(ResponseAsString);
         } else {
             Response response = new Response(messagesList, true);

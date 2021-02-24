@@ -518,6 +518,7 @@ public class SendMessageView {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Chat Room");
         if(response.isSuccess()){
+            System.out.println(response.toString());
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             //CommonUtil.addTabs(10, true);
             System.out.println("");
