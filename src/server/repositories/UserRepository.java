@@ -69,18 +69,16 @@ public class UserRepository {
 
             String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
             ResultSet rs = statement.executeQuery(query);
-            System.out.println("Reading users ....");
+
             if(rs.next()){
-                System.out.println("User Found!");
                 User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at"));
-                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
                 return returnUser;
             }
             else{
-                System.out.println("No users found");
+
             }
         }
         catch ( Exception e ) {
@@ -195,9 +193,8 @@ public class UserRepository {
             Statement statement =  connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading users ....");
             if(rs.next()){
-                System.out.println("User Found!");
+
                 User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
@@ -206,7 +203,7 @@ public class UserRepository {
                 return returnUser;
             }
             else{
-                System.out.println("No users found");
+
             }
         }
         catch ( Exception e ) {
@@ -236,7 +233,7 @@ public class UserRepository {
 
 
             i = statement.executeUpdate(query);
-            System.out.println("Rows updated: "+i);
+
 
             statement.close();
             connection.close();

@@ -22,7 +22,7 @@ public class UserRequestHandler {
     public void HandleLogin(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
         User returned = new UserService().loginUser(new UserDecoder(data).LoginDecode());
         if(returned == null){
-            System.out.println("login failed");
+
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
@@ -31,7 +31,7 @@ public class UserRequestHandler {
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             server.addUserName(returned.getUserID(),returned.getUsername());
-            System.out.println(returned.getUsername()+" is logged in");
+
             writer.println(ResponseAsString);
         }
     }

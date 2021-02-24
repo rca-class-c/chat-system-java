@@ -80,10 +80,11 @@ public class UserThread extends Thread {
             } while (!clientMessage.equals("bye"));
             socket.close();
         } catch (Exception ex) {
+            System.out.println();
             CommonUtil.addTabs(10, false);
             CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.RED_BACKGROUND_BRIGHT);
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.println();
+
             if (ex.getMessage().equals("Connection reset")) {
                 System.out.print(" User Disconnected  ");
             } else {

@@ -168,7 +168,7 @@ public class MessagesRepository {
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message));
+            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message, sent_at));
         }
         statement.close();
         conn.close();
@@ -248,24 +248,5 @@ public class MessagesRepository {
 
     }
 
-    public ResultSet getMessagingUser(int id) {
-        try {
 
-            Connection connection = PostegresConfig.getConnection();
-            Statement statement = connection.createStatement();
-
-
-            String query = String.format("SELECT * FROM users WHERE id = %d", id);
-            ResultSet resultSet = statement.executeQuery(query);
-
-            statement.close();
-            connection.close();
-
-            return resultSet;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

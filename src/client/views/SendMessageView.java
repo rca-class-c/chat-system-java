@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Scanner;
 
 
+/**
+ * @author Divin Irakiza
+ */
 public class SendMessageView {
     public int userId;
     public PrintWriter writer;
@@ -287,7 +290,7 @@ public class SendMessageView {
         }
     }
 
-    public void DeleteReplieView() throws IOException {
+    public void DeleteReplieView() throws IOException, SQLException {
         Component.pageTitleView("Delete a reply");
 
         Scanner scanner = new Scanner(System.in);
@@ -354,7 +357,7 @@ public class SendMessageView {
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("USER BY ID GETTING");
+
         if(response.isSuccess()){
             User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
             WriteMessageView(user);
@@ -519,21 +522,34 @@ public class SendMessageView {
             //CommonUtil.addTabs(10, true);
             System.out.println("");
             for (Messages message : messages) {
+                User sender = getUser(message.getSender());
+                User reciever = getUser(message.getUser_receiver());
+
                 CommonUtil.addTabs(10, false);
-                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                System.out.println(new UserService().getUserById(message.getSender()));
-                System.out.print("Sender: "+message.getSender());
-                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-                System.out.println("    sent at: "+message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
+                System.out.print(sender.getFname() + " " + sender.getLname());
+                CommonUtil.addTabs(10, false);
+                System.out.print(message.());
                 CommonUtil.resetColor();
+
+                System.out.println();
                 CommonUtil.addTabs(10, false);
-                System.out.println("Body: " +message.getContent());
+                CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
+                System.out.print(ConsoleColor.BoldColor.YELLOW_BOLD + "[" + sender.getUserID() + "]: " + ConsoleColor.RESET + message.getContent());
+                CommonUtil.resetColor();
+
+
+//                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
+//                System.out.println("    sent at: "  + message.getSent_at());
+//                CommonUtil.resetColor();
+//                CommonUtil.addTabs(10, false);
+//                System.out.println("Body: " +message.getContent());
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
+        Component.pageTitleView("Message ["+ user.getUsername()+" "+user.getLname() + "]");
 
 
         CommonUtil.addTabs(11, true);
@@ -759,7 +775,21 @@ public class SendMessageView {
                 Component.showErrorMessage(e.getMessage());
             }
         } while (action == -1);
-
     }
 
+    public User getUser(int id) throws IOException, SQLException {
+        String key= "users/profile";
+        Request request = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(response.isSuccess()){
+            User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
+           return user;
+        }else {
+            return null;
+
+        }
+    }
 }

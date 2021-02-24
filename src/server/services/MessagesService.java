@@ -17,7 +17,7 @@ import java.util.Set;
  * @author: Bella Mellissa  Ineza
  */
 
-public class MessagesService {
+public class  MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
 
     public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
