@@ -66,8 +66,7 @@ public class MessagesRepository {
             Integer group_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-
-            GroupMessage message = (GroupMessage) result;
+            GroupMessage message = new GroupMessage(content,sender,group_receiver,original_message,sent_at,id);
             allMessagesGrp.add(message);
         }
         statement.close();
@@ -168,8 +167,8 @@ public class MessagesRepository {
             Integer sender = result.getInt(3);
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
-            Date sent_at = result.getDate(7);
-            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message));
+            Date sent_at = result.getDate(8);
+            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message,sent_at));
         }
         statement.close();
         conn.close();

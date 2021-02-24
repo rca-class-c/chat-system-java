@@ -5,10 +5,7 @@ import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.*;
 import server.models.enums.FileSizeTypeEnum;
-import utils.ChatBetweenTwo;
-import utils.CommonUtil;
-import utils.ConsoleColor;
-import utils.FileUtil;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -229,6 +226,30 @@ public class SendMessageView {
         }
         //WriteMessageView(new User());
     }
+    public  void TypeMessageViewInGroup(int group) throws IOException {
+        Component.pageTitleView("Type a message");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Your Message: ");
+        String message = scanner.nextLine();
+        String key = "messages/send/group";
+        GroupMessage newMessage = new GroupMessage(message,userId,group,null);
+        Request request = new Request(newMessage,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+
+            CommonUtil.addTabs(10, true);
+            System.out.println("Message sent");
+
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to send");
+        }
+        //WriteMessageView(new User());
+    }
 
 
 
@@ -296,6 +317,17 @@ public class SendMessageView {
             CommonUtil.addTabs(10, true);
             System.out.println("Message not found!");
         }
+    }
+
+    public void DeleteReplieView() throws IOException {
+        Component.pageTitleView("Delete a reply");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Enter message id: ");
+        int messageId = scanner.nextInt();
+
+        WriteMessageView(new User());
     }
 
 
@@ -381,18 +413,18 @@ public class SendMessageView {
                 CommonUtil.addTabs(10, false);
             }
             int choice = 0;
-            do{
+
                 System.out.println("");
                 Component.chooseOptionInputView("Type group id to chat in: ");
-                choice  = Component.getChooseOptionChoice();
+                choice  = new Scanner(System.in).nextInt();
+
                 if(!ids.contains(choice)){
                     CommonUtil.addTabs(10, true);
                     System.out.println("Invalid group id. Try again!");
                 }
-            }while(!ids.contains(choice));
             for (Group group : groups) {
                 if(group.getId() == choice){
-                    WriteMessageViewInGroup(group);
+                   WriteMessageViewInGroup(group);
                 }
             }
         }else {
@@ -585,6 +617,7 @@ public class SendMessageView {
     //author: Edine Noella
     //this is calls view interface while sending group messages
     public  void WriteMessageViewInGroup(Group group) throws IOException {
+
         String key = "messages/group";
         group.setId(this.groupId);
 
@@ -624,7 +657,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeGroupMessageView(group.getId());
+                        TypeMessageViewInGroup(group.getId());
                     }
                     case 2 -> {
                         SendFileView();

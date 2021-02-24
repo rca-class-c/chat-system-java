@@ -54,5 +54,8 @@ public class UserRoutes {
         else if(request.equals("users/invite")){
             new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
         }
+        else if(request.equals("users/verify")){
+            new SendInvitationHandler().HandleVerifyCode(data,writer,objectMapper);
+        }
     }
 }

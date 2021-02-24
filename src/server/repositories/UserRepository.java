@@ -14,6 +14,28 @@ public class UserRepository {
     /**
      * Method for saving the new User
      * */
+    public boolean checkVerificationCode(int code){
+        try{
+            Connection connection = PostegresConfig.getConnection();
+
+
+            String query = String.format("SELECT * FROM sent_invitations  WHERE verificationcode = '%d' and status = 'PENDING';",code);
+            Statement statement =  connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            if(rs.next()){
+               return true;
+            }
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return false;
+    }
     public User save(User user) throws SQLException {
         int i= 0;
         try {
