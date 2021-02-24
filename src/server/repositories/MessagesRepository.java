@@ -136,7 +136,7 @@ public class MessagesRepository {
     //-------------------------------sending messages--------------------------
     //sending group message
     //author: Edine Noella
-    public  boolean sendGroupMessage(Messages message) throws SQLException {
+    public  boolean sendGroupMessage(GroupMessage message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
