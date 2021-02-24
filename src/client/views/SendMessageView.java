@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 public class SendMessageView {
     public int userId;
+    public int groupId;
     public PrintWriter writer;
     public BufferedReader reader;
     Scanner scanner = new Scanner(System.in);
@@ -72,6 +73,9 @@ public class SendMessageView {
                 }
         }
     }
+
+    //author: Edine Noella
+    //this is interface for sending direct message
     public void DirectMessageView() {
         int choice = 10;
         while(choice != 55 && choice != 44) {
@@ -128,6 +132,8 @@ public class SendMessageView {
         }
     }
 
+    //author: Edine Noella
+    //this is interface for sending group messages
     public  void GroupMessageView() {
         Component.pageTitleView("Group Message");
 
@@ -166,15 +172,18 @@ public class SendMessageView {
         } while (action == -1);
     }
 
+    //author: Edine Noella
+    //this is for getting a group message from user and sending it
     public  void TypeGroupMessageView(int group) throws IOException {
         Component.pageTitleView("Type a message");
+        System.out.println(group);
 
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
         String key = "messages/send/group";
-        Messages newMessage = new Messages(0,message,userId,0,group,0);
+        Messages newMessage = new Messages(0,message,userId,0,2,0);
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -191,6 +200,8 @@ public class SendMessageView {
         //WriteMessageView(new User());
     }
 
+    //author: Edine Noella
+    //this is for getting a direct message from user and sending it
     public  void TypeMessageView(int reciever) throws IOException {
         Component.pageTitleView("Type a message");
 
@@ -239,6 +250,8 @@ public class SendMessageView {
         }
         //WriteMessageView(new User());
     }
+
+
 
     public void SendFileView() throws IOException {
         Component.pageTitleView("Send a file");
@@ -469,6 +482,9 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter Group Id: ");
         int query = Component.getChooseOptionChoice();
+        this.groupId = query;
+
+
         String  key= "groups/profile";
         Request request = new Request(new ProfileRequestData(query),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -525,7 +541,8 @@ public class SendMessageView {
 
     }
 
-
+    //author: Edine Noella
+    //this is calls the view interface
     public  void WriteMessageView(User user) throws IOException {
         String key = "messages/direct";
         Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
@@ -597,9 +614,13 @@ public class SendMessageView {
 
     }
 
+    //author: Edine Noella
+    //this is calls view interface while sending group messages
     public  void WriteMessageViewInGroup(Group group) throws IOException {
 
         String key = "messages/group";
+        group.setId(this.groupId);
+
         Request request = new Request(new ProfileRequestData(group.getId()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);

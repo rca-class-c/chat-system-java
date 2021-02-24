@@ -131,9 +131,12 @@ public class MessagesRepository {
 //                    grn = statement.executeQuery("select group_name from groups where group_id="+g_rec);
 //                    grn.next();
 //                    String gr_name = grn.getString(1);
+
+
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  boolean sendGroupMessage(GroupMessage message) throws SQLException {
+    //author: Edine Noella
+    public  boolean sendGroupMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,group_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
@@ -172,6 +175,7 @@ public class MessagesRepository {
         return messages;
     }
    //sending a direct message
+   //author: Edine Noella
     public  Boolean sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
