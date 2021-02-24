@@ -20,6 +20,7 @@ import java.util.Scanner;
 import utils.CommonUtil;
 import client.views.components.TableView;
 import utils.Mailing;
+import utils.ValidEmail;
 
 public class AdminAction {
     PrintWriter writer;
@@ -331,7 +332,16 @@ public class AdminAction {
             email = scanner.nextLine();
             CommonUtil.useColor("\u001b[0m");
             if(!email.equals("quit")){
-                emails.add(email);
+                if(!new ValidEmail(email).checkEmail()){
+                    CommonUtil.addTabs(10, true);
+                    CommonUtil.useColor("\u001b[1;31m");
+                    System.out.println("This email is not valid; it is not saved");
+                    CommonUtil.resetColor();
+                }
+                else{
+                    emails.add(email);
+                }
+
             }
         }
         String key = "users/invite";
