@@ -2,6 +2,7 @@ package server.services;
 
 import client.interfaces.AddMemberRequestData;
 import server.models.GroupMember;
+import server.models.User;
 import server.repositories.GroupMemberRepository;
 
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ public class GroupMemberService {
         return groupMemberRepository.createMember(group_member);
     }
 
-    public List<GroupMember> listGroupMembers(int id) throws SQLException {
+    public List<User> listGroupMembers(int id) throws SQLException {
         return groupMemberRepository.getAllMembers(id);
     }
 

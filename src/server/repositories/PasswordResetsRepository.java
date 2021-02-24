@@ -1,6 +1,7 @@
 package server.repositories;
 /*.;'l,kmjntygrfedxs*/
 
+import client.views.components.Component;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -82,7 +83,7 @@ public class PasswordResetsRepository {
                         String MailerEmail = pros.getProperty("MailerEmail");
                         String MailerPassword = pros.getProperty("MailerPassword");
 
-                        System.out.println("Sending otp to " + pr.getEmail() + "...");
+
                         Mailing mail = new Mailing(MailerEmail,MailerPassword,pr.getEmail(),mailSubject,mailingTemplate);
 
                         mail.send("html");
@@ -92,7 +93,8 @@ public class PasswordResetsRepository {
 
 
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
+                    Component.showErrorMessage(e.getMessage());
+
                 }
 
 
@@ -100,7 +102,8 @@ public class PasswordResetsRepository {
 
             return pr;
         }catch(SQLException e){
-            System.out.println(e.getMessage());
+            Component.showErrorMessage(e.getMessage());
+
         }
 
 
@@ -122,7 +125,6 @@ public class PasswordResetsRepository {
             String query = "SELECT * FROM user_password_resets";
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading passwordResets ....");
             List<PasswordResets> passwordResets= new ArrayList<PasswordResets>();
             while(rs.next()){
                 passwordResets.add(new PasswordResets(
@@ -159,7 +161,6 @@ public class PasswordResetsRepository {
             String query = String.format("SELECT * FROM user_password_resets WHERE status = '%s'",status);
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading passwordResets ....");
             List<PasswordResets> passwordResets= new ArrayList<PasswordResets>();
             while(rs.next()){
                 passwordResets.add(new PasswordResets(
@@ -169,7 +170,7 @@ public class PasswordResetsRepository {
                         PasswordResetsStatusesEnum.valueOf(rs.getString("status")))
                 );
 
-                System.out.println("email: " + rs.getString("email") + "status: " + rs.getString("status"));
+
 
             }
             return passwordResets;
@@ -201,10 +202,7 @@ public class PasswordResetsRepository {
             String query = String.format("SELECT * FROM user_password_resets  WHERE id = '%d' ",passwordResetsId);
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading password reset ....");
             if(rs.next()){
-                System.out.println("Password Reset Found");
-
                 return  new PasswordResets(
                         rs.getString("email"),
                         rs.getInt("otp"),
@@ -212,16 +210,9 @@ public class PasswordResetsRepository {
                         PasswordResetsStatusesEnum.valueOf(rs.getString("status")));
 
             }
-            else{
-                System.out.println("Password Reset not found");
-            }
         }
         catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-
-            System.exit(0);
-
+            Component.showErrorMessage(e.getMessage());
         }
         return null;
     }
@@ -243,9 +234,7 @@ public class PasswordResetsRepository {
             String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' ",passwordResetsEmail);
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading password reset ....");
             if(rs.next()){
-                System.out.println("Password Reset Found");
 
                 return  new PasswordResets(
                         rs.getString("email"),
@@ -253,16 +242,10 @@ public class PasswordResetsRepository {
                         rs.getString("expiration_date"),
                         PasswordResetsStatusesEnum.valueOf(rs.getString("status")));
             }
-            else{
-                System.out.println("Password Reset not found");
-            }
+
         }
         catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-
-            System.exit(0);
-
+            Component.showErrorMessage(e.getMessage());
         }
         return null;
     }
@@ -285,9 +268,9 @@ public class PasswordResetsRepository {
             String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' AND status = '%s ORDER BY ID DESC LIMIT 1",passwordResetsEmail,status);
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading password reset ....");
+
             if(rs.next()){
-                System.out.println("Password Reset Found");
+
 
                 return  new PasswordResets(
                         rs.getString("email"),
@@ -296,15 +279,12 @@ public class PasswordResetsRepository {
                         PasswordResetsStatusesEnum.valueOf(rs.getString("status")));
 
             }
-            else{
-                System.out.println("Password Reset not found");
-            }
+
         }
         catch ( Exception e ) {
 
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            Component.showErrorMessage(e.getMessage());
 
-            System.exit(0);
 
         }
         return null;
@@ -327,7 +307,6 @@ public class PasswordResetsRepository {
             String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' ",passwordResetsEmail);
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading password reset ....");
             List<PasswordResets> passwordResets = new ArrayList<PasswordResets>();
 
             while(rs.next()){
@@ -341,10 +320,6 @@ public class PasswordResetsRepository {
                 );
             }
 
-            if(passwordResets.size() > 0)
-                System.out.println("All Password Resets Found");
-            else
-                System.out.println("No Password resets found with " + passwordResetsEmail);
 
 
             return passwordResets;
@@ -352,9 +327,8 @@ public class PasswordResetsRepository {
         }
         catch ( Exception e ) {
 
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            Component.showErrorMessage(e.getMessage());
 
-            System.exit(0);
 
         }
         return null;
@@ -379,7 +353,7 @@ public class PasswordResetsRepository {
             String query = String.format("SELECT * FROM user_password_resets  WHERE email = '%s' AND status = '%s';",passwordResetsEmail,status);
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading password reset ....");
+
             List<PasswordResets> passwordResets  = new ArrayList<PasswordResets>();
 
 
@@ -393,19 +367,13 @@ public class PasswordResetsRepository {
 
               );
             }
-            if(passwordResets.size() > 0)
-                System.out.println("All Password Resets Found");
-            else
-                System.out.println("No Password resets found with " + passwordResetsEmail + " and status : " + status);
 
             return passwordResets;
         }
         catch ( Exception e ) {
 
-            System.out.println(" No password reset record with " + passwordResetsEmail);
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            Component.showErrorMessage(e.getMessage());
 
-            System.exit(0);
 
         }
         return null;
@@ -489,10 +457,7 @@ public class PasswordResetsRepository {
 
             return timeComparison > 0;
 
-        } else{
-            System.out.println("Not found");
         }
-
         return true;
     }
 
@@ -508,12 +473,12 @@ public class PasswordResetsRepository {
     public boolean resetPassword(String userEmail,int otp,String newPassword) throws SQLException{
 
         if(!this.isOtpValid(userEmail,otp)){
-            System.out.println("OTP not valid");
+
             return false;
         }
 
         if(this.isOtpExpired(userEmail,otp)){
-            System.out.println("OTP have expired");
+
             return false;
         }
 

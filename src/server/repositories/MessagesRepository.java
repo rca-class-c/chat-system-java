@@ -47,15 +47,14 @@ public class MessagesRepository {
 
     //-------------------------------View Group Messages-----------------------------------------
     // author : Loraine
-    public List<GroupMessage> getGroupMessages(int first, int last) throws SQLException {
+    public List<GroupMessage> getGroupMessages(int groupid) throws SQLException {
         List<GroupMessage> allMessagesGrp = new ArrayList<GroupMessage>();
 
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = %d && group_receiver = %d or sender = %d && group_receiver = %d;",
-                first, last, first, last);
+                "SELECT * from messages where group_receiver = %d",groupid);
 
         ResultSet result = statement.executeQuery(readQuery);
 
@@ -67,8 +66,7 @@ public class MessagesRepository {
             Integer group_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-
-            GroupMessage message = (GroupMessage) result;
+            GroupMessage message = new GroupMessage(content,sender,group_receiver,original_message,sent_at,id);
             allMessagesGrp.add(message);
         }
 
@@ -117,60 +115,90 @@ public class MessagesRepository {
         ResultSet direct_message;
         direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
         notis.add(direct_message);
+        statement.close();
+        conn.close();
         return notis;
     }
 
 
-//gukora Direct and group ukwabyo
+
     public List<GroupMessage> getNotis(int user_id)throws SQLException{
 //        List<DirectMessage> messagess = new ArrayList<>();
-        List<GroupMessage> messages = new ArrayList<>();
+//        List<GroupMessage> messages = new ArrayList<>();
+//        Connection conn = PostegresConfig.getConnection();
+//        Statement statement = conn.createStatement();
+//
+//        String readNotis = String.format("select * from user_group where user_id="+user_id);
+////        String readNotiss = String.format("select * from messages where user_id="+user_id);
+//
+//        ResultSet resultsGroup = statement.executeQuery(readNotis);
+////        ResultSet resultsDirect = statement.executeQuery(readNotiss);
+//
+//        ResultSet group_message = null;
+////        ResultSet direct_message;
+//
+//        while (resultsGroup.next()){
+//            group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+resultsGroup.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
+////
+////            System.out.println("getting messages");
+////            Integer id = resultsGroup.getInt(1);
+////            String content = resultsGroup.getString(2);
+////            Integer sender = resultsGroup.getInt(3);
+////            Integer group_receiver = resultsGroup.getInt(4);
+////            Integer original_message = resultsGroup.getInt(6);
+////            Date sent_at = resultsGroup.getDate(7);
+////
+////            GroupMessage message = new GroupMessage(content,sender,group_receiver,original_message,sent_at,id);
+////            messages.add(message);
+//        }
+//
+////       while(resultsDirect.next()){
+////           direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
+////
+////           Integer id = resultsGroup.getInt(1);
+////           String content = resultsGroup.getString(2);
+////           Integer sender = resultsGroup.getInt(3);
+////           Integer original_message = resultsGroup.getInt(6);
+////           Date sent_at = resultsGroup.getDate(7);
+////
+////           DirectMessage message = (DirectMessage) resultsDirect;
+////           messagess.add(message);
+////       }
+//
+//        statement.close();
+//        conn.close();
+//        return messages;
+////
+// return  messagess;
+
+        List<GroupMessage>  notis = new ArrayList<GroupMessage>();
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
-
-        String readNotis = String.format("select * from user_group where user_id="+user_id);
-//        String readNotiss = String.format("select * from messages where user_id="+user_id);
-
-        ResultSet resultsGroup = statement.executeQuery(readNotis);
-//        ResultSet resultsDirect = statement.executeQuery(readNotiss);
-
+        ResultSet groups;
+        groups = statement.executeQuery("select * from user_group where user_id="+user_id);
         ResultSet group_message = null;
-//        ResultSet direct_message;
+        while(groups.next()) {
+//            group_message = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
+            group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+groups.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
+            while(group_message.next()){
+                Integer id = group_message.getInt(2);
+                String content = group_message.getString(3);
+                System.out.println("there");
+                Integer sender = group_message.getInt(4);
+                Integer group_receiver = group_message.getInt(5);
+                Integer original_message = group_message.getInt(7);
+                Date sent_at = group_message.getDate(8);
+                notis.add(new GroupMessage(content,sender,group_receiver,original_message,sent_at,id));
+            }
+//				grm = statement.executeQuery("select * from messages where group_receiver = "+gr.getInt(1)+" and isRead=false and sender!="+user_id);
 
-
-        while (resultsGroup.next()){
-            group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+resultsGroup.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
-
-
-            Integer id = resultsGroup.getInt(1);
-            String content = resultsGroup.getString(2);
-            Integer sender = resultsGroup.getInt(3);
-            Integer group_receiver = resultsGroup.getInt(4);
-            Integer original_message = resultsGroup.getInt(6);
-            Date sent_at = resultsGroup.getDate(7);
-
-            GroupMessage message = (GroupMessage) resultsGroup;
-            messages.add(message);
         }
-
-//       while(resultsDirect.next()){
-//           direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
-//
-//           Integer id = resultsGroup.getInt(1);
-//           String content = resultsGroup.getString(2);
-//           Integer sender = resultsGroup.getInt(3);
-//           Integer original_message = resultsGroup.getInt(6);
-//           Date sent_at = resultsGroup.getDate(7);
-//
-//           DirectMessage message = (DirectMessage) resultsDirect;
-//           messagess.add(message);
-//       }
-
+//        ResultSet direct_message;
+//        direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
+//        notis.add(direct_message);
         statement.close();
         conn.close();
-        return messages;
-//        return  messagess;
-
+        return notis;
     }
 
 
@@ -190,23 +218,22 @@ public class MessagesRepository {
 //                    grn = statement.executeQuery("select group_name from groups where group_id="+g_rec);
 //                    grn.next();
 //                    String gr_name = grn.getString(1);
+
+
     //-------------------------------sending messages--------------------------
     //sending group message
-    public  Messages sendGroupMessage(Messages message) throws SQLException {
-        String sql= "insert into messages(content,sender,group_receiver,sent_at) values (?,?,?,?)";
+    //author: Edine Noella
+    public  boolean sendGroupMessage(GroupMessage message) throws SQLException {
+        String sql= "insert into messages(content,sender,group_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-       // statement.setInt(3, message.getGroup_receiver());
-        statement.setDate(4, (java.sql.Date) message.getSent_at());
-        boolean rowInsert= statement.executeUpdate()>1;
+        statement.setInt(3, message.getGroup_receiver() );
+        boolean rowInsert= statement.executeUpdate()>0;
         statement.close();
         conn.close();
-        if(rowInsert){
-            return message;
-        }
-        return null;
+        return rowInsert;
     }
 
     public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
@@ -228,13 +255,14 @@ public class MessagesRepository {
             Integer user_receiver = result.getInt(4);
             Integer original_message = result.getInt(6);
             Date sent_at = result.getDate(7);
-            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message));
+            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message,sent_at));
         }
         statement.close();
         conn.close();
         return messages;
     }
    //sending a direct message
+   //author: Edine Noella
     public  Boolean sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
         Connection conn = PostegresConfig.getConnection();
@@ -256,7 +284,7 @@ public class MessagesRepository {
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver(null));
+        statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();
@@ -279,7 +307,7 @@ public class MessagesRepository {
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver(null));
+        statement.setInt(3, message.getGroup_receiver());
         statement.setDate(4, (java.sql.Date) message.getSent_at());
         boolean rowInsert= statement.executeUpdate()>1;
         statement.close();

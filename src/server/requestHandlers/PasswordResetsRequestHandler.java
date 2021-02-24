@@ -33,14 +33,12 @@ public class PasswordResetsRequestHandler {
         PasswordResets passwordReset = new PasswordResetService().create(new PasswordResetsDecoder(data).initiatePasswordResetDecode());
 
         if(passwordReset == null){
-            System.out.println("password reset initiation failed");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }else{
             Response response = new Response(passwordReset,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println("password reset email was sent to " + passwordReset.getEmail()+"");
             writer.println(ResponseAsString);
         }
     }
@@ -52,14 +50,12 @@ public class PasswordResetsRequestHandler {
         boolean passwordReset = new PasswordResetService().resetPassword(passwordResetObject.get("userEmail"),Integer.parseUnsignedInt(passwordResetObject.get("otp")),passwordResetObject.get("newPassword"));
 
         if(!passwordReset){
-            System.out.println("can't reset password");
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }else{
             Response response = new Response(passwordResetObject, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(passwordResetObject.get("userEmail")+ " changed password successfully");
             writer.println(ResponseAsString);
         }
     }

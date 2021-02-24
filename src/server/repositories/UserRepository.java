@@ -1,5 +1,6 @@
 package server.repositories;
 
+import client.views.components.Component;
 import server.config.PostegresConfig;
 import server.models.AuthInput;
 import server.models.User;
@@ -14,6 +15,28 @@ public class UserRepository {
     /**
      * Method for saving the new User
      * */
+    public boolean checkVerificationCode(int code){
+        try{
+            Connection connection = PostegresConfig.getConnection();
+
+
+            String query = String.format("SELECT * FROM sent_invitations  WHERE verificationcode = '%d' and status = 'PENDING';",code);
+            Statement statement =  connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            if(rs.next()){
+               return true;
+            }
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return false;
+    }
     public User save(User user) throws SQLException {
         int i= 0;
         try {
@@ -25,12 +48,14 @@ public class UserRepository {
 
 
             i = statement.executeUpdate(query);
-            System.out.println("Rows inserted: "+i);
+
 
             statement.close();
             connection.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+
+            Component.showErrorMessage(e.getMessage());
+
         }
         if(i > 0) {
             return user;
@@ -47,26 +72,20 @@ public class UserRepository {
 
             String query = String.format("SELECT * FROM users where username  = '%s' and  pass_word = '%s';",input.getUsername(),input.getPassword());
             ResultSet rs = statement.executeQuery(query);
-            System.out.println("Reading users ....");
+
             if(rs.next()){
-                System.out.println("User Found!");
                 User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at"));
-                System.out.println("Fname: "+rs.getString("first_name")+"\nLname: "+rs.getString("last_name")+"\nEmail: "+rs.getString("email"));
                 return returnUser;
             }
             else{
-                System.out.println("No users found");
+
             }
         }
         catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-
-            System.exit(0);
-
+            Component.showErrorMessage(e.getMessage());
          }
         return null;
     }
@@ -81,7 +100,6 @@ public class UserRepository {
 
             String query = String.format("SELECT * FROM users;");
             ResultSet rs = statement.executeQuery(query);
-            System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();
             while(rs.next()){
                 users.add(new User(rs.getString("first_name"),rs.getString("last_name"),
@@ -110,7 +128,6 @@ public class UserRepository {
 
             String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' or username = '%s' ORDER BY user_id ASC;",search,search,search);
             ResultSet rs = statement.executeQuery(query);
-            System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();
             while(rs.next()){
                 users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
@@ -118,7 +135,6 @@ public class UserRepository {
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
             }
-            System.out.println(users.size());
             return users;
         }
         catch ( Exception e ) {
@@ -140,7 +156,6 @@ public class UserRepository {
 
             String query = String.format("SELECT * FROM users where user_id != '%d' ORDER BY user_id ASC;",id);
             ResultSet rs = statement.executeQuery(query);
-            System.out.println("Reading users ....");
             List<User> users=new ArrayList<User>();
             while(rs.next()){
                 users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
@@ -148,7 +163,6 @@ public class UserRepository {
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
             }
-            System.out.println(users.size());
             return users;
         }
         catch ( Exception e ) {
@@ -173,18 +187,16 @@ public class UserRepository {
             Statement statement =  connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
-            System.out.println("Reading users ....");
             if(rs.next()){
-                System.out.println("User Found!");
+
                 User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
                         rs.getString("status"));
-      //System.out.println(" User By Id"+rs.getString("last_name"));
                 return returnUser;
             }
             else{
-                System.out.println("No users found");
+
             }
         }
         catch ( Exception e ) {
@@ -214,12 +226,12 @@ public class UserRepository {
 
 
             i = statement.executeUpdate(query);
-            System.out.println("Rows updated: "+i);
+
 
             statement.close();
             connection.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Component.showErrorMessage(e.getMessage());
         }
         if(i > 0) {
             return user;
@@ -238,9 +250,6 @@ public class UserRepository {
           String query = String.format("DELETE FROM users WHERE user_id = ? ;");
           PreparedStatement statement = connection.prepareStatement(query);
           statement.setInt(1, userId);
-          if (affectedRows > 0) {
-              System.out.println("  User deleted successfully   ");
-          }
           return affectedRows;
     }
     /**
@@ -252,9 +261,7 @@ public class UserRepository {
         String query = String.format("UPDATE users SET status = 'INACTIVE' WHERE user_id = '%d';",userId);
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,userId);
-        if(affectedRows>0){
-            System.out.println(" User Deactived successfully");
-        }
+
         return affectedRows;
     }
 

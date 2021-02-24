@@ -17,12 +17,7 @@ public class sendInvitationRepositories {
         while (resultSet.next()){
             String email1=resultSet.getString("email");
              id = resultSet.getInt("user_id");
-            if (email1.equals(email)){
-                System.out.println("Admin found");
-            }
-            else {
-                System.out.println("Admin Not Found");
-            }
+
         }
         connection.close();
         return id;
@@ -35,12 +30,7 @@ public class sendInvitationRepositories {
            prepared.setString(2,email);
            prepared.setInt(3,verificationCode);
            int row= prepared.executeUpdate();
-           if (row!=-1){
-               System.out.println("Done");
-           }
-           else {
-               System.out.println("Failed");
-           }
+
        conn.close();
    }
    public int SearchForInvited(int verificationCode) throws SQLException {
@@ -52,14 +42,13 @@ public class sendInvitationRepositories {
        ResultSet resultSet= prepared.executeQuery();
        while(resultSet.next()){
            id=resultSet.getInt("sent_id");
-           System.out.println("Admin Id found");
        }
        return id;
    }
    public int AcceptingInvitation(int verificationCode) throws SQLException {
        Connection conn= PostegresConfig.getConnection();
        int id=SearchForInvited(verificationCode);
-       final String sql="UPDATE sent_invitations SET status='activated' , verificationcode=0 where sent_id=? ";
+       final String sql="UPDATE sent_invitations SET status='ACTIVATED' , verificationcode=0 where sent_id=? ";
        PreparedStatement prepared=conn.prepareStatement(sql);
        prepared.setInt(1,id);
        int row = prepared.executeUpdate();

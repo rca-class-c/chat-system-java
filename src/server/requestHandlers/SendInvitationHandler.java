@@ -16,9 +16,8 @@ import java.sql.SQLException;
 
 public class SendInvitationHandler {
     public void HandleSendInvitation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {
-        int returned = new sendInvitations().sendingInvitations(new SendInvitationDecoder(data).retrieveEmails());
-        if(returned == 0){
-            System.out.println("Failed to send email");
+        boolean returned = new sendInvitations().sendingInvitations(new SendInvitationDecoder(data).retrieveEmails());
+        if(!returned){
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
@@ -26,8 +25,19 @@ public class SendInvitationHandler {
         else{
             Response response = new Response(returned,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
-            System.out.println(response);
-            System.out.println("Invitations are sent to new users to join this system");
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleVerifyCode(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException {
+        boolean found = new sendInvitations().CheckIfVerificationCodeExist(new UserDecoder(data).GetProfileDecode());
+        if(!found){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(found,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }
     }

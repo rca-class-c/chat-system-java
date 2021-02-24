@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.Console;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -102,20 +103,39 @@ public class CommonUtil {
             while (row.next()) {
                 String sname = row.getString(1);
                 String cont = row.getString(3);
-//                int sender = row.getInt(4);
-//                int u_rec = row.getInt(5);
                 int g_rec = row.getInt(6);
-//                String s=String.valueOf(sender);
                 if (g_rec == 0)
-                    trayIcon.displayMessage(cont, "from " + sname, MessageType.NONE);
+                    trayIcon.displayMessage(cont, "from " + sname, MessageType.INFO);
                 else {
                     MessagesService msg = new MessagesService();
                     String gr_name = msg.viewGroupName(g_rec);
-                    trayIcon.displayMessage(cont, "In " + gr_name + ": " + sname, MessageType.INFO);
+                    trayIcon.displayMessage(cont, "In " + gr_name + ": " + sname, MessageType.NONE);
                 }
 //            }
 //
 //        }
+            }
+        }
+    }
+
+    /**
+     * Handles console input when running outside of Eclipse.
+     *
+     * @param cons the console to use in order to receive input
+     * @param msg the prompt message
+     * @return the password input by the user
+     */
+    public static String getMaskedInput(Console cons, String msg)
+    {
+        char[] passwd;
+        while (true) {
+            passwd = cons.readPassword("%s", msg);
+            if (passwd != null) {
+                if (passwd.length > 0) {
+                    return new String(passwd);
+                } else {
+                    System.out.println("Invalid input\n");
+                }
             }
         }
     }

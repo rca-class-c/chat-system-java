@@ -69,10 +69,11 @@ public class View
                     }
                     default -> {
                         action = 0;
-                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+                        Component.showErrorMessage("Enter a valid choice (1, 2, 3, 55): ");
                     }
                 }
             } catch (Exception e) {
+                System.out.println();
                 Component.showErrorMessage(e.getMessage());
             }
         } while (action == 0);
