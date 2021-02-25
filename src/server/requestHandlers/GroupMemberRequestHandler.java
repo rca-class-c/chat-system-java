@@ -12,6 +12,7 @@ import server.services.GroupMemberService;
 import server.services.GroupServices;
 import server.services.UserService;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
@@ -61,8 +62,9 @@ public class GroupMemberRequestHandler {
         }
     }
 
-    public void handleCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException{
+    public void handleCreateGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws IOException, SQLException{
         int[] returned = new GroupMemberService().createMembers(new GroupMemberDecoder(data).createGroupMembersDecoder());
+
         if(returned == null){
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);

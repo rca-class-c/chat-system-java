@@ -27,10 +27,9 @@ public class GroupMemberDecoder {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
         int group_id =  dataDecrypt.get("group_id").asInt();
-        String values = dataDecrypt.get("users").asText();
+        String values = dataDecrypt.get("users").toString();
         Integer[] userList = objectMapper.readValue(values, Integer[].class);
         return new AddMemberRequestData(group_id, userList);
-
     }
 
     public GroupMember deleteGroupMemberDecoder() throws JsonProcessingException {

@@ -23,7 +23,7 @@ public class GroupMemberService {
         return groupMemberRepository.deleteMember(groupMember);
     }
     public int[] createMembers(AddMemberRequestData newMembers) throws SQLException{
-        return groupMemberRepository.createMembers(newMembers.getGroup_id(),newMembers.getUsers());
+        return groupMemberRepository.createMembers(newMembers);
     }
 
 }

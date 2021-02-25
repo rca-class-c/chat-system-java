@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 //import utils.CommonUtil;
@@ -100,6 +102,7 @@ public class UserView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("USERS LIST");
+        List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(10, true);

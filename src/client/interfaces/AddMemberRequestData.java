@@ -1,5 +1,7 @@
 package client.interfaces;
 
+import utils.CommonUtil;
+
 import java.util.List;
 
 public class AddMemberRequestData {
