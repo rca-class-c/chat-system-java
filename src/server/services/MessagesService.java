@@ -38,6 +38,10 @@ public class  MessagesService {
     public List<GroupMessage> viewUserNotis(int user_id) throws SQLException {
         return  messagesRepository.getNotis(user_id);
     }
+    public List<DirectMessage> viewDirUserNotis(int user_id) throws SQLException {
+        return  messagesRepository.getDirNotis(user_id);
+    }
+
     public String viewGroupName(int id)throws SQLException{
         return messagesRepository.getGroupName(id);
     }

@@ -47,7 +47,15 @@ public class MessagesRoutes {
         }
         else if(request.equals("messages/notifications")){
             new MessageRequestHandler().HandleGroupNotis(data,writer,objectMapper);
+
         }
+        else if(request.equals("messages/notifi")){
+
+            new MessageRequestHandler().HandleDirectNotis(data,writer,objectMapper);
+        }
+
+
+
 
 
     }

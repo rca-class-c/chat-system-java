@@ -689,7 +689,7 @@ public class SendMessageView {
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages messages : messageList) {
-                System.out.println(messages.getSender()+". "+messages.getContent()+" "+messages.getSent_at());
+                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
                 CommonUtil.addTabs(10, false);
             }
         }else {
@@ -700,6 +700,32 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = Component.getChooseOptionChoice();
     }
+
+
+    public void ViewNoti() throws IOException {
+        Component.pageTitleView("My notifications");
+        String  key= "messages/notifi";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages messages : messageList) {
+                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to get notifications, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = Component.getChooseOptionChoice();
+    }
+
+
 
 
     public void SendReplyView() {
