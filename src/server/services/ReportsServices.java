@@ -2,6 +2,8 @@ package server.services;
 
 import server.repositories.ReportsManagementRepository;
 
+import java.util.List;
+
 /**
  * service for all report which is stored in redis database
  *
@@ -37,4 +39,13 @@ public class ReportsServices {
    public void insertUserReport(){
        new ReportsManagementRepository().insertUserReport();
    }
+   public List<List> getMessageReport(){
+       return new ReportsManagementRepository().getReport("message:");
+    }
+    public List<List> getGroupReport(){
+        return new ReportsManagementRepository().getReport("group:");
+    }
+    public List<List> getUserReport(){
+        return new ReportsManagementRepository().getReport("user:");
+    }
 }
