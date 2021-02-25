@@ -638,6 +638,8 @@ public class SendMessageView {
         System.out.println("3. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("4. Replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Notifications");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -678,7 +680,7 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "get_my_notifications";
+        String  key= "messages/notifications";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -698,6 +700,8 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = Component.getChooseOptionChoice();
     }
+
+
     public void SendReplyView() {
         Component.pageTitleView("Send reply");
 
