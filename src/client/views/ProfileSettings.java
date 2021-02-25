@@ -194,6 +194,7 @@ public class ProfileSettings {
 
             ObjectMapper objectMapper = new ObjectMapper();
             String updateKey = "users/update";
+            System.out.println(profile.getUserID());
             Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
