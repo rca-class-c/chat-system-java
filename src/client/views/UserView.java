@@ -69,8 +69,24 @@ public class UserView {
                 new ChannelSettings(userId,writer,reader).channelMenu();
             }
             else if(choice == 3){
-                new SendMessageView(userId, writer, reader).ViewNotifications();
+
+                CommonUtil.addTabs(12, true);
+                System.out.println("1. Notifications from Direct Messages ");
+                CommonUtil.addTabs(12, false);
+                System.out.println("2. Notifications from Group Messages");
+                Component.chooseOptionInputView("Choose an option: ");
+                int result  = scanner.nextInt();
+
+                if(result == 1){
+                    new SendMessageView(userId, writer, reader).ViewNoti();
+
+                }
+                else if(result == 2){
+                    new SendMessageView(userId, writer, reader).ViewNotifications();
+                }
+
             }
+
             else if(choice == 5){
                 new AdminAction(writer, reader,userId);
             }
@@ -118,6 +134,8 @@ public class UserView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = scanner.nextInt();
     }
+
+
 
 
     public static  void sendInvitations() throws ClassNotFoundException,  SQLException {

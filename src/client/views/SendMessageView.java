@@ -546,7 +546,7 @@ public class SendMessageView {
                 System.out.print(ConsoleColor.BoldColor.YELLOW_BOLD + "[" + sender.getUserID() + "]: " + ConsoleColor.RESET + message.getContent());
                 CommonUtil.resetColor();
 
-
+                System.out.println("\n");
 //                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
 //                System.out.println("    sent at: "  + message.getSent_at());
 //                CommonUtil.resetColor();
@@ -638,6 +638,8 @@ public class SendMessageView {
         System.out.println("3. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("4. Replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Notifications");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -678,7 +680,7 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "get_my_notifications";
+        String  key= "messages/notifications";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -687,7 +689,7 @@ public class SendMessageView {
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages messages : messageList) {
-                System.out.println(messages.getSender()+". "+messages.getContent()+" "+messages.getSent_at());
+                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
                 CommonUtil.addTabs(10, false);
             }
         }else {
@@ -698,6 +700,34 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = Component.getChooseOptionChoice();
     }
+
+
+    public void ViewNoti() throws IOException {
+        Component.pageTitleView("My notifications");
+        String  key= "messages/notifi";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages messages : messageList) {
+                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to get notifications, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = Component.getChooseOptionChoice();
+    }
+
+
+
+
     public void SendReplyView() {
         Component.pageTitleView("Send reply");
 

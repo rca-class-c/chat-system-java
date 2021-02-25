@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.AuthInput;
 import server.models.User;
+import server.services.MessagesService;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 
@@ -17,15 +18,17 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.Set;
 
 public class WelcomeView {
     /**
      * This a function that takes user login data
      * @AUTHOR: Phinah Mahoro
      */
-    public static void Login(ChatClient client, PrintWriter writer, BufferedReader reader) throws SQLException, IOException {
+    public static void Login(ChatClient client, PrintWriter writer, BufferedReader reader) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
 
@@ -37,6 +40,7 @@ public class WelcomeView {
         System.out.print("Your password: ");
         Console cons = System.console();
         String password = scanner.nextLine();
+
 
         ObjectMapper objectMapper = new ObjectMapper();
         AuthInput loginData = new AuthInput(userName,password);
@@ -55,8 +59,15 @@ public class WelcomeView {
             CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
             System.out.print(" Your login was successful ");
+
             CommonUtil.resetColor();
+
+//            By Souvede
+            MessagesService msg = new MessagesService();
+            Set<ResultSet> notifications = msg.viewUserNotifications(client.getUserid());
+            CommonUtil.displayTray(notifications);
             new UserView(client.getUserid(), writer, reader).viewOptions();
+
         }
         else{
             CommonUtil.addTabs(10, true);
