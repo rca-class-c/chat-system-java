@@ -55,6 +55,9 @@ public class GroupsRoutes {
         else if(request.equals("groups/members")){
             new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper);
         }
+        else if (request.equals("groups/members/create")){
+            new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper);
+        }
 
     }
 }
