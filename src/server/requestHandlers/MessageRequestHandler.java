@@ -177,10 +177,30 @@ public class MessageRequestHandler {
             Response response = new Response(messages,true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             System.out.println(ResponseAsString);
-            System.out.println("Notifications list: ");
+            System.out.println("Group Notifications list: ");
             writer.println(ResponseAsString);
         }
     }
+
+
+    public void HandleDirectNotis(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        List<DirectMessage> messages = new MessagesService().viewDirUserNotis(new UserDecoder(data).GetProfileDecode());
+        //User returned = nHandleGroupNotisew UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+        if(messages == null){
+            System.out.println("Query failed recheck your db");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(messages,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Direct Notifications list: ");
+            writer.println(ResponseAsString);
+        }
+    }
+
 
     }
 

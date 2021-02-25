@@ -183,7 +183,6 @@ public class MessagesRepository {
             while(group_message.next()){
                 Integer id = group_message.getInt(2);
                 String content = group_message.getString(3);
-                System.out.println("there");
                 Integer sender = group_message.getInt(4);
                 Integer group_receiver = group_message.getInt(5);
                 Integer original_message = group_message.getInt(7);
@@ -196,6 +195,27 @@ public class MessagesRepository {
 //        ResultSet direct_message;
 //        direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
 //        notis.add(direct_message);
+        statement.close();
+        conn.close();
+        return notis;
+    }
+
+    public List<DirectMessage> getDirNotis(int user_id) throws SQLException {
+        List<DirectMessage>  notis = new ArrayList<DirectMessage>();
+        Connection conn = PostegresConfig.getConnection();
+        Statement statement = conn.createStatement();
+        ResultSet direct_message;
+        direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
+        while(direct_message.next()){
+            Integer message_id = direct_message.getInt(2);
+            String content = direct_message.getString(3);
+            Integer sender = direct_message.getInt(4);
+            Integer user_receiver = direct_message.getInt(5);
+            Integer original_message = direct_message.getInt(7);
+            Date sent_at = direct_message.getDate(8);
+            notis.add(new DirectMessage(message_id, content, sender, user_receiver, original_message, sent_at));
+        }
+
         statement.close();
         conn.close();
         return notis;
