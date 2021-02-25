@@ -117,6 +117,8 @@ public class UserView {
     }
 
 
+
+
     public static  void sendInvitations() throws ClassNotFoundException,  SQLException {
         Scanner scanner = new Scanner(System.in);
 

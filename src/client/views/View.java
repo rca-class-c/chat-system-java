@@ -7,10 +7,12 @@ import utils.CommonUtil;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import server.services.MessagesService;
+import utils.GroupMessage;
 
 public class View
 {
@@ -51,6 +53,15 @@ public class View
                         Set<ResultSet> notifications = msg.viewUserNotifications(id);
                         CommonUtil.displayTray(notifications);
                     }
+
+                    case 11 -> {
+                        Scanner scanner = new Scanner(System.in);
+                        System.out.println("Enter user id");
+                        int id = scanner.nextInt();
+                        MessagesService msg1 = new MessagesService();
+                        List<GroupMessage> notify = msg1.viewUserNotis(id);
+                    }
+
                     case 55 -> {
                         System.out.println();
                         Component.showErrorMessage("System Closing");

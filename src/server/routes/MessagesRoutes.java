@@ -45,9 +45,10 @@ public class MessagesRoutes {
         else if(request.equals("messages/delete")){
             new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
         }
-        else if(request.equals("messages/viewNotifications")){
-            new MessageRequestHandler().HandleViewNotifications(data,writer,objectMapper);
+        else if(request.equals("messages/notifications")){
+            new MessageRequestHandler().HandleGroupNotis(data,writer,objectMapper);
         }
+
 
     }
 }
