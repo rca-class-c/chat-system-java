@@ -1,5 +1,6 @@
 package server.repositories;
 
+import client.views.components.Component;
 import server.config.PostegresConfig;
 import server.models.Group;
 
@@ -120,9 +121,9 @@ public class GroupRepository  {
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,group.getName());
         statement.setString(2,group.getDescription());
-        statement.setInt(3,group.getCreator());
+        statement.setInt(3,group.getId());
 
-        boolean rowUpdated= statement.executeUpdate()>0;
+        boolean rowUpdated = statement.executeUpdate()>0;
         statement.close();
         connection.close();
 
@@ -149,21 +150,16 @@ public class GroupRepository  {
 
             String query = String.format("SELECT * FROM groups where group_name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);
             ResultSet rs = statement.executeQuery(query);
-            System.out.println("Reading users ....");
             List<Group> groups=new ArrayList<Group>();
             while(rs.next()){
                 groups.add(new Group(rs.getInt("group_id"),rs.getString("group_name"),rs.getString("description"),
                         rs.getInt("group_creator")));
             }
-            System.out.println(groups.size());
+
             return groups;
         }
         catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-
-            System.exit(0);
-
+            Component.showErrorMessage(e.getMessage());
         }
         return null;
     }

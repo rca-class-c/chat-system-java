@@ -1,7 +1,10 @@
 package server.repositories;
 
+import client.interfaces.AddMemberRequestData;
 import server.config.PostegresConfig;
 import server.models.GroupMember;
+import server.models.User;
+import server.services.UserService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,21 +40,26 @@ public class GroupMemberRepository {
         return null;
     }
 
-    public int[] createMembers(List<GroupMember> groupMembers) throws SQLException {
+    public int[] createMembers(AddMemberRequestData groupMembers) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
         Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement= connection.prepareStatement(sql);
 
-        for (Iterator<GroupMember> iterator = groupMembers.iterator(); iterator.hasNext();){
-            GroupMember groupMember= iterator.next();
-            statement.setInt(1,groupMember.getGroup_id());
-            statement.setInt(2,groupMember.getGroup_id());
+//        for (Iterator<GroupMember> iterator = groupMembers.iterator(); iterator.hasNext();){
+//            GroupMember groupMember= iterator.next();
+//            statement.setInt(1,groupMember.getGroup_id());
+//            statement.setInt(2,groupMember.getGroup_id());
+//            statement.addBatch();
+//        }
+        for(int user_id: groupMembers.getUsers()){
+            statement.setInt(1,groupMembers.getGroup_id());
+            statement.setInt(2,user_id);
             statement.addBatch();
         }
 
         int[] updatedCounts = statement.executeBatch();
-        System.out.println(Arrays.toString(updatedCounts));
+
 
 
         statement.close();
@@ -65,8 +73,8 @@ public class GroupMemberRepository {
 
 
 
-    public List<GroupMember> getAllMembers(int id) throws SQLException {
-        List<GroupMember> memberList= new ArrayList<>();
+    public List<User> getAllMembers(int id) throws SQLException {
+        List<User> memberList= new ArrayList<>();
         String sql= "select user_id from user_group where group_id=?";
         Connection connection= PostegresConfig.getConnection();
 
@@ -78,8 +86,11 @@ public class GroupMemberRepository {
         while(resultSet.next()){
             int user_id = resultSet.getInt("user_id");
 
-            GroupMember group_member= new GroupMember(id,user_id);
-            memberList.add(group_member);
+            //GroupMember group_member= new GroupMember(id,user_id);
+            User user  =    new UserService().getUserById(user_id);
+            if(user != null){
+                memberList.add(user);
+            }
         }
 
         resultSet.close();
@@ -89,7 +100,7 @@ public class GroupMemberRepository {
     }
 
     public boolean deleteMember(GroupMember groupMember) throws SQLException {
-        String sql= "delete from user_group where group_id=? && user_id=?";
+        String sql= "delete from user_group where group_id= ? and user_id=?";
 
         Connection connection = PostegresConfig.getConnection();
 
@@ -104,18 +115,17 @@ public class GroupMemberRepository {
         return rowDeleted;
     }
 
-    public int[] createMembers(int group_id,List<Integer> groupMembers) throws SQLException {
+    public int[] createMembers(int group_id,Integer[] groupMembers) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
         Connection connection= PostegresConfig.getConnection();
         PreparedStatement statement= connection.prepareStatement(sql);
-        for (Iterator<Integer> iterator = groupMembers.iterator(); iterator.hasNext();){
-            Integer groupMember= iterator.next();
+        for(Integer user : groupMembers){
             statement.setInt(1,group_id);
-            statement.setInt(2,groupMember);
+            statement.setInt(2,user);
             statement.addBatch();
         }
         int[] updatedCounts = statement.executeBatch();
-        System.out.println(Arrays.toString(updatedCounts));
+
         statement.close();
         connection.close();
         if(updatedCounts != null ){

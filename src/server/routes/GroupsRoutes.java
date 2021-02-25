@@ -6,6 +6,7 @@ import server.ChatServer;
 import server.requestHandlers.GroupMemberRequestHandler;
 import server.requestHandlers.GroupRequestHandler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
@@ -30,7 +31,7 @@ public class GroupsRoutes {
         this.request = request;
     }
 
-    public void Main() throws JsonProcessingException, SQLException {
+    public void Main() throws IOException, SQLException {
         if(request.equals("groups/")){
             new GroupRequestHandler().HandleGetAllGroups(data,writer,objectMapper);
         }
@@ -44,7 +45,7 @@ public class GroupsRoutes {
             new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper);
         }
         else if(request.equals("groups/remove")){
-            new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper);
+            new GroupRequestHandler().HandleDeleteGroup(data,writer,objectMapper);
         }
         else if(request.equals("groups/update")){
             new GroupRequestHandler().HandleGroupUpdate(data,writer,objectMapper);
@@ -54,6 +55,12 @@ public class GroupsRoutes {
         }
         else if(request.equals("groups/members")){
             new GroupMemberRequestHandler().handlerGetGroupMembers(data,writer,objectMapper);
+        }
+        else if (request.equals("groups/members/create")){
+            new GroupMemberRequestHandler().handleCreateGroupMembers(data,writer,objectMapper);
+        }
+        else if (request.equals("groups/members/delete")){
+            new GroupMemberRequestHandler().handleDeleteGroupMember(data,writer,objectMapper);
         }
 
     }

@@ -29,7 +29,7 @@ public class GroupMemberDecoder {
         int group_id =  dataDecrypt.get("group_id").asInt();
         String values = dataDecrypt.get("users").asText();
         Integer [] userList = objectMapper.readValue(values, Integer[].class);
-        return new AddMemberRequestData(group_id, Arrays.asList(userList));
+        return new AddMemberRequestData(group_id, userList);
 
     }
 
