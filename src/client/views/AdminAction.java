@@ -42,9 +42,9 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Users");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
             try {
                 Component.chooseOptionInputView("Choose an option: ");
@@ -164,9 +164,9 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("3. Yearly");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
                 try {
@@ -222,21 +222,21 @@ public class AdminAction {
     private void usersOperation() {
         int choice = 0;
         while(choice != 55 && choice != 44){
-        Component.pageTitleView("USER OPERATIONS");
-        CommonUtil.addTabs(10, true);
+        Component.pageTitleView("USER");
+        CommonUtil.addTabs(11, true);
         System.out.println("1. Invite user");
-        CommonUtil.addTabs(10, false);
-        System.out.println("2. Reactivate user");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. Activate user");
+        CommonUtil.addTabs(11, false);
         System.out.println("3. Deactivate user");
-        CommonUtil.addTabs(10, false);
-        System.out.println("4. VIEW all user");
-        CommonUtil.addTabs(10, false);
-        System.out.println("5. View user logs");
-        CommonUtil.addTabs(10, false);
-        System.out.println("44. Go back");
-        CommonUtil.addTabs(10, false);
-        System.out.println("55. Quit");
+        CommonUtil.addTabs(11, false);
+        System.out.println("4. View all users");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. View User logs");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
                 try {
@@ -292,24 +292,25 @@ public class AdminAction {
             }
         }
     public void InviteUsers() throws IOException, JsonProcessingException {
-        Component.pageTitleView("SEND INVITATION TO OTHERS TO JOIN CLASS_C CHAT");
+        Component.pageTitleView("SEND INVITATION TO JOIN CLASS_C CHAT");
         Scanner scanner = new Scanner(System.in);
         List<String> emails = new ArrayList<String>();
         String email = "";
-        CommonUtil.addTabs(10, true);
-        System.out.println("Type quit to stop writing emails");
-        while(!email.equals("quit")){
-            CommonUtil.resetColor();
-            CommonUtil.useColor("\u001b[0;33m");
-            CommonUtil.addTabs(10, false);
-            System.out.print(" User email: ");
-            CommonUtil.resetColor();
+        CommonUtil.addTabs(12, false);
+        CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+        System.out.println("* Type [-1] to stop writing emails *");
+        CommonUtil.resetColor();
+        System.out.println();
+        while(!email.equals("-1")){
+            CommonUtil.addTabs(11, false);
+            System.out.print("Email: ");
             email = scanner.nextLine();
-            CommonUtil.useColor("\u001b[0m");
-            if(!email.equals("quit")){
+            if(!email.equals("-1")){
                 if(!new ValidEmail(email).checkEmail()){
-                    CommonUtil.addTabs(10, true);
-                    CommonUtil.useColor("\u001b[1;31m");
+                    CommonUtil.resetColor();
+                    CommonUtil.addTabs(11, true);
+                    CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+                    CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
                     System.out.println("This email is not valid; it is not saved");
                     CommonUtil.resetColor();
                 }
@@ -323,16 +324,28 @@ public class AdminAction {
         Request request  = new Request(emails,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
+        CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
         System.out.println("Sending emails ...");
+        CommonUtil.resetColor();
+
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(10, false);
-            System.out.println("Email sent successfully");
+            CommonUtil.addTabs(11, false);
+            CommonUtil.addTabs(11, true);
+            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print("Emails sent successfully");
+            CommonUtil.resetColor();
+
+            System.out.println();
         }
         else{
-            CommonUtil.addTabs(10, false);
-            System.out.println("Email failed to send.");
+            CommonUtil.addTabs(11, true);
+            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+            System.out.print("Emails failed to send.");
+            CommonUtil.resetColor();
         }
     }
     }
