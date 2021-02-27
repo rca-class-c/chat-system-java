@@ -121,9 +121,9 @@ public class GroupRepository  {
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,group.getName());
         statement.setString(2,group.getDescription());
-        statement.setInt(3,group.getCreator());
+        statement.setInt(3,group.getId());
 
-        boolean rowUpdated= statement.executeUpdate()>0;
+        boolean rowUpdated = statement.executeUpdate()>0;
         statement.close();
         connection.close();
 

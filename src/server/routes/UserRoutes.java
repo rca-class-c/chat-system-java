@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
- *Author: Didier Munezero
+ *@author: Didier Munezero
  *Description: This is a class that now where to direct a given request of users to a responsive direct handler.
  */
 public class UserRoutes {
