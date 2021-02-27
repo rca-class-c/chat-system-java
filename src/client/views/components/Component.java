@@ -121,9 +121,10 @@ public class Component {
 
 
     public static void goBackUIView() {
-        CommonUtil.addTabs(5, true);
-        CommonUtil.useColor(ConsoleColor.);
+        CommonUtil.addTabs(3, true);
+        CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
         System.out.println("<- Going back");
+        CommonUtil.resetColor();
     }
 
 }

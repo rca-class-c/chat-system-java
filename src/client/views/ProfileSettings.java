@@ -47,10 +47,6 @@ public class ProfileSettings {
             System.out.println("1. View your profile");
             CommonUtil.addTabs(11, false);
             System.out.println("2. Edit your profile");
-            CommonUtil.addTabs(11, false);
-            System.out.println("3. Back");
-            CommonUtil.addTabs(11, false);
-            System.out.println("4. Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -61,7 +57,7 @@ public class ProfileSettings {
             }
 
             else if(choice == 44){
-
+                Component.goBackUIView();
                 break;
             }
             else if(choice == 55){
@@ -81,7 +77,7 @@ public class ProfileSettings {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-            Component.pageTitleView("PROFILE DETAILS");
+            Component.pageTitleView("VIEW YOUR PROFILE");
             System.out.println();
 
             CommonUtil.addTabs(11, false);
@@ -120,10 +116,19 @@ public class ProfileSettings {
 
         if(profileResponse.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
-            Component.pageTitleView("MY PROFILE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("If you don't want to change any of your data, type [-1] ");
-            CommonUtil.addTabs(10, false);
+            Component.pageTitleView("Edit your PROFILE");
+            CommonUtil.addTabs(12, false);
+            CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+            System.out.println("* Type [-1] to skip field update *");
+            CommonUtil.addTabs(11, false);
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("First name ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getFname() + "]: ");
+            System.out.println();
             System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
             String firstName = scanner.nextLine();
             if(!firstName.equals("-1") && !firstName.equals(profile.getFname())){
