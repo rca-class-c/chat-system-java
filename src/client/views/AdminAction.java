@@ -37,18 +37,18 @@ public class AdminAction {
     public void starts() {
         int choice = 0;
         while(choice != 55 && choice != 44) {
-        Component.pageTitleView("ADMIN ACTIVITIES");
-        CommonUtil.addTabs(10, true);
+        Component.pageTitleView("ADMIN ACTIONS");
+        CommonUtil.addTabs(12, true);
         System.out.println("1. Statistics");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.println("2. Users");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.println("44. Go back");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(12, false);
         System.out.println("55. Quit");
 
             try {
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(12, false);
                 CommonUtil.useColor("\u001b[43m");
                 System.out.print("  ");
                 CommonUtil.resetColor();
