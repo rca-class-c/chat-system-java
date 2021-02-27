@@ -1,4 +1,8 @@
 package server.config;
+import client.views.components.Component;
+import utils.CommonUtil;
+import utils.ConsoleColor;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,7 +38,7 @@ public class PostegresConfig {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         try (FileInputStream f = new FileInputStream("src/server/config/db.properties")) {
 
@@ -50,7 +54,7 @@ public class PostegresConfig {
             // create a connection to the database
             conn = DriverManager.getConnection(url, user, password);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Component.showErrorMessage(e.getMessage());
         }
         return conn;
     }

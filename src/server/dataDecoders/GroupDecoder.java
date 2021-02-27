@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Group;
 
+/**
+ *Author: Didier Munezero
+ *Description: This class is a decoder of all data sent to group service
+ */
 public class GroupDecoder {
 
     String data;

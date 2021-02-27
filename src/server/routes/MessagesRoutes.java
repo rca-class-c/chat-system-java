@@ -8,6 +8,11 @@ import server.requestHandlers.MessageRequestHandler;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+
+/**
+ *Author: Didier Munezero
+ *Description: This is a class that now where to direct a given request of messages to a responsive direct handler.
+ */
 public class MessagesRoutes {
     private String data;
     private PrintWriter writer;
@@ -29,12 +34,12 @@ public class MessagesRoutes {
         this.request = request;
     }
 
-    public void Main() throws JsonProcessingException, SQLException {
+    public void Main() throws Exception {
         if(request.equals("messages/direct")){
             new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
         }
         if(request.equals("messages/group")){
-            new MessageRequestHandler().HandleMessageBetweenTwo(data,writer,objectMapper);
+            new MessageRequestHandler().HandleGroupMessages(data,writer,objectMapper);
         }
         else if(request.equals("messages/send/direct")){
             new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper);
@@ -45,6 +50,18 @@ public class MessagesRoutes {
         else if(request.equals("messages/delete")){
             new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
         }
+        else if(request.equals("messages/notifications")){
+            new MessageRequestHandler().HandleGroupNotis(data,writer,objectMapper);
+
+        }
+        else if(request.equals("messages/notifi")){
+
+            new MessageRequestHandler().HandleDirectNotis(data,writer,objectMapper);
+        }
+
+
+
+
 
     }
 }

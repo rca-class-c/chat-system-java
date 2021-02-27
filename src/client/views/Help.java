@@ -50,11 +50,11 @@ public class Help {
             System.out.println("FEEDBACK");
             CommonUtil.resetColor();
             CommonUtil.addTabs(10, false);
-            System.out.println("eedback email is an email which primarily contains");
+            System.out.println("feedback email is an email which primarily contains");
             CommonUtil.addTabs(10, false);
             System.out.println("ently requested, especially when one wants to know");
             CommonUtil.addTabs(10, false);
-            System.out.println(" and strong points of a business or an individua");
+            System.out.println(" and strong points of a business or an individual");
 
 
             CommonUtil.addTabs(10, true);
@@ -62,11 +62,11 @@ public class Help {
             System.out.println("GROUPS");
             CommonUtil.resetColor();
             CommonUtil.addTabs(10, false);
-            System.out.println("eedback email is an email which primarily contains");
+            System.out.println("feedback email is an email which primarily contains");
             CommonUtil.addTabs(10, false);
             System.out.println("ently requested, especially when one wants to know");
             CommonUtil.addTabs(10, false);
-            System.out.println(" and strong points of a business or an individua");
+            System.out.println(" and strong points of a business or an individual");
 
             CommonUtil.addTabs(10, true);
             CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);

@@ -8,6 +8,10 @@ import server.requestHandlers.MessageRequestHandler;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ *Author: Didier Munezero
+ *Description: This is a class that now where to direct a given request of replies to a responsive direct handler.
+ */
 public class RepliesRoutes {
     private String data;
     private PrintWriter writer;

@@ -4,6 +4,8 @@ import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.*;
+import server.models.enums.FileSizeTypeEnum;
+import server.services.UserService;
 import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -12,11 +14,15 @@ import utils.FileUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
+/**
+ * @author Divin Irakiza
+ */
 public class SendMessageView {
     public int userId;
     public PrintWriter writer;
@@ -168,17 +174,48 @@ public class SendMessageView {
         } while (action == -1);
     }
 
-
-
-    public  void TypeMessageView(int reciever) throws IOException {
+    public  void TypeGroupMessageView(int group) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
 
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
-        String key = "messages/send/direct";
-        Messages newMessage = new Messages(0,message,userId,reciever,0,0);
+        String key = "messages/send/group";
+        Messages newMessage = new Messages(0,message,userId,0,group,0);
+        Request request = new Request(newMessage,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+
+            CommonUtil.addTabs(10, true);
+            System.out.println("Message sent");
+
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to send");
+        }
+        //WriteMessageView(new User());
+    }
+
+    public  void TypeMessageView(String reciever_type,int reciever) throws IOException {
+        Component.pageTitleView("Type a message");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(reciever_type+" "+reciever);
+        Component.chooseOptionInputView("Your Message: ");
+        String message = scanner.nextLine();
+        String key = "direct";
+        Messages newMessage = null;
+        if(reciever_type.equals("direct")){
+            newMessage = new Messages(0,userId,reciever,0,message);
+            key = "messages/send/direct";
+        }
+        else if(reciever_type.equals("group")){
+            newMessage = new Messages(0,message,userId,reciever,0);
+            key = "messages/send/group";
+        }
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -261,10 +298,21 @@ public class SendMessageView {
         }
     }
 
+    public void DeleteReplieView() throws IOException, SQLException {
+        Component.pageTitleView("Delete a reply");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Component.chooseOptionInputView("Enter message id: ");
+        int messageId = scanner.nextInt();
+
+        WriteMessageView(new User());
+    }
 
 
 
-    public  void SearchUserView() throws IOException {
+
+    public  void SearchUserView() throws IOException, SQLException {
 
         Component.pageTitleView("Search a User");
 
@@ -306,7 +354,7 @@ public class SendMessageView {
         }
     }
 
-    public void UserIdView() throws IOException {
+    public void UserIdView() throws IOException, SQLException {
         Component.pageTitleView("Get User");
 
 
@@ -317,7 +365,7 @@ public class SendMessageView {
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("USER BY ID GETTING");
+
         if(response.isSuccess()){
             User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
             WriteMessageView(user);
@@ -370,7 +418,7 @@ public class SendMessageView {
 
             Component.chooseOptionInputView("Search (Group name or group description): ");
             String query = scanner.nextLine();
-            String  key= "group/search";
+            String  key= "groups/search";
             Request request = new Request(new SearchRequestData(query),key);
             String requestAsString = new ObjectMapper().writeValueAsString(request);
             writer.println(requestAsString);
@@ -380,10 +428,11 @@ public class SendMessageView {
             if(response.isSuccess()){
                 Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
                 CommonUtil.addTabs(10, true);
+                System.out.println("");
                 for (Group group : groups) {
                     ids.add(group.getId());
-                    System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                     CommonUtil.addTabs(10, false);
+                    System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 }
                 int choice =  0;
                 do{
@@ -427,7 +476,7 @@ public class SendMessageView {
         }
 
     }
-    public void allActiveUsers() throws IOException {
+    public void allActiveUsers() throws IOException, SQLException {
         String  key= "users/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -469,32 +518,46 @@ public class SendMessageView {
     }
 
 
-    public  void WriteMessageView(User user) throws IOException {
+    public  void WriteMessageView(User user) throws IOException, SQLException {
         String key = "messages/direct";
         Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("Your recent chat");
+        Component.pageTitleView("Chat Room");
         if(response.isSuccess()){
+            System.out.println(response.toString());
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             //CommonUtil.addTabs(10, true);
             System.out.println("");
             for (Messages message : messages) {
+                User sender = getUser(message.getSender());
+
                 CommonUtil.addTabs(10, false);
-                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                System.out.print("Sender: "+message.getSender());
-                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-                System.out.println("    sent at: "+message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
+                System.out.print(sender.getFname() + " " + sender.getLname());
+                CommonUtil.addTabs(10, false);
+                System.out.print(message.getSent_at());
                 CommonUtil.resetColor();
+
+                System.out.println();
                 CommonUtil.addTabs(10, false);
-                System.out.println("Body: " +message.getContent());
+                CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
+                System.out.print(ConsoleColor.BoldColor.YELLOW_BOLD + "[" + sender.getUserID() + "]: " + ConsoleColor.RESET + message.getContent());
+                CommonUtil.resetColor();
+
+                System.out.println("\n");
+//                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
+//                System.out.println("    sent at: "  + message.getSent_at());
+//                CommonUtil.resetColor();
+//                CommonUtil.addTabs(10, false);
+//                System.out.println("Body: " +message.getContent());
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
+        Component.pageTitleView("Message ["+ user.getUsername()+" "+user.getLname() + "]");
 
 
         CommonUtil.addTabs(11, true);
@@ -514,7 +577,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(user.getUserID());
+                        TypeMessageView("direct",user.getUserID());
                     }
                     case 2 -> {
                         SendFileView();
@@ -529,7 +592,7 @@ public class SendMessageView {
                     default -> {
                         action = -1;
 
-                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+                        Component.showErrorMessage("Enter a valid choice (1, 2, 3, 4): ");
 
                     }
                 }
@@ -542,7 +605,7 @@ public class SendMessageView {
 
     public  void WriteMessageViewInGroup(Group group) throws IOException {
         String key = "messages/group";
-        Request request = new Request(new ProfileRequestData(userId), key);
+        Request request = new Request(new ProfileRequestData(group.getId()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
@@ -551,8 +614,14 @@ public class SendMessageView {
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages message : messages) {
-                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print(message.getSender());
+                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+                System.out.println("\t at "+message.getSent_at());
+                CommonUtil.resetColor();
                 CommonUtil.addTabs(10, false);
+                System.out.println("Message: "+message.getContent());
+                CommonUtil.addTabs(10, true);
             }
         }else {
             CommonUtil.addTabs(10, true);
@@ -569,6 +638,8 @@ public class SendMessageView {
         System.out.println("3. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("4. Replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Notifications");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -578,7 +649,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(group.getId());
+                        TypeMessageView("group",group.getId());
                     }
                     case 2 -> {
                         SendFileView();
@@ -609,7 +680,7 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "get_my_notifications";
+        String  key= "messages/notifications";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -618,7 +689,7 @@ public class SendMessageView {
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages messages : messageList) {
-                System.out.println(messages.getSender()+". "+messages.getContent()+" "+messages.getSent_at());
+                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
                 CommonUtil.addTabs(10, false);
             }
         }else {
@@ -629,6 +700,34 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = Component.getChooseOptionChoice();
     }
+
+
+    public void ViewNoti() throws IOException {
+        Component.pageTitleView("My notifications");
+        String  key= "messages/notifi";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages messages : messageList) {
+                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to get notifications, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = Component.getChooseOptionChoice();
+    }
+
+
+
+
     public void SendReplyView() {
         Component.pageTitleView("Send reply");
 
@@ -646,7 +745,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(4);
+                        TypeMessageView("direct",4);
                     }
                     case 2 -> {
                         SendFileView();
@@ -720,7 +819,21 @@ public class SendMessageView {
                 Component.showErrorMessage(e.getMessage());
             }
         } while (action == -1);
-
     }
 
+    public User getUser(int id) throws IOException, SQLException {
+        String key= "users/profile";
+        Request request = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(response.isSuccess()){
+            User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
+           return user;
+        }else {
+            return null;
+
+        }
+    }
 }

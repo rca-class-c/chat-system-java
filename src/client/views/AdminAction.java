@@ -7,6 +7,7 @@ import client.views.components.Component;
 import client.views.components.TableView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.services.ReportsServices;
 import utils.CommonUtil;
 
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.util.Scanner;
 import utils.CommonUtil;
 import client.views.components.TableView;
 import utils.Mailing;
+import utils.ValidEmail;
 
 public class AdminAction {
     PrintWriter writer;
@@ -63,8 +65,7 @@ public class AdminAction {
                         this.usersOperation();
                         break;
                     case 3:
-                        Mailing mailing = new Mailing("tuyishimejeand@gmail.com","Damour@100%","tuyishimejeand@gmail.com","goood","content");
-                        mailing.send();
+                       AdminInput.InviteUser();
                         System.out.println("back to profile setting");
                         break;
                     case 44:
@@ -109,6 +110,8 @@ public class AdminAction {
         CommonUtil.addTabs(10, false);
         System.out.println("2. user reports");
         CommonUtil.addTabs(10, false);
+        System.out.println("2. group reports");
+        CommonUtil.addTabs(10, false);
         System.out.println("44. Go back");
         CommonUtil.addTabs(10, false);
         System.out.println("55. Quit");
@@ -131,7 +134,11 @@ public class AdminAction {
                             CommonUtil.clearScreen();
                             this.choosePeriod("user report");
                         }
-                        case 3 -> this.starts();
+                        case 3 -> {
+                            System.out.flush();
+                            CommonUtil.clearScreen();
+                            this.choosePeriod("group report");
+                        }
                         case 44->{
                             CommonUtil.addTabs(10, true);
                             System.out.println("Going back");
@@ -190,27 +197,37 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
+                    choice = insertAdminChoice();
                     switch(choice) {
                         case 1:
                             if (range.contains("messaging")) {
-                                System.out.println("choicePeriod = " + choice);
-                            } else {
-                                System.out.println("daily user report");
+                                List<List> allStats = new ReportsServices().getMessageReport();
+                                printStatatics(allStats,"message:");
+
+                            } else if(range.contains("user report")) {
+                                List<List> allStats = new ReportsServices().getUserReport();
+                                printStatatics(allStats,"user:");
+                            }else{
+                                List<List> allStats = new ReportsServices().getGroupReport();
+                                printStatatics(allStats,"group:");
                             }
                             break;
                         case 2:
-                            if (range.contains("messaging")) {
-                                System.out.println("monthly messaging report");
-                            } else {
-                                System.out.println("monthly user report");
-                            }
+//                            if (range.contains("messaging")) {
+//                                List<List> allStats = new ReportsServices().getMessageReport();
+//                                printStatatics(allStats);
+//                            } else {
+//                                List<List> allStat = new ReportsServices().getUserReport();
+//                                printStatatics(allStat);
+//                            }
                             break;
                         case 3:
                             if (range.contains("messaging")) {
-                                System.out.println("yearly messaging report");
+                                List<List> allStats = new ReportsServices().getGroupReport();
+                                printStatatics(allStats,"message:");
                             } else {
-                                System.out.println("yearly user report");
+                                List<List> allStats = new ReportsServices().getGroupReport();
+                                printStatatics(allStats,"group");
                             }
                             break;
                         case 4:
@@ -272,47 +289,30 @@ public class AdminAction {
                     CommonUtil.useColor("\u001b[0;33m");
                     System.out.print(" Choose an option: ");
                     CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
-                    switch(choice) {
-                        case 1:
-                            InviteUsers();
-                            break;
-                        case 2:
-                            System.out.println("choice 2");
-                            break;
-                        case 3:
-                            System.out.println("choice 3");
-                            break;
-                        case 4:
-                            TableView st = new TableView();
-                            st.setShowVerticalLines(true);
-                            st.setHeaders("one", "two", "three", "four");
-                            st.addRow("super", "broccoli", "flexible", "there we are");
-                            st.addRow("assumption", "announcement", "reflection", "");
-                            st.addRow("logic", "pleasant", "wild", "weel doen all ");
-                            st.print();
-                            break;
-                        case 5:
-                            System.out.println("choice 5");
-                            break;
-                        case 6:
-                            this.starts();
-                            break;
-                        case 44:
+                    choice = insertAdminChoice();
+                    switch (choice) {
+                        case 1 -> InviteUsers();
+                        case 2 -> System.out.println("choice 2");
+                        case 3 -> System.out.println("choice 3");
+                        case 4 -> new UserView(userId, writer, reader).allActiveUsers();
+                        case 5 -> System.out.println("choice 5");
+                        case 6 -> this.starts();
+                        case 44 -> {
                             CommonUtil.addTabs(10, true);
                             System.out.println("Going back");
-                            break;
-                        case 55:
+                        }
+                        case 55 -> {
                             CommonUtil.addTabs(10, true);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
-                            break;
-                        default:
+                        }
+                        default -> {
                             CommonUtil.addTabs(10, false);
                             CommonUtil.useColor("\u001b[1;31m");
                             System.out.print("Enter a valid choice (1,5): ");
                             CommonUtil.resetColor();
+                        }
                     }
                 } catch (Exception var3) {
                     CommonUtil.addTabs(10, false);
@@ -338,7 +338,16 @@ public class AdminAction {
             email = scanner.nextLine();
             CommonUtil.useColor("\u001b[0m");
             if(!email.equals("quit")){
-                emails.add(email);
+                if(!new ValidEmail(email).checkEmail()){
+                    CommonUtil.addTabs(10, true);
+                    CommonUtil.useColor("\u001b[1;31m");
+                    System.out.println("This email is not valid; it is not saved");
+                    CommonUtil.resetColor();
+                }
+                else{
+                    emails.add(email);
+                }
+
             }
         }
         String key = "users/invite";
@@ -355,6 +364,19 @@ public class AdminAction {
         else{
             CommonUtil.addTabs(10, false);
             System.out.println("Email failed to send.");
+        }
+    }
+
+    /**
+     * method to print out the formatted statistics
+     * @param all
+     */
+    private void printStatatics(List<List> all,String trimStr){
+        for (int i = 0; i < all.get(0).size(); i++) {
+            String out = String.format("%d %s %10s",i+1,all.get(0).get(i).toString().replace(trimStr,""),all.get(1).get(i));
+            CommonUtil.addTabs(10, false);
+            System.out.println(out);
+
         }
     }
     }

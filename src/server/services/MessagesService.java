@@ -17,7 +17,7 @@ import java.util.Set;
  * @author: Bella Mellissa  Ineza
  */
 
-public class MessagesService {
+public class  MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
 
     public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
@@ -26,8 +26,8 @@ public class MessagesService {
     public List<DirectMessage> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }
-    public List<GroupMessage> viewGroupMessages(ChatBetweenTwo members) throws SQLException{
-        return messagesRepository.getGroupMessages(members.getFirstUser(), members.getLastUser());
+    public List<GroupMessage> viewGroupMessages(int groupId) throws SQLException{
+        return messagesRepository.getGroupMessages(groupId);
     }
     public Messages editMessage(Messages messages) throws Exception {
         return messagesRepository.updateMessage(messages);
@@ -35,10 +35,17 @@ public class MessagesService {
     public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
+    public List<GroupMessage> viewUserNotis(int user_id) throws SQLException {
+        return  messagesRepository.getNotis(user_id);
+    }
+    public List<DirectMessage> viewDirUserNotis(int user_id) throws SQLException {
+        return  messagesRepository.getDirNotis(user_id);
+    }
+
     public String viewGroupName(int id)throws SQLException{
         return messagesRepository.getGroupName(id);
     }
-    public Messages sendInGroup(Messages messages) throws SQLException{
+    public boolean sendInGroup(GroupMessage messages) throws SQLException{
         return messagesRepository.sendGroupMessage(messages);
     }
 
@@ -52,8 +59,17 @@ public class MessagesService {
     public Messages ReplyDirectly(Messages messages) throws SQLException{
         return messagesRepository.ReplyGroupMessage(messages);
     }
+    //HEAD
+    public boolean DeleteReply(int id) throws SQLException{
+        return messagesRepository.DeleteMessages(id,3);
+    }
 
-    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException {
+    public boolean DeleteMessage(int id) throws SQLException {
+        return messagesRepository.DeleteMessages(id,5);
+    }
+    public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException{
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
+
+
 }
