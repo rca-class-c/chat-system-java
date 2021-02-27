@@ -477,20 +477,17 @@ public class ChannelSettings {
 
             ObjectMapper objectMapper = new ObjectMapper();
             String updateKey = "groups/update";
-            System.out.println(profile.getId());
             Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new GroupResponseDataDecoder().decodedResponse(reader.readLine());
             if(updateResponse.isSuccess()){
                 CommonUtil.addTabs(10, true);
-                channelProfile(new Group(groupId,groupName,groupDescription,userId));
                 CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
                 CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
                 System.out.println(" Your account was updated successfully ");
                 CommonUtil.resetColor();
-
-
+                channelProfile(new Group(groupId,groupName,groupDescription,userId));
             }
             else{
                 CommonUtil.addTabs(10, true);

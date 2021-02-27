@@ -36,7 +36,7 @@ public class GroupMemberRequestHandler {
     }
 
     public void handlerGetGroupMembers(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        List<GroupMember> groupMembers=new GroupMemberService().listGroupMembers(new GroupMemberDecoder(data).getGroupMembersDecoder());
+        List<User> groupMembers=new GroupMemberService().listGroupMembers(new GroupMemberDecoder(data).getGroupMembersDecoder());
         if (groupMembers == null){
             System.out.println("query failed recheck your db");
             Response response= new Response(null,false);
