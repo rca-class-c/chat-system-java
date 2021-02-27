@@ -9,6 +9,7 @@ import server.models.Messages;
 import server.models.Response;
 import server.models.User;
 import server.services.MessagesService;
+import server.services.UserService;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
@@ -17,7 +18,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
-
+/**
+ *Author: Didier Munezero
+ *Description: This class is a handler that handles and directs requests to a given service methods for messagings
+ */
 public class MessageRequestHandler {
 
     public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
@@ -137,7 +141,71 @@ public class MessageRequestHandler {
         } else {
             Response response = new Response(messages, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Notifications List");
             writer.println(ResponseAsString);
         }
     }
-}
+
+
+//
+//    public void HandleNotis(String data, PrintWriter writer, ObjectMapper objectMapper) throws Exception {
+//        List<Messages> messages = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
+//        //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+//        if (messages == null) {
+//            System.out.println("Query failed recheck your db");
+//            Response response = new Response(null, false);
+//            String ResponseAsString = objectMapper.writeValueAsString(response);
+//            writer.println(ResponseAsString);
+//        } else {
+//            Response response = new Response(users, true);
+//            String ResponseAsString = objectMapper.writeValueAsString(response);
+//            System.out.println(ResponseAsString);
+//            System.out.println("Users list is provided");
+//            writer.println(ResponseAsString);
+//        }
+//    }
+//
+
+    public void HandleGroupNotis(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        List<GroupMessage> messages = new MessagesService().viewUserNotis(new UserDecoder(data).GetProfileDecode());
+        //User returned = nHandleGroupNotisew UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+        if(messages == null){
+            System.out.println("Query failed recheck your db");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(messages,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Group Notifications list: ");
+            writer.println(ResponseAsString);
+        }
+    }
+
+
+    public void HandleDirectNotis(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        List<DirectMessage> messages = new MessagesService().viewDirUserNotis(new UserDecoder(data).GetProfileDecode());
+        //User returned = nHandleGroupNotisew UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+        if(messages == null){
+            System.out.println("Query failed recheck your db");
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(messages,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            System.out.println(ResponseAsString);
+            System.out.println("Direct Notifications list: ");
+            writer.println(ResponseAsString);
+        }
+    }
+
+
+    }
+
+
+

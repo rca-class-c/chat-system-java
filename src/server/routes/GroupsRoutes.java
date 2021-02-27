@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ *Author: Didier Munezero
+ *Description: This is a class that now where to direct a given request of groups to a responsive direct handler.
+ */
 public class GroupsRoutes {
     private String data;
     private PrintWriter writer;

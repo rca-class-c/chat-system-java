@@ -103,16 +103,13 @@ public class CommonUtil {
             while (row.next()) {
                 String sname = row.getString(1);
                 String cont = row.getString(3);
-//                int sender = row.getInt(4);
-//                int u_rec = row.getInt(5);
                 int g_rec = row.getInt(6);
-//                String s=String.valueOf(sender);
                 if (g_rec == 0)
-                    trayIcon.displayMessage(cont, "from " + sname, MessageType.NONE);
+                    trayIcon.displayMessage(cont, "from " + sname, MessageType.INFO);
                 else {
                     MessagesService msg = new MessagesService();
                     String gr_name = msg.viewGroupName(g_rec);
-                    trayIcon.displayMessage(cont, "In " + gr_name + ": " + sname, MessageType.INFO);
+                    trayIcon.displayMessage(cont, "In " + gr_name + ": " + sname, MessageType.NONE);
                 }
 //            }
 //

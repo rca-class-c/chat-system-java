@@ -194,15 +194,23 @@ public class SendMessageView {
         //WriteMessageView(new User());
     }
 
-    public  void TypeMessageView(int reciever) throws IOException {
+    public  void TypeMessageView(String reciever_type,int reciever) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println(reciever_type+" "+reciever);
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
-        String key = "messages/send/direct";
-        Messages newMessage = new Messages(0,message,userId,reciever,0,0);
+        String key = "direct";
+        Messages newMessage = null;
+        if(reciever_type.equals("direct")){
+            newMessage = new Messages(0,userId,reciever,0,message);
+            key = "messages/send/direct";
+        }
+        else if(reciever_type.equals("group")){
+            newMessage = new Messages(0,message,userId,reciever,0);
+            key = "messages/send/group";
+        }
         Request request = new Request(newMessage,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -550,7 +558,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(user.getUserID());
+                        TypeMessageView("direct",user.getUserID());
                     }
                     case 2 -> {
                         SendFileView();
@@ -587,8 +595,14 @@ public class SendMessageView {
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages message : messages) {
-                System.out.println(message.getContent()+"by "+message.getSender()+" ,date"+message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print(message.getSender());
+                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+                System.out.println("\t at "+message.getSent_at());
+                CommonUtil.resetColor();
                 CommonUtil.addTabs(10, false);
+                System.out.println("Message: "+message.getContent());
+                CommonUtil.addTabs(10, true);
             }
         }else {
             CommonUtil.addTabs(10, true);
@@ -605,6 +619,8 @@ public class SendMessageView {
         System.out.println("3. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("4. Replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Notifications");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -614,7 +630,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(group.getId());
+                        TypeMessageView("group",group.getId());
                     }
                     case 2 -> {
                         SendFileView();
@@ -645,7 +661,7 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "get_my_notifications";
+        String  key= "messages/notifications";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
@@ -654,7 +670,7 @@ public class SendMessageView {
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
             for (Messages messages : messageList) {
-                System.out.println(messages.getSender()+". "+messages.getContent()+" "+messages.getSent_at());
+                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
                 CommonUtil.addTabs(10, false);
             }
         }else {
@@ -665,6 +681,34 @@ public class SendMessageView {
         Component.chooseOptionInputView("Type any number to go to main page: ");
         int choice  = Component.getChooseOptionChoice();
     }
+
+
+    public void ViewNoti() throws IOException {
+        Component.pageTitleView("My notifications");
+        String  key= "messages/notifi";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Messages messages : messageList) {
+                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                CommonUtil.addTabs(10, false);
+            }
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to get notifications, sorry for the inconvenience");
+        }
+        System.out.println("");
+        Component.chooseOptionInputView("Type any number to go to main page: ");
+        int choice  = Component.getChooseOptionChoice();
+    }
+
+
+
+
     public void SendReplyView() {
         Component.pageTitleView("Send reply");
 
@@ -682,7 +726,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView(4);
+                        TypeMessageView("direct",4);
                     }
                     case 2 -> {
                         SendFileView();
