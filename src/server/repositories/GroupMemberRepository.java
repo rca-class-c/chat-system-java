@@ -1,5 +1,6 @@
 package server.repositories;
 
+import client.interfaces.AddMemberRequestData;
 import server.config.PostegresConfig;
 import server.models.GroupMember;
 import server.models.User;
@@ -39,16 +40,21 @@ public class GroupMemberRepository {
         return null;
     }
 
-    public int[] createMembers(List<GroupMember> groupMembers) throws SQLException {
+    public int[] createMembers(AddMemberRequestData groupMembers) throws SQLException {
         String sql ="insert into user_group (group_id, user_id) values(?,?)";
         Connection connection= PostegresConfig.getConnection();
 
         PreparedStatement statement= connection.prepareStatement(sql);
 
-        for (Iterator<GroupMember> iterator = groupMembers.iterator(); iterator.hasNext();){
-            GroupMember groupMember= iterator.next();
-            statement.setInt(1,groupMember.getGroup_id());
-            statement.setInt(2,groupMember.getGroup_id());
+//        for (Iterator<GroupMember> iterator = groupMembers.iterator(); iterator.hasNext();){
+//            GroupMember groupMember= iterator.next();
+//            statement.setInt(1,groupMember.getGroup_id());
+//            statement.setInt(2,groupMember.getGroup_id());
+//            statement.addBatch();
+//        }
+        for(int user_id: groupMembers.getUsers()){
+            statement.setInt(1,groupMembers.getGroup_id());
+            statement.setInt(2,user_id);
             statement.addBatch();
         }
 
@@ -94,7 +100,7 @@ public class GroupMemberRepository {
     }
 
     public boolean deleteMember(GroupMember groupMember) throws SQLException {
-        String sql= "delete from user_group where group_id=? && user_id=?";
+        String sql= "delete from user_group where group_id= ? and user_id=?";
 
         Connection connection = PostegresConfig.getConnection();
 
