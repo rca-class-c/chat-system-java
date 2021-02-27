@@ -12,14 +12,15 @@ import java.sql.SQLException;
  * @author: Pretty Diane
  */
 public class Authorization {
-    private int id_DeleteUser = 1;
-    private int id_createGroup = 2;
-    private int id_Invite=3;
-    private int id_DeleteGroup=4;
-    private int id_DeActivateUser=5;
-    private int id_viewStatistics=7;
-    private int id_RemoveFromGroup=8;
-    private int id_AddToGroup=9;
+    private int id_DeleteUser ;
+    private int id_createGroup ;
+    private int id_Invite;
+    private int id_DeleteGroup;
+    private int id_DeActivateUser;
+    private int id_viewStatistics;
+    private int id_RemoveFromGroup;
+    private int id_AddToGroup;
+    private int id_SendMessage;
 
 
 
@@ -29,19 +30,32 @@ public class Authorization {
 
     public void getIds() throws SQLException{
 
-        String sql = "select name from permissions ";
+        String sql = "select name ,permission_id from permissions ";
         Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            String store=resultSet.getString("name");
-          System.out.println(store);
+            String name=resultSet.getString("name");
+            int id= resultSet.getInt("permission_id");
+          System.out.println(name+" ID:"+id);
+            switch (name) {
+                case "DELETE_USER" -> id_DeleteUser = id;
+                case "CREATE_GROUP" -> id_createGroup = id;
+                case "INVITE_USER" -> id_Invite = id;
+                case "DELETE_GROUP" -> id_DeleteGroup = id;
+                case "DEACTIVATE_USER" -> id_DeActivateUser = id;
+                case "VIEW_STATISTICS" -> id_viewStatistics = id;
+                case "REMOVE_FROM_GROUP" -> id_RemoveFromGroup = id;
+                case "ADD_TO_GROUP" -> id_AddToGroup = id;
+                case "SEND_MESSAGE" -> id_SendMessage = id;
+            }
         }
 
-
+     System.out.println(id_SendMessage);
     }
 
-
+// checking if the user is allowed  to delete another user, if the function returns true then the person is allowed else
+    //user is unauthorized.
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
         String sql = "select permission_id from user_category_permissions where category_id=?";
@@ -193,9 +207,21 @@ public class Authorization {
         }
         return allowed;
     };
-    public static void main(String[] args) throws SQLException {
-        Authorization auth=new Authorization();
-        boolean b=  auth.canRemoveFromGroup(5);
-        System.out.println(b);
-    }
+    //used to check if a user can send a message;
+    public boolean canSendMessage(int cat_Id) throws SQLException{
+        boolean allowed = false;
+        String sql = "select permission_id from user_category_permissions where category_id=?";
+        Connection connection = PostegresConfig.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, cat_Id);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int permission_id = resultSet.getInt("permission_id");
+            if(permission_id==id_SendMessage){
+                allowed=true;
+            }
+        }
+        return allowed;
+    }  ;
+
 }
