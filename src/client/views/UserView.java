@@ -42,21 +42,21 @@ public class UserView {
         Component.pageTitleView("Dashboard");
         int choice = 0;
         do {
-            CommonUtil.addTabs(12, true);
+            CommonUtil.addTabs(11, true);
             System.out.println("1. Send a Message");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("2. Channel Settings");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("3. Notifications");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("4. Users List");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("5. Admin Actions");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("6. Profile Settings");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("44. LOGOUT");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("55. QUIT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
@@ -68,9 +68,9 @@ public class UserView {
             }
             else if(choice == 3){
 
-                CommonUtil.addTabs(12, true);
+                CommonUtil.addTabs(11, true);
                 System.out.println("1. Notifications from Direct Messages ");
-                CommonUtil.addTabs(12, false);
+                CommonUtil.addTabs(11, false);
                 System.out.println("2. Notifications from Group Messages");
                 Component.chooseOptionInputView("Choose an option: ");
                 int result  = scanner.nextInt();

@@ -26,6 +26,7 @@ public class AdminAction {
     PrintWriter writer;
     BufferedReader reader;
     int userId;
+    Scanner scanner = new Scanner(System.in);
     public AdminAction(PrintWriter writer, BufferedReader reader, int userId)
     {
         this.reader = reader;
@@ -48,14 +49,8 @@ public class AdminAction {
         System.out.println("55. Quit");
 
             try {
-                CommonUtil.addTabs(12, false);
-                CommonUtil.useColor("\u001b[43m");
-                System.out.print("  ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor("\u001b[0;33m");
-                System.out.print(" Choose an option: ");
-                CommonUtil.resetColor();
-                choice = this.insertAdminChoice();
+                Component.chooseOptionInputView("Choose an option: ");
+                choice  = scanner.nextInt();
                 switch(choice) {
                     case 1:
                         this.chooseStat();
@@ -103,24 +98,18 @@ public class AdminAction {
     private void chooseStat() {
         int choice = 0;
         while(choice != 55 && choice != 44){
-        Component.pageTitleView("VIEW STATISTICS OF THE APP");
-        CommonUtil.addTabs(10, true);
-        System.out.println("1. message reports");
-        CommonUtil.addTabs(10, false);
+        Component.pageTitleView("Statistics");
+        CommonUtil.addTabs(11, true);
+        System.out.println("1. Message Reports");
+        CommonUtil.addTabs(11, false);
         System.out.println("2. user reports");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("44. Go back");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("55. Quit");
                 try {
-                    CommonUtil.addTabs(10, false);
-                    CommonUtil.useColor("\u001b[43m");
-                    System.out.print("  ");
-                    CommonUtil.resetColor();
-                    CommonUtil.useColor("\u001b[0;33m");
-                    System.out.print(" Choose an option: ");
-                    CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
+                    Component.chooseOptionInputView("Choose an option: ");
+                    choice  = scanner.nextInt();
                     switch (choice) {
                         case 1 -> {
                             CommonUtil.clearScreen();
@@ -169,28 +158,22 @@ public class AdminAction {
     private void choosePeriod(String range) {
         int choice = 0;
         while(choice != 55 && choice != 44){
-        Component.pageTitleView("CHOOSE " + range.toUpperCase(Locale.ROOT) + " REPORT");
-        CommonUtil.addTabs(10, true);
+        Component.pageTitleView("CHOOSE " + range + " REPORT");
+        CommonUtil.addTabs(11, true);
         System.out.println("1. Daily");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Monthly");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("3. Yearly");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("44. Go back");
-        CommonUtil.addTabs(10, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("55. Quit");
 
 
                 try {
-                    CommonUtil.addTabs(10, false);
-                    CommonUtil.useColor("\u001b[43m");
-                    System.out.print("  ");
-                    CommonUtil.resetColor();
-                    CommonUtil.useColor("\u001b[0;33m");
-                    System.out.print(" Choose an option: ");
-                    CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
+                    Component.chooseOptionInputView("Choose an option: ");
+                    choice  = scanner.nextInt();
                     switch(choice) {
                         case 1:
                             if (range.contains("messaging")) {
@@ -221,22 +204,16 @@ public class AdminAction {
                             System.out.println("Going back");
                             break;
                         case 55:
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
+                            System.out.println();
+                            Component.showErrorMessage("System Closed");
                             System.exit(1);
                             break;
                         default:
-                            CommonUtil.addTabs(10, false);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.print("Enter a valid choice (1,5): ");
-                            CommonUtil.resetColor();
+                            Component.showErrorMessage("Enter a valid choice (1, 2, 3, 55): ");
                     }
-                } catch (Exception var3) {
-                    CommonUtil.addTabs(10, false);
-                    CommonUtil.useColor("\u001b[1;31m");
-                    System.out.println("is incorrect input");
-                    CommonUtil.resetColor();
+                } catch (Exception e) {
+                    System.out.println();
+                    Component.showErrorMessage(e.getMessage());
                 }
             if(choice == 44){
                 break;

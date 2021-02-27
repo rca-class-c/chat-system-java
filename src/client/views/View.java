@@ -20,14 +20,16 @@ public class View
     public static void WelcomeView(ChatClient client, PrintWriter writer, BufferedReader reader) {
         Component.pageTitleView("Welcome to chat system");
 
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t  1. LOGIN  \t");
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t  2. SIGNUP \t");
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t  3. HELP   \t");
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t 55. QUIT   \t");
+        System.out.println();
+
+        CommonUtil.addTabs(11, false);
+        System.out.println("1. Login");
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. Signup");
+        CommonUtil.addTabs(11, false);
+        System.out.println("3. Help");
+        CommonUtil.addTabs(11, false);
+        System.out.println("55. Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
 
@@ -64,7 +66,7 @@ public class View
 
                     case 55 -> {
                         System.out.println();
-                        Component.showErrorMessage("System Closing");
+                        Component.showErrorMessage("System Closed");
                         System.exit(1);
                     }
                     default -> {
