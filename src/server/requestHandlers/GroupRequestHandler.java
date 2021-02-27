@@ -13,6 +13,10 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ *Author: Didier Munezero
+ *Description: This class is a handler that handles and directs requests to a given service methods for groups everything
+ */
 public class GroupRequestHandler {
 
     public  void HandlerSearchGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
