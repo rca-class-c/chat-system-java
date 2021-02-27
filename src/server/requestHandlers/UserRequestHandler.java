@@ -13,12 +13,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-/**
- * User related request handler
- * @author: Didier Munezero
- */
 public class UserRequestHandler {
-
+    /**
+     *Author: Didier Munezero
+     *Description: This class is a handler that handles and directs requests to a given service methods for logging in and users
+     */
     public void HandleLogin(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
         User returned = new UserService().loginUser(new UserDecoder(data).LoginDecode());
         if(returned == null){

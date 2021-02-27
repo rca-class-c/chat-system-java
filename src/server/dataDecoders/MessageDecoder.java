@@ -8,6 +8,10 @@ import server.models.Messages;
 import utils.ChatBetweenTwo;
 import utils.GroupMessage;
 
+/**
+ *Author: Didier Munezero
+ *Description: This class is a decoder of all data sent to message service
+ */
 public class MessageDecoder {
     String data;
 

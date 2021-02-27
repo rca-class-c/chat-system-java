@@ -4,19 +4,23 @@ import redis.clients.jedis.Jedis;
 import server.config.JedisConfig;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class ReportsManagementRepository {
     private String key;
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    Jedis jedis = null;
+
     /**
      * method used to report message per day
      */
     public void insertMessageReport() {
-        key = "message:"+ LocalTime.now();
+        key = "message:"+ sdf.format(timestamp);
         try{
             Jedis jedis = new JedisConfig().conn();
             if (jedis.exists(key)){
@@ -26,7 +30,12 @@ public class ReportsManagementRepository {
             }
 
         }catch (Exception e){
-            System.out.println("error occurred");
+            System.out.println("error occurred"+e);
+        }
+        finally {
+            if(jedis != null){
+                jedis.close();
+            }
         }
 
     }
@@ -41,7 +50,7 @@ public class ReportsManagementRepository {
         key = "Message:user:"+userId;
         long sendAt = new Timestamp(System.currentTimeMillis()).getTime();
         try{
-            Jedis jedis = new JedisConfig().conn();
+            jedis = new JedisConfig().conn();
             if (jedis.exists(key)){
                 jedis.hincrBy(key,"total",1);
             }else{
@@ -51,7 +60,12 @@ public class ReportsManagementRepository {
 
 
         }catch (Exception e){
-            System.out.println("error occurred");
+            System.out.println("error occurred"+e.getMessage());
+        }
+        finally {
+            if(jedis != null){
+                jedis.close();
+            }
         }
     }
 
@@ -59,9 +73,10 @@ public class ReportsManagementRepository {
      * method used to report number of user created a day
      */
     public void insertUserReport() {
-        key = "user:"+ LocalTime.now();
+        key = "user:"+sdf.format(timestamp);
+
         try{
-            Jedis jedis = new JedisConfig().conn();
+            jedis = new JedisConfig().conn();
             if (jedis.exists(key)){
                 jedis.incr(key);
             }else{
@@ -69,7 +84,12 @@ public class ReportsManagementRepository {
             }
 
         }catch (Exception e){
-            System.out.println("error occurred");
+            System.out.println("error occurred"+e);
+        }
+        finally {
+            if(jedis != null){
+                jedis.close();
+            }
         }
     }
 
@@ -77,9 +97,9 @@ public class ReportsManagementRepository {
      * method used to p
      */
     public void insertGroupReport(){
-        key = "group:"+ LocalTime.now();
+        key = "group:"+sdf.format(timestamp);
         try{
-            Jedis jedis = new JedisConfig().conn();
+             jedis = new JedisConfig().conn();
             if (jedis.exists(key)){
                 jedis.incr(key);
             }else{
@@ -87,8 +107,41 @@ public class ReportsManagementRepository {
             }
 
         }catch (Exception e){
-            System.out.println("error occurred");
+            System.out.println("error occurred"+e);
+        }
+        finally {
+            if(jedis != null){
+                jedis.close();
+            }
         }
     }
+    public List<List> getReport(String pattern){
+        List<String>  keysList = new ArrayList<>();
+        Set<String> redisKeys = null;
+        List<String> keys = null;
+        List<List> allList = new ArrayList<>();
+        try {
+            jedis = new JedisConfig().conn();
+            redisKeys = jedis.keys(pattern+"*");
+            keys = new ArrayList<>(redisKeys);
+            for (String num: redisKeys) {
+                keysList.add(jedis.get(num));
+            }
+        } catch (Exception e) {
+            System.out.println("error occurred try again");
+        }
+        finally {
+            if(jedis != null){
+                jedis.close();
+            }
+        }
+        allList.add(keys);
+        allList.add(keysList);
+
+
+        return allList;
+    }
+
+
 
 }
