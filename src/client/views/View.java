@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import server.services.MessagesService;
+import utils.ConsoleColor;
 import utils.GroupMessage;
 
 public class View
@@ -29,7 +30,7 @@ public class View
         CommonUtil.addTabs(11, false);
         System.out.println("3. Help");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
 

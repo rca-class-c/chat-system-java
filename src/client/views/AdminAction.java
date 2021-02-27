@@ -7,7 +7,7 @@ import client.views.components.Component;
 import client.views.components.TableView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import utils.CommonUtil;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +19,6 @@ import java.util.Scanner;
 
 import utils.CommonUtil;
 import client.views.components.TableView;
-import utils.Mailing;
-import utils.ValidEmail;
 
 public class AdminAction {
     PrintWriter writer;
@@ -39,13 +37,13 @@ public class AdminAction {
         int choice = 0;
         while(choice != 55 && choice != 44) {
         Component.pageTitleView("ADMIN ACTIONS");
-        CommonUtil.addTabs(12, true);
+        CommonUtil.addTabs(11, true);
         System.out.println("1. Statistics");
-        CommonUtil.addTabs(12, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("2. Users");
-        CommonUtil.addTabs(12, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("44. Go back");
-        CommonUtil.addTabs(12, false);
+        CommonUtil.addTabs(11, false);
         System.out.println("55. Quit");
 
             try {
@@ -102,11 +100,11 @@ public class AdminAction {
         CommonUtil.addTabs(11, true);
         System.out.println("1. Message Reports");
         CommonUtil.addTabs(11, false);
-        System.out.println("2. user reports");
+        System.out.println("2. User Reports");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
                 try {
                     Component.chooseOptionInputView("Choose an option: ");
                     choice  = scanner.nextInt();

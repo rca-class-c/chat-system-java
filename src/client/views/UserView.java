@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Group;
 import server.models.User;
 import utils.CommonUtil;
+import utils.ConsoleColor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,9 +56,9 @@ public class UserView {
             CommonUtil.addTabs(11, false);
             System.out.println("6. Profile Settings");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. LOGOUT");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Logout");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. QUIT");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
