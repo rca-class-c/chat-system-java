@@ -14,6 +14,10 @@ import javax.mail.MessagingException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ *Author: Didier Munezero
+ *Description: This class is a handler that handles and directs requests to a given service methods for sending invitations
+ */
 public class SendInvitationHandler {
     public void HandleSendInvitation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {
         boolean returned = new sendInvitations().sendingInvitations(new SendInvitationDecoder(data).retrieveEmails());

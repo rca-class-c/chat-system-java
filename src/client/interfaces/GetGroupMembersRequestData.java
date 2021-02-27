@@ -7,6 +7,9 @@ import server.models.GroupMember;
 public class GetGroupMembersRequestData {
     int group_id;
 
+    public GetGroupMembersRequestData() {
+    }
+
     public GetGroupMembersRequestData(int group_id) {
         this.group_id = group_id;
     }

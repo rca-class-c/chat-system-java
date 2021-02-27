@@ -7,7 +7,10 @@ import server.requestHandlers.FileRequestHandler;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
-
+/**
+ *@author: Didier Munezero
+ *Description: This is a class that now where to direct a given request of files to a responsive direct handler.
+ */
 public class FileRoutes {
     private String data;
     private PrintWriter writer;
