@@ -58,7 +58,6 @@ public class ProfileSettings {
 
             else if(choice == 44){
                 Component.goBackUIView();
-                new UserView(userid, writer, reader).viewOptions();
                 break;
             }
             else if(choice == 55){

@@ -96,7 +96,7 @@ public class UserView {
             }
             else if(choice == 44){
                 CommonUtil.addTabs(10, true);
-                System.out.println("Going back");
+
                 break;
             }
             else if(choice == 55){
