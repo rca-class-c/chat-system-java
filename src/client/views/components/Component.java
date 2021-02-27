@@ -105,5 +105,25 @@ public class Component {
     }
 
 
+    public static void listItemView(String key, String value) {
+        CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.CYAN_BOLD_BRIGHT);
+        System.out.print("=>");
+        CommonUtil.resetColor();
+        CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+        System.out.print(" " + key + ": ");
+        CommonUtil.resetColor();
+        CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+        System.out.print(value);
+        CommonUtil.resetColor();
+        System.out.println();
+//        System.out.println(ConsoleColor.BoldHighIntensityColor.CYAN_BOLD_BRIGHT + "=>" + ConsoleColor.RESET + ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT + " " + key + ":  " + ConsoleColor.RESET +  ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT + value + ConsoleColor.RESET);
+    }
+
+
+    public static void goBackUIView() {
+        CommonUtil.addTabs(5, true);
+        CommonUtil.useColor(ConsoleColor.);
+        System.out.println("<- Going back");
+    }
 
 }

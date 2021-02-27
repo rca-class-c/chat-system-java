@@ -533,6 +533,7 @@ public class SendMessageView {
             for (Messages message : messages) {
                 User sender = getUser(message.getSender());
 
+//
                 CommonUtil.addTabs(10, false);
                 CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
                 System.out.print(sender.getFname() + " " + sender.getLname());

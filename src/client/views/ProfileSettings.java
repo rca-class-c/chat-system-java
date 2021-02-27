@@ -40,13 +40,17 @@ public class ProfileSettings {
     }
     Scanner scanner = new Scanner(System.in);
     public void viewProfileSettingsOptions() throws IOException {
-        Component.pageTitleView("USER Dashboard");
+        Component.pageTitleView("Profile Settings");
         int choice = 0;
         do {
-            CommonUtil.addTabs(10, true);
-            System.out.println("1. VIEW PROFILE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("2. EDIT PROFILE");
+            CommonUtil.addTabs(11, true);
+            System.out.println("1. View your profile");
+            CommonUtil.addTabs(11, false);
+            System.out.println("2. Edit your profile");
+            CommonUtil.addTabs(11, false);
+            System.out.println("3. Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println("4. Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -57,8 +61,7 @@ public class ProfileSettings {
             }
 
             else if(choice == 44){
-                CommonUtil.addTabs(10, true);
-                System.out.println("Going back");
+
                 break;
             }
             else if(choice == 55){
@@ -78,28 +81,33 @@ public class ProfileSettings {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-            Component.pageTitleView("MY PROFILE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("FIRST NAME:  "+profile.getFname());
-            CommonUtil.addTabs(10, false);
-            System.out.println("LAST NAME:  "+profile.getLname());
-            CommonUtil.addTabs(10, false);
-            System.out.println("USERNAME:  "+profile.getUsername());
-            CommonUtil.addTabs(10, false);
-            System.out.println("EMAIL:  "+profile.getEmail());
-            CommonUtil.addTabs(10, false);
-            System.out.println("GENDER:  "+profile.getGender());
-            CommonUtil.addTabs(10, false);
-            System.out.println("PASSWORD:   "+profile.getPassword());
+            Component.pageTitleView("PROFILE DETAILS");
+            System.out.println();
 
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("First name", profile.getFname());
 
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Last name", profile.getLname());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Username", profile.getUsername());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Email", profile.getEmail());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Gender", profile.getGender());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Password", profile.getPassword());
+
+            viewProfileSettingsOptions();
         }
         else{
             System.out.println("No profile found!");
         }
 
-        Component.chooseOptionInputView("Type number to continue: ");
-        int choice  = scanner.nextInt();
 
     }
     public void updateUser(int userid) throws IOException{
