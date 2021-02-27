@@ -240,14 +240,9 @@ public class AdminAction {
 
 
                 try {
-                    CommonUtil.addTabs(10, false);
-                    CommonUtil.useColor("\u001b[43m");
-                    System.out.print("  ");
-                    CommonUtil.resetColor();
-                    CommonUtil.useColor("\u001b[0;33m");
-                    System.out.print(" Choose an option: ");
-                    CommonUtil.resetColor();
-                    choice = this.insertAdminChoice();
+                    Component.chooseOptionInputView("Choose an option: ");
+                    choice  = scanner.nextInt();
+
                     switch(choice) {
                         case 1:
                             InviteUsers();
