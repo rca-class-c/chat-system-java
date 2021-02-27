@@ -680,7 +680,7 @@ public class SendMessageView {
     // author : Souvede & Chanelle
 
     public void ViewNotifications() throws IOException {
-        Component.pageTitleView("My notifications");
+        Component.pageTitleView("Notifications from Group Messages");
         String  key= "messages/notifications";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -688,13 +688,25 @@ public class SendMessageView {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(11, true);
             for (Messages messages : messageList) {
-                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("[Notification]: ");
+                CommonUtil.resetColor();
+
+                System.out.print("From group ");
+                CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+                System.out.print(messages.getSender() + "\t\t");
+                CommonUtil.resetColor();
+
+                System.out.print("Sent at: ");
+                CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+                System.out.println("[" + messages.getSent_at() + "]");
+                CommonUtil.resetColor();
+
             }
         }else {
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(11, true);
             System.out.println("Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
@@ -704,7 +716,7 @@ public class SendMessageView {
 
 
     public void ViewNoti() throws IOException {
-        Component.pageTitleView("My notifications");
+        Component.pageTitleView("Notifications from Direct Messages");
         String  key= "messages/notifi";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -712,18 +724,28 @@ public class SendMessageView {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(11, true);
             for (Messages messages : messageList) {
-                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("[Notification]: ");
+                CommonUtil.resetColor();
+
+                System.out.print("From user ");
+                CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+                System.out.print(messages.getSender() + "\t\t");
+                CommonUtil.resetColor();
+
+                System.out.print("Sent at: ");
+                CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+                System.out.println("[" + messages.getSent_at() + "]");
+                CommonUtil.resetColor();
+
+                CommonUtil.addTabs(11, false);
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to get notifications, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = Component.getChooseOptionChoice();
     }
 
 

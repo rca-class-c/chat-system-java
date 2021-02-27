@@ -66,7 +66,7 @@ public class UserView {
                 new ChannelSettings(userId,writer,reader).channelMenu();
             }
             else if(choice == 3){
-
+                Component.pageTitleView("Notifications");
                 CommonUtil.addTabs(11, true);
                 System.out.println("1. Notifications from Direct Messages ");
                 CommonUtil.addTabs(11, false);
