@@ -19,11 +19,7 @@ public class categoryRepository {
         statement.setDate(3, categories.getUpdated_at());
 
         int row = statement.executeUpdate();
-        if (row != -1) {
-            System.out.println("Saved The Category");
-        } else {
-            System.out.println("Failed To Save The Category ");
-        }
+
         connection.close();
         return categories;
     }
@@ -38,10 +34,8 @@ public class categoryRepository {
         int row = statement.executeUpdate();
         connection.close();
         if (row != -1) {
-            System.out.println("Category Updated");
             return 1;
         } else {
-            System.out.println("Category Not Updated");
             return 0;
         }
     }
@@ -49,7 +43,7 @@ public class categoryRepository {
     public categories getCategory(int id) throws SQLException {
         categories categories = new categories();
         Connection connection = PostegresConfig.getConnection();
-        String query = "SELECT name  from user_categories WHERE category_id=? ";
+        String query = "SELECT name  from user_categories WHERE categoryid=? ";
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
@@ -57,10 +51,10 @@ public class categoryRepository {
             categories.setCategoryId(id);
             categories.setCreated_at(resultSet.getDate("created_at"));
             categories.setUpdated_at(resultSet.getDate("updated_at"));
-            System.out.println("Category Found");
+
             return categories;
         } else {
-            System.out.println("No Category Found");
+
             return null;
         }
     }
@@ -89,14 +83,14 @@ public class categoryRepository {
 
     public int deleteCategory(int id) throws SQLException {
         Connection connection = PostegresConfig.getConnection();
-        String query = " DELETE from user_categories where category_id=?";
+        String query = " DELETE from user_categories where categoryid=?";
         PreparedStatement statement = connection.prepareStatement(query);
         int rows = statement.executeUpdate();
         if (rows != -1) {
-            System.out.println("Category Deleted Safely");
+
             return 1;
         } else {
-            System.out.println("User Not Deleted");
+
             return 0;
         }
     }
@@ -116,10 +110,8 @@ public class categoryRepository {
             statement.close();
             connection.close();
             if (row != 1) {
-                System.out.println("Category " + categories.getCategoryName() + " Given " + permission.getPermission_name());
+
                 flag=1;
-            } else {
-                System.out.println("Failed");
             }
         }
         return flag;

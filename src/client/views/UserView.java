@@ -6,6 +6,7 @@ import client.interfaces.ResponseDataSuccessDecoder;
 import client.interfaces.UserResponseDataDecoder;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Group;
 import server.models.User;
 import utils.CommonUtil;
 
@@ -38,24 +39,24 @@ public class UserView {
 
     Scanner scanner = new Scanner(System.in);
     public void viewOptions() throws  IOException{
-        Component.pageTitleView("USER Dashboard");
+        Component.pageTitleView("Dashboard");
         int choice = 0;
         do {
-            CommonUtil.addTabs(10, true);
-            System.out.println("1. SEND MESSAGE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("2. CHANNEL SETTINGS");
-            CommonUtil.addTabs(10, false);
-            System.out.println("3. NOTIFICATIONS");
-            CommonUtil.addTabs(10, false);
-            System.out.println("4. USERS LIST");
-            CommonUtil.addTabs(10, false);
-            System.out.println("5. ADMIN ACTIONS");
-            CommonUtil.addTabs(10, false);
-            System.out.println("6. PROFILE SETTINGS");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(12, true);
+            System.out.println("1. Send a Message");
+            CommonUtil.addTabs(12, false);
+            System.out.println("2. Channel Settings");
+            CommonUtil.addTabs(12, false);
+            System.out.println("3. Notifications");
+            CommonUtil.addTabs(12, false);
+            System.out.println("4. Users List");
+            CommonUtil.addTabs(12, false);
+            System.out.println("5. Admin Actions");
+            CommonUtil.addTabs(12, false);
+            System.out.println("6. Profile Settings");
+            CommonUtil.addTabs(12, false);
             System.out.println("44. LOGOUT");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(12, false);
             System.out.println("55. QUIT");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
@@ -66,8 +67,24 @@ public class UserView {
                 new ChannelSettings(userId,writer,reader).channelMenu();
             }
             else if(choice == 3){
-                new SendMessageView(userId, writer, reader).ViewNotifications();
+
+                CommonUtil.addTabs(12, true);
+                System.out.println("1. Notifications from Direct Messages ");
+                CommonUtil.addTabs(12, false);
+                System.out.println("2. Notifications from Group Messages");
+                Component.chooseOptionInputView("Choose an option: ");
+                int result  = scanner.nextInt();
+
+                if(result == 1){
+                    new SendMessageView(userId, writer, reader).ViewNoti();
+
+                }
+                else if(result == 2){
+                    new SendMessageView(userId, writer, reader).ViewNotifications();
+                }
+
             }
+
             else if(choice == 5){
                 new AdminAction(writer, reader,userId);
             }
@@ -116,6 +133,8 @@ public class UserView {
     }
 
 
+
+
     public static  void sendInvitations() throws ClassNotFoundException,  SQLException {
         Scanner scanner = new Scanner(System.in);
 
@@ -131,3 +150,29 @@ public class UserView {
     }
 
 }
+
+//    ObjectMapper objectMapper=new ObjectMapper();
+//    Group group=new Group(group_name,group_desc,userId);
+//
+//    String key="groups/new";
+//    Request request = new Request(group,key);
+//
+//    String requestAsString = objectMapper.writeValueAsString(request);
+//      writer.println(requestAsString);
+//              ResponseDataSuccessDecoder response= new GroupResponseDataDecoder().decodedResponse(reader.readLine());
+//              if(response.isSuccess()){
+//              CommonUtil.addTabs(10,true);
+//              CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+//              CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+//              System.out.print("your Group was created successfully");
+//              CommonUtil.resetColor();
+//
+//              //add the statement to link to the next navigation
+//              }
+//              else {
+//              CommonUtil.addTabs(10, true);
+//              CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+//              CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+//              System.out.print("  Group not created, try again! ");
+//              CommonUtil.resetColor();
+//              }

@@ -52,7 +52,6 @@ public class userLogAction {
         ResultSet rs=stmt.executeQuery(getPreviousRowQuery);
         while (rs.next()){
             if(userLog.getAction().equals("logIn")){
-                System.out.println("Successful login");
                 int currentTotalIn=rs.getInt("Total_in");
                 int currentTotalOut=rs.getInt("Total_out");
                 userLog.setTotalIn(currentTotalIn+1);
@@ -60,7 +59,6 @@ public class userLogAction {
             }else if(userLog.getAction().equals("logoUt")){
                 int currentTotalIn = rs.getInt("Total_in");
                 int currentTotalOut = rs.getInt("Total_out");
-                System.out.println("date: "+dateParser());
                 userLog.setDateTimeLoggedOut(dateParser());
                 userLog.setTotalIn(currentTotalIn-1);
                 userLog.setTotalOut(currentTotalOut+1);

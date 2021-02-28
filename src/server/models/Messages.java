@@ -1,5 +1,7 @@
 package server.models;
 
+import server.services.UserService;
+
 import java.util.Date;
 
 /**
@@ -47,6 +49,24 @@ public Messages(){};
         this.group_receiver = group_receiver;
         this.original_message = original_message;
     }
+
+    public Messages(Integer id,String content, Integer sender, Integer group_receiver, Integer original_message) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.group_receiver = group_receiver;
+        this.original_message = original_message;
+        this.user_receiver = 0;
+    }
+    public Messages(Integer id,Integer sender, Integer user_receiver, Integer original_message,String content) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+        this.original_message = original_message;
+    }
+
+
 
     //Setters and getters
     public int getId() { return id; }
