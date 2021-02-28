@@ -415,6 +415,7 @@ public class ChannelSettings {
             choice = scanner.nextInt();
             if (choice == 1) {
                 String key = "groups/profile";
+
                 Request request = new Request(new ProfileRequestData(group.getId()), key);
                 String requestAsString = new ObjectMapper().writeValueAsString(request);
                 writer.println(requestAsString);
