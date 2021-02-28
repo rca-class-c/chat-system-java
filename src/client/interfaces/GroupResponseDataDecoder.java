@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import server.models.Group;
-import server.models.GroupMember;
 
 public class GroupResponseDataDecoder {
 
