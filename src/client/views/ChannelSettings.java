@@ -184,22 +184,32 @@ public class ChannelSettings {
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
             System.out.print("  Group not created, try again! ");
             CommonUtil.resetColor();
-            choice = AdminAction.insertAdminChoice();
+        }
 
-            switch(choice) {
-                case 1:
-                    getAllGroups();
-//                    new SendMessageView(userId,writer,reader).GetAllGroupsView();
-                    break;
-                case 2:
-                    new SendMessageView(userId,writer, reader).SearchGroupView();
-                    break;
-                case 3:
-                    new SendMessageView(userId,writer, reader).GroupIdView();
-                case 44:
-                    System.out.println("Going back");
-                    break;
-                case 55:
+    }
+
+    public void getAllGroups() throws IOException {
+        String key = "groups/";
+        Request request = new Request(new ProfileRequestData(userId), key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("Groups List");
+        List ids = new ArrayList<Integer>();
+        if (response.isSuccess()) {
+            Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (Group group : groups) {
+                ids.add(group.getId());
+                System.out.println(group.getId() + ". " + group.getName() + " " + group.getDescription());
+                CommonUtil.addTabs(10, false);
+            }
+            int choice = 0;
+            do {
+                System.out.println("");
+                Component.chooseOptionInputView("Type group id to work with: ");
+                choice = Component.getChooseOptionChoice();
+                if (!ids.contains(choice)) {
                     CommonUtil.addTabs(10, true);
                     System.out.println("Invalid group id. Try again!");
                 }
