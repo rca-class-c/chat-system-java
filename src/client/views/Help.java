@@ -4,9 +4,13 @@ import client.views.components.Component;
 import utils.CommonUtil;
 import utils.ConsoleColor;
 
+import java.util.Scanner;
+
 public class Help {
     public  static void Reach() {
         int choice = 0;
+        Scanner scanner = new Scanner(System.in);
+
         do{
         Component.pageTitleView("Help center");
         CommonUtil.addTabs(10, false);
@@ -72,21 +76,15 @@ public class Help {
             CommonUtil.useColor(ConsoleColor.BoldColor.PURPLE_BOLD);
             System.out.println("OPTIONS");
             CommonUtil.resetColor();
-            CommonUtil.addTabs(10, false);
-            System.out.println("1. re- read");
-            CommonUtil.addTabs(10, false);
-            System.out.println("44. Go back");
-            CommonUtil.addTabs(10, false);
-            System.out.println("55. Quit");
+            CommonUtil.addTabs(11, false);
+            System.out.println("1. Re-read");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             try {
-                CommonUtil.addTabs(10, false);
-                CommonUtil.useColor("\u001b[43m");
-                System.out.print("  ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor("\u001b[0;33m");
-                System.out.print(" Choose an option: ");
-                CommonUtil.resetColor();
-                choice = AdminAction.insertAdminChoice();
+                Component.chooseOptionInputView("Choose an option: ");
+                choice  = scanner.nextInt();
                 switch(choice) {
                     case 1:
                         break;

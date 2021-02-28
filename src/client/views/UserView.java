@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Group;
 import server.models.User;
 import utils.CommonUtil;
+import utils.ConsoleColor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,22 +43,20 @@ public class UserView {
         Component.pageTitleView("Dashboard");
         int choice = 0;
         do {
-            CommonUtil.addTabs(12, true);
+            CommonUtil.addTabs(11, true);
             System.out.println("1. Send a Message");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("2. Channel Settings");
-            CommonUtil.addTabs(12, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("3. Notifications");
-            CommonUtil.addTabs(12, false);
-            System.out.println("4. Users List");
-            CommonUtil.addTabs(12, false);
-            System.out.println("5. Admin Actions");
-            CommonUtil.addTabs(12, false);
-            System.out.println("6. Profile Settings");
-            CommonUtil.addTabs(12, false);
-            System.out.println("44. LOGOUT");
-            CommonUtil.addTabs(12, false);
-            System.out.println("55. QUIT");
+            CommonUtil.addTabs(11, false);
+            System.out.println("4. Admin Actions");
+            CommonUtil.addTabs(11, false);
+            System.out.println("5. Profile Settings");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Logout");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -67,10 +66,10 @@ public class UserView {
                 new ChannelSettings(userId,writer,reader).channelMenu();
             }
             else if(choice == 3){
-
-                CommonUtil.addTabs(12, true);
+                Component.pageTitleView("Notifications");
+                CommonUtil.addTabs(11, true);
                 System.out.println("1. Notifications from Direct Messages ");
-                CommonUtil.addTabs(12, false);
+                CommonUtil.addTabs(11, false);
                 System.out.println("2. Notifications from Group Messages");
                 Component.chooseOptionInputView("Choose an option: ");
                 int result  = scanner.nextInt();
@@ -85,18 +84,15 @@ public class UserView {
 
             }
 
-            else if(choice == 5){
+            else if(choice == 4){
                 new AdminAction(writer, reader,userId);
             }
-            else if(choice == 6){
+            else if(choice == 5){
                new ProfileSettings(userId,writer,reader).viewProfileSettingsOptions();
-            }
-            else if(choice == 4){
-                allActiveUsers();
             }
             else if(choice == 44){
                 CommonUtil.addTabs(10, true);
-                System.out.println("Going back");
+
                 break;
             }
             else if(choice == 55){
@@ -118,18 +114,19 @@ public class UserView {
         Component.pageTitleView("USERS LIST");
         if(response.isSuccess()){
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(11, true);
             for (User user : users) {
-                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + user.getUserID() + "] ");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.println(user.getFname() + " " + user.getLname());
+                CommonUtil.resetColor();
             }
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = scanner.nextInt();
     }
 
 
