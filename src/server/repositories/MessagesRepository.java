@@ -1,5 +1,6 @@
 package server.repositories;
 
+import client.views.components.Component;
 import server.models.Messages;
 import server.config.PostegresConfig;
 import utils.DirectMessage;
@@ -343,14 +344,21 @@ public class MessagesRepository {
 
     public boolean DeleteMessages(int userid,int message_id) throws SQLException {
         int affectedRows = 0;
-
         Connection connection = PostegresConfig.getConnection();
-        String query = String.format("DELETE FROM messages WHERE id = ? and sender = ? ;");
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, userid);
-        statement.setInt(1, message_id);
-        if (affectedRows > 0) {
-            return  true;
+        try{
+        Statement statement = connection.createStatement();
+        String query = String.format("DELETE FROM messages WHERE id = '%d' and sender = '%d' ;",message_id,userid);
+            System.out.println(query);
+        affectedRows = statement.executeUpdate(query);
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+
+            Component.showErrorMessage(e.getMessage());
+
+        }
+        if(affectedRows > 0) {
+            return true;
         }
         return false;
 
