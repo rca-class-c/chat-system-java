@@ -55,7 +55,7 @@ public class WelcomeView {
         if(response.isSuccess()){
             JsonNode data = objectMapper.readTree(response.getData());
             client.setUserid(data.get("userID").asInt());
-            Component.alertSuccessErrorMessage(11, "Your login was successful");
+            Component.alertSuccessMessage(11, "Your login was successful");
 
             MessagesService msg = new MessagesService();
             Set<ResultSet> notifications = msg.viewUserNotifications(client.getUserid());
@@ -84,7 +84,7 @@ public class WelcomeView {
             writer.println(requestAsString);
             ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                Component.alertSuccessErrorMessage(11, "Code verification worked out with success!");
+                Component.alertSuccessMessage(11, "Code verification worked out with success!");
                 Signup(client, writer, reader);
             }
             else{
@@ -144,11 +144,11 @@ public class WelcomeView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            Component.alertSuccessErrorMessage(11, "Your account was created successfully");
+            Component.alertSuccessMessage(11, "Your account was created successfully");
             new UserView(client.getUserid(),writer,reader).viewOptions();
         }
         else{
-            Component.alertSuccessErrorMessage(11, "Account not created, try again!");
+            Component.alertDangerErrorMessage(11, "Account not created, try again!");
             CommonUtil.resetColor();
         }
     }

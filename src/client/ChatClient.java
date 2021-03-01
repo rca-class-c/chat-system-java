@@ -26,7 +26,7 @@ public class ChatClient {
     public void execute() {
         try {
             Socket socket = new Socket(hostname, port);
-            Component.alertSuccessErrorMessage(10,"Connected to Server Successfully");
+            Component.alertSuccessMessage(10,"Connected to Server Successfully");
             System.out.println();
 
             new client.WriteThread(socket, this).run(socket);

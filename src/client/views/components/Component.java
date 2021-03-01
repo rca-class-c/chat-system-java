@@ -100,10 +100,11 @@ public class Component {
         CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
         System.out.print(" " + error + " ");
         CommonUtil.resetColor();
+
     }
 
 
-    public static void alertSuccessErrorMessage(int tabCount, String error) {
+    public static void alertSuccessMessage(int tabCount, String error) {
         CommonUtil.addTabs(tabCount, true);
         CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
         CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);

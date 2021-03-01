@@ -64,10 +64,7 @@ public class ProfileSettings {
                 break;
             }
             else if(choice == 55){
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor("\u001b[1;31m");
-                System.out.println("SYSTEM CLOSED !");
-                System.exit(1);
+                Component.closeUIView();
             }
         }while(choice != 44 && choice != 55);
 
@@ -104,7 +101,7 @@ public class ProfileSettings {
             viewProfileSettingsOptions();
         }
         else{
-            System.out.println("No profile found!");
+            Component.alertDangerErrorMessage(11, "No profile found!");
         }
 
 
