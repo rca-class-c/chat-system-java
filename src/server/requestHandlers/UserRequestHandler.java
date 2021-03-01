@@ -93,6 +93,20 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    public void HandleInactiveUsersList(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        List<User> users = new UserService().getAllInactiveUsers();
+        //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
+        if(users == null){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(users,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);;
+            writer.println(ResponseAsString);
+        }
+    }
     public  void HandlerSearchUser(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<User> users = new UserService().SearchUsers(new UserDecoder(data).GetSearchDecode());
         if(users == null){

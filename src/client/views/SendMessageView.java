@@ -101,7 +101,6 @@ public class SendMessageView {
                             checkUserToSendMessage(allActiveUsers());
                         }
                         case 2 -> {
-                            SearchUserView();
                             checkUserToSendMessage(SearchUserView());
                         }
                         case 3 -> {

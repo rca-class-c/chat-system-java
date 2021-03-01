@@ -1,12 +1,9 @@
 package client.views;
 
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
-import client.interfaces.UserResponseDataDecoder;
+import client.interfaces.*;
 import client.views.components.Component;
-import client.views.components.TableView;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.User;
 import server.services.ReportsServices;
 import utils.CommonUtil;
 
@@ -18,9 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import utils.CommonUtil;
-import client.views.components.TableView;
-import utils.Mailing;
+
 import utils.ValidEmail;
 
 public class AdminAction {
@@ -63,10 +58,6 @@ public class AdminAction {
                         break;
                     case 2:
                         this.usersOperation();
-                        break;
-                    case 3:
-                       AdminInput.InviteUser();
-                        System.out.println("back to profile setting");
                         break;
                     case 44:
                         CommonUtil.addTabs(10, true);
@@ -292,14 +283,23 @@ public class AdminAction {
                     choice = insertAdminChoice();
                     switch (choice) {
                         case 1 -> InviteUsers();
-                        case 2 -> System.out.println("choice 2");
-                        case 3 -> System.out.println("choice 3");
+                        case 2 -> {
+                            int id = CheckUserExists(allInactiveUsers());
+                            if(id != -1){
+                                De_ActivateUser(id,"users/activate");
+                            }
+                        }
+                        case 3 -> {
+                            int id = CheckUserExists(new SendMessageView(userId, writer, reader).allActiveUsers());
+                            if(id != -1){
+                                De_ActivateUser(id,"users/deactivate");
+                            }
+                        }
                         case 4 -> new UserView(userId, writer, reader).allActiveUsers();
                         case 5 -> System.out.println("choice 5");
                         case 6 -> this.starts();
                         case 44 -> {
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
+                            break;
                         }
                         case 55 -> {
                             CommonUtil.addTabs(10, true);
@@ -322,7 +322,7 @@ public class AdminAction {
                 }
             }
         }
-    public void InviteUsers() throws IOException, JsonProcessingException {
+    public void InviteUsers() throws IOException {
         Component.pageTitleView("SEND INVITATION TO OTHERS TO JOIN CLASS_C CHAT");
         Scanner scanner = new Scanner(System.in);
         List<String> emails = new ArrayList<String>();
@@ -378,5 +378,77 @@ public class AdminAction {
             System.out.println(out);
 
         }
+    }
+    public int CheckUserExists(UsersList list) throws  IOException{
+        int choice = 0;
+        List ids = list.getIds();
+        User[] users = list.getUsers();
+        if(users.length == 0){
+            System.out.println("No users");
+            return -1;
+        }
+        else{
+
+
+        do{
+            System.out.println("");
+            Component.chooseOptionInputView("Type user id deactivate: ");
+            choice  = Component.getChooseOptionChoice();
+            if(!ids.contains(choice)){
+                CommonUtil.addTabs(10, true);
+                System.out.println("User not found, try another!");
+            }
+        }while(!ids.contains(choice));
+        for (User user : users) {
+            if(user.getUserID() == choice){
+                return choice;
+            }
+        }
+        }
+        return -1;
+    }
+    public UsersList allInactiveUsers() throws IOException {
+        String  key= "users/inactive";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("USERS LIST");
+        List ids = new ArrayList<Integer>();
+        if(response.isSuccess()){
+            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+            CommonUtil.addTabs(10, true);
+            for (User user : users) {
+                ids.add(user.getUserID());
+                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
+                CommonUtil.addTabs(10, false);
+            }
+            if(users.length == 0){
+                return null;
+            }
+            return new UsersList(users,ids);
+        }else {
+            CommonUtil.addTabs(10, true);
+            System.out.println("Failed to read users list, sorry for the inconvenience");
+        }
+        System.out.println("");
+        return null;
+
+    }
+    public void De_ActivateUser(int userId,String key) throws IOException {
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            CommonUtil.addTabs(11, false);
+            System.out.println("Successfully Done!");
+
+        }
+        else{
+            System.out.println("Failing, try again");
+        }
+
+
     }
     }
