@@ -41,9 +41,9 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Users");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
             try {
                 Component.chooseOptionInputView("Choose an option: ");
@@ -56,8 +56,6 @@ public class AdminAction {
                         this.usersOperation();
                         break;
                     case 44:
-                        CommonUtil.addTabs(11, true);
-                        System.out.println("Going back");
                         break;
 
                     case 55:
@@ -99,9 +97,9 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Group Reports");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go Back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
                 try {
                     Component.chooseOptionInputView("Choose an option: ");
                     choice  = scanner.nextInt();
@@ -121,8 +119,6 @@ public class AdminAction {
                             this.choosePeriod("group report");
                         }
                         case 44->{
-                            CommonUtil.addTabs(11, true);
-                            System.out.println("Going back");
                             break;
                         }
                         case 55->{
@@ -165,9 +161,9 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("3. Yearly");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
                 try {
@@ -209,8 +205,6 @@ public class AdminAction {
                             this.starts();
                             break;
                         case 44:
-                            CommonUtil.addTabs(11, true);
-                            System.out.println("Going back");
                             break;
                         case 55:
                             CommonUtil.addTabs(11, true);
@@ -251,9 +245,9 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("5. View user logs");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
                 try {

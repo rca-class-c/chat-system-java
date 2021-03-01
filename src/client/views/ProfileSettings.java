@@ -47,6 +47,10 @@ public class ProfileSettings {
             System.out.println("1. View your profile");
             CommonUtil.addTabs(11, false);
             System.out.println("2. Edit your profile");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -57,7 +61,6 @@ public class ProfileSettings {
             }
 
             else if(choice == 44){
-                Component.goBackUIView();
                 break;
             }
             else if(choice == 55){
