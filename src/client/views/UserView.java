@@ -39,7 +39,8 @@ public class UserView {
     }
 
     Scanner scanner = new Scanner(System.in);
-    public void viewOptions() throws  IOException{
+
+    public void viewOptions() throws IOException {
         Component.pageTitleView("Dashboard");
         int choice = 0;
         do {
@@ -58,61 +59,53 @@ public class UserView {
             CommonUtil.addTabs(11, false);
             System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
-            choice  = scanner.nextInt();
-            if(choice == 1){
+            choice = scanner.nextInt();
+            if (choice == 1) {
                 new SendMessageView(userId, writer, reader).OptionsView();
-            }
-            else if(choice == 2){
-                new ChannelSettings(userId,writer,reader).channelMenu();
-            }
-            else if(choice == 3){
+            } else if (choice == 2) {
+                new ChannelSettings(userId, writer, reader).channelMenu();
+            } else if (choice == 3) {
                 Component.pageTitleView("Notifications");
                 CommonUtil.addTabs(11, true);
                 System.out.println("1. Notifications from Direct Messages ");
                 CommonUtil.addTabs(11, false);
                 System.out.println("2. Notifications from Group Messages");
                 Component.chooseOptionInputView("Choose an option: ");
-                int result  = scanner.nextInt();
+                int result = scanner.nextInt();
 
-                if(result == 1){
+                if (result == 1) {
                     new SendMessageView(userId, writer, reader).ViewNoti();
 
-                }
-                else if(result == 2){
+                } else if (result == 2) {
                     new SendMessageView(userId, writer, reader).ViewNotifications();
                 }
 
-            }
-
-            else if(choice == 4){
-                new AdminAction(writer, reader,userId);
-            }
-            else if(choice == 5){
-               new ProfileSettings(userId,writer,reader).viewProfileSettingsOptions();
-            }
-            else if(choice == 44){
+            } else if (choice == 4) {
+                new AdminAction(writer, reader, userId);
+            } else if (choice == 5) {
+                new ProfileSettings(userId, writer, reader).viewProfileSettingsOptions();
+            } else if (choice == 44) {
                 CommonUtil.addTabs(10, true);
 
                 break;
-            }
-            else if(choice == 55){
+            } else if (choice == 55) {
                 CommonUtil.addTabs(10, true);
                 CommonUtil.useColor("\u001b[1;31m");
                 System.out.println("SYSTEM CLOSED !");
                 System.exit(1);
             }
-        }while(choice != 44 && choice != 55);
+        } while (choice != 44 && choice != 55);
 
     }
 
     public void allActiveUsers() throws IOException {
-        String key= "users/";
-        Request request = new Request(new ProfileRequestData(userId),key);
+        String key = "users/";
+        Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("USERS LIST");
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(11, true);
             for (User user : users) {
@@ -123,53 +116,10 @@ public class UserView {
                 System.out.println(user.getFname() + " " + user.getLname());
                 CommonUtil.resetColor();
             }
-        }else {
+        } else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
     }
 
-
-
-
-    public static  void sendInvitations() throws ClassNotFoundException,  SQLException {
-        Scanner scanner = new Scanner(System.in);
-
-        Component.pageTitleView("Admin Send An Invitation ");
-
-        CommonUtil.addTabs(10, false);
-        System.out.print("Enter Your Email: ");
-        String email = scanner.nextLine();
-
-        CommonUtil.addTabs(10, false);
-        System.out.print("Enter your Password: ");
-        Integer password = scanner.nextInt();
-    }
-
 }
-
-//    ObjectMapper objectMapper=new ObjectMapper();
-//    Group group=new Group(group_name,group_desc,userId);
-//
-//    String key="groups/new";
-//    Request request = new Request(group,key);
-//
-//    String requestAsString = objectMapper.writeValueAsString(request);
-//      writer.println(requestAsString);
-//              ResponseDataSuccessDecoder response= new GroupResponseDataDecoder().decodedResponse(reader.readLine());
-//              if(response.isSuccess()){
-//              CommonUtil.addTabs(10,true);
-//              CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-//              CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-//              System.out.print("your Group was created successfully");
-//              CommonUtil.resetColor();
-//
-//              //add the statement to link to the next navigation
-//              }
-//              else {
-//              CommonUtil.addTabs(10, true);
-//              CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-//              CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-//              System.out.print("  Group not created, try again! ");
-//              CommonUtil.resetColor();
-//              }
