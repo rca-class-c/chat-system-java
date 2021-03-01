@@ -628,6 +628,11 @@ public class SendMessageView {
         System.out.println("4. Replies");
         CommonUtil.addTabs(11, false);
         System.out.println("5. Notifications");
+        CommonUtil.addTabs(11, false);
+        System.out.println("44. Go back");
+        CommonUtil.addTabs(11, false);
+        System.out.println("55. Quit");
+
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -648,7 +653,16 @@ public class SendMessageView {
                     case 4 -> {
                         MessageRepliesView();
                     }
-
+                    case 44->{
+                        CommonUtil.addTabs(10, true);
+                        System.out.println("Going back");
+                    }
+                    case 55->{
+                        CommonUtil.addTabs(10, true);
+                        CommonUtil.useColor("\u001b[1;31m");
+                        System.out.println("SYSTEM CLOSED !");
+                        System.exit(1);
+                    }
                     default -> {
                         action = -1;
 
@@ -723,6 +737,10 @@ public class SendMessageView {
         System.out.println("1. Write a message");
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
+        System.out.println("44. Go back");
+        CommonUtil.addTabs(11, false);
+        System.out.println("55. Quit");
+        Component.chooseOptionInputView("Choose an option: ");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -736,6 +754,16 @@ public class SendMessageView {
                     }
                     case 2 -> {
                         SendFileView();
+                    }
+                    case 44->{
+                        CommonUtil.addTabs(10, true);
+                        System.out.println("Going back");
+                    }
+                    case 55->{
+                        CommonUtil.addTabs(10, true);
+                        CommonUtil.useColor("\u001b[1;31m");
+                        System.out.println("SYSTEM CLOSED !");
+                        System.exit(1);
                     }
 
                     default -> {
