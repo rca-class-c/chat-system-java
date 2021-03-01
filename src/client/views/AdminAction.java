@@ -2,8 +2,6 @@ package client.views;
 
 import client.interfaces.*;
 import client.views.components.Component;
-import client.views.components.TableView;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 import server.services.ReportsServices;
@@ -17,9 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import utils.CommonUtil;
-import client.views.components.TableView;
-import utils.Mailing;
+
 import utils.ValidEmail;
 
 public class AdminAction {
@@ -62,10 +58,6 @@ public class AdminAction {
                         break;
                     case 2:
                         this.usersOperation();
-                        break;
-                    case 3:
-                       AdminInput.InviteUser();
-                        System.out.println("back to profile setting");
                         break;
                     case 44:
                         CommonUtil.addTabs(10, true);
@@ -291,8 +283,18 @@ public class AdminAction {
                     choice = insertAdminChoice();
                     switch (choice) {
                         case 1 -> InviteUsers();
-                        case 2 -> CheckUserExists(allInactiveUsers());
-                        case 3 -> CheckUserExists(new SendMessageView(userId, writer, reader).allActiveUsers());
+                        case 2 -> {
+                            int id = CheckUserExists(allInactiveUsers());
+                            if(id != -1){
+                                De_ActivateUser(id,"users/activate");
+                            }
+                        }
+                        case 3 -> {
+                            int id = CheckUserExists(new SendMessageView(userId, writer, reader).allActiveUsers());
+                            if(id != -1){
+                                De_ActivateUser(id,"users/deactivate");
+                            }
+                        }
                         case 4 -> new UserView(userId, writer, reader).allActiveUsers();
                         case 5 -> System.out.println("choice 5");
                         case 6 -> this.starts();
@@ -377,7 +379,7 @@ public class AdminAction {
 
         }
     }
-    public void CheckUserExists(UsersList list) throws  IOException{
+    public int CheckUserExists(UsersList list) throws  IOException{
         int choice = 0;
         List ids = list.getIds();
         User[] users = list.getUsers();
@@ -398,10 +400,11 @@ public class AdminAction {
         }while(!ids.contains(choice));
         for (User user : users) {
             if(user.getUserID() == choice){
-                System.out.println("Id of user found");
+                return choice;
             }
         }
         }
+        return -1;
     }
     public UsersList allInactiveUsers() throws IOException {
         String  key= "users/inactive";
@@ -429,6 +432,22 @@ public class AdminAction {
         }
         System.out.println("");
         return null;
+
+    }
+    public void De_ActivateUser(int userId,String key) throws IOException {
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()){
+            CommonUtil.addTabs(11, false);
+            System.out.println("Successfully Done!");
+
+        }
+        else{
+            System.out.println("Failing, try again");
+        }
+
 
     }
     }
