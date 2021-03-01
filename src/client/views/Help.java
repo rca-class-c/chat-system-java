@@ -89,14 +89,10 @@ public class Help {
                     case 1:
                         break;
                     case 44:
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
                         break;
 
                     case 55:
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
                         break;
 
