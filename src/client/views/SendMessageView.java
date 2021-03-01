@@ -98,10 +98,11 @@ public class SendMessageView {
                     CommonUtil.resetColor();
                     switch (choice) {
                         case 1 -> {
-                            allActiveUsers();
+                            checkUserToSendMessage(allActiveUsers());
                         }
                         case 2 -> {
                             SearchUserView();
+                            checkUserToSendMessage(SearchUserView());
                         }
                         case 3 -> {
                             UserIdView();
@@ -307,7 +308,7 @@ public class SendMessageView {
 
 
 
-    public  void SearchUserView() throws IOException {
+    public  UsersList SearchUserView() throws IOException {
 
         Component.pageTitleView("Search a User");
 
@@ -328,25 +329,13 @@ public class SendMessageView {
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
             }
-            int choice  = 0;
-            do{
-                System.out.println("");
-                Component.chooseOptionInputView("Type user id to chat with: ");
-                choice  = Component.getChooseOptionChoice();
-                if(!ids.contains(choice)){
-                    CommonUtil.addTabs(10, true);
-                    System.out.println("User not found, try another!");
-                }
-            }while(!ids.contains(choice));
-            for (User user : users) {
-                if(user.getUserID() == choice){
-                    WriteMessageView(user);
-                }
-            }
+
+            return new UsersList(users,ids);
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
+        return null;
     }
 
     public void UserIdView() throws IOException {
@@ -471,7 +460,7 @@ public class SendMessageView {
         }
 
     }
-    public void allActiveUsers() throws IOException {
+    public UsersList allActiveUsers() throws IOException {
         String  key= "users/";
         Request request = new Request(new ProfileRequestData(userId),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
@@ -487,32 +476,37 @@ public class SendMessageView {
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
             }
-
-            int choice = 0;
-            do{
-                System.out.println("");
-                Component.chooseOptionInputView("Type user id to chat with: ");
-                choice  = Component.getChooseOptionChoice();
-                if(!ids.contains(choice)){
-                    CommonUtil.addTabs(10, true);
-                    System.out.println("User not found, try another!");
-                }
-            }while(!ids.contains(choice));
-            for (User user : users) {
-                if(user.getUserID() == choice){
-                    WriteMessageView(user);
-                }
+            if(users.length == 0){
+                return null;
             }
+            return new UsersList(users,ids);
         }else {
             CommonUtil.addTabs(10, true);
             System.out.println("Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
-
+        return null;
 
     }
-
-
+    public void checkUserToSendMessage(UsersList list) throws  IOException{
+        int choice = 0;
+        List ids = list.getIds();
+        User[] users = list.getUsers();
+        do{
+            System.out.println("");
+            Component.chooseOptionInputView("Type user id to chat with: ");
+            choice  = Component.getChooseOptionChoice();
+            if(!ids.contains(choice)){
+                CommonUtil.addTabs(10, true);
+                System.out.println("User not found, try another!");
+            }
+        }while(!ids.contains(choice));
+        for (User user : users) {
+            if(user.getUserID() == choice){
+                WriteMessageView(user);
+            }
+        }
+    }
     public  void WriteMessageView(User user) throws IOException {
         String key = "messages/direct";
         Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
