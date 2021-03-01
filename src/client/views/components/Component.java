@@ -74,6 +74,26 @@ public class Component {
     }
 
     /**
+     * Alert Exception Message
+     * @param error Error Message
+     */
+    public static void alertDangerErrorMessage(String error) {
+        CommonUtil.addTabs(11, true);
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+        System.out.print(" " + error + " ");
+        CommonUtil.resetColor();
+    }
+
+
+    public static void alertSuccessErrorMessage(String error) {
+        CommonUtil.addTabs(10, true);
+        CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+        System.out.print(" " + error + " ");
+        CommonUtil.resetColor();
+    }
+    /**
      * Styles the choose option
      * @param title Choose Option Title
      */

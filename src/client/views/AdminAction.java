@@ -299,17 +299,19 @@ public class AdminAction {
         Scanner scanner = new Scanner(System.in);
         List<String> emails = new ArrayList<String>();
         String email = "";
-        CommonUtil.addTabs(11, true);
-        System.out.println("Type quit to stop writing emails");
-        while(!email.equals("quit")){
-            CommonUtil.resetColor();
-            CommonUtil.useColor("\u001b[0;33m");
+        CommonUtil.addTabs(12, false);
+        CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+        System.out.println("* Type [-1] to skip field update *");
+        CommonUtil.resetColor();
+        System.out.println();
+
+        while(!email.equals("-1")){
             CommonUtil.addTabs(11, false);
-            System.out.print(" User email: ");
+            CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+            System.out.print("Email: ");
             CommonUtil.resetColor();
             email = scanner.nextLine();
-            CommonUtil.useColor("\u001b[0m");
-            if(!email.equals("quit")){
+            if(!email.equals("-1")){
                 if(!new ValidEmail(email).checkEmail()){
                     CommonUtil.addTabs(11, true);
                     CommonUtil.useColor("\u001b[1;31m");
