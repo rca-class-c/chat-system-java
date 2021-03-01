@@ -44,6 +44,8 @@ public class MessagesRoutes {
         }
         else if(request.equals("messages/delete")){
             new MessageRequestHandler().HandleDeleteMessages(data,writer,objectMapper);
+        }else if(request.equals("messages/edit")){
+            new MessageRequestHandler().HandleEditMessages(data, writer, objectMapper);
         }
 
     }

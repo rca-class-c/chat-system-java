@@ -3,9 +3,11 @@ package client.views;
 import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.models.*;
+import server.models.File;
+import server.models.Group;
+import server.models.Messages;
+import server.models.User;
 import server.models.enums.FileSizeTypeEnum;
-import server.services.UserService;
 import utils.ChatBetweenTwo;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -272,6 +274,32 @@ public class SendMessageView {
             CommonUtil.resetColor();
         }
         //View(new User());
+    }
+
+    public void EditMessageView() throws IOException {
+        Component.pageTitleView("Edit a Message");
+
+        Component.chooseOptionInputView("Enter message id: ");
+        int messageId = Component.getChooseOptionChoice();
+
+        Scanner scanner = new Scanner(System.in);
+        Component.chooseOptionInputView("Type a new message: ");
+        String messageContent = scanner.nextLine();
+
+        String key = "messages/edit";
+        Request request = new Request(new MessageResponseDataFormat(userId, messageId, messageContent),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(response.isSuccess()){
+            CommonUtil.addTabs(10, false);
+            System.out.println("Message edited successfully");
+        }
+        else{
+            CommonUtil.addTabs(10, false);
+            System.out.println("Message edit unsuccessful!");
+        }
     }
 
     public  void DeleteMessageView() throws IOException {
@@ -565,9 +593,11 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
         CommonUtil.addTabs(11, false);
-        System.out.println("3. Delete a message");
+        System.out.println("3. Edit a message");
         CommonUtil.addTabs(11, false);
-        System.out.println("4. Replies");
+        System.out.println("4. Delete a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Replies");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -583,9 +613,12 @@ public class SendMessageView {
                         SendFileView();
                     }
                     case 3 -> {
-                        DeleteMessageView();
+                        EditMessageView();
                     }
                     case 4 -> {
+                        DeleteMessageView();
+                    }
+                    case 5 -> {
                         ViewRepliesView();
                     }
 
@@ -635,9 +668,11 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
         CommonUtil.addTabs(11, false);
-        System.out.println("3. Delete a message");
+        System.out.println("3. Edit a message");
         CommonUtil.addTabs(11, false);
-        System.out.println("4. Replies");
+        System.out.println("4. Delete a message");
+        CommonUtil.addTabs(11, false);
+        System.out.println("5. Replies");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -653,9 +688,12 @@ public class SendMessageView {
                         SendFileView();
                     }
                     case 3 -> {
-                        DeleteMessageView();
+                        EditMessageView();
                     }
                     case 4 -> {
+                        DeleteMessageView();
+                    }
+                    case 5 -> {
                         ViewRepliesView();
                     }
 

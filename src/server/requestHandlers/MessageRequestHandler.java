@@ -7,7 +7,6 @@ import server.dataDecoders.MessageDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Messages;
 import server.models.Response;
-import server.models.User;
 import server.services.MessagesService;
 import utils.DirectMessage;
 import utils.GroupMessage;
@@ -92,6 +91,19 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         } else {
             Response response = new Response(returned, true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
+
+    public void HandleEditMessages(String data, PrintWriter writer, ObjectMapper objectMapper) throws  JsonProcessingException, SQLException {
+        boolean returned = new MessagesService().EditMessage(new MessageDecoder(data).returnMessageEditData());
+        if (!returned) {
+            Response response = new Response(null, false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        } else {
+            Response response = new Response(true, true);
             String ResponseAsString = objectMapper.writeValueAsString(response);
             writer.println(ResponseAsString);
         }

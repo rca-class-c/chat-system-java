@@ -29,9 +29,6 @@ public class  MessagesService {
     public List<GroupMessage> viewGroupMessages(int groupId) throws SQLException{
         return messagesRepository.getGroupMessages(groupId);
     }
-    public Messages editMessage(Messages messages) throws Exception {
-        return messagesRepository.updateMessage(messages);
-    }
     public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
@@ -57,11 +54,12 @@ public class  MessagesService {
         return messagesRepository.DeleteMessages(id,3);
     }
 
-    public boolean DeleteMessage(int id) throws SQLException {
-        return messagesRepository.DeleteMessages(id,5);
-    }
     public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException{
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
+    }
+
+    public Boolean EditMessage(MessageResponseDataFormat data) throws SQLException {
+        return messagesRepository.updateMessage(data.getUser(), data.getMessage_id(), data.getContent());
     }
 
 

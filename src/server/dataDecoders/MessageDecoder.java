@@ -43,4 +43,9 @@ public class MessageDecoder {
        JsonNode  dataDecrypt = objectMapper.readTree(data);
         return new MessageResponseDataFormat(dataDecrypt.get("user").asInt(),dataDecrypt.get("message_id").asInt());
     }
+    public  MessageResponseDataFormat returnMessageEditData() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode dataDecrypt = objectMapper.readTree(data);
+        return new MessageResponseDataFormat(dataDecrypt.get("user").asInt(),dataDecrypt.get("message_id").asInt(), dataDecrypt.get("content").asText());
+    }
 }
