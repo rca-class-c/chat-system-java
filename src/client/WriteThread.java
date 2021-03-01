@@ -1,6 +1,7 @@
 package client;
 
 import client.views.View;
+import client.views.components.Component;
 import utils.CommonUtil;
 
 import java.io.*;
@@ -23,15 +24,13 @@ public class WriteThread extends Thread {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
         } catch (IOException ex) {
-            System.out.println("Error getting output stream: " + ex.getMessage());
-            ex.printStackTrace();
+            Component.showErrorMessage(ex.getMessage());
         }
         try {
             InputStream input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));
         } catch (IOException ex) {
-            System.out.println("Error getting input stream: " + ex.getMessage());
-            ex.printStackTrace();
+            Component.showErrorMessage(ex.getMessage());
         }
     }
 
@@ -43,14 +42,13 @@ public class WriteThread extends Thread {
                 View.WelcomeView(client, writer, reader);
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
+                Component.showErrorMessage(e.getMessage());
             }
         } while (choice != -1);
         try {
             socket.close();
         } catch (IOException ex) {
-            CommonUtil.addTabs(10, false);
-            System.out.println("Error writing to server: " + ex.getMessage());
+            Component.showErrorMessage(ex.getMessage());
         }
     }
 }

@@ -26,23 +26,14 @@ public class ChatClient {
     public void execute() {
         try {
             Socket socket = new Socket(hostname, port);
-            CommonUtil.addTabs(10,true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.WHITE_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.BLACK_BOLD);
-            System.out.print(" Connected to Server Successfully " );
-            CommonUtil.resetColor();
-
+            Component.alertSuccessErrorMessage(10,"Connected to Server Successfully");
             System.out.println();
 
             new client.WriteThread(socket, this).run(socket);
         } catch (UnknownHostException ex) {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Server not found  ");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(10, "Server not found");
         } catch (IOException ex) {
-            System.out.println("I/O Error: " + ex.getMessage());
+            Component.alertDangerErrorMessage(10, ex.getMessage());
         }
     }
 
@@ -67,7 +58,7 @@ public class ChatClient {
             ChatClient client = new ChatClient(hname, hport);
             client.execute();
         } catch (Exception e) {
-            Component.showErrorMessage("Server not found !");
+            Component.alertDangerErrorMessage(10, "Server not found");
         }
     }
 }

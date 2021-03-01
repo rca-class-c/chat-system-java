@@ -57,17 +57,8 @@ public class View
                         CommonUtil.displayTray(notifications);
                     }
 
-//                    case 11 -> {
-//                        Scanner scanner = new Scanner(System.in);
-//                        System.out.println("Enter user id");
-//                        int id = scanner.nextInt();
-//                        MessagesService msg1 = new MessagesService();
-//                        List<GroupMessage> notify = msg1.viewUserNotis(id);
-//                    }
-
                     case 55 -> {
-                        System.out.println();
-                        Component.showErrorMessage("System Closed");
+                        Component.closeUIView();
                         System.exit(1);
                     }
                     default -> {

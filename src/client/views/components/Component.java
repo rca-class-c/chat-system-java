@@ -73,12 +73,29 @@ public class Component {
         CommonUtil.resetColor();
     }
 
+    public static void closeUIView() {
+        System.out.println();
+
+        CommonUtil.addTabs(11, false);
+
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+        System.out.print("  ");
+        CommonUtil.resetColor();
+
+        CommonUtil.useColor(ConsoleColor.RegularColor.RED);
+        System.out.print(" SYSTEM CLOSED ");
+        CommonUtil.resetColor();
+
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+        System.out.print("  ");
+        CommonUtil.resetColor();
+    }
     /**
      * Alert Exception Message
      * @param error Error Message
      */
-    public static void alertDangerErrorMessage(String error) {
-        CommonUtil.addTabs(11, true);
+    public static void alertDangerErrorMessage(int tabCount, String error) {
+        CommonUtil.addTabs(tabCount, true);
         CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
         CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
         System.out.print(" " + error + " ");
@@ -86,8 +103,8 @@ public class Component {
     }
 
 
-    public static void alertSuccessErrorMessage(String error) {
-        CommonUtil.addTabs(10, true);
+    public static void alertSuccessErrorMessage(int tabCount, String error) {
+        CommonUtil.addTabs(tabCount, true);
         CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
         CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
         System.out.print(" " + error + " ");
