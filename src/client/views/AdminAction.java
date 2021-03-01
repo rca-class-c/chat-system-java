@@ -266,7 +266,7 @@ public class AdminAction {
         CommonUtil.addTabs(10, false);
         System.out.println("3. Deactivate user");
         CommonUtil.addTabs(10, false);
-        System.out.println("4. VIEW all user");
+        System.out.println("4. View all users");
         CommonUtil.addTabs(10, false);
         System.out.println("5. View user logs");
         CommonUtil.addTabs(10, false);
@@ -299,14 +299,16 @@ public class AdminAction {
                             }
                         }
                         case 4 -> new UserView(userId, writer, reader).allActiveUsers();
-                        case 5 -> System.out.println("choice 5");
+                        case 5 -> {
+                            System.out.println("choice 5");
+                        }
                         case 6 -> this.starts();
                         case 44 -> {
                             break;
                         }
                         case 55 -> {
                             CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
+                            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
                             System.out.println("SYSTEM CLOSED !");
                             System.exit(1);
                         }
@@ -361,6 +363,7 @@ public class AdminAction {
         System.out.println("Sending emails ...");
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
+            CommonUtil.addTabs(10, false);
             CommonUtil.useColor(ConsoleColor.RegularColor.GREEN);
             System.out.println("Email sent successfully");
             CommonUtil.resetColor();
