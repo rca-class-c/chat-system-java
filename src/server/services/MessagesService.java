@@ -64,9 +64,6 @@ public class  MessagesService {
         return messagesRepository.DeleteMessages(id,3);
     }
 
-    public boolean DeleteMessage(int id) throws SQLException {
-        return messagesRepository.DeleteMessages(id,5);
-    }
     public boolean DeleteMessage(MessageResponseDataFormat data) throws SQLException{
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
