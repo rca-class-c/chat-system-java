@@ -38,7 +38,6 @@ public class WelcomeView {
 
         CommonUtil.addTabs(11, false);
         System.out.print("Your password: ");
-        Console cons = System.console();
         String password = scanner.nextLine();
 
 

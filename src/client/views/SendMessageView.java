@@ -198,7 +198,6 @@ public class SendMessageView {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println(reciever_type+" "+reciever);
         Component.chooseOptionInputView("Your Message: ");
         String message = scanner.nextLine();
         String key = "direct";
