@@ -176,6 +176,8 @@ public class AdminAction {
         CommonUtil.addTabs(10, false);
         System.out.println("3. Yearly");
         CommonUtil.addTabs(10, false);
+        System.out.println("4. Overall");
+        CommonUtil.addTabs(10, false);
         System.out.println("44. Go back");
         CommonUtil.addTabs(10, false);
         System.out.println("55. Quit");
@@ -359,12 +361,15 @@ public class AdminAction {
         System.out.println("Sending emails ...");
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.RegularColor.GREEN);
             System.out.println("Email sent successfully");
+            CommonUtil.resetColor();
         }
         else{
             CommonUtil.addTabs(10, false);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Email failed to send.");
+            CommonUtil.resetColor();
         }
     }
 
