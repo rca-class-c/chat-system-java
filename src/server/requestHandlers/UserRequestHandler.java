@@ -79,9 +79,34 @@ public class UserRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    public void HandleActivateUser(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        boolean returned = new UserService().ActivateUser(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(null,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleDeActivateUser(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        boolean returned = new UserService().DeActivateUser(new UserDecoder(data).GetProfileDecode());
+        if(!returned){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(null,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
     public void HandleUsersList(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
         List<User> users = new UserService().getAllOtherUsers(new UserDecoder(data).GetProfileDecode());
-        //User returned = new UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if(users == null){
             Response response = new Response(null,false);
             String ResponseAsString = objectMapper.writeValueAsString(response);

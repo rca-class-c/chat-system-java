@@ -332,7 +332,9 @@ public class SendMessageView {
             return new UsersList(users,ids);
         }else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
         return null;
     }
@@ -391,7 +393,9 @@ public class SendMessageView {
             }
         }else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
     }
 
@@ -481,16 +485,34 @@ public class SendMessageView {
             return new UsersList(users,ids);
         }else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
         System.out.println("");
         return null;
 
     }
     public void checkUserToSendMessage(UsersList list) throws  IOException{
+        if(list == null){
+            CommonUtil.addTabs(11, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+            System.out.println("Users list is empty");
+            CommonUtil.resetColor();
+        }
+        else{
         int choice = 0;
         List ids = list.getIds();
         User[] users = list.getUsers();
+        if(users.length == 0){
+            CommonUtil.addTabs(11, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
+            System.out.println("No users are found");
+            CommonUtil.resetColor();
+        }
+        else{
+
+
         do{
             System.out.println("");
             Component.chooseOptionInputView("Type user id to chat with: ");
@@ -504,6 +526,8 @@ public class SendMessageView {
             if(user.getUserID() == choice){
                 WriteMessageView(user);
             }
+        }
+        }
         }
     }
     public  void WriteMessageView(User user) throws IOException {
@@ -529,7 +553,9 @@ public class SendMessageView {
             }
         }else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
         Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
 
@@ -599,7 +625,9 @@ public class SendMessageView {
             }
         }else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
         Component.pageTitleView("Write Message to "+ group.getName()+" Group");
 

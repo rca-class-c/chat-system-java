@@ -29,6 +29,12 @@ public class UserService {
     public User getUserById(int userId) throws SQLException{
         return userRepository.getUserById(userId);
     }
+    public boolean ActivateUser(int userId) throws SQLException{
+        return userRepository.ActivateUser(userId);
+    }
+    public boolean DeActivateUser(int userId) throws SQLException{
+        return userRepository.DeActivateUser(userId);
+    }
     public List<User> SearchUsers(String search_data) throws SQLException {
         return userRepository.getUserSearchList(search_data);
     }

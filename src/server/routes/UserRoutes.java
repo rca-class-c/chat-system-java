@@ -49,6 +49,12 @@ public class UserRoutes {
         else if(request.equals("users/inactive")){
             new UserRequestHandler().HandleInactiveUsersList(data,writer,objectMapper);
         }
+        else if(request.equals("users/activate")){
+            new UserRequestHandler().HandleActivateUser(data,writer,objectMapper);
+        }
+        else if(request.equals("users/deactivate")){
+            new UserRequestHandler().HandleDeActivateUser(data,writer,objectMapper);
+        }
         else if(request.equals("users/profile")){
             new UserRequestHandler().HandleGetProfile(data,writer,objectMapper);
         }
