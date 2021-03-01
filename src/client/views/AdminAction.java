@@ -321,8 +321,8 @@ public class AdminAction {
                     }
                 } catch (Exception var3) {
                     CommonUtil.addTabs(10, false);
-                    CommonUtil.useColor("\u001b[1;31m");
-                    System.out.println("is incorrect input");
+                    CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+                    System.out.println("Incorrect input");
                     CommonUtil.resetColor();
                 }
             }
