@@ -282,6 +282,34 @@ public class MessagesRepository {
         conn.close();
         return messages;
     }
+    public List<Messages> GetReplies(int userId) throws SQLException {
+        Connection conn = PostegresConfig.getConnection();
+        Statement statement = conn.createStatement();
+        List <Messages> messages = new ArrayList<Messages>();
+
+        String readQuery = String.format(
+                "SELECT * from messages where sender = '%d' or user_receiver = '%d';",
+                userId, userId);
+
+        ResultSet result = statement.executeQuery(readQuery);
+
+        while (result.next()){
+
+            Integer id = result.getInt(1);
+            String content = result.getString(2);
+            Integer sender = result.getInt(3);
+            Integer user_receiver = result.getInt(4);
+            Integer group_receiver = result.getInt(5);
+            Integer original_message = result.getInt(6);
+            Messages messages1 = new Messages(id,content,sender,user_receiver,group_receiver,original_message);
+            if(messages1.getOriginal_message() != 0){
+                messages.add(messages1);
+            }
+        }
+        statement.close();
+        conn.close();
+        return messages;
+    }
    //sending a direct message
    //author: Edine Noella
     public  Boolean sendDirectMessage(Messages message) throws SQLException {
@@ -299,15 +327,15 @@ public class MessagesRepository {
     //----------------------------Reply direct messages-----------------------------
     // author : Melissa
 
-    public Messages ReplyDirectMessage(Messages message) throws SQLException {
-        String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
+    public Messages SendReply(Messages message) throws SQLException {
+        String sql= "insert into messages(content,sender,original_message,user_receiver) values (?,?,?,?)";
         Connection conn = PostegresConfig.getConnection();
         PreparedStatement statement=conn.prepareStatement(sql);
         statement.setString(1, message.getContent());
         statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver());
-        statement.setDate(4, (java.sql.Date) message.getSent_at());
-        boolean rowInsert= statement.executeUpdate()>1;
+        statement.setInt(3, message.getOriginal_message());
+        statement.setInt(4, message.getUser_receiver());
+        boolean rowInsert= statement.executeUpdate()>0;
         statement.close();
         conn.close();
         if(rowInsert){
@@ -317,27 +345,6 @@ public class MessagesRepository {
     }
 
 
-
-    //----------------------------Reply group messages--------------------------------
-    // author : Melissa
-
-
-    public Messages ReplyGroupMessage(Messages message) throws SQLException {
-        String sql= "insert into messages(content,sender,group_receiver,original_message,sent_at) values (?,?,?,?)";
-        Connection conn = PostegresConfig.getConnection();
-        PreparedStatement statement=conn.prepareStatement(sql);
-        statement.setString(1, message.getContent());
-        statement.setInt(2, message.getSender());
-        statement.setInt(3, message.getGroup_receiver());
-        statement.setDate(4, (java.sql.Date) message.getSent_at());
-        boolean rowInsert= statement.executeUpdate()>1;
-        statement.close();
-        conn.close();
-        if(rowInsert){
-            return message;
-        }
-        return null;
-    }
 
     //Deleting a message
 

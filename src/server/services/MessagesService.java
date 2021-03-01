@@ -52,12 +52,11 @@ public class  MessagesService {
     public Boolean sendDirectly(Messages messages) throws SQLException{
         return messagesRepository.sendDirectMessage(messages);
     }
-    public Messages ReplyInGroup(Messages messages) throws SQLException{
-        return messagesRepository.ReplyDirectMessage(messages);
+    public Messages SendReply(Messages messages) throws SQLException{
+        return messagesRepository.SendReply(messages);
     }
-
-    public Messages ReplyDirectly(Messages messages) throws SQLException{
-        return messagesRepository.ReplyGroupMessage(messages);
+    public List<Messages> GetReplies(int id) throws SQLException{
+        return messagesRepository.GetReplies(id);
     }
     //HEAD
     public boolean DeleteReply(int id) throws SQLException{
