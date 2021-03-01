@@ -85,13 +85,9 @@ public class UserView {
             } else if (choice == 5) {
                 new ProfileSettings(userId, writer, reader).viewProfileSettingsOptions();
             } else if (choice == 44) {
-                CommonUtil.addTabs(10, true);
-
                 break;
             } else if (choice == 55) {
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor("\u001b[1;31m");
-                System.out.println("SYSTEM CLOSED !");
+                Component.closeUIView();
                 System.exit(1);
             }
         } while (choice != 44 && choice != 55);
@@ -107,9 +103,8 @@ public class UserView {
         Component.pageTitleView("USERS LIST");
         if (response.isSuccess()) {
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
-
+            CommonUtil.addTabs(11, true);
             for (User user : users) {
-                CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + user.getUserID() + "] ");
                 CommonUtil.resetColor();
@@ -118,10 +113,8 @@ public class UserView {
                 CommonUtil.resetColor();
             }
         } else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
+            CommonUtil.addTabs(11, true);
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
     }
 

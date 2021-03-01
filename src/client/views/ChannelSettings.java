@@ -36,24 +36,18 @@ public class ChannelSettings {
         int choice = 0;
         while (choice != 55 && choice != 44) {
             Component.pageTitleView("CHANNEL SETTINGS");
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(11, true);
             System.out.println("1. Existing channels");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("2. New channel");
-            CommonUtil.addTabs(10, false);
-            System.out.println("44. Go back");
-            CommonUtil.addTabs(10, false);
-            System.out.println("55. Quit");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
             try {
-                CommonUtil.addTabs(10, false);
-                CommonUtil.useColor("\u001b[43m");
-                System.out.print("  ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor("\u001b[0;33m");
-                System.out.print(" Choose an option: ");
-                CommonUtil.resetColor();
-                choice = AdminAction.insertAdminChoice();
+                Component.chooseOptionInputView("Choose an option: ");
+                choice  = scanner.nextInt();
                 switch (choice) {
                     case 1:
                         ExistingChanelOptions();
@@ -62,23 +56,19 @@ public class ChannelSettings {
                         CreateChannel();
                         break;
                     case 44:
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
                         break;
                     case 55:
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
                         break;
                     default:
-                        CommonUtil.addTabs(10, false);
+                        CommonUtil.addTabs(11, false);
                         CommonUtil.useColor("\u001b[1;31m");
                         System.out.println("Enter a valid choice (1,5): ");
                         CommonUtil.resetColor();
                 }
             } catch (Exception var2) {
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
                 CommonUtil.useColor("\u001b[1;31m");
                 System.out.println("is incorrect input");
                 CommonUtil.resetColor();
@@ -92,27 +82,20 @@ public class ChannelSettings {
     public void ExistingChanelOptions() throws IOException {
         int choice = 3;
         while (choice != 44 && choice != 55) {
-            Component.pageTitleView("Chanells");
-            CommonUtil.addTabs(10, true);
+            Component.pageTitleView("Channels");
+            CommonUtil.addTabs(11, true);
             System.out.println("1. Channels list");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("2. Search Channel");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(11, false);
             System.out.println("3. ID Channel");
-            CommonUtil.addTabs(10, false);
-            System.out.println("44. Go back");
-            CommonUtil.addTabs(10, false);
-            System.out.println("55. Quit");
-            CommonUtil.addTabs(10, false);
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             try {
-                CommonUtil.useColor("\u001b[43m");
-                System.out.print("  ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor("\u001b[0;33m");
-                System.out.print(" Choose an option: ");
-                CommonUtil.resetColor();
-                choice = AdminAction.insertAdminChoice();
-
+                Component.chooseOptionInputView("Choose an option: ");
+                choice  = scanner.nextInt();
                 switch (choice) {
                     case 1:
                         getAllGroups();
@@ -124,12 +107,9 @@ public class ChannelSettings {
                     case 3:
                         new SendMessageView(userId, writer, reader).GroupIdView();
                     case 44:
-                        System.out.println("Going back");
                         break;
                     case 55:
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
                         break;
                     default:
@@ -171,19 +151,10 @@ public class ChannelSettings {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new GroupResponseDataDecoder().decodedResponse(reader.readLine());
         if (response.isSuccess()) {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("your Group was created successfully");
-            CommonUtil.resetColor();
-
+            Component.alertSuccessMessage(11, "your Group was created successfully");
             //add the statement to link to the next navigation
         } else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Group not created, try again! ");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Group not created, try again!");
         }
 
     }
@@ -210,8 +181,9 @@ public class ChannelSettings {
                 Component.chooseOptionInputView("Type group id to work with: ");
                 choice = Component.getChooseOptionChoice();
                 if (!ids.contains(choice)) {
-                    CommonUtil.addTabs(10, true);
-                    System.out.println("Invalid group id. Try again!");
+                    CommonUtil.addTabs(11, true);
+
+                 Component.alertDangerErrorMessage(11, "Invalid group id. Try again!");
                 }
             } while (!ids.contains(choice));
             for (Group group : groups) {
@@ -220,8 +192,7 @@ public class ChannelSettings {
                 }
             }
         } else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
     }
 
@@ -243,9 +214,9 @@ public class ChannelSettings {
             CommonUtil.addTabs(11, false);
             System.out.println("6. delete group");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
 
             choice = Component.getChooseOptionChoice();
@@ -271,14 +242,12 @@ public class ChannelSettings {
                         deleteGroup(group.getId());
                     }
                     case 44 -> {
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
+                        break;
                     }
                     case 55 -> {
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
+                        break;
                     }
                     default -> {
                         choice = -1;
@@ -315,19 +284,9 @@ public class ChannelSettings {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new GroupResponseDataDecoder().decodedResponse(reader.readLine());
         if (response.isSuccess()) {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("your Group members was created successfully");
-            CommonUtil.resetColor();
-
-            //add the statement to link to the next navigation
+            Component.alertSuccessMessage(11, "your Group members was created successfully");
         } else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Group members not created, try again! ");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Group members not created, try again!");
         }
     }
 
@@ -347,8 +306,7 @@ public class ChannelSettings {
                 CommonUtil.addTabs(10, false);
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
     }
 
@@ -367,7 +325,7 @@ public class ChannelSettings {
             CommonUtil.addTabs(10, true);
             CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("your Group members was deleted successfully");
+            Component.alertSuccessMessage(11, "your Group members was deleted successfully");
             CommonUtil.resetColor();
 
             //add the statement to link to the next navigation
@@ -375,7 +333,7 @@ public class ChannelSettings {
             CommonUtil.addTabs(10, true);
             CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Group members not deleted, try again! ");
+            Component.alertDangerErrorMessage(11, "  Group members not deleted, try again! ");
             CommonUtil.resetColor();
         }
     }
@@ -387,19 +345,11 @@ public class ChannelSettings {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if (response.isSuccess()) {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("your Group members was deleted successfully");
-            CommonUtil.resetColor();
+            Component.alertSuccessMessage(11, "your Group members was deleted successfully");
 
             //add the statement to link to the next navigation
         } else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Group members not deleted, try again! ");
-            CommonUtil.resetColor();
+            Component.alertSuccessMessage(11, "Group members not deleted, try again!");
         }
     }
 
@@ -483,25 +433,15 @@ public class ChannelSettings {
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new GroupResponseDataDecoder().decodedResponse(reader.readLine());
             if(updateResponse.isSuccess()){
-                CommonUtil.addTabs(10, true);
                 channelProfile(new Group(groupId,groupName,groupDescription,userId));
-                CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.println(" Your account was updated successfully ");
-                CommonUtil.resetColor();
-
-
+                Component.alertSuccessMessage(11, " Your account was updated successfully ");
             }
             else{
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print("  Account not updated, try again! ");
-                CommonUtil.resetColor();
+                Component.alertDangerErrorMessage(11, "  Account not updated, try again! ");
             }
         }
         else{
-            System.out.println("No profile found!");
+            Component.alertDangerErrorMessage(11, "  No profile found! ");
         }
     }
 }
