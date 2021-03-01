@@ -59,9 +59,7 @@ public class AdminAction {
                         break;
 
                     case 55:
-                        CommonUtil.addTabs(11, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
                         break;
 
@@ -122,9 +120,7 @@ public class AdminAction {
                             break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(11, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
+                            Component.closeUIView();
                             System.exit(1);
                             break;
                         }
@@ -142,13 +138,6 @@ public class AdminAction {
 
     }
 
-    public static int insertAdminChoice() {
-        CommonUtil.useColor("\u001b[1;37m");
-        Scanner scanner = new Scanner(System.in);
-        int num = scanner.nextInt();
-        CommonUtil.useColor("\u001b[0m");
-        return num;
-    }
 
     private void choosePeriod(String range) {
         int choice = 0;
@@ -207,9 +196,7 @@ public class AdminAction {
                         case 44:
                             break;
                         case 55:
-                            CommonUtil.addTabs(11, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
+                            Component.closeUIView();
                             System.exit(1);
                             break;
                         default:
@@ -274,9 +261,7 @@ public class AdminAction {
                             break;
                         }
                         case 55 -> {
-                            CommonUtil.addTabs(11, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
+                            Component.closeUIView();
                             System.exit(1);
                         }
                         default -> {
@@ -313,10 +298,7 @@ public class AdminAction {
             email = scanner.nextLine();
             if(!email.equals("-1")){
                 if(!new ValidEmail(email).checkEmail()){
-                    CommonUtil.addTabs(11, true);
-                    CommonUtil.useColor("\u001b[1;31m");
-                    System.out.println("This email is not valid; it is not saved");
-                    CommonUtil.resetColor();
+                    Component.showErrorMessage("This email is not valid; it is not saved");
                 }
                 else{
                     emails.add(email);
@@ -332,12 +314,10 @@ public class AdminAction {
         System.out.println("Sending emails ...");
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(11, false);
-            System.out.println("Email sent successfully");
+            Component.alertSuccessMessage(11, "Email sent successfully");
         }
         else{
-            CommonUtil.addTabs(11, false);
-            System.out.println("Email failed to send.");
+            Component.alertSuccessMessage(11, "Email failed to send.");
         }
     }
 
@@ -380,7 +360,8 @@ public class AdminAction {
             choice  = Component.getChooseOptionChoice();
             if(!ids.contains(choice)){
                 CommonUtil.addTabs(11, true);
-                System.out.println("User not found, try another!");
+                Component.alertDangerErrorMessage(11, "User not found, try another!");
+
             }
         }while(!ids.contains(choice));
         for (User user : users) {
@@ -412,10 +393,7 @@ public class AdminAction {
             }
             return new UsersList(users,ids);
         }else {
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
         return null;
@@ -427,18 +405,10 @@ public class AdminAction {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(11, false);
-            CommonUtil.useColor(ConsoleColor.RegularColor.GREEN);
-            System.out.println("Successfully Done!");
-            CommonUtil.resetColor();
-
+            Component.alertSuccessMessage(11, "Successfully Done!");
         }
         else{
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failing, try again");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Failing, try again");
         }
-
-
     }
     }
