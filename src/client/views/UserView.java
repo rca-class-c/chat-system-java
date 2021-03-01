@@ -107,8 +107,9 @@ public class UserView {
         Component.pageTitleView("USERS LIST");
         if (response.isSuccess()) {
             User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
-            CommonUtil.addTabs(11, true);
+
             for (User user : users) {
+                CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + user.getUserID() + "] ");
                 CommonUtil.resetColor();
@@ -118,7 +119,9 @@ public class UserView {
             }
         } else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
     }
 
