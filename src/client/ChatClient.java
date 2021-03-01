@@ -39,7 +39,7 @@ public class ChatClient {
             CommonUtil.addTabs(10, true);
             CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
             CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Server not found  ");
+            System.out.print("Server not found  ");
             CommonUtil.resetColor();
         } catch (IOException ex) {
             System.out.println("I/O Error: " + ex.getMessage());
