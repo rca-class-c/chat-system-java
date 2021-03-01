@@ -73,6 +73,44 @@ public class Component {
         CommonUtil.resetColor();
     }
 
+    public static void closeUIView() {
+        System.out.println();
+
+        CommonUtil.addTabs(11, false);
+
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+        System.out.print("  ");
+        CommonUtil.resetColor();
+
+        CommonUtil.useColor(ConsoleColor.RegularColor.RED);
+        System.out.print(" SYSTEM CLOSED ");
+        CommonUtil.resetColor();
+
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+        System.out.print("  ");
+        CommonUtil.resetColor();
+    }
+    /**
+     * Alert Exception Message
+     * @param error Error Message
+     */
+    public static void alertDangerErrorMessage(int tabCount, String error) {
+        CommonUtil.addTabs(tabCount, true);
+        CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+        System.out.print(" " + error + " ");
+        CommonUtil.resetColor();
+
+    }
+
+
+    public static void alertSuccessMessage(int tabCount, String error) {
+        CommonUtil.addTabs(tabCount, true);
+        CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
+        CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
+        System.out.print(" " + error + " ");
+        CommonUtil.resetColor();
+    }
     /**
      * Styles the choose option
      * @param title Choose Option Title

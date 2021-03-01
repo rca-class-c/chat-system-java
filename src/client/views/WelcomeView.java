@@ -54,14 +54,8 @@ public class WelcomeView {
         if(response.isSuccess()){
             JsonNode data = objectMapper.readTree(response.getData());
             client.setUserid(data.get("userID").asInt());
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print(" Your login was successful ");
+            Component.alertSuccessMessage(11, "Your login was successful");
 
-            CommonUtil.resetColor();
-
-//            By Souvede
             MessagesService msg = new MessagesService();
             Set<ResultSet> notifications = msg.viewUserNotifications(client.getUserid());
             CommonUtil.displayTray(notifications);
@@ -69,11 +63,7 @@ public class WelcomeView {
 
         }
         else{
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Invalid Username or Password  ");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Invalid Username or Password");
         }
     }
 
@@ -93,19 +83,11 @@ public class WelcomeView {
             writer.println(requestAsString);
             ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             if(response.isSuccess()){
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print(" Code verification worked out with success! ");
-                CommonUtil.resetColor();
+                Component.alertSuccessMessage(11, "Code verification worked out with success!");
                 Signup(client, writer, reader);
             }
             else{
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print(" Invalid Verification code ");
-                CommonUtil.resetColor();
+                Component.alertDangerErrorMessage(11, "Invalid Verification code!");
             }
 
         } catch (Exception e) {
@@ -136,7 +118,7 @@ public class WelcomeView {
         String gender = "";
         do {
             CommonUtil.addTabs(11, false);
-            System.out.print("Enter your Gender[male,female]: ");
+            System.out.print("Enter your Gender [male,female]: ");
             gender = scanner.nextLine();
             if(!gender.equals("male") && !gender.equals("female")){
                 CommonUtil.addTabs(11, false);
@@ -161,19 +143,11 @@ public class WelcomeView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print(" Your account was created successfully ");
-            CommonUtil.resetColor();
-
+            Component.alertSuccessMessage(11, "Your account was created successfully");
             new UserView(client.getUserid(),writer,reader).viewOptions();
         }
         else{
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  Account not created, try again! ");
+            Component.alertDangerErrorMessage(11, "Account not created, try again!");
             CommonUtil.resetColor();
         }
     }

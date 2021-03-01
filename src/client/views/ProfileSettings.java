@@ -47,6 +47,10 @@ public class ProfileSettings {
             System.out.println("1. View your profile");
             CommonUtil.addTabs(11, false);
             System.out.println("2. Edit your profile");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -57,14 +61,10 @@ public class ProfileSettings {
             }
 
             else if(choice == 44){
-                Component.goBackUIView();
                 break;
             }
             else if(choice == 55){
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor("\u001b[1;31m");
-                System.out.println("SYSTEM CLOSED !");
-                System.exit(1);
+                Component.closeUIView();
             }
         }while(choice != 44 && choice != 55);
 
@@ -101,7 +101,7 @@ public class ProfileSettings {
             viewProfileSettingsOptions();
         }
         else{
-            System.out.println("No profile found!");
+            Component.alertDangerErrorMessage(11, "No profile found!");
         }
 
 
@@ -257,24 +257,15 @@ public class ProfileSettings {
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             if(updateResponse.isSuccess()){
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print(" Your account was updated successfully ");
-                CommonUtil.resetColor();
-
-                System.out.println();
+                Component.alertSuccessMessage(11, "Your account was updated successfully");
             }
             else{
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print("  Account not updated, try again! ");
-                CommonUtil.resetColor();
+                Component.alertDangerErrorMessage(11, "Account not updated, try again!");
             }
         }
         else{
-            System.out.println("No profile found!");
+            Component.alertDangerErrorMessage(11, "No profile found!");
+
         }
         viewProfileSettingsOptions();
     }

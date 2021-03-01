@@ -250,20 +250,11 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print(" File saved successfully ");
-            CommonUtil.resetColor();
-
+            Component.alertSuccessMessage(11, "File saved successfully");
             //ageView(new User());
         }
         else{
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-            CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-            System.out.print("  File not saved, try again! ");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "File not saved, try again!");
         }
         //View(new User());
     }
@@ -282,13 +273,11 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-            CommonUtil.addTabs(10, false);
-            System.out.println("Message deleted successfully");
+            Component.alertSuccessMessage(11, "Message deleted successfully");
 
         }
         else{
-            CommonUtil.addTabs(10, true);
-            System.out.println("Message not found!");
+            Component.alertDangerErrorMessage(11, "Message not found!");
         }
     }
 
@@ -330,9 +319,7 @@ public class SendMessageView {
 
             return new UsersList(users,ids);
         }else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
             CommonUtil.resetColor();
         }
         return null;
@@ -354,8 +341,7 @@ public class SendMessageView {
             User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
             WriteMessageView(user);
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("User not found");
+            Component.alertDangerErrorMessage(11, "User not found");
         }
     }
 
@@ -381,8 +367,7 @@ public class SendMessageView {
                 Component.chooseOptionInputView("Type group id to chat in: ");
                 choice  = Component.getChooseOptionChoice();
                 if(!ids.contains(choice)){
-                    CommonUtil.addTabs(10, true);
-                    System.out.println("Invalid group id. Try again!");
+                    Component.alertDangerErrorMessage(11, "Invalid group id. Try again!");
                 }
             }while(!ids.contains(choice));
             for (Group group : groups) {
@@ -395,6 +380,7 @@ public class SendMessageView {
             CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
             CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
     }
 
@@ -426,8 +412,7 @@ public class SendMessageView {
                     Component.chooseOptionInputView("Type group id to chat in: ");
                     choice = Component.getChooseOptionChoice();
                     if(!ids.contains(choice)){
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Invalid group id. Try again!");
+                        Component.alertDangerErrorMessage(11, "Invalid group id. Try again!");
                     }
                 }while(!ids.contains(choice));
                 for (Group group : groups) {
@@ -436,8 +421,7 @@ public class SendMessageView {
                     }
                 }
             }else {
-                CommonUtil.addTabs(10, true);
-                System.out.println("Failed to read groups list, sorry for the inconvenience");
+                Component.alertDangerErrorMessage(11, "Failed to read groups list, sorry for the inconvenience");
             }
         }
 
@@ -457,8 +441,7 @@ public class SendMessageView {
             Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
             WriteMessageViewInGroup(group);
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Group not found");
+            Component.alertDangerErrorMessage(11, "Group not found");
         }
 
     }
@@ -483,10 +466,7 @@ public class SendMessageView {
             }
             return new UsersList(users,ids);
         }else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
         System.out.println("");
         return null;
@@ -494,9 +474,7 @@ public class SendMessageView {
     }
     public void checkUserToSendMessage(UsersList list) throws  IOException{
         if(list == null){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-            System.out.println("Users list is empty");
+            Component.alertDangerErrorMessage(11, "Users list is empty");
             CommonUtil.resetColor();
         }
         else{
@@ -504,10 +482,7 @@ public class SendMessageView {
         List ids = list.getIds();
         User[] users = list.getUsers();
         if(users.length == 0){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("No users are found");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "No users found");
         }
         else{
 
@@ -517,8 +492,7 @@ public class SendMessageView {
             Component.chooseOptionInputView("Type user id to chat with: ");
             choice  = Component.getChooseOptionChoice();
             if(!ids.contains(choice)){
-                CommonUtil.addTabs(10, true);
-                System.out.println("User not found, try another!");
+                Component.alertDangerErrorMessage(11, "User not found, try another!");
             }
         }while(!ids.contains(choice));
         for (User user : users) {
@@ -551,10 +525,7 @@ public class SendMessageView {
                 System.out.println("Body: " +message.getContent());
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
         Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
 
@@ -623,10 +594,7 @@ public class SendMessageView {
                 CommonUtil.addTabs(10, true);
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
+            Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
         Component.pageTitleView("Write Message to "+ group.getName()+" Group");
 
@@ -694,8 +662,7 @@ public class SendMessageView {
                 CommonUtil.addTabs(10, false);
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to get notifications, sorry for the inconvenience");
+            Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
@@ -718,8 +685,7 @@ public class SendMessageView {
                 CommonUtil.addTabs(10, false);
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to get notifications, sorry for the inconvenience");
+            Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
