@@ -126,7 +126,7 @@ public class UserRepository {
             Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' or username = '%s' ORDER BY user_id ASC;",search,search,search);
+            String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' or username = '%s' and status = 'ACTIVE' ORDER BY user_id ASC;",search,search,search);
             ResultSet rs = statement.executeQuery(query);
             List<User> users=new ArrayList<User>();
             while(rs.next()){
