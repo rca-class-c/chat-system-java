@@ -385,6 +385,7 @@ public class AdminAction {
         User[] users = list.getUsers();
         if(users.length == 0){
             System.out.println("No users");
+            return -1;
         }
         else{
 
