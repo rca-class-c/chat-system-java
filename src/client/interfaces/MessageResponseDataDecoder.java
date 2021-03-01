@@ -28,4 +28,10 @@ public class MessageResponseDataDecoder {
         Messages[] messages = objectMapper.readValue(data, Messages[].class);
         return messages;
     }
+    public  Messages returnDecodedMessage(String data) throws JsonProcessingException{
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Messages messages = objectMapper.readValue(data, Messages.class);
+        return messages;
+    }
 }

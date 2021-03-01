@@ -646,7 +646,7 @@ public class SendMessageView {
                         DeleteMessageView();
                     }
                     case 4 -> {
-                        ViewRepliesView("direct",this.getReceiver());
+                        MessageRepliesView();
                     }
 
                     default -> {
@@ -751,21 +751,45 @@ public class SendMessageView {
     }
 
     public  void ViewRepliesView(String type,int reciever) throws IOException {
+
+
         String key = "replies/";
         Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("REPLIES LIST");
+        List<Integer> ids= new ArrayList<Integer>();
+        User[] users = new User[0];
         if (response.isSuccess()) {
             Messages[] messages = new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
             for (Messages message : messages) {
+                CommonUtil.addTabs(11, true);
+                System.out.println("[ SENDER: " + message.getSender() + "] ");
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
-                System.out.println(message.getContent() + " (OG' message: " + message.getOriginal_message()+")");
+                String messageKey= "messages/single";
+                Request profileRequest = new Request(new ProfileRequestData(message.getOriginal_message()),messageKey);
+                String messageRequestAsString = new ObjectMapper().writeValueAsString(profileRequest);
+                writer.println(messageRequestAsString);
+                ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+                System.out.print(message.getContent());
+                if(profileResponse.isSuccess()){
+                    Messages messages1 = new MessageResponseDataDecoder().returnDecodedMessage(profileResponse.getData());
+                    CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                    System.out.print("  (OG' message:  ");
+                    CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                    System.out.print(messages1.getContent());
+                    CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                    System.out.println(")");
+                }
+
+                else{
+                System.out.println("  (OG' message: " + message.getOriginal_message()+"(It was deleted))");
+                }
                 CommonUtil.resetColor();
             }
         } else {

@@ -20,6 +20,19 @@ import java.util.Set;
  *Description: This class is a handler that handles and directs requests to a given service methods for messagings
  */
 public class MessageRequestHandler {
+    public void HandleMessageProfile(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        Messages returned = new MessagesService().getMessageWithID(new UserDecoder(data).GetProfileDecode());
+        if(returned == null){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
 
     public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<DirectMessage> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());

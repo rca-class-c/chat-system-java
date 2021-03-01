@@ -3,6 +3,7 @@ package server.repositories;
 import client.views.components.Component;
 import server.models.Messages;
 import server.config.PostegresConfig;
+import server.models.User;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
@@ -124,54 +125,6 @@ public class MessagesRepository {
 
 
     public List<GroupMessage> getNotis(int user_id)throws SQLException{
-//        List<DirectMessage> messagess = new ArrayList<>();
-//        List<GroupMessage> messages = new ArrayList<>();
-//        Connection conn = PostegresConfig.getConnection();
-//        Statement statement = conn.createStatement();
-//
-//        String readNotis = String.format("select * from user_group where user_id="+user_id);
-////        String readNotiss = String.format("select * from messages where user_id="+user_id);
-//
-//        ResultSet resultsGroup = statement.executeQuery(readNotis);
-////        ResultSet resultsDirect = statement.executeQuery(readNotiss);
-//
-//        ResultSet group_message = null;
-////        ResultSet direct_message;
-//
-//        while (resultsGroup.next()){
-//            group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+resultsGroup.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
-////
-////            System.out.println("getting messages");
-////            Integer id = resultsGroup.getInt(1);
-////            String content = resultsGroup.getString(2);
-////            Integer sender = resultsGroup.getInt(3);
-////            Integer group_receiver = resultsGroup.getInt(4);
-////            Integer original_message = resultsGroup.getInt(6);
-////            Date sent_at = resultsGroup.getDate(7);
-////
-////            GroupMessage message = new GroupMessage(content,sender,group_receiver,original_message,sent_at,id);
-////            messages.add(message);
-//        }
-//
-////       while(resultsDirect.next()){
-////           direct_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where message_status='UNSEEN' and user_receiver="+ user_id);
-////
-////           Integer id = resultsGroup.getInt(1);
-////           String content = resultsGroup.getString(2);
-////           Integer sender = resultsGroup.getInt(3);
-////           Integer original_message = resultsGroup.getInt(6);
-////           Date sent_at = resultsGroup.getDate(7);
-////
-////           DirectMessage message = (DirectMessage) resultsDirect;
-////           messagess.add(message);
-////       }
-//
-//        statement.close();
-//        conn.close();
-//        return messages;
-////
-// return  messagess;
-
         List<GroupMessage>  notis = new ArrayList<GroupMessage>();
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
@@ -306,11 +259,46 @@ public class MessagesRepository {
                 messages.add(messages1);
             }
         }
+        String query = String.format("UPDATE messages SET message_status ='SEEN' WHERE user_receiver = %d",userId);
+
+
+        int k = statement.executeUpdate(query);
         statement.close();
         conn.close();
         return messages;
     }
-   //sending a direct message
+    /**
+     * Method for getting all user by id
+     * */
+    public Messages getMessageID(int messageID) throws SQLException{
+        try{
+            Connection connection = PostegresConfig.getConnection();
+
+
+            String query = String.format("SELECT * FROM messages  WHERE id = '%d' ;",messageID);
+            Statement statement =  connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            if(rs.next()){
+
+                Messages returnUser =  new Messages(rs.getInt("id"),rs.getString("content"),rs.getInt("sender"),rs.getInt("user_receiver"), rs.getInt("group_receiver"),rs.getInt("original_message"));
+                return returnUser;
+            }
+            else{
+
+            }
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
+
+    //sending a direct message
    //author: Edine Noella
     public  Boolean sendDirectMessage(Messages message) throws SQLException {
         String sql= "insert into messages(content,sender,user_receiver) values (?,?,?)";
