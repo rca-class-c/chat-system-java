@@ -257,24 +257,15 @@ public class ProfileSettings {
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             if(updateResponse.isSuccess()){
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print(" Your account was updated successfully ");
-                CommonUtil.resetColor();
-
-                System.out.println();
+                Component.alertSuccessMessage(11, "Your account was updated successfully");
             }
             else{
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print("  Account not updated, try again! ");
-                CommonUtil.resetColor();
+                Component.alertDangerErrorMessage(11, "Account not updated, try again!");
             }
         }
         else{
-            System.out.println("No profile found!");
+            Component.alertDangerErrorMessage(11, "No profile found!");
+
         }
         viewProfileSettingsOptions();
     }
