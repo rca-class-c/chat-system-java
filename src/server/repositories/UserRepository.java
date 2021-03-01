@@ -179,7 +179,7 @@ public class UserRepository {
             Connection connection = PostegresConfig.getConnection();
             Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users where user_id != '%d' ORDER BY user_id ASC;",id);
+            String query = String.format("SELECT * FROM users where user_id != '%d' AND status = 'ACTIVE' ORDER BY user_id ASC;",id);
             ResultSet rs = statement.executeQuery(query);
             List<User> users=new ArrayList<User>();
             while(rs.next()){
@@ -263,6 +263,57 @@ public class UserRepository {
         }
         return null;
        
+    }
+    /**
+     * Activating user method
+     * */
+    public boolean ActivateUser(int userId) throws SQLException{
+
+        int i= 0;
+        try {
+            Connection connection = PostegresConfig.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = String.format("UPDATE users SET status ='ACTIVE' WHERE user_id = %d",userId);
+
+
+            i = statement.executeUpdate(query);
+
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            Component.showErrorMessage(e.getMessage());
+        }
+        if(i > 0) {
+            return true;
+        }
+        return false;
+
+    }
+    public boolean DeActivateUser(int userId) throws SQLException{
+
+        int i= 0;
+        try {
+            Connection connection = PostegresConfig.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = String.format("UPDATE users SET status ='INACTIVE' WHERE user_id = %d",userId);
+
+
+            i = statement.executeUpdate(query);
+
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            Component.showErrorMessage(e.getMessage());
+        }
+        if(i > 0) {
+            return true;
+        }
+        return false;
+
     }
     /**
      * Method for deleting user using id

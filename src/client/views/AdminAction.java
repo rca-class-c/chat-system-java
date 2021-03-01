@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 
+import utils.ConsoleColor;
 import utils.ValidEmail;
 
 public class AdminAction {
@@ -380,11 +381,21 @@ public class AdminAction {
         }
     }
     public int CheckUserExists(UsersList list) throws  IOException{
+        if(list == null){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+            System.out.println("Users list is null");
+            CommonUtil.resetColor();
+            return -1;
+        }
         int choice = 0;
         List ids = list.getIds();
         User[] users = list.getUsers();
         if(users.length == 0){
-            System.out.println("No users");
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+            System.out.println("Users empty");
+            CommonUtil.resetColor();
             return -1;
         }
         else{
@@ -429,7 +440,9 @@ public class AdminAction {
             return new UsersList(users,ids);
         }else {
             CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failed to read users list, sorry for the inconvenience");
+            CommonUtil.resetColor();
         }
         System.out.println("");
         return null;
@@ -442,11 +455,15 @@ public class AdminAction {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.RegularColor.GREEN);
             System.out.println("Successfully Done!");
+            CommonUtil.resetColor();
 
         }
         else{
+            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
             System.out.println("Failing, try again");
+            CommonUtil.resetColor();
         }
 
 
