@@ -149,6 +149,31 @@ public class UserRepository {
     /**
      * Method for getting all other users
      * */
+    public List<User> getAllInactiveUsers() throws SQLException{
+        try{
+            Connection connection = PostegresConfig.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM users where status = 'INACTIVE' ORDER BY user_id ASC;");
+            ResultSet rs = statement.executeQuery(query);
+            List<User> users=new ArrayList<User>();
+            while(rs.next()){
+                users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
+                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
+                        rs.getString("status"),rs.getString("created_at"),rs.getString("updated_at")));
+            }
+            return users;
+        }
+        catch ( Exception e ) {
+
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+
+            System.exit(0);
+
+        }
+        return null;
+    }
     public List<User> getAllOtherUsers(int id) throws SQLException{
         try{
             Connection connection = PostegresConfig.getConnection();

@@ -46,6 +46,9 @@ public class UserRoutes {
         else if(request.equals("users/")){
             new UserRequestHandler().HandleUsersList(data,writer,objectMapper);
         }
+        else if(request.equals("users/inactive")){
+            new UserRequestHandler().HandleInactiveUsersList(data,writer,objectMapper);
+        }
         else if(request.equals("users/profile")){
             new UserRequestHandler().HandleGetProfile(data,writer,objectMapper);
         }
