@@ -210,10 +210,10 @@ public class MessagesRepository {
         return rowInsert;
     }
 
-    public List<DirectMessage> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
+    public List<Messages> getDirectMessagesBetweenTwo(int first,int last) throws SQLException {
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
-        List <DirectMessage> messages = new ArrayList<DirectMessage>();
+        List <Messages> messages = new ArrayList<Messages>();
 
         String readQuery = String.format(
                 "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
@@ -227,22 +227,28 @@ public class MessagesRepository {
             String content = result.getString(2);
             Integer sender = result.getInt(3);
             Integer user_receiver = result.getInt(4);
+            Integer group_receiver = result.getInt(5);
             Integer original_message = result.getInt(6);
-            Date sent_at = result.getDate(7);
-            messages.add(new DirectMessage(id,content,sender,user_receiver,original_message,sent_at));
+            java.sql.Date date = result.getDate(7);
+            Messages messages1 = new Messages(id,content,sender,user_receiver,group_receiver,original_message,date);
+                messages.add(messages1);
         }
+        String query = String.format("UPDATE messages SET message_status ='SEEN' WHERE user_receiver = %d",first);
+
+
+        int k = statement.executeUpdate(query);
         statement.close();
         conn.close();
         return messages;
     }
-    public List<Messages> GetReplies(int userId) throws SQLException {
+    public List<Messages> GetReplies(int userId,int second) throws SQLException {
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
-        List <Messages> messages = new ArrayList<Messages>();
+        List <Messages> messages = new ArrayList<>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = '%d' or user_receiver = '%d';",
-                userId, userId);
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
+                userId, second,userId, second);
 
         ResultSet result = statement.executeQuery(readQuery);
 

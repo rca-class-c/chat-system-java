@@ -61,7 +61,15 @@ public class Messages {
         this.original_message = original_message;
     }
 
-
+    public Messages(Integer id, String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message,Date sent_at) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+        this.group_receiver = group_receiver;
+        this.sent_at = sent_at;
+        this.original_message = original_message;
+    }
 
     //Setters and getters
     public int getId() { return id; }
