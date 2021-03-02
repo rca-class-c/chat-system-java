@@ -483,6 +483,8 @@ public class SendMessageView {
                 ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(10, false);
+
+
             }
             if(users.length == 0){
                 return null;
@@ -645,7 +647,6 @@ public class SendMessageView {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
         Component.pageTitleView("Write Message to "+ group.getName()+" Group");
-
 
         CommonUtil.addTabs(11, true);
         System.out.println("1. Write a message");
