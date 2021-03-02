@@ -229,7 +229,8 @@ public class MessagesRepository {
             Integer user_receiver = result.getInt(4);
             Integer group_receiver = result.getInt(5);
             Integer original_message = result.getInt(6);
-            Messages messages1 = new Messages(id,content,sender,user_receiver,group_receiver,original_message);
+            java.sql.Date date = result.getDate(7);
+            Messages messages1 = new Messages(id,content,sender,user_receiver,group_receiver,original_message,date);
                 messages.add(messages1);
         }
         String query = String.format("UPDATE messages SET message_status ='SEEN' WHERE user_receiver = %d",first);
