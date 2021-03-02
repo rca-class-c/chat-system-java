@@ -71,9 +71,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("2. Message a group");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
 
                 choice = Component.getChooseOptionChoice();
@@ -86,13 +86,10 @@ public class SendMessageView {
                             GroupMessageView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
+                            break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
+                            Component.closeUIView();
                             System.exit(1);
                         }
                         default -> {
@@ -118,9 +115,10 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("3. Enter a user ID");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
+
 
             Component.chooseOptionInputView("Choose an option: ");
 
@@ -138,16 +136,11 @@ public class SendMessageView {
                             UserIdView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
                             break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
+                            Component.closeUIView();
                             System.exit(1);
-                            break;
                         }
                         default -> {
                             Component.showErrorMessage("Enter a valid choice (1, 2): ");
@@ -583,6 +576,10 @@ public class SendMessageView {
         System.out.println("3. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("4. Replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -603,7 +600,13 @@ public class SendMessageView {
                     case 4 -> {
                         MessageRepliesView();
                     }
-
+                    case 44 -> {
+                        break;
+                    }
+                    case 55 -> {
+                        Component.closeUIView();
+                        System.exit(0);
+                    }
                     default -> {
                         action = -1;
 
@@ -655,9 +658,10 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("5. Notifications");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
+
 
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -680,13 +684,10 @@ public class SendMessageView {
                         MessageRepliesView();
                     }
                     case 44->{
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
+                        break;
                     }
                     case 55->{
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
                     }
                     default -> {
@@ -763,9 +764,10 @@ public class SendMessageView {
         System.out.println("1. Write a message");
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
-        System.out.println("44. Go back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -782,13 +784,10 @@ public class SendMessageView {
                         SendFileView();
                     }
                     case 44->{
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
+                        break;
                     }
                     case 55->{
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
+                        Component.closeUIView();
                         System.exit(1);
                     }
 
@@ -864,6 +863,11 @@ public class SendMessageView {
         System.out.println("2. View replies");
         CommonUtil.addTabs(11, false);
         System.out.println("3. Delete a reply");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
+
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -881,7 +885,13 @@ public class SendMessageView {
                     case 3 -> {
                         DeleteMessageView();
                     }
-
+                    case 44 -> {
+                        break;
+                    }
+                    case 55 -> {
+                        Component.closeUIView();
+                        System.exit(1);
+                    }
 
                     default -> {
                         action = -1;
