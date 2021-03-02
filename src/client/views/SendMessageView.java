@@ -1,6 +1,7 @@
 package client.views;
 
 import client.interfaces.*;
+import client.simplifiers.RequestSimplifiers;
 import client.views.components.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,16 +60,8 @@ public class SendMessageView {
     }
 
     public void OptionsView() throws IOException {
-        String key= "users/profile";
-        Request profileRequest = new Request(new ProfileRequestData(userId),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            this.setCurrent(new RequestSimplifiers(writer,reader).goGetUser(userId));
 
-        if(profileResponse.isSuccess()) {
-            User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
-            this.setCurrent(profile);
-        }
         int choice = 0;
         while(choice != 55 && choice != 44) {
             Component.pageTitleView("Send a Message");
@@ -377,18 +370,12 @@ public class SendMessageView {
 
         Component.chooseOptionInputView("Enter User Id: ");
         int query = Component.getChooseOptionChoice();
-        String key= "users/profile";
-        Request request = new Request(new ProfileRequestData(query),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("USER BY ID GETTING");
-        if(response.isSuccess()){
-            this.setReceiver(query);
-            User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-            this.setChattingWith(user);
-            WriteMessageView(user);
-        }else {
+        User returned = new RequestSimplifiers(writer,reader).goGetUser(query);
+        if(returned != null){
+            this.setChattingWith(returned);
+            WriteMessageView(returned);
+        }
+        else {
             Component.alertDangerErrorMessage(11, "User not found");
         }
     }
@@ -494,15 +481,10 @@ public class SendMessageView {
 
     }
     public UsersList allActiveUsers() throws IOException {
-        String  key= "users/";
-        Request request = new Request(new ProfileRequestData(userId),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("USERS LIST");
         List ids = new ArrayList<Integer>();
-        if(response.isSuccess()){
-            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+            User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
+        if(users != null){
             CommonUtil.addTabs(10, true);
             for (User user : users) {
                 ids.add(user.getUserID());
