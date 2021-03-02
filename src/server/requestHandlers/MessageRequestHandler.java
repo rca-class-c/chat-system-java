@@ -35,7 +35,7 @@ public class MessageRequestHandler {
     }
 
     public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        List<DirectMessage> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());
+        List<Messages> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());
         if (messagesList == null) {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
