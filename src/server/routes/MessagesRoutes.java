@@ -1,12 +1,10 @@
 package server.routes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.requestHandlers.MessageRequestHandler;
 
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 
 /**
@@ -61,10 +59,8 @@ public class MessagesRoutes {
 
             new MessageRequestHandler().HandleDirectNotis(data,writer,objectMapper);
         }
-
-
-
-
-
+        else if(request.equals("messages/edit")){
+            new MessageRequestHandler().HandleEditMessages(data, writer, objectMapper);
+        }
     }
 }
