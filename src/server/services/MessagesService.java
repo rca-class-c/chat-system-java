@@ -19,18 +19,11 @@ import java.util.Set;
 
 public class  MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
-
-    public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
-        return messagesRepository.getDirectMessages(members.getFirstUser(), members.getLastUser());
-    }
     public List<Messages> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }
     public List<GroupMessage> viewGroupMessages(int groupId) throws SQLException{
         return messagesRepository.getGroupMessages(groupId);
-    }
-    public Messages editMessage(Messages messages) throws Exception {
-        return messagesRepository.updateMessage(messages);
     }
     public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
@@ -70,5 +63,7 @@ public class  MessagesService {
         return messagesRepository.DeleteMessages(data.getUser(),data.getMessage_id());
     }
 
-
+    public Boolean EditMessage(MessageResponseDataFormat data) throws SQLException {
+        return messagesRepository.updateMessage(data.getUser(), data.getMessage_id(), data.getContent());
+    }
 }
