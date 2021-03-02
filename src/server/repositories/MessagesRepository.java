@@ -235,14 +235,14 @@ public class MessagesRepository {
         conn.close();
         return messages;
     }
-    public List<Messages> GetReplies(int userId) throws SQLException {
+    public List<Messages> GetReplies(int userId,int second) throws SQLException {
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
         List <Messages> messages = new ArrayList<Messages>();
 
         String readQuery = String.format(
-                "SELECT * from messages where sender = '%d' or user_receiver = '%d';",
-                userId, userId);
+                "SELECT * from messages where sender = %d and user_receiver = %d or sender = %d and user_receiver = %d;",
+                userId, second,userId, second);
 
         ResultSet result = statement.executeQuery(readQuery);
 

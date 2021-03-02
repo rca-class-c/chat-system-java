@@ -58,8 +58,8 @@ public class  MessagesService {
     public Messages SendReply(Messages messages) throws SQLException{
         return messagesRepository.SendReply(messages);
     }
-    public List<Messages> GetReplies(int id) throws SQLException{
-        return messagesRepository.GetReplies(id);
+    public List<Messages> GetReplies(ChatBetweenTwo members) throws SQLException{
+        return messagesRepository.GetReplies(members.getFirstUser(), members.getLastUser());
     }
     //HEAD
     public boolean DeleteReply(int id) throws SQLException{

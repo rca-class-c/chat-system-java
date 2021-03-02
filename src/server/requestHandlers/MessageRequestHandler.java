@@ -48,7 +48,7 @@ public class MessageRequestHandler {
         }
     }
     public void HandleGetReplies(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        List<Messages> messagesList = new MessagesService().GetReplies(new UserDecoder(data).GetProfileDecode());
+        List<Messages> messagesList = new MessagesService().GetReplies(new MessageDecoder(data).returnChatMembers());
         if (messagesList == null) {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);

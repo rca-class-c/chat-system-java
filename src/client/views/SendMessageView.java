@@ -356,6 +356,7 @@ public class SendMessageView {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("USER BY ID GETTING");
         if(response.isSuccess()){
+            this.setReceiver(query);
             User user = new UserResponseDataDecoder().returnUserDecoded(response.getData());
             WriteMessageView(user);
         }else {
@@ -778,17 +779,15 @@ public class SendMessageView {
         } while (action == -1);
     }
 
-    public  void ViewRepliesView(String type,int reciever) throws IOException {
+    public  void ViewRepliesView() throws IOException {
 
 
         String key = "replies/";
-        Request request = new Request(new ProfileRequestData(userId), key);
+        Request request = new Request(new ChatBetweenTwo(userId,this.getReceiver()), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("REPLIES LIST");
-        List<Integer> ids= new ArrayList<Integer>();
-        User[] users = new User[0];
         if (response.isSuccess()) {
             Messages[] messages = new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
             for (Messages message : messages) {
@@ -847,7 +846,7 @@ public class SendMessageView {
                         SendReplyView();
                     }
                     case 2 -> {
-                        ViewRepliesView("direct",3);
+                        ViewRepliesView();
                     }
                     case 3 -> {
                         DeleteMessageView();
