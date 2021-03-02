@@ -316,12 +316,11 @@ public class SendMessageView {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
 
         if(response.isSuccess()){
-            CommonUtil.addTabs(10, false);
-            System.out.println("Message edited successfully");
+            Component.alertSuccessMessage(11, "Message edited successfully");
+
         }
         else{
-            CommonUtil.addTabs(10, false);
-            System.out.println("Message edit unsuccessful!");
+            Component.showErrorMessage("Message edit unsuccessful!");
         }
     }
 
