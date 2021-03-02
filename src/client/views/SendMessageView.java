@@ -204,7 +204,7 @@ public class SendMessageView {
 
 
 
-    public  void TypeMessageView(String reciever_type,int reciever) throws IOException {
+    public  void TypeMessageView(String reciever_type) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
@@ -213,11 +213,11 @@ public class SendMessageView {
         String key = "direct";
         Messages newMessage = null;
         if(reciever_type.equals("direct")){
-            newMessage = new Messages(0,userId,reciever,0,message);
+            newMessage = new Messages(0,userId,receiver,0,message);
             key = "messages/send/direct";
         }
         else if(reciever_type.equals("group")){
-            newMessage = new Messages(0,message,userId,reciever,0);
+            newMessage = new Messages(0,message,userId,receiver,0);
             key = "messages/send/group";
         }
         Request request = new Request(newMessage,key);
@@ -354,7 +354,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = scanner.nextInt();
 
-        WriteMessageView(new User());
+        WriteMessageView();
     }
 
 
@@ -399,7 +399,7 @@ public class SendMessageView {
         User returned = new RequestSimplifiers(writer,reader).goGetUser(query);
         if(returned != null){
             this.setChattingWith(returned);
-            WriteMessageView(returned);
+            WriteMessageView();
         }
         else {
             Component.alertDangerErrorMessage(11, "User not found");
@@ -555,15 +555,15 @@ public class SendMessageView {
             if(user.getUserID() == choice){
                 this.setChattingWith(user);
                 this.setReceiver(choice);
-                WriteMessageView(user);
+                WriteMessageView();
             }
         }
         }
         }
     }
-    public  void WriteMessageView(User user) throws IOException {
+    public  void WriteMessageView() throws IOException {
         String key = "messages/direct";
-        Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
+        Request request = new Request(new ChatBetweenTwo(userId,receiver), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
@@ -598,7 +598,7 @@ public class SendMessageView {
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
-        Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
+        Component.pageTitleView("Write Message to "+ chattingWith.getFname()+" "+chattingWith.getLname());
 
 
         CommonUtil.addTabs(11, true);
@@ -620,7 +620,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView("direct",user.getUserID());
+                        TypeMessageView("direct");
                     }
                     case 2 -> {
                         SendFileView();
@@ -699,7 +699,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView("group",group.getId());
+                        TypeMessageView("group");
                     }
                     case 2 -> {
                         SendFileView();
