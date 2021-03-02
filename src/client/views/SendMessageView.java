@@ -795,11 +795,10 @@ public class SendMessageView {
         System.out.println("1. Write a message");
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
+        CommonUtil.addTabs(11, false);
         System.out.println("44. Go back");
         CommonUtil.addTabs(11, false);
         System.out.println("55. Quit");
-        Component.chooseOptionInputView("Choose an option: ");
-
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
