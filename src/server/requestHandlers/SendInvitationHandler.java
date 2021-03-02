@@ -2,12 +2,9 @@ package server.requestHandlers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.ChatServer;
 import server.dataDecoders.SendInvitationDecoder;
 import server.dataDecoders.UserDecoder;
 import server.models.Response;
-import server.models.User;
-import server.services.UserService;
 import server.services.sendInvitations;
 
 import javax.mail.MessagingException;
@@ -15,8 +12,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
- *Author: Didier Munezero
  *Description: This class is a handler that handles and directs requests to a given service methods for sending invitations
+ @author Didier Munezero
  */
 public class SendInvitationHandler {
     public void HandleSendInvitation(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException, MessagingException, ClassNotFoundException {

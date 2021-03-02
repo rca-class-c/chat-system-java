@@ -9,8 +9,8 @@ import utils.ChatBetweenTwo;
 import utils.GroupMessage;
 
 /**
- *Author: Didier Munezero
  *Description: This class is a decoder of all data sent to message service
+ @author Didier Munezero
  */
 public class MessageDecoder {
     String data;

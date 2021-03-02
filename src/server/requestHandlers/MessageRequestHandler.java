@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 /**
- *Author: Didier Munezero
  *Description: This class is a handler that handles and directs requests to a given service methods for messagings
+ @author Didier Munezero
  */
 public class MessageRequestHandler {
     public void HandleMessageProfile(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {

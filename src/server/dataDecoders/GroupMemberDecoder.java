@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.GroupMember;
 
 import java.util.Arrays;
-/*
-* @AUTHOR: Kobusinge Shallon
+/**
+ * @author Gahamanyi Yvette
 * */
 public class GroupMemberDecoder {
     String data;

@@ -15,8 +15,8 @@ import java.util.List;
 
 public class UserRequestHandler {
     /**
-     *Author: Didier Munezero
      *Description: This class is a handler that handles and directs requests to a given service methods for logging in and users
+     @author Didier Munezero
      */
     public void HandleLogin(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws JsonProcessingException, SQLException {
         User returned = new UserService().loginUser(new UserDecoder(data).LoginDecode());
