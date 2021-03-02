@@ -544,17 +544,8 @@ public class SendMessageView {
         Component.pageTitleView("Your recent chat");
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            //CommonUtil.addTabs(10, true);
             System.out.println("");
             for (Messages message : messages) {
-//                CommonUtil.addTabs(10, false);
-//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-//                System.out.print("Sender: "+message.getSender());
-//                CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-//                System.out.println("    sent at: "+message.getSent_at());
-//                CommonUtil.resetColor();
-//                CommonUtil.addTabs(10, false);
-//                System.out.println("Body: " +message.getContent());
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
                     System.out.println("[ SENDER: " + this.getChattingWith().getFname()+""+this.getChattingWith().getLname() + "] ");
