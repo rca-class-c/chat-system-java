@@ -125,6 +125,19 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+
+    public void HandleEditMessages(String data, PrintWriter writer, ObjectMapper objectMapper) throws  JsonProcessingException, SQLException {
+        boolean returned = new MessagesService().EditMessage(new MessageDecoder(data).returnMessageEditData());
+        if (!returned) {
+            Response response = new Response(null, false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        } else {
+            Response response = new Response(true, true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
 // HEAD
 
     public void HandleDeleteReplies(String data, PrintWriter writer, ObjectMapper objectMapper, ChatServer server) throws Exception {

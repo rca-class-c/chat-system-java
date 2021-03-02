@@ -1,15 +1,14 @@
 package server.repositories;
 
 import client.views.components.Component;
-import server.models.Messages;
 import server.config.PostegresConfig;
-import server.models.User;
+import server.models.Messages;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 
 public class MessagesRepository {
 
@@ -80,22 +79,18 @@ public class MessagesRepository {
 
     //-------------------------------Edit Direct Messages-----------------------------------------
     // author : Loraine
-    public Messages updateMessage (Messages message) throws Exception{
+    public Boolean updateMessage (int user_id, int  message_id, String content) throws SQLException{
 
         Connection conn = PostegresConfig.getConnection();
-        String query = String.format("UPDATE messages SET content = ? WHERE id = ?;");
-        PreparedStatement statement =  conn.prepareStatement(query);
-
-        statement.setString(1, message.getContent());
-        statement.setInt(2, message.getId());
-
-        boolean rowUpdated = statement.executeUpdate() > 1;
+        Statement statement = conn.createStatement();
+        String query = String.format(
+                "UPDATE messages SET content = '%s' WHERE id = %d and sender = %d;",
+                content, message_id, user_id);
+        boolean rowUpdated = statement.executeUpdate(query) > 0;
         statement.close();
         conn.close();
-        if(rowUpdated){
-            return message;
-        }
-        return null;
+
+        return rowUpdated;
     }
 
     //-------------------------------------Getting Notifications------------------------------------------
