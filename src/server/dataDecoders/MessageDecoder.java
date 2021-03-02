@@ -31,6 +31,12 @@ public class MessageDecoder {
         JsonNode dataDecrypt = objectMapper.readTree(data);
         return new Messages(dataDecrypt.get("content").asText(),dataDecrypt.get("sender").asInt(),dataDecrypt.get("user_receiver").asInt(),dataDecrypt.get("group_receiver").asInt(),dataDecrypt.get("original_message").asInt());
     }
+    public Messages returnReplyContent() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode dataDecrypt = objectMapper.readTree(data);
+        Messages messages = new Messages(dataDecrypt.get("id").asInt(),dataDecrypt.get("content").asText(),dataDecrypt.get("sender").asInt(),dataDecrypt.get("user_receiver").asInt(),5,dataDecrypt.get("original_message").asInt());
+        return messages;
+    }
     public GroupMessage returnMessageContentGroup() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);

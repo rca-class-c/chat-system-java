@@ -35,10 +35,13 @@ public class RepliesRoutes {
 
     public void Main() throws JsonProcessingException, SQLException {
         if(request.equals("replies/send/direct")){
-            new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper);
+            new MessageRequestHandler().HandleSendReply(data,writer,objectMapper);
         }
-        else if(request.equals("replies/send/group")){
-            new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper);
+        else if(request.equals("replies/")){
+            new MessageRequestHandler().HandleGetReplies(data,writer,objectMapper);
+        }
+        else if(request.equals("replies/delete")){
+            new MessageRequestHandler().HandleSendReply(data,writer,objectMapper);
         }
     }
 }
