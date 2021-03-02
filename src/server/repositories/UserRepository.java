@@ -90,34 +90,7 @@ public class UserRepository {
         return null;
     }
 
-    /**
-     * Method for getting all users in our database
-     * */
-    public List<User> getAllUsers() throws SQLException{
-        try{
-            Connection connection = PostegresConfig.getConnection();
-            Statement statement =  connection.createStatement();
 
-            String query = String.format("SELECT * FROM users;");
-            ResultSet rs = statement.executeQuery(query);
-            List<User> users=new ArrayList<User>();
-            while(rs.next()){
-                users.add(new User(rs.getString("first_name"),rs.getString("last_name"),
-                        rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
-                        rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),
-                        rs.getString("status")));
-            }
-            return users;
-        }
-        catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-
-            System.exit(0);
-
-        }
-        return null;
-    }
     /**
      * Method for getting users search list
      * */
