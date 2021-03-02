@@ -1,2 +1,4 @@
-package server.services;public class PackageService {
+package server.services;
+
+public class PackageService {
 }

@@ -1,7 +1,5 @@
 package server.models;
 
-import server.services.UserService;
-
 import java.util.Date;
 
 /**
@@ -13,14 +11,15 @@ import java.util.Date;
  */
 
 public class Messages {
-    public Integer id;
-    public String content;
-    public Integer sender;
-    public Integer user_receiver;
-    public Integer group_receiver;
-    public Integer original_message;
-    public Date sent_at;
-public Messages(){};
+    private int id;
+    private String content;
+    private int sender;
+    private int user_receiver;
+    private int group_receiver;
+    private int original_message;
+    private Date sent_at;
+
+    public Messages(){};
     //Message class constructor
     public Messages(String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message
     ){

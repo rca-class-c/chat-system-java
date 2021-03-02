@@ -1,7 +1,5 @@
 package server.models;
 
-import server.models.enums.FileStatusEnum;
-
 import java.util.Date;
 
 /**
