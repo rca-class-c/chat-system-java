@@ -6,6 +6,10 @@ import javax.mail.internet.*;
 import javax.activation.*;
 
 
+/**
+ *Description: This util class is functioning part that sends email to a user to join the system
+ *@author Didier Munezero
+ */
 public class SendInvitationEmail {
     int verificationCode;
     String email;

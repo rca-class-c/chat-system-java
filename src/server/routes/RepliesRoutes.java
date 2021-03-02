@@ -9,8 +9,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
- *@author: Didier Munezero
  *Description: This is a class that now where to direct a given request of replies to a responsive direct handler.
+ @author Didier Munezero
  */
 public class RepliesRoutes {
     private String data;

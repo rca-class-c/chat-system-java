@@ -14,8 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *Author: Didier Munezero
- *Description: This class is a handler that handles and directs requests to a given service methods for groups everything
+ * This class is a handler that handles and directs requests to a given service methods for groups everything
+ *@author Didier Munezero
  */
 public class GroupRequestHandler {
 
