@@ -20,9 +20,35 @@ import java.util.Set;
  *Description: This class is a handler that handles and directs requests to a given service methods for messagings
  */
 public class MessageRequestHandler {
+    public void HandleMessageProfile(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        Messages returned = new MessagesService().getMessageWithID(new UserDecoder(data).GetProfileDecode());
+        if(returned == null){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
 
     public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<DirectMessage> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());
+        if (messagesList == null) {
+            Response response = new Response(null, false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+
+            writer.println(ResponseAsString);
+        } else {
+            Response response = new Response(messagesList, true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
+    public void HandleGetReplies(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
+        List<Messages> messagesList = new MessagesService().GetReplies(new UserDecoder(data).GetProfileDecode());
         if (messagesList == null) {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
@@ -72,21 +98,8 @@ public class MessageRequestHandler {
         }
     }
 
-    public void HandleReplyInGroup(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        Messages returned = new MessagesService().ReplyInGroup(new MessageDecoder(data).returnMessageContent());
-        if (returned == null) {
-            Response response = new Response(null, false);
-            String ResponseAsString = objectMapper.writeValueAsString(response);
-            writer.println(ResponseAsString);
-        } else {
-            Response response = new Response(returned, true);
-            String ResponseAsString = objectMapper.writeValueAsString(response);
-            writer.println(ResponseAsString);
-        }
-    }
-
-    public void HandleReplyDirectly(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        Messages returned = new MessagesService().ReplyDirectly(new MessageDecoder(data).returnMessageContent());
+    public void HandleSendReply(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
+        Messages returned = new MessagesService().SendReply(new MessageDecoder(data).returnReplyContent());
         if (returned == null) {
             Response response = new Response(null, false);
             String ResponseAsString = objectMapper.writeValueAsString(response);
