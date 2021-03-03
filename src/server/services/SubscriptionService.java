@@ -1,9 +1,13 @@
 package server.services;
 import server.models.Subscription;
 import server.repositories.SubscriptionRepository;
-
 import java.sql.SQLException;
 
+/**
+ * @authors
+ * Cyusa Keny
+ * Irakoze Loraine Mukezwa
+ */
 public class SubscriptionService {
 private  final  SubscriptionRepository repository=new SubscriptionRepository();
 public  int AddNewSubscription(Subscription subscription) throws SQLException {
