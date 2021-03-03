@@ -1,12 +1,7 @@
 package client.views;
 
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
-import client.interfaces.UserResponseDataDecoder;
+import client.simplifiers.RequestSimplifiers;
 import client.views.components.Component;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import server.models.Group;
 import server.models.User;
 import utils.CommonUtil;
 import utils.ConsoleColor;
@@ -14,10 +9,8 @@ import utils.ConsoleColor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Scanner;
 
-//import utils.CommonUtil;
 
 public class UserView {
     public int userId;
@@ -95,21 +88,26 @@ public class UserView {
     }
 
     public void allActiveUsers() throws IOException {
-        String key = "users/";
-        Request request = new Request(new ProfileRequestData(userId), key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         Component.pageTitleView("USERS LIST");
-        if (response.isSuccess()) {
-            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
-            CommonUtil.addTabs(11, true);
+        if (users != null) {
+            if(users.length != 0){
+
+
             for (User user : users) {
+                CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + user.getUserID() + "] ");
                 CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
                 System.out.println(user.getFname() + " " + user.getLname());
+                CommonUtil.resetColor();
+            }
+            }
+            else {
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                System.out.println("Users list is empty ");
                 CommonUtil.resetColor();
             }
         } else {

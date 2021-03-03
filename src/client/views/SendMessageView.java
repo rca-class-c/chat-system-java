@@ -562,15 +562,10 @@ public class SendMessageView {
         }
     }
     public  void WriteMessageView() throws IOException {
-        String key = "messages/direct";
-        Request request = new Request(new ChatBetweenTwo(userId,receiver), key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Messages[] messages = new RequestSimplifiers(writer,reader).goGetMessages(userId,receiver);
         Component.pageTitleView("Your recent chat");
-        if(response.isSuccess()){
-            Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            System.out.println("");
+        if(messages != null){
+            if(messages.length != 0){
             for (Messages message : messages) {
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
@@ -593,6 +588,13 @@ public class SendMessageView {
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                     System.out.println(")");
 
+                CommonUtil.resetColor();
+            }
+            }
+            else{
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                System.out.println("No messages sent yet");
                 CommonUtil.resetColor();
             }
         }else {
