@@ -4,6 +4,7 @@ import client.views.components.Component;
 import server.config.PostegresConfig;
 import server.models.AuthInput;
 import server.models.User;
+import server.services.ReportsServices;
 
 import java.sql.*;
 import java.util.List;
@@ -58,6 +59,7 @@ public class UserRepository {
 
         }
         if(i > 0) {
+            new ReportsServices().insertUserReport();
             return user;
         }
         return null;
@@ -74,6 +76,7 @@ public class UserRepository {
             ResultSet rs = statement.executeQuery(query);
 
             if(rs.next()){
+                new ReportsServices().insertVisitsReport();
                 User returnUser =  new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),
                         rs.getString("pass_word"),rs.getString("email"),rs.getString("dob"),
                         rs.getString("username"),rs.getString("gender"),rs.getInt("categoryid"),

@@ -39,13 +39,41 @@ public class ReportsServices {
    public void insertUserReport(){
        new ReportsManagementRepository().insertUserReport();
    }
+
+    /**
+     * method that set the number of system visit
+     * @return void
+     */
+    public  void  insertVisitsReport(){new ReportsManagementRepository().setNumberOfSystemVisit();}
+
+    /**
+     * method to get message statistics
+     * @return List<list>
+     */
    public List<List> getMessageReport(){
        return new ReportsManagementRepository().getReport("message:");
     }
+    /**
+     * method to get group statistics
+     * @return List<list>
+     */
     public List<List> getGroupReport(){
         return new ReportsManagementRepository().getReport("group:");
     }
+    /**
+     * method to get user statistics
+     * @return List<list>
+     */
     public List<List> getUserReport(){
         return new ReportsManagementRepository().getReport("user:");
     }
+    /**
+     * method to get visit statistics
+     * @return List<list>
+     */
+    public List<List> getVisitReport(){
+        return new ReportsManagementRepository().getReport("visits:");
+    }
+
+
 }
