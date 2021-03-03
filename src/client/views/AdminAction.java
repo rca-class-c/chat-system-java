@@ -1,6 +1,7 @@
 package client.views;
 
 import client.interfaces.*;
+import client.simplifiers.RequestSimplifiers;
 import client.views.components.Component;
 import client.views.components.TableView;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -376,23 +377,11 @@ public class AdminAction {
     }
     public int CheckUserExists(UsersList list) throws  IOException{
         if(list == null){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-            System.out.println("Users list is null");
-            CommonUtil.resetColor();
             return -1;
         }
         int choice = 0;
         List ids = list.getIds();
         User[] users = list.getUsers();
-        if(users.length == 0){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-            System.out.println("Users empty");
-            CommonUtil.resetColor();
-            return -1;
-        }
-        else{
 
 
         do{
@@ -410,35 +399,32 @@ public class AdminAction {
                 return choice;
             }
         }
-        }
         return -1;
     }
     public UsersList allInactiveUsers() throws IOException {
-        String  key= "users/inactive";
-        Request request = new Request(new ProfileRequestData(userId),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("USERS LIST");
-        List ids = new ArrayList<Integer>();
-        if(response.isSuccess()){
-            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+        User[] users = new RequestSimplifiers(writer,reader).goGetInactiveUsers(userId);
+        List<Integer> ids= new ArrayList<Integer>();
+        Component.pageTitleView("ALL INACTIVE USERS");
+        if(users != null){
+            if(users.length == 0){
+                CommonUtil.addTabs(11, true);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                System.out.println("There are no inactive users");
+                CommonUtil.resetColor();
+            }
+            else{
             CommonUtil.addTabs(11, true);
             for (User user : users) {
                 ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(11, false);
             }
-            if(users.length == 0){
-                return null;
-            }
             return new UsersList(users,ids);
+            }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
         return null;
-
     }
     public void De_ActivateUser(int userId,String key) throws IOException {
         Request request = new Request(new ProfileRequestData(userId),key);
