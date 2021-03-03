@@ -1,12 +1,9 @@
 package server.config;
 import client.views.components.Component;
 import redis.clients.jedis.Jedis;
-import utils.CommonUtil;
-import utils.ConsoleColor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 public class JedisConfig {

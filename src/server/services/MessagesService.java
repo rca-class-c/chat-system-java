@@ -19,10 +19,6 @@ import java.util.Set;
 
 public class  MessagesService {
     private final MessagesRepository messagesRepository = new MessagesRepository();
-
-    public List<DirectMessage> viewDirectMessages(ChatBetweenTwo members) throws SQLException {
-        return messagesRepository.getDirectMessages(members.getFirstUser(), members.getLastUser());
-    }
     public List<Messages> viewDirectMessagesBetweenTwo(ChatBetweenTwo members) throws SQLException {
         return messagesRepository.getDirectMessagesBetweenTwo(members.getFirstUser(),members.getLastUser());
     }

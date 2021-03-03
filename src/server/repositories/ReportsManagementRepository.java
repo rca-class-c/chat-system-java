@@ -115,6 +115,25 @@ public class ReportsManagementRepository {
             }
         }
     }
+    public void setNumberOfSystemVisit(){
+        key = "visits:"+sdf.format(timestamp);
+        try{
+            jedis = new JedisConfig().conn();
+            if (jedis.exists(key)){
+                jedis.incr(key);
+            }else{
+                jedis.set(key, String.valueOf(1));
+            }
+
+        }catch (Exception e){
+            System.out.println("error occurred"+e);
+        }
+        finally {
+            if(jedis != null){
+                jedis.close();
+            }
+        }
+    }
     public List<List> getReport(String pattern){
         List<String>  keysList = new ArrayList<>();
         Set<String> redisKeys = null;

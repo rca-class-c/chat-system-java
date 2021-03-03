@@ -3,6 +3,7 @@ package server.repositories;
 import client.views.components.Component;
 import server.config.PostegresConfig;
 import server.models.Group;
+import server.services.ReportsServices;
 
 import java.sql.*;
 import java.util.*;
@@ -109,7 +110,9 @@ public class GroupRepository  {
         connection.close();
 
          if(rowCreated){
+             new ReportsServices().insertGroupReport();
              return group;
+
          }
          return null;
     }

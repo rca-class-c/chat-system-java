@@ -204,7 +204,7 @@ public class SendMessageView {
 
 
 
-    public  void TypeMessageView(String reciever_type,int reciever) throws IOException {
+    public  void TypeMessageView(String reciever_type) throws IOException {
         Component.pageTitleView("Type a message");
 
         Scanner scanner = new Scanner(System.in);
@@ -213,11 +213,11 @@ public class SendMessageView {
         String key = "direct";
         Messages newMessage = null;
         if(reciever_type.equals("direct")){
-            newMessage = new Messages(0,userId,reciever,0,message);
+            newMessage = new Messages(0,userId,receiver,0,message);
             key = "messages/send/direct";
         }
         else if(reciever_type.equals("group")){
-            newMessage = new Messages(0,message,userId,reciever,0);
+            newMessage = new Messages(0,message,userId,receiver,0);
             key = "messages/send/group";
         }
         Request request = new Request(newMessage,key);
@@ -316,12 +316,11 @@ public class SendMessageView {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
 
         if(response.isSuccess()){
-            CommonUtil.addTabs(10, false);
-            System.out.println("Message edited successfully");
+            Component.alertSuccessMessage(11, "Message edited successfully");
+
         }
         else{
-            CommonUtil.addTabs(10, false);
-            System.out.println("Message edit unsuccessful!");
+            Component.showErrorMessage("Message edit unsuccessful!");
         }
     }
 
@@ -355,7 +354,7 @@ public class SendMessageView {
         Component.chooseOptionInputView("Enter message id: ");
         int messageId = scanner.nextInt();
 
-        WriteMessageView(new User());
+        WriteMessageView();
     }
 
 
@@ -400,7 +399,7 @@ public class SendMessageView {
         User returned = new RequestSimplifiers(writer,reader).goGetUser(query);
         if(returned != null){
             this.setChattingWith(returned);
-            WriteMessageView(returned);
+            WriteMessageView();
         }
         else {
             Component.alertDangerErrorMessage(11, "User not found");
@@ -556,26 +555,21 @@ public class SendMessageView {
             if(user.getUserID() == choice){
                 this.setChattingWith(user);
                 this.setReceiver(choice);
-                WriteMessageView(user);
+                WriteMessageView();
             }
         }
         }
         }
     }
-    public  void WriteMessageView(User user) throws IOException {
-        String key = "messages/direct";
-        Request request = new Request(new ChatBetweenTwo(userId,user.getUserID()), key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+    public  void WriteMessageView() throws IOException {
+        Messages[] messages = new RequestSimplifiers(writer,reader).goGetMessages(userId,receiver);
         Component.pageTitleView("Your recent chat");
-        if(response.isSuccess()){
-            Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            System.out.println("");
+        if(messages != null){
+            if(messages.length != 0){
             for (Messages message : messages) {
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
-                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+""+this.getChattingWith().getLname() + "] ");
+                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
                 }
                 else{
                     System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
@@ -596,10 +590,17 @@ public class SendMessageView {
 
                 CommonUtil.resetColor();
             }
+            }
+            else{
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                System.out.println("No messages sent yet");
+                CommonUtil.resetColor();
+            }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
-        Component.pageTitleView("Write Message to "+ user.getUsername()+" "+user.getLname());
+        Component.pageTitleView("Write Message to "+ chattingWith.getFname()+" "+chattingWith.getLname());
 
 
         CommonUtil.addTabs(11, true);
@@ -621,7 +622,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView("direct",user.getUserID());
+                        TypeMessageView("direct");
                     }
                     case 2 -> {
                         SendFileView();
@@ -700,7 +701,7 @@ public class SendMessageView {
             try {
                 switch (action) {
                     case 1 -> {
-                        TypeMessageView("group",group.getId());
+                        TypeMessageView("group");
                     }
                     case 2 -> {
                         SendFileView();
@@ -786,20 +787,26 @@ public class SendMessageView {
 
 
 
-    public void SendReplyView() {
+    public void SendReplyView() throws IOException {
         Component.pageTitleView("Send reply");
 
         Component.chooseOptionInputView("Enter message id to reply: ");
         int message_id = Component.getChooseOptionChoice();
+        if(new RequestSimplifiers(writer,reader).goGetMessage(message_id) == null){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+            System.out.println("Message Not found");
+            CommonUtil.resetColor();
+        }
+        else{
         CommonUtil.addTabs(11, true);
         System.out.println("1. Write a message");
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
+        CommonUtil.addTabs(11, false);
         System.out.println("44. Go back");
         CommonUtil.addTabs(11, false);
         System.out.println("55. Quit");
-        Component.chooseOptionInputView("Choose an option: ");
-
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
@@ -833,7 +840,9 @@ public class SendMessageView {
             } catch (Exception e) {
                 Component.showErrorMessage(e.getMessage());
             }
+
         } while (action == -1);
+        }
     }
 
     public  void ViewRepliesView() throws IOException {
@@ -850,7 +859,7 @@ public class SendMessageView {
             for (Messages message : messages) {
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
-                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+""+this.getChattingWith().getLname() + "] ");
+                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
                 }
                 else{
                     System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
