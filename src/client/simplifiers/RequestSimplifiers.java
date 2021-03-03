@@ -4,6 +4,7 @@ import client.interfaces.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Messages;
 import server.models.User;
+import utils.ChatBetweenTwo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,9 +49,9 @@ public class RequestSimplifiers {
         }
         return null;
     }
-    public Messages[] goGetMessages(int id) throws IOException {
-        String  key= "users/";
-        Request request = new Request(new ProfileRequestData(id),key);
+    public Messages[] goGetMessages(int id,int id2) throws IOException {
+        String  key= "messages/direct";
+        Request request = new Request(new ChatBetweenTwo(id,id2),key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
