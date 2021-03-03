@@ -3,6 +3,7 @@ package server.repositories;
 import client.views.components.Component;
 import server.config.PostegresConfig;
 import server.models.Messages;
+import server.services.ReportsServices;
 import utils.DirectMessage;
 import utils.GroupMessage;
 
@@ -155,6 +156,9 @@ public class MessagesRepository {
         boolean rowInsert= statement.executeUpdate()>0;
         statement.close();
         conn.close();
+        if (rowInsert){
+            new ReportsServices().insertMessageReport();
+        }
         return rowInsert;
     }
 
