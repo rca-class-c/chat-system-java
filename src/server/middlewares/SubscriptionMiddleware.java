@@ -2,6 +2,13 @@ package server.middlewares;
 
 import utils.ValidSubscription;
 
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class SubscriptionMiddleware {
 
     private final ValidSubscription validSubscription = new ValidSubscription();

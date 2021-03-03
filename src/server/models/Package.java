@@ -1,5 +1,12 @@
 package server.models;
 
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class Package {
     public int packageId;
     public String packageName;

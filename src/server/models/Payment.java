@@ -1,5 +1,13 @@
 package server.models;
 
+
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class Payment {
     private int payId;
     private int subId;

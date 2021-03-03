@@ -8,6 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class PaymentRepository {
 
     public Payment savePayment(Payment payment) throws SQLException {

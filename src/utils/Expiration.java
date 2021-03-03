@@ -4,6 +4,15 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.sql.Date;
 
+
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ *
+ */
+
 public class Expiration {
     public Date expirationCalculator(int period){
         int periodSec = 3600*24*period;

@@ -5,6 +5,14 @@ import server.repositories.PaymentRepository;
 
 import java.sql.SQLException;
 
+
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class PaymentService {
     private final PaymentRepository paymentRepository = new PaymentRepository();
 

@@ -3,6 +3,13 @@ package utils;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class ValidSubscription {
 
     public boolean isValid(String expired){

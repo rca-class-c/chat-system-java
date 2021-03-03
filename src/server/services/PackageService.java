@@ -6,6 +6,14 @@ import server.repositories.PackageRepository;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ *
+ */
+
 public class PackageService {
     private final PackageRepository packageRepository = new PackageRepository();
 
