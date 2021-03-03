@@ -1,5 +1,7 @@
 package server.models;
 
+import server.services.UserService;
+
 import java.util.Date;
 
 /**
@@ -18,8 +20,7 @@ public class Messages {
     public Integer group_receiver;
     public Integer original_message;
     public Date sent_at;
-public Messages(){};
-    //Message class constructor
+    public Messages(){};
     public Messages(String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message
     ){
         this.content = content;
@@ -29,22 +30,44 @@ public Messages(){};
         this.original_message = original_message;
     }
 
-    public Messages(Integer id, String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message, Date sent_at) {
+    public Messages(Integer id, String content, Integer sender, Integer original_message) {
         this.id = id;
         this.content = content;
         this.sender = sender;
-        this.user_receiver = user_receiver;
-        this.group_receiver = group_receiver;
         this.original_message = original_message;
-        this.sent_at = sent_at;
     }
-
     public Messages(Integer id, String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message) {
         this.id = id;
         this.content = content;
         this.sender = sender;
         this.user_receiver = user_receiver;
         this.group_receiver = group_receiver;
+        this.original_message = original_message;
+    }
+
+    public Messages(Integer id,String content, Integer sender, Integer group_receiver, Integer original_message) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.group_receiver = group_receiver;
+        this.original_message = original_message;
+        this.user_receiver = 0;
+    }
+    public Messages(Integer id,Integer sender, Integer user_receiver, Integer original_message,String content) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+        this.original_message = original_message;
+    }
+
+    public Messages(Integer id, String content, Integer sender, Integer user_receiver, Integer group_receiver, Integer original_message,Date sent_at) {
+        this.id = id;
+        this.content = content;
+        this.sender = sender;
+        this.user_receiver = user_receiver;
+        this.group_receiver = group_receiver;
+        this.sent_at = sent_at;
         this.original_message = original_message;
     }
 
@@ -65,7 +88,9 @@ public Messages(){};
 
     public void setUser_receiver(Integer user_receiver) { this.user_receiver = user_receiver; }
 
-    public int getGroup_receiver(Integer group_receiver) { return group_receiver; }
+    public Integer getGroup_receiver() {
+        return group_receiver;
+    }
 
     public void setGroup_receiver(Integer group_receiver) { this.group_receiver = group_receiver; }
 

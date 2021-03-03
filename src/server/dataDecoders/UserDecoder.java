@@ -9,8 +9,8 @@ import server.models.User;
 
 
 /**
- * User related request data decoder
- * @author: Didier Munezero
+ *Description: This class is a decoder of all data sent to user service
+ *@author Didier Munezero
  */
 public class UserDecoder {
 

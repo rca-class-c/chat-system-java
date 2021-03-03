@@ -8,6 +8,10 @@ import server.requestHandlers.MessageRequestHandler;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ *Description: This is a class that now where to direct a given request of replies to a responsive direct handler.
+ @author Didier Munezero
+ */
 public class RepliesRoutes {
     private String data;
     private PrintWriter writer;
@@ -31,10 +35,13 @@ public class RepliesRoutes {
 
     public void Main() throws JsonProcessingException, SQLException {
         if(request.equals("replies/send/direct")){
-            new MessageRequestHandler().HandleReplyDirectly(data,writer,objectMapper);
+            new MessageRequestHandler().HandleSendReply(data,writer,objectMapper);
         }
-        else if(request.equals("replies/send/group")){
-            new MessageRequestHandler().HandleReplyInGroup(data,writer,objectMapper);
+        else if(request.equals("replies/")){
+            new MessageRequestHandler().HandleGetReplies(data,writer,objectMapper);
+        }
+        else if(request.equals("replies/delete")){
+            new MessageRequestHandler().HandleSendReply(data,writer,objectMapper);
         }
     }
 }

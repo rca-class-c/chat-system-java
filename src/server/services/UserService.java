@@ -20,14 +20,20 @@ public class UserService {
     public User loginUser(AuthInput input) throws SQLException{
         return userRepository.login(input);
     }
-    public List<User> getAllUsers() throws SQLException{
-        return userRepository.getAllUsers();
+    public List<User> getAllInactiveUsers() throws SQLException{
+        return userRepository.getAllInactiveUsers();
     }
     public List<User> getAllOtherUsers(int id) throws SQLException{
         return userRepository.getAllOtherUsers(id);
     }
     public User getUserById(int userId) throws SQLException{
         return userRepository.getUserById(userId);
+    }
+    public boolean ActivateUser(int userId) throws SQLException{
+        return userRepository.ActivateUser(userId);
+    }
+    public boolean DeActivateUser(int userId) throws SQLException{
+        return userRepository.DeActivateUser(userId);
     }
     public List<User> SearchUsers(String search_data) throws SQLException {
         return userRepository.getUserSearchList(search_data);

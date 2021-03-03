@@ -40,13 +40,17 @@ public class ProfileSettings {
     }
     Scanner scanner = new Scanner(System.in);
     public void viewProfileSettingsOptions() throws IOException {
-        Component.pageTitleView("USER Dashboard");
+        Component.pageTitleView("Profile Settings");
         int choice = 0;
         do {
-            CommonUtil.addTabs(10, true);
-            System.out.println("1. VIEW PROFILE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("2. EDIT PROFILE");
+            CommonUtil.addTabs(11, true);
+            System.out.println("1. View your profile");
+            CommonUtil.addTabs(11, false);
+            System.out.println("2. Edit your profile");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+            CommonUtil.addTabs(11, false);
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
             choice  = scanner.nextInt();
             if(choice == 1){
@@ -57,15 +61,10 @@ public class ProfileSettings {
             }
 
             else if(choice == 44){
-                CommonUtil.addTabs(10, true);
-                System.out.println("Going back");
                 break;
             }
             else if(choice == 55){
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor("\u001b[1;31m");
-                System.out.println("SYSTEM CLOSED !");
-                System.exit(1);
+                Component.closeUIView();
             }
         }while(choice != 44 && choice != 55);
 
@@ -78,28 +77,33 @@ public class ProfileSettings {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(response.getData());
-            Component.pageTitleView("MY PROFILE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("FIRST NAME:  "+profile.getFname());
-            CommonUtil.addTabs(10, false);
-            System.out.println("LAST NAME:  "+profile.getLname());
-            CommonUtil.addTabs(10, false);
-            System.out.println("USERNAME:  "+profile.getUsername());
-            CommonUtil.addTabs(10, false);
-            System.out.println("EMAIL:  "+profile.getEmail());
-            CommonUtil.addTabs(10, false);
-            System.out.println("GENDER:  "+profile.getGender());
-            CommonUtil.addTabs(10, false);
-            System.out.println("PASSWORD:   "+profile.getPassword());
+            Component.pageTitleView("VIEW YOUR PROFILE");
+            System.out.println();
 
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("First name", profile.getFname());
 
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Last name", profile.getLname());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Username", profile.getUsername());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Email", profile.getEmail());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Gender", profile.getGender());
+
+            CommonUtil.addTabs(11, false);
+            Component.listItemView("Password", profile.getPassword());
+
+            viewProfileSettingsOptions();
         }
         else{
-            System.out.println("No profile found!");
+            Component.alertDangerErrorMessage(11, "No profile found!");
         }
 
-        Component.chooseOptionInputView("Type number to continue: ");
-        int choice  = scanner.nextInt();
 
     }
     public void updateUser(int userid) throws IOException{
@@ -112,115 +116,158 @@ public class ProfileSettings {
 
         if(profileResponse.isSuccess()){
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
-            Component.pageTitleView("MY PROFILE");
-            CommonUtil.addTabs(10, false);
-            System.out.println("If you don't want to change any of your data, type [-1] ");
-            CommonUtil.addTabs(10, false);
-            System.out.print("FIRST NAME"+"["+profile.getFname()+"]: ");
+            Component.pageTitleView("Edit your PROFILE");
+            CommonUtil.addTabs(12, false);
+            CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+            System.out.println("* Type [-1] to skip field update *");
+            System.out.println();
+
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("First name ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getFname() + "]: ");
             String firstName = scanner.nextLine();
+
             if(!firstName.equals("-1") && !firstName.equals(profile.getFname())){
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
                 System.out.print("First name changed!");
                 profile.setFname(firstName);
                 System.out.println();
-
             }
 
-            CommonUtil.addTabs(10, false);
-            System.out.print("LAST NAME"+"["+profile.getLname()+"]:  ");
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("Last name ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getLname() + "]: ");
             String lastName = scanner.nextLine();
+
             if(!lastName.equals("-1") && !lastName.equals(profile.getLname())){
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
                 System.out.print("Last name changed!");
                 profile.setLname(lastName);
                 System.out.println();
             }
 
 
-            CommonUtil.addTabs(10, false);
-            System.out.print("USERNAME"+"["+profile.getUsername()+"]: ");
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("Username ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getUsername() + "]: ");
             String username = scanner.nextLine();
+
             if(!username.equals("-1") && !username.equals(profile.getUsername())){
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
                 System.out.print("Username changed!");
-                profile.setUsername(username);
+                profile.setFname(username);
                 System.out.println();
-
             }
 
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("Email ");
+            CommonUtil.resetColor();
 
-            CommonUtil.addTabs(10, false);
-            System.out.print("EMAIL"+"["+profile.getEmail()+"]:  ");
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getEmail() + "]: ");
             String email = scanner.nextLine();
-            if(!email.equals("-1") && !email.equals(profile.getEmail())){
-                CommonUtil.addTabs(10, false);
+
+            if(!email.equals("-1") && !email.equals(profile.getFname())){
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
                 System.out.print("Email changed!");
-                profile.setEmail(email);
-
+                profile.setFname(email);
+                System.out.println();
             }
 
-            CommonUtil.addTabs(10, false);
-            System.out.print("DOB"+"["+profile.getDob()+"]:  ");
+
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("DOB ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getDob() + "]: ");
             String dob = scanner.nextLine();
-            if(!dob.equals("-1") && !dob.equals(profile.getDob())){
-                CommonUtil.addTabs(10, false);
-                System.out.print("DOB changed!");
-                profile.setDob(dob);
 
+            if(!dob.equals("-1") && !dob.equals(profile.getDob())){
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                System.out.print("DOB changed!");
+                profile.setFname(dob);
+                System.out.println();
             }
 
-            String gender = "";
-            do {
-            CommonUtil.addTabs(10, false);
-            System.out.print("GENDER"+"["+profile.getGender()+"]:  ");
-            gender = scanner.nextLine();
+
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("Gender ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getGender() + "]: ");
+            String gender = scanner.nextLine();
+
             if(!gender.equals("-1") && !gender.equals(profile.getGender())){
-                CommonUtil.addTabs(10, true);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
                 System.out.print("Gender changed!");
-                profile.setGender(gender);
+                profile.setFname(gender);
                 if(!gender.equals("male") && !gender.equals("female")){
                     CommonUtil.addTabs(10, false);
                     System.out.println(gender +"Gender not valid");
                 }
+                System.out.println();
             }
-            }while(!gender.equals("-1") && !gender.equals("male") && !gender.equals("female"));
 
-            CommonUtil.addTabs(10, false);
-            System.out.print("PASSWORD"+"["+profile.getPassword()+"]: ");
+
+            CommonUtil.addTabs(11, false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+            System.out.print("Password ");
+            CommonUtil.resetColor();
+
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+            System.out.print("[" + profile.getPassword() + "]: ");
             String password = scanner.nextLine();
+
             if(!password.equals("-1") && !password.equals(profile.getPassword())){
-                profile.setPassword(password);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                System.out.print("Password changed!");
+                profile.setFname(password);
+                System.out.println();
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
             String updateKey = "users/update";
+            System.out.println(profile.getUserID());
             Request request = new Request(profile,updateKey);
             String requestUpdateAsString = objectMapper.writeValueAsString(request);
             writer.println(requestUpdateAsString);
             ResponseDataSuccessDecoder updateResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
             if(updateResponse.isSuccess()){
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor(ConsoleColor.HighIntensityBackgroundColor.GREEN_BACKGROUND_BRIGHT);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.println(" Your account was updated successfully ");
-                CommonUtil.resetColor();
-
-
+                Component.alertSuccessMessage(11, "Your account was updated successfully");
             }
             else{
-                CommonUtil.addTabs(10, true);
-                CommonUtil.useColor(ConsoleColor.BackgroundColor.RED_BACKGROUND);
-                CommonUtil.useColor(ConsoleColor.BoldColor.WHITE_BOLD);
-                System.out.print("  Account not updated, try again! ");
-                CommonUtil.resetColor();
+                Component.alertDangerErrorMessage(11, "Account not updated, try again!");
             }
         }
         else{
-            System.out.println("No profile found!");
-        }
+            Component.alertDangerErrorMessage(11, "No profile found!");
 
-        Component.chooseOptionInputView("Type 1 to edit profile or any other number to go main: ");
-        int choice  = scanner.nextInt();
+        }
+        viewProfileSettingsOptions();
     }
 
 }

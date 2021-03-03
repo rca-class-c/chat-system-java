@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Group;
 
+/**
+ *Description: This class is a decoder of all data sent to group service
+ @author Didier Munezero
+ */
 public class GroupDecoder {
 
     String data;
@@ -21,7 +25,7 @@ public class GroupDecoder {
     public Group UpdateGroupDecode() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
-        return new Group(dataDecrypt.get("group_id").asInt(),dataDecrypt.get("name").asText(),dataDecrypt.get("description").asText(),dataDecrypt.get("group_creator").asInt());
+        return new Group(dataDecrypt.get("id").asInt(),dataDecrypt.get("name").asText(),dataDecrypt.get("description").asText(),dataDecrypt.get("creator").asInt());
     }
 
     public String getRecentGroups() throws JsonProcessingException {

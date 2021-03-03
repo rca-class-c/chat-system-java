@@ -10,6 +10,10 @@ import javax.mail.MessagingException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ *Description: This is a class that now where to direct a given request of users to a responsive direct handler.
+ @author Didier Munezero
+ */
 public class UserRoutes {
     private String data;
     private PrintWriter writer;
@@ -42,6 +46,15 @@ public class UserRoutes {
         else if(request.equals("users/")){
             new UserRequestHandler().HandleUsersList(data,writer,objectMapper);
         }
+        else if(request.equals("users/inactive")){
+            new UserRequestHandler().HandleInactiveUsersList(data,writer,objectMapper);
+        }
+        else if(request.equals("users/activate")){
+            new UserRequestHandler().HandleActivateUser(data,writer,objectMapper);
+        }
+        else if(request.equals("users/deactivate")){
+            new UserRequestHandler().HandleDeActivateUser(data,writer,objectMapper);
+        }
         else if(request.equals("users/profile")){
             new UserRequestHandler().HandleGetProfile(data,writer,objectMapper);
         }
@@ -53,6 +66,9 @@ public class UserRoutes {
         }
         else if(request.equals("users/invite")){
             new SendInvitationHandler().HandleSendInvitation(data,writer,objectMapper);
+        }
+        else if(request.equals("users/verify")){
+            new SendInvitationHandler().HandleVerifyCode(data,writer,objectMapper);
         }
     }
 }

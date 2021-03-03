@@ -34,12 +34,10 @@ public class AuthenticationRequestHandler {
         String authToken = new AuthenticationService().login(authData.get("username"), authData.get("password"));
 
         if(authToken == null){
-            System.out.println("invalid credentials");
             Response response = new Response(null,false);
             String responseAsString = objectMapper.writeValueAsString(response);
             writer.println(responseAsString);
         }else{
-            System.out.println("logged in successfully");
             Response response = new Response(authToken,false);
             String responseAsString = objectMapper.writeValueAsString(response);
             writer.println(responseAsString);

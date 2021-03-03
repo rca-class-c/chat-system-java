@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.GroupMember;
 
 import java.util.Arrays;
-/*
-* @AUTHOR: Kobusinge Shallon
+/**
+ * @author Gahamanyi Yvette
 * */
 public class GroupMemberDecoder {
     String data;
@@ -27,9 +27,9 @@ public class GroupMemberDecoder {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
         int group_id =  dataDecrypt.get("group_id").asInt();
-        String values = dataDecrypt.get("users").asText();
+        String values = dataDecrypt.get("users").toString();
         Integer [] userList = objectMapper.readValue(values, Integer[].class);
-        return new AddMemberRequestData(group_id, Arrays.asList(userList));
+        return new AddMemberRequestData(group_id, userList);
 
     }
 
@@ -43,8 +43,7 @@ public class GroupMemberDecoder {
     public int getGroupMembersDecoder() throws JsonProcessingException{
         ObjectMapper objectMapper= new ObjectMapper();
         JsonNode dataDecrypt=objectMapper.readTree(data);
-        int group_id = dataDecrypt.get("group_id").asInt();
+        int group_id = dataDecrypt.get("id").asInt();
         return  group_id;
     }
-
 }

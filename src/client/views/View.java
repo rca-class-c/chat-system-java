@@ -7,10 +7,13 @@ import utils.CommonUtil;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import server.services.MessagesService;
+import utils.ConsoleColor;
+import utils.GroupMessage;
 
 public class View
 {
@@ -18,14 +21,16 @@ public class View
     public static void WelcomeView(ChatClient client, PrintWriter writer, BufferedReader reader) {
         Component.pageTitleView("Welcome to chat system");
 
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t  1. LOGIN  \t");
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t  2. SIGNUP \t");
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t  3. HELP   \t");
-        CommonUtil.addTabs(10, false);
-        System.out.println("\t 55. QUIT   \t");
+        System.out.println();
+
+        CommonUtil.addTabs(11, false);
+        System.out.println("1. Login");
+        CommonUtil.addTabs(11, false);
+        System.out.println("2. Signup");
+        CommonUtil.addTabs(11, false);
+        System.out.println("3. Help");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
 
@@ -51,17 +56,18 @@ public class View
                         Set<ResultSet> notifications = msg.viewUserNotifications(id);
                         CommonUtil.displayTray(notifications);
                     }
+
                     case 55 -> {
-                        System.out.println();
-                        Component.showErrorMessage("System Closing");
+                        Component.closeUIView();
                         System.exit(1);
                     }
                     default -> {
                         action = 0;
-                        Component.showErrorMessage("Enter a valid choice (1, 2): ");
+                        Component.showErrorMessage("Enter a valid choice (1, 2, 3, 55): ");
                     }
                 }
             } catch (Exception e) {
+                System.out.println();
                 Component.showErrorMessage(e.getMessage());
             }
         } while (action == 0);
