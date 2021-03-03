@@ -31,8 +31,7 @@ public class RequestSimplifiers {
         ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
 
         if(profileResponse.isSuccess()) {
-            User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
-            return profile;
+            return new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
         }
         return null;
     }
@@ -44,8 +43,7 @@ public class RequestSimplifiers {
         ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
 
         if(profileResponse.isSuccess()) {
-            Messages profile = new MessageResponseDataDecoder().returnDecodedMessage(profileResponse.getData());
-            return profile;
+            return new MessageResponseDataDecoder().returnDecodedMessage(profileResponse.getData());
         }
         return null;
     }
@@ -56,8 +54,7 @@ public class RequestSimplifiers {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()) {
-            Messages[] messages = new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
-            return messages;
+            return new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
         }
         return null;
     }
@@ -68,8 +65,18 @@ public class RequestSimplifiers {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()) {
-            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
-            return users;
+            return new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+        }
+        return null;
+    }
+    public User[] goGetInactiveUsers(int id) throws IOException {
+        String  key= "users/inactive";
+        Request request = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()) {
+            return new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
         }
         return null;
     }
