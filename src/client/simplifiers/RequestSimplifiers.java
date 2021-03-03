@@ -48,6 +48,18 @@ public class RequestSimplifiers {
         }
         return null;
     }
+    public Messages[] goGetMessages(int id) throws IOException {
+        String  key= "users/";
+        Request request = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()) {
+            Messages[] messages = new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
+            return messages;
+        }
+        return null;
+    }
     public User[] goGetUsers(int id) throws IOException {
         String  key= "users/";
         Request request = new Request(new ProfileRequestData(id),key);
