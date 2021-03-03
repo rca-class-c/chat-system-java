@@ -562,10 +562,16 @@ public class SendMessageView {
         }
     }
     public void PrintMessageReplies() throws IOException {
-        Component.chooseOptionInputView("Enter message id to reply: ");
+        Component.chooseOptionInputView("Enter message id to view replies: ");
         int message_id = Component.getChooseOptionChoice();
+        Messages messageFound = new RequestSimplifiers(writer, reader).goGetMessage(message_id);
+        if(messageFound != null){
         Messages[] messages = new RequestSimplifiers(writer,reader).goGetMessageReplies(message_id);
-        Component.pageTitleView("Message replies");
+        Component.pageTitleView("message replies");
+        CommonUtil.addTabs(11,false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.GREEN_BOLD_BRIGHT);
+            System.out.print("OG message: [" + messageFound.getContent() + "] ");
+            CommonUtil.resetColor();
         if(messages != null){
             if(messages.length != 0){
                 for (Messages message : messages) {
@@ -599,7 +605,7 @@ public class SendMessageView {
                 System.out.println("No replies yet");
                 CommonUtil.resetColor();
             }
-            Component.chooseOptionInputView("Type 1 to send reply: ");
+            Component.chooseOptionInputView("Type 1 to send reply on this message: ");
             int option = Component.getChooseOptionChoice();
             if(option == 1){
                 SendReplyView(message_id);
@@ -607,6 +613,13 @@ public class SendMessageView {
 
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read replies list, sorry for the inconvenience");
+        }
+        }
+        else{
+            CommonUtil.addTabs(11,true);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+            System.out.println("Message not found");
+            CommonUtil.resetColor();
         }
     }
     public  void WriteMessageView() throws IOException {
