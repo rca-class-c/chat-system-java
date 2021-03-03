@@ -1,7 +1,9 @@
 package client.views;
 
 import client.interfaces.*;
+import client.simplifiers.RequestSimplifiers;
 import client.views.components.Component;
+import client.views.components.TableView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 import server.services.ReportsServices;
@@ -41,6 +43,8 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Users");
         CommonUtil.addTabs(11, false);
+        System.out.println("3. System summary");
+        CommonUtil.addTabs(11, false);
         System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
         System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
@@ -54,6 +58,9 @@ public class AdminAction {
                         break;
                     case 2:
                         this.usersOperation();
+                        break;
+                    case 3:
+                        this.overallStatics();
                         break;
                     case 44:
                         break;
@@ -93,7 +100,7 @@ public class AdminAction {
         CommonUtil.addTabs(11, false);
         System.out.println("2. User Reports");
         CommonUtil.addTabs(11, false);
-        System.out.println("2. Group Reports");
+        System.out.println("3. Group Reports");
         CommonUtil.addTabs(11, false);
         System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
@@ -325,34 +332,57 @@ public class AdminAction {
     /**
      * method to print out the formatted statistics
      * @param all
+     * @param  trimStr {category of stastistics}
      */
     private void printStatatics(List<List> all,String trimStr){
-        for (int i = 0; i < all.get(0).size(); i++) {
-            String out = String.format("%d %s %10s",i+1,all.get(0).get(i).toString().replace(trimStr,""),all.get(1).get(i));
-            CommonUtil.addTabs(10, false);
-            System.out.println(out);
-
+        if(all.size() == 0){
+            CommonUtil.addTabs(12, false);
+            CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+            System.out.println("Nothing to show");
+            CommonUtil.resetColor();
+            return;
         }
+        TableView st = new TableView();
+        int i,sum=0;
+        //st.setRightAlign(true);//if true then cell text is right aligned
+        st.setShowVerticalLines(true);//if false (default) then no vertical lines are shown
+        st.setHeaders("number", "dates",trimStr.replace(":",""));//optional - if not used then there will be no header and horizontal lines
+        for ( i = 0; i < all.get(0).size(); i++) {
+            sum += Integer.parseInt(all.get(1).get(i).toString());
+            st.addRow(Integer.toString(i+1), all.get(0).get(i).toString().replace(trimStr,""), all.get(1).get(i).toString());
+        }
+        st.addRow(Integer.toString(i+1),"total",String.valueOf(sum));
+        st.print();
+    }
+    private void overallStatics(){
+        TableView ovt = new TableView();
+        ovt.setShowVerticalLines(true);
+        ovt.setHeaders("number","property","total");
+        ovt.addRow("1","messages",String.valueOf(findSum(new ReportsServices().getMessageReport())));
+        ovt.addRow("2","groups",String.valueOf(findSum(new ReportsServices().getGroupReport())));
+        ovt.addRow("3","users",String.valueOf(findSum(new ReportsServices().getGroupReport())));
+        ovt.addRow("4","system Visits",String.valueOf(findSum(new ReportsServices().getVisitReport())));
+
+        ovt.print();
+    }
+    private int findSum(List<List> list){
+        if (list.size() == 0){
+            return 0;
+        }
+        int sum = 0;
+        for ( int i = 0; i < list.get(0).size(); i++) {
+            sum += Integer.parseInt(list.get(1).get(i).toString());
+        }
+       return sum;
+
     }
     public int CheckUserExists(UsersList list) throws  IOException{
         if(list == null){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-            System.out.println("Users list is null");
-            CommonUtil.resetColor();
             return -1;
         }
         int choice = 0;
         List ids = list.getIds();
         User[] users = list.getUsers();
-        if(users.length == 0){
-            CommonUtil.addTabs(11, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-            System.out.println("Users empty");
-            CommonUtil.resetColor();
-            return -1;
-        }
-        else{
 
 
         do{
@@ -370,35 +400,32 @@ public class AdminAction {
                 return choice;
             }
         }
-        }
         return -1;
     }
     public UsersList allInactiveUsers() throws IOException {
-        String  key= "users/inactive";
-        Request request = new Request(new ProfileRequestData(userId),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("USERS LIST");
-        List ids = new ArrayList<Integer>();
-        if(response.isSuccess()){
-            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+        User[] users = new RequestSimplifiers(writer,reader).goGetInactiveUsers(userId);
+        List<Integer> ids= new ArrayList<Integer>();
+        Component.pageTitleView("ALL INACTIVE USERS");
+        if(users != null){
+            if(users.length == 0){
+                CommonUtil.addTabs(11, true);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                System.out.println("There are no inactive users");
+                CommonUtil.resetColor();
+            }
+            else{
             CommonUtil.addTabs(11, true);
             for (User user : users) {
                 ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(11, false);
             }
-            if(users.length == 0){
-                return null;
-            }
             return new UsersList(users,ids);
+            }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
-        System.out.println("");
         return null;
-
     }
     public void De_ActivateUser(int userId,String key) throws IOException {
         Request request = new Request(new ProfileRequestData(userId),key);
