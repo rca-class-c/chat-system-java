@@ -42,6 +42,9 @@ public class MessagesRoutes {
         else if(request.equals("messages/single")){
             new MessageRequestHandler().HandleMessageProfile(data,writer,objectMapper);
         }
+        else if(request.equals("messages/message_replies")){
+            new MessageRequestHandler().HandleMessageReplies(data,writer,objectMapper);
+        }
         else if(request.equals("messages/send/direct")){
             new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper);
         }

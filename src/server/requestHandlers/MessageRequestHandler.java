@@ -33,6 +33,19 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    public void HandleMessageReplies(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
+        Messages returned = new MessagesService().getMessageReplies(new UserDecoder(data).GetProfileDecode());
+        if(returned == null){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
 
     public void HandleMessageBetweenTwo(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
         List<Messages> messagesList = new MessagesService().viewDirectMessagesBetweenTwo(new MessageDecoder(data).returnChatMembers());
