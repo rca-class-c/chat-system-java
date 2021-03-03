@@ -1,7 +1,5 @@
 package server.config;
 import client.views.components.Component;
-import utils.CommonUtil;
-import utils.ConsoleColor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
