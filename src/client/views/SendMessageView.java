@@ -785,11 +785,18 @@ public class SendMessageView {
 
 
 
-    public void SendReplyView() {
+    public void SendReplyView() throws IOException {
         Component.pageTitleView("Send reply");
 
         Component.chooseOptionInputView("Enter message id to reply: ");
         int message_id = Component.getChooseOptionChoice();
+        if(new RequestSimplifiers(writer,reader).goGetMessage(message_id) == null){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+            System.out.println("Message Not found");
+            CommonUtil.resetColor();
+        }
+        else{
         CommonUtil.addTabs(11, true);
         System.out.println("1. Write a message");
         CommonUtil.addTabs(11, false);
@@ -831,7 +838,9 @@ public class SendMessageView {
             } catch (Exception e) {
                 Component.showErrorMessage(e.getMessage());
             }
+
         } while (action == -1);
+        }
     }
 
     public  void ViewRepliesView() throws IOException {

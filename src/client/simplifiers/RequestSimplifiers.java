@@ -1,10 +1,8 @@
 package client.simplifiers;
 
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
-import client.interfaces.UserResponseDataDecoder;
+import client.interfaces.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Messages;
 import server.models.User;
 
 import java.io.BufferedReader;
@@ -33,6 +31,19 @@ public class RequestSimplifiers {
 
         if(profileResponse.isSuccess()) {
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
+            return profile;
+        }
+        return null;
+    }
+    public Messages goGetMessage(int id) throws IOException {
+        String key= "messages/single";
+        Request profileRequest = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(profileResponse.isSuccess()) {
+            Messages profile = new MessageResponseDataDecoder().returnDecodedMessage(profileResponse.getData());
             return profile;
         }
         return null;
