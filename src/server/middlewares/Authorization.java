@@ -188,35 +188,31 @@ public class Authorization {
 
     //this function is for finding out if a person is a groupAdmin and which  group did he create
 
-    public boolean groupCreater(int user_id,String groupName) throws SQLException {
-        boolean allowed=false;
-        String group_Name;
-        String sql = "select group_name from groups where group_creator=? ";
+    public boolean groupCreater(int user_id, String groupName) throws SQLException {
+      boolean allowed=false;
+        String sql = "select group_name from groups where group_creator=?";
         Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, user_id);
         ResultSet resultSet = statement.executeQuery();
 
-        if(resultSet.next()==false){
-            allowed=false;
-        }
-        else {
-            while (resultSet.next()) {
-                group_Name=resultSet.getString("group_name");
-                if(group_Name==groupName){
-                    allowed=true;
-                }
-            }
+        while (resultSet.next()) {
+           String group_name=resultSet.getString("group_name");
+         if(group_name.equals(groupName)){
+             allowed=true;
+         }
+
         }
 
+       return allowed;
 
-        return  allowed;
+
     }
 
 
     public static void main(String[] args) throws SQLException {
         Authorization auth=new Authorization();
-        System.out.println(auth.groupCreater(1,"General"));
+        System.out.println(auth.groupCreater(2,"moko"));
 
     }
 
