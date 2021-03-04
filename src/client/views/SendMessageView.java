@@ -92,6 +92,7 @@ public class SendMessageView {
                         }
                         case 55->{
                             Component.closeUIView();
+                            System.exit(0);
                         }
                         default -> {
                             choice = -1;
@@ -261,7 +262,8 @@ public class SendMessageView {
         String fileLocalPath = scanner.nextLine();
 
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
 
             String fileName = FileUtil.getFileNameFromFilePath(fileLocalPath);
             String fileType = FileUtil.getFileTypeFromFilePath(fileLocalPath);
@@ -269,20 +271,24 @@ public class SendMessageView {
             int fileSize = FileUtil.getFormattedFileSizeFromFileSize(FileUtil.getFileSizeFromPath(fileLocalPath), FileSizeTypeEnum.valueOf(fileSizeType));
 
 
-        File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
-        String key = "file/send";
-        Request request = new Request(file, key);
-        String requestAsString = objectMapper.writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if(response.isSuccess()){
-            Component.alertSuccessMessage(11, "File saved successfully");
-            //ageView(new User());
+            File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
+            String key = "file/send";
+            Request request = new Request(file, key);
+            String requestAsString = objectMapper.writeValueAsString(request);
+            writer.println(requestAsString);
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            if (response.isSuccess()) {
+                Component.alertSuccessMessage(11, "File saved successfully");
+                //ageView(new User());
+            } else {
+                Component.alertDangerErrorMessage(11, "File not saved, try again!");
+            }
+            WriteMessageView();
+            //View(new User());
+        } catch (Exception e) {
+            Component.alertDangerErrorMessage(11, "File not found");
+            WriteMessageView();
         }
-        else{
-            Component.alertDangerErrorMessage(11, "File not saved, try again!");
-        }
-        //View(new User());
     }
     public void EditMessageView() throws IOException {
         Component.pageTitleView("Edit a Message");
@@ -302,11 +308,11 @@ public class SendMessageView {
 
         if(response.isSuccess()){
             Component.alertSuccessMessage(11, "Message edited successfully");
-
         }
         else{
             Component.showErrorMessage("Message edit unsuccessful!");
         }
+        WriteMessageView();
     }
 
     public  void DeleteMessageView() throws IOException {
@@ -329,6 +335,7 @@ public class SendMessageView {
         else{
             Component.alertDangerErrorMessage(11, "Message not found!");
         }
+        WriteMessageView();
     }
 
     public void DeleteReplieView() throws IOException {
@@ -492,11 +499,16 @@ public class SendMessageView {
         List ids = new ArrayList<Integer>();
             User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         if(users != null){
-            CommonUtil.addTabs(11, true);
             for (User user : users) {
                 ids.add(user.getUserID());
-                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + user.getUserID() + "] ");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.println(user.getFname() + " " + user.getLname());
+                CommonUtil.resetColor();
+
             }
             if(users.length == 0){
                 return null;
@@ -550,29 +562,31 @@ public class SendMessageView {
             for (Messages message : messages) {
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
-                    System.out.println(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
+                    System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
                 }
                 else{
                     System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
                     CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
-                    System.out.println(" [You]");
+                    System.out.print(" [You]");
                     CommonUtil.resetColor();
                 }
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                System.out.print(message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(")");
+
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
+
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
                 System.out.print(message.getContent());
 
-                    CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                    System.out.print("  (Date:  ");
-                    CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
-                    System.out.print(message.getSent_at());
-                    CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                    System.out.println(")");
-
                 CommonUtil.resetColor();
+                System.out.println();
             }
             }
             else{
