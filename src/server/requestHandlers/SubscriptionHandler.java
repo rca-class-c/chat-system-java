@@ -1,16 +1,22 @@
 package server.requestHandlers;
-import java.sql.Timestamp;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import server.dataDecoders.SubscriptionDecoder;
 import server.models.Response;
 import server.models.Subscription;
-import  server.services.SubscriptionService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import  server.dataDecoders.SubscriptionDecoder;
+import server.services.SubscriptionService;
 import utils.ValidSubscription;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
+/**
+ *
+ * @authors:
+ * - Cyusa Keny
+ * - Loraine Irakoze
+ */
 public class SubscriptionHandler {
     public void HandleNewSubscriptions(String Data, ObjectMapper mapper, PrintWriter writer) throws JsonProcessingException, SQLException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());

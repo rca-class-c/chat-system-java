@@ -4,8 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import server.ChatServer;
 import server.requestHandlers.PackageRequestHandler;
 import server.requestHandlers.PaymentRequestHandler;
+import server.requestHandlers.SubscriptionHandler;
 
 import java.io.PrintWriter;
+
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
 
 public class BillingRoutes {
     private String data;
@@ -49,14 +57,25 @@ public class BillingRoutes {
         else if(request.equals("billings/packages/edit")){
             new PackageRequestHandler().HandleUpdatePackage(data,writer,objectMapper);
         }
-        else if(request.equals("billings/packages/delete")){
+        else if(request.equals("billings/packages/remove")){
             new PackageRequestHandler().HandleDeletePackage(data,writer,objectMapper);
         }
 
         /*
         Subscription routes
          */
-
+        else if(request.equals("billings/subscriptions/save")){
+            new SubscriptionHandler().HandleNewSubscriptions(data, objectMapper, writer);
+        }
+        else if(request.equals("billings/subscriptions/valid")){
+            new SubscriptionHandler().ValidatingSubscriptionHandler(data, objectMapper, writer);
+        }
+        else if(request.equals("billings/subscriptions/show")){
+            new SubscriptionHandler().ShowSubscriptionHandler(data, objectMapper, writer);
+        }
+        else if(request.equals("billings/subscriptions/remove")){
+            new SubscriptionHandler().DeleteSubscription(data, objectMapper, writer);
+        }
         /*
         Payment routes
          */

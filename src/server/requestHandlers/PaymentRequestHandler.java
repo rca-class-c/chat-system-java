@@ -10,10 +10,17 @@ import server.services.PaymentService;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ *
+ * @authors:
+ * - Loraine Irakoze
+ * - Cyusa Keny
+ */
+
 public class PaymentRequestHandler {
 
     public void HandleSavePayment(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        Payment returned = new PaymentService().savePayment(new PaymentDecoder(data).createPaymentDecoder());
+        Payment returned = new PaymentService().savePayment( new PaymentDecoder(data).createPaymentDecoder());
 
         if(returned == null){
             Response response = new Response(null, false);
