@@ -26,7 +26,7 @@ public class sendInvitationRepositories {
        Connection conn= PostegresConfig.getConnection();
        final  String sql="INSERT INTO sent_invitations(admin_id,sent_to,verificationcode) VALUES(?,?,?)";
        PreparedStatement prepared=conn.prepareStatement(sql);
-           prepared.setInt(1,id);
+           prepared.setInt(1,1);
            prepared.setString(2,email);
            prepared.setInt(3,verificationCode);
            int row= prepared.executeUpdate();

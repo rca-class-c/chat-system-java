@@ -1,11 +1,10 @@
 package client.simplifiers;
 
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
-import client.interfaces.UserResponseDataDecoder;
+import client.interfaces.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Messages;
 import server.models.User;
+import utils.ChatBetweenTwo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +23,17 @@ public class RequestSimplifiers {
         this.writer = writer;
         this.reader = reader;
     }
+    public Messages[] goGetMessageReplies(int message_id) throws IOException {
+        String key = "messages/message_replies";
+        Request request = new Request(new ProfileRequestData(message_id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()) {
+            return new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
+        }
+        return null;
+    }
     public User goGetUser(int id) throws IOException {
         String key= "users/profile";
         Request profileRequest = new Request(new ProfileRequestData(id),key);
@@ -32,8 +42,30 @@ public class RequestSimplifiers {
         ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
 
         if(profileResponse.isSuccess()) {
-            User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
-            return profile;
+            return new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
+        }
+        return null;
+    }
+    public Messages goGetMessage(int id) throws IOException {
+        String key= "messages/single";
+        Request profileRequest = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(profileResponse.isSuccess()) {
+            return new MessageResponseDataDecoder().returnDecodedMessage(profileResponse.getData());
+        }
+        return null;
+    }
+    public Messages[] goGetMessages(int id,int id2) throws IOException {
+        String  key= "messages/direct";
+        Request request = new Request(new ChatBetweenTwo(id,id2),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()) {
+            return new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
         }
         return null;
     }
@@ -44,8 +76,18 @@ public class RequestSimplifiers {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()) {
-            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
-            return users;
+            return new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
+        }
+        return null;
+    }
+    public User[] goGetInactiveUsers(int id) throws IOException {
+        String  key= "users/inactive";
+        Request request = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()) {
+            return new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
         }
         return null;
     }
