@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.ArrayList;
 
-import server.models.User;
 import server.repositories.UserRepository;
-import utils.CommonUtil;
 import utils.OTP;
 import server.repositories.sendInvitationRepositories;
 import utils.SendInvitationEmail;
