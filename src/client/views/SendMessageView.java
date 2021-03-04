@@ -88,8 +88,7 @@ public class SendMessageView {
                             GroupMessageView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
+                            break;
                         }
                         case 55->{
                             Component.closeUIView();
@@ -581,7 +580,7 @@ public class SendMessageView {
             else{
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
-                System.out.println("No messages sent yet");
+                Component.alertDangerErrorMessage(11, "No messages sent yet");
                 CommonUtil.resetColor();
             }
         }else {
@@ -700,14 +699,10 @@ public class SendMessageView {
                         MessageRepliesView();
                     }
                     case 44->{
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
+                        break;
                     }
                     case 55->{
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
-                        System.exit(1);
+                        Component.closeUIView();
                     }
                     default -> {
                         action = -1;
