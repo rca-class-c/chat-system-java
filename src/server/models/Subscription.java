@@ -15,7 +15,7 @@ public class Subscription {
     public Subscription(){
 
     }
-Subscription(int subscriptionId,int userID,int packageId,Timestamp subscribedAt,Date ExpirationDate){
+public Subscription(int subscriptionId, int userID, int packageId, Timestamp subscribedAt, Date ExpirationDate){
     this.SubscriptionId=subscriptionId;
     this.UserID=userID;
     this.PackageId=packageId;
@@ -28,6 +28,13 @@ Subscription(int userID,int packageId,Timestamp subscribedAt,Date ExpirationDate
     this.SubscribedAt=subscribedAt;
     this.ExpirationDate=ExpirationDate;
 }
+
+    public Subscription(int subscriptionId, int userID, int packageId) {
+        this.SubscriptionId=subscriptionId;
+        this.UserID=userID;
+        this.PackageId=packageId;
+    }
+
     public void setSubscriptionId(int subscriptionId) {
         SubscriptionId = subscriptionId;
     }

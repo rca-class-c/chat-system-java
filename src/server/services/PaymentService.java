@@ -2,9 +2,8 @@ package server.services;
 
 import server.models.Payment;
 import server.repositories.PaymentRepository;
-
+import utils.Discount;
 import java.sql.SQLException;
-
 
 /**
  *
@@ -22,4 +21,5 @@ public class PaymentService {
     public Payment savePayment(Payment payed) throws SQLException {
         return paymentRepository.savePayment(payed);
     }
+
 }
