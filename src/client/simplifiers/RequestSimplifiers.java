@@ -23,6 +23,17 @@ public class RequestSimplifiers {
         this.writer = writer;
         this.reader = reader;
     }
+    public Messages[] goGetMessageReplies(int message_id) throws IOException {
+        String key = "messages/message_replies";
+        Request request = new Request(new ProfileRequestData(message_id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        if(response.isSuccess()) {
+            return new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
+        }
+        return null;
+    }
     public User goGetUser(int id) throws IOException {
         String key= "users/profile";
         Request profileRequest = new Request(new ProfileRequestData(id),key);
