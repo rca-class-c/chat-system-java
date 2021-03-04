@@ -13,6 +13,12 @@ public class Package {
     public int period;
     public float price;
 
+    public Package(String packageName, int period, float price){
+        this.packageName = packageName;
+        this.period = period;
+        this.price = price;
+    }
+
     public Package(int packageId, String packageName, int period, float price){
         this.packageId = packageId;
         this.packageName = packageName;

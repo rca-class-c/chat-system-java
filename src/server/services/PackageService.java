@@ -27,10 +27,13 @@ public class PackageService {
     public Package savePackage(Package packages) throws SQLException {
         return packageRepository.savePackage(packages);
     }
-    public boolean updatePackage(Package packages, int id) throws SQLException {
-        return packageRepository.updatePackage(packages, id);
+    public boolean updatePackage(Package packages) throws SQLException {
+        return packageRepository.updatePackage(packages);
     }
     public boolean deletePackage(int id) throws SQLException {
         return packageRepository.deletePackage(id);
+    }
+    public List<Package> searchPackage(String search) throws SQLException {
+        return packageRepository.getPackageListSearch(search);
     }
 }

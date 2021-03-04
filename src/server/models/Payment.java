@@ -14,6 +14,12 @@ public class Payment {
     private float Discount = 0;
     private float TotalAmount;
 
+    public Payment(int subId, float discount, float totalAmount){
+        this.subId = subId;
+        this.Discount = discount;
+        this.TotalAmount = totalAmount;
+    }
+
     public Payment(int payId, int subId, float discount, float totalAmount){
         this.payId = payId;
         this.subId = subId;
