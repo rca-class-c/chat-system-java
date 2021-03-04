@@ -9,10 +9,7 @@ import server.models.Group;
 import server.models.Messages;
 import server.models.User;
 import server.models.enums.FileSizeTypeEnum;
-import utils.ChatBetweenTwo;
-import utils.CommonUtil;
-import utils.ConsoleColor;
-import utils.FileUtil;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -854,15 +851,21 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if (response.isSuccess()) {
-            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+            GroupNotifications[] messageList = new MessageResponseDataDecoder().returnGroupNotifications(response.getData());
             CommonUtil.addTabs(10, true);
             if (messageList.length == 0) {
                 System.out.println("You don't have any group notification");
             } else {
-                for (Messages messages : messageList) {
-                    User user = new RequestSimplifiers(writer, reader).goGetUser(messages.getSender());
-                    Group group = new RequestSimplifiers(writer, reader).goGetGroup(messages.getGroup_receiver());
-                    System.out.print("You have a  message from " + user.getFname() + " " + user.getFname() + " in ");
+                for (GroupNotifications messages : messageList) {
+                    Group group = new RequestSimplifiers(writer, reader).goGetGroup(messages.getGroup_id());
+                    System.out.print("You have "+messages.getMessage_count());
+                    if(messages.getMessage_count()!=1 && messages.getMessage_count()!=-1){
+                        System.out.print(" messages ");
+                    }
+                    else{
+                        System.out.print(" message ");
+                    }
+                    System.out.print("from " );
                     if(group == null){
                         System.out.println("Unknown group");
                     }
