@@ -848,27 +848,37 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "messages/notifications";
-        Request request = new Request(new ProfileRequestData(userId),key);
+        String key = "messages/notifications";
+        Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
-            for (Messages messages : messageList) {
-                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
-                CommonUtil.addTabs(10, false);
+            if (messageList.length == 0) {
+                System.out.println("You don't have any group notification");
+            } else {
+                for (Messages messages : messageList) {
+                    User user = new RequestSimplifiers(writer, reader).goGetUser(messages.getSender());
+                    Group group = new RequestSimplifiers(writer, reader).goGetGroup(messages.getGroup_receiver());
+                    System.out.print("You have a  message from " + user.getFname() + " " + user.getFname() + " in ");
+                    if(group == null){
+                        System.out.println("Unknown group");
+                    }
+                    else{
+                        System.out.println(group.getName());
+                    }
+                    CommonUtil.addTabs(10, false);
+                }
             }
-        }else {
+        } else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = Component.getChooseOptionChoice();
+        int choice = Component.getChooseOptionChoice();
     }
-
-
     public void ViewNoti() throws IOException {
         Component.pageTitleView("My notifications");
         String  key= "messages/notifi";
@@ -879,9 +889,14 @@ public class SendMessageView {
         if(response.isSuccess()){
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
+            if(messageList.length == 0){
+                System.out.println("You don't have any direct message notification");
+            }else{
             for (Messages messages : messageList) {
-                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                User user = new RequestSimplifiers(writer,reader).goGetUser(messages.getSender());
+                System.out.println("You have a direct message from "+user.getFname()+" "+user.getFname());
                 CommonUtil.addTabs(10, false);
+            }
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
