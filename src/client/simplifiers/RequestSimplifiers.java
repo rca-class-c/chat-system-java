@@ -4,12 +4,14 @@ import client.interfaces.ProfileRequestData;
 import client.interfaces.Request;
 import client.interfaces.ResponseDataSuccessDecoder;
 import client.interfaces.UserResponseDataDecoder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 
 /***
@@ -34,6 +36,19 @@ public class RequestSimplifiers {
         if(profileResponse.isSuccess()) {
             User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
             return profile;
+        }
+        return null;
+    }
+    public List<List> getDiallyMessages(String key) throws IOException {
+        Request reportRequest = new Request(null,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(reportRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder reportResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(reportResponse.isSuccess()) {
+            List reports = new ObjectMapper().readValue(reportResponse.getData(),List.class);
+            return reports;
+
         }
         return null;
     }
