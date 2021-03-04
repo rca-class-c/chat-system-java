@@ -73,9 +73,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("2. Message a group");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
 
                 choice = Component.getChooseOptionChoice();
@@ -116,9 +116,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("3. Enter a user ID");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
             Component.chooseOptionInputView("Choose an option: ");
 
@@ -674,9 +674,9 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("5. Notifications");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -786,9 +786,9 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
