@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.5
--- Dumped by pg_dump version 12.5
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,13 +21,26 @@ SET row_security = off;
 --
 
 CREATE TYPE public.gender_enum AS ENUM (
-    'female',
     'male',
+    'female',
     'other'
 );
 
 
 ALTER TYPE public.gender_enum OWNER TO postgres;
+
+--
+-- Name: invite_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.invite_status AS ENUM (
+    'PENDING',
+    'ACCEPTED',
+    'DENIED'
+);
+
+
+ALTER TYPE public.invite_status OWNER TO postgres;
 
 --
 -- Name: message_status; Type: TYPE; Schema: public; Owner: postgres
@@ -59,22 +72,6 @@ CREATE TYPE public.status AS ENUM (
 
 ALTER TYPE public.status OWNER TO postgres;
 
---
--- Name: trigger_set_timestamp(); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.trigger_set_timestamp() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$;
-
-
-ALTER FUNCTION public.trigger_set_timestamp() OWNER TO postgres;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -90,7 +87,7 @@ CREATE TABLE public.files (
     file_type character varying(50) NOT NULL,
     file_size character varying(50) NOT NULL,
     file_size_type character varying(50) NOT NULL,
-    sender_id integer,
+    sender_id integer NOT NULL,
     created_at date DEFAULT now() NOT NULL
 );
 
@@ -98,26 +95,10 @@ CREATE TABLE public.files (
 ALTER TABLE public.files OWNER TO postgres;
 
 --
--- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+-- Name: files_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.groups (
-    group_id integer NOT NULL,
-    group_name character varying(40) NOT NULL,
-    description character varying(40) NOT NULL,
-    group_creator integer,
-    created_at date DEFAULT now(),
-    updated_at date DEFAULT now()
-);
-
-
-ALTER TABLE public.groups OWNER TO postgres;
-
---
--- Name: groups_groupid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.groups_groupid_seq
+CREATE SEQUENCE public.files_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -126,13 +107,51 @@ CREATE SEQUENCE public.groups_groupid_seq
     CACHE 1;
 
 
-ALTER TABLE public.groups_groupid_seq OWNER TO postgres;
+ALTER TABLE public.files_id_seq OWNER TO postgres;
 
 --
--- Name: groups_groupid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.groups_groupid_seq OWNED BY public.groups.group_id;
+ALTER SEQUENCE public.files_id_seq OWNED BY public.files.id;
+
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.groups (
+    group_id integer NOT NULL,
+    group_name character varying(50) NOT NULL,
+    description character varying(255) NOT NULL,
+    group_creator integer NOT NULL,
+    created_at date DEFAULT now() NOT NULL,
+    updated_at date DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- Name: groups_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.groups_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.groups_group_id_seq OWNER TO postgres;
+
+--
+-- Name: groups_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.groups_group_id_seq OWNED BY public.groups.group_id;
 
 
 --
@@ -146,7 +165,8 @@ CREATE TABLE public.messages (
     user_receiver integer,
     group_receiver integer,
     original_message integer,
-    sent_at date DEFAULT now() NOT NULL
+    sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    message_status public.message_status DEFAULT 'UNSEEN'::public.message_status
 );
 
 
@@ -156,14 +176,22 @@ ALTER TABLE public.messages OWNER TO postgres;
 -- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public.messages ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.messages_id_seq
+CREATE SEQUENCE public.messages_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1
-);
+    CACHE 1;
+
+
+ALTER TABLE public.messages_id_seq OWNER TO postgres;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
 
 
 --
@@ -173,9 +201,9 @@ ALTER TABLE public.messages ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 CREATE TABLE public.permissions (
     permission_id integer NOT NULL,
     name character varying(24) NOT NULL,
-    status character varying(20) NOT NULL,
-    created_at date,
-    updated_at date
+    status public.status NOT NULL,
+    created_at date DEFAULT now(),
+    updated_at date DEFAULT now()
 );
 
 
@@ -185,14 +213,59 @@ ALTER TABLE public.permissions OWNER TO postgres;
 -- Name: permissions_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public.permissions ALTER COLUMN permission_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.permissions_permission_id_seq
+CREATE SEQUENCE public.permissions_permission_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1
+    CACHE 1;
+
+
+ALTER TABLE public.permissions_permission_id_seq OWNER TO postgres;
+
+--
+-- Name: permissions_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.permissions_permission_id_seq OWNED BY public.permissions.permission_id;
+
+
+--
+-- Name: sent_invitations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sent_invitations (
+    sent_id integer NOT NULL,
+    admin_id integer NOT NULL,
+    sent_to character varying(255) NOT NULL,
+    verificationcode integer NOT NULL,
+    status public.invite_status DEFAULT 'PENDING'::public.invite_status NOT NULL
 );
+
+
+ALTER TABLE public.sent_invitations OWNER TO postgres;
+
+--
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sent_invitations_sent_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sent_invitations_sent_id_seq OWNER TO postgres;
+
+--
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sent_invitations_sent_id_seq OWNED BY public.sent_invitations.sent_id;
 
 
 --
@@ -202,8 +275,8 @@ ALTER TABLE public.permissions ALTER COLUMN permission_id ADD GENERATED ALWAYS A
 CREATE TABLE public.user_categories (
     categoryid integer NOT NULL,
     name character varying(255) NOT NULL,
-    created_at date NOT NULL,
-    updated_at date NOT NULL
+    created_at date DEFAULT now(),
+    updated_at date DEFAULT now()
 );
 
 
@@ -236,27 +309,12 @@ ALTER SEQUENCE public.user_categories_categoryid_seq OWNED BY public.user_catego
 --
 
 CREATE TABLE public.user_category_permissions (
-    user_permissions_id integer NOT NULL,
-    permission_id integer NOT NULL,
-    category_id integer
+    category_id integer NOT NULL,
+    permission_id integer NOT NULL
 );
 
 
 ALTER TABLE public.user_category_permissions OWNER TO postgres;
-
---
--- Name: user_category_permissions_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-ALTER TABLE public.user_category_permissions ALTER COLUMN user_permissions_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.user_category_permissions_user_permissions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
 
 --
 -- Name: user_group; Type: TABLE; Schema: public; Owner: postgres
@@ -280,13 +338,13 @@ CREATE TABLE public.users (
     last_name character varying(40) NOT NULL,
     username character varying(40) NOT NULL,
     email character varying(40) NOT NULL,
-    gender character varying(40) NOT NULL,
+    gender public.gender_enum NOT NULL,
     pass_word character varying(40) NOT NULL,
     dob date,
-    created_at date,
-    updated_at date,
-    status public.status,
-    category integer
+    created_at date DEFAULT now() NOT NULL,
+    updated_at date DEFAULT now() NOT NULL,
+    status public.status DEFAULT 'ACTIVE'::public.status,
+    categoryid integer NOT NULL
 );
 
 
@@ -296,21 +354,57 @@ ALTER TABLE public.users OWNER TO postgres;
 -- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public.users ALTER COLUMN user_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.users_user_id_seq
+CREATE SEQUENCE public.users_user_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1
-);
+    CACHE 1;
+
+
+ALTER TABLE public.users_user_id_seq OWNER TO postgres;
+
+--
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
+
+
+--
+-- Name: files id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.files ALTER COLUMN id SET DEFAULT nextval('public.files_id_seq'::regclass);
 
 
 --
 -- Name: groups group_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.groups ALTER COLUMN group_id SET DEFAULT nextval('public.groups_groupid_seq'::regclass);
+ALTER TABLE ONLY public.groups ALTER COLUMN group_id SET DEFAULT nextval('public.groups_group_id_seq'::regclass);
+
+
+--
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
+
+
+--
+-- Name: permissions permission_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions ALTER COLUMN permission_id SET DEFAULT nextval('public.permissions_permission_id_seq'::regclass);
+
+
+--
+-- Name: sent_invitations sent_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sent_invitations ALTER COLUMN sent_id SET DEFAULT nextval('public.sent_invitations_sent_id_seq'::regclass);
 
 
 --
@@ -321,10 +415,19 @@ ALTER TABLE ONLY public.user_categories ALTER COLUMN categoryid SET DEFAULT next
 
 
 --
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
+
+
+--
 -- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.files (id, url, file_name, file_type, file_size, file_size_type, sender_id, created_at) FROM stdin;
+2	https://drive.google.com/drive/#folders/	testing_file	PDF	1.06	MB	2	2021-02-05
+3	C:\\Users\\DELL\\OneDrive\\Documents\\2021\\Java\\Chat_System_Class_C\\chat-system-java/public/assets/question1-2e0538e436cb41d19dea063f319fdfaf.asc	question1	null	0	TB	2	2021-03-01
 \.
 
 
@@ -333,7 +436,8 @@ COPY public.files (id, url, file_name, file_type, file_size, file_size_type, sen
 --
 
 COPY public.groups (group_id, group_name, description, group_creator, created_at, updated_at) FROM stdin;
-13	math	math	2	2021-01-31	2021-01-31
+1	General	The General Chat Room for communication to all members of the application	1	2021-02-05	2021-02-05
+2	February	Group made in feb 2021	2	2021-02-24	2021-02-24
 \.
 
 
@@ -341,11 +445,36 @@ COPY public.groups (group_id, group_name, description, group_creator, created_at
 -- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.messages (id, content, sender, user_receiver, group_receiver, original_message, sent_at) FROM stdin;
-1	hi\n	1	2	\N	1	2021-01-29
-2	hello	2	1	\N	1	2021-01-29
-3	how are you	1	2	\N	2	2021-01-29
-4	hi	3	1	\N	1	2021-01-29
+COPY public.messages (id, content, sender, user_receiver, group_receiver, original_message, sent_at, message_status) FROM stdin;
+3	Hello	1	\N	1	\N	2021-02-05 13:10:42.605528	UNSEEN
+5	Hey	2	\N	1	3	2021-02-05 13:11:58.257878	SEEN
+8	Welcome to chat	1	\N	1	7	2021-02-09 21:43:09.392622	UNSEEN
+12	hello in group	2	\N	1	\N	2021-02-24 13:50:05.954462	UNSEEN
+21	hhhhhhhhhh	2	\N	\N	15	2021-03-01 20:13:31.633627	UNSEEN
+22	hhhhhhhhhhhhhh	2	\N	\N	15	2021-03-01 20:16:39.432167	UNSEEN
+28	hello chanelle	2	4	\N	\N	2021-03-02 06:58:29.34719	UNSEEN
+6	Dear Student	2	1	\N	\N	2021-02-05 13:13:02.403584	SEEN
+11	you mean me?	1	1	\N	\N	\N	SEEN
+13	hello there	2	1	\N	\N	2021-02-24 14:10:50.572851	SEEN
+15	d	2	1	\N	\N	2021-03-01 08:25:27.364826	SEEN
+17	yes g how are you??	2	1	\N	\N	2021-03-01 09:25:43.193639	SEEN
+19	hello there	2	1	\N	\N	2021-03-01 18:13:09.984602	SEEN
+20	hellosdfsdaf	2	1	\N	\N	2021-03-01 18:25:00.364982	SEEN
+26	reka!	2	1	\N	6	2021-03-01 21:17:41.583275	SEEN
+29	hello there	2	1	\N	27	2021-03-02 10:39:22.509086	SEEN
+27	Reka nze mpindure message content	2	1	\N	\N	2021-03-01 23:28:08.61478	SEEN
+31	Yes chanelle bimeze bite s mn	3	4	\N	\N	2021-03-02 11:48:56.792177	UNSEEN
+18	hi there	2	3	\N	\N	2021-03-01 17:49:35.695474	SEEN
+32	hhhhh ndasetse	2	1	\N	\N	2021-03-02 11:57:13.328055	UNSEEN
+35	yo mn	2	1	\N	\N	2021-03-03 08:35:13.766613	UNSEEN
+7	Dear tester	1	2	\N	6	2021-02-05 13:14:19.194834	SEEN
+9	hello	2	2	\N	\N	\N	SEEN
+10	I was just testing	2	2	\N	\N	\N	SEEN
+16	hello there	2	2	\N	\N	2021-03-01 09:24:59.100426	SEEN
+24	babyy	2	2	\N	6	2021-03-01 21:14:04.675176	SEEN
+25	ffffffff	2	2	\N	6	2021-03-01 21:15:49.228922	SEEN
+33	helllo there is it tru?	2	1	\N	27	2021-03-03 07:26:26.166633	UNSEEN
+34	yes chanelle	2	1	\N	\N	2021-03-03 07:27:18.367885	UNSEEN
 \.
 
 
@@ -354,12 +483,30 @@ COPY public.messages (id, content, sender, user_receiver, group_receiver, origin
 --
 
 COPY public.permissions (permission_id, name, status, created_at, updated_at) FROM stdin;
-1	DELETE_USER	ACTIVE	\N	\N
-2	CREATE_GROUP	ACTIVE\n	\N	\N
-3	INVITE	ACTIVE	\N	\N
-4	DELETE_GROUP	ACTIVE	\N	\N
-5	DEACTIVATE_USER	ACIVE	\N	\N
-7	VIEW_STATISTICS	ACTIVE	\N	\N
+1	DELETE_USER	ACTIVE	2021-02-05	2021-02-05
+2	CREATE_GROUP	ACTIVE	2021-02-05	2021-02-05
+4	INVITE_USER	ACTIVE	2021-02-09	2021-02-09
+5	DELETE_GROUP	ACTIVE	2021-02-09	2021-02-09
+6	DEACTIVATE_USER	ACTIVE	2021-02-09	2021-02-09
+7	VIEW_STATISTICS	ACTIVE	2021-02-09	2021-02-09
+8	REMOVE_FROM_GROUP	ACTIVE	2021-02-09	2021-02-09
+9	ADD_TO_GROUP	ACTIVE	2021-02-09	2021-02-09
+10	SEND_MESSAGE	ACTIVE	2021-02-09	2021-02-09
+\.
+
+
+--
+-- Data for Name: sent_invitations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sent_invitations (sent_id, admin_id, sent_to, verificationcode, status) FROM stdin;
+1	1	classc@gmail.com	12345	PENDING
+2	1	oclassc@gmail.com	9645	PENDING
+3	1	hello@gmail.com	23560	PENDING
+4	1	hello@gmail.com	95656	PENDING
+5	1	didiermunezer38@gmail.com	86583	PENDING
+6	1	hirwa.chanelle@gmail.com	50508	PENDING
+7	1	hirwa.chanelle@gmail.com	16266	PENDING
 \.
 
 
@@ -368,8 +515,9 @@ COPY public.permissions (permission_id, name, status, created_at, updated_at) FR
 --
 
 COPY public.user_categories (categoryid, name, created_at, updated_at) FROM stdin;
-3	admin	2000-12-12	2000-12-12
-4	user\n	2000-12-12	0200-12-12
+1	ADMIN	2021-02-05	2021-02-05
+2	USER	2021-02-05	2021-02-05
+3	GROUP_CREATOR	2021-02-09	2021-02-09
 \.
 
 
@@ -377,14 +525,16 @@ COPY public.user_categories (categoryid, name, created_at, updated_at) FROM stdi
 -- Data for Name: user_category_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.user_category_permissions (user_permissions_id, permission_id, category_id) FROM stdin;
-1	1	3
-2	2	4
-3	3	3
-4	3	4
-5	4	4
-6	5	3
-7	7	3
+COPY public.user_category_permissions (category_id, permission_id) FROM stdin;
+1	1
+2	2
+1	4
+3	5
+1	6
+1	7
+3	8
+3	9
+2	10
 \.
 
 
@@ -393,7 +543,8 @@ COPY public.user_category_permissions (user_permissions_id, permission_id, categ
 --
 
 COPY public.user_group (group_id, user_id) FROM stdin;
-13	1
+1	1
+1	2
 \.
 
 
@@ -401,53 +552,61 @@ COPY public.user_group (group_id, user_id) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (user_id, first_name, last_name, username, email, gender, pass_word, dob, created_at, updated_at, status, category) FROM stdin;
-1	uwera	Gahamanyi	Guwera	u@gmail.com	female	hello	2004-12-02	2020-12-12	2019-12-12	\N	\N
-2	Uwizeye	bella	Ubella\n	Bella@gmail.com	female	thisIsMe	2008-12-12	2020-12-12	\N	\N	\N
-3	Kalisa	Mahirwe	Kmahirwe	Mak@gmail.com	female	thisIsYou	2009-12-12	2020-12-12	\N	\N	\N
+COPY public.users (user_id, first_name, last_name, username, email, gender, pass_word, dob, created_at, updated_at, status, categoryid) FROM stdin;
+2	Test	Tester	test	test@gmail.com	female	test	2020-12-12	2021-02-05	2021-02-05	ACTIVE	2
+1	Student	classC	classC	c@gmail.com	male	2021	2021-01-01	2021-02-05	2021-02-05	ACTIVE	1
+4	Chanelle	Hirwa	chanelle	hirwa.chanelle@gmail.com	male	chanizo	2004-06-27	2021-03-01	2021-03-01	ACTIVE	1
+3	Bella	Mellisa	melissa	mellisaIrwanda@gmail.com	female	melissa	2004-02-01	2021-03-01	2021-03-01	INACTIVE	1
 \.
 
 
 --
--- Name: groups_groupid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.groups_groupid_seq', 13, true);
+SELECT pg_catalog.setval('public.files_id_seq', 3, true);
+
+
+--
+-- Name: groups_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.groups_group_id_seq', 2, true);
 
 
 --
 -- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.messages_id_seq', 5, true);
+SELECT pg_catalog.setval('public.messages_id_seq', 35, true);
 
 
 --
 -- Name: permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.permissions_permission_id_seq', 7, true);
+SELECT pg_catalog.setval('public.permissions_permission_id_seq', 10, true);
+
+
+--
+-- Name: sent_invitations_sent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.sent_invitations_sent_id_seq', 7, true);
 
 
 --
 -- Name: user_categories_categoryid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_categories_categoryid_seq', 4, true);
-
-
---
--- Name: user_category_permissions_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.user_category_permissions_user_permissions_id_seq', 7, true);
+SELECT pg_catalog.setval('public.user_categories_categoryid_seq', 3, true);
 
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 3, true);
+SELECT pg_catalog.setval('public.users_user_id_seq', 4, true);
 
 
 --
@@ -456,14 +615,6 @@ SELECT pg_catalog.setval('public.users_user_id_seq', 3, true);
 
 ALTER TABLE ONLY public.files
     ADD CONSTRAINT files_pkey PRIMARY KEY (id);
-
-
---
--- Name: files files_url_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.files
-    ADD CONSTRAINT files_url_key UNIQUE (url);
 
 
 --
@@ -491,6 +642,14 @@ ALTER TABLE ONLY public.permissions
 
 
 --
+-- Name: sent_invitations sent_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sent_invitations
+    ADD CONSTRAINT sent_invitations_pkey PRIMARY KEY (sent_id);
+
+
+--
 -- Name: user_categories user_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -503,7 +662,15 @@ ALTER TABLE ONLY public.user_categories
 --
 
 ALTER TABLE ONLY public.user_category_permissions
-    ADD CONSTRAINT user_category_permissions_pkey PRIMARY KEY (user_permissions_id);
+    ADD CONSTRAINT user_category_permissions_pkey PRIMARY KEY (category_id, permission_id);
+
+
+--
+-- Name: user_group user_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_group
+    ADD CONSTRAINT user_group_pkey PRIMARY KEY (group_id, user_id);
 
 
 --
@@ -523,26 +690,11 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: groups set_timestamp; Type: TRIGGER; Schema: public; Owner: postgres
---
-
-CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.groups FOR EACH ROW EXECUTE FUNCTION public.trigger_set_timestamp();
-
-
---
--- Name: users category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT category FOREIGN KEY (category) REFERENCES public.user_categories(categoryid) NOT VALID;
-
-
---
--- Name: user_category_permissions category_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.user_category_permissions
-    ADD CONSTRAINT category_id FOREIGN KEY (category_id) REFERENCES public.user_categories(categoryid);
+    ADD CONSTRAINT users_username_key UNIQUE (username);
 
 
 --
@@ -554,11 +706,19 @@ ALTER TABLE ONLY public.files
 
 
 --
+-- Name: groups groups_group_creator_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_group_creator_fkey FOREIGN KEY (group_creator) REFERENCES public.users(user_id);
+
+
+--
 -- Name: messages messages_group_receiver_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT messages_group_receiver_fkey FOREIGN KEY (group_receiver) REFERENCES public.users(user_id);
+    ADD CONSTRAINT messages_group_receiver_fkey FOREIGN KEY (group_receiver) REFERENCES public.groups(group_id);
 
 
 --
@@ -566,7 +726,7 @@ ALTER TABLE ONLY public.messages
 --
 
 ALTER TABLE ONLY public.messages
-    ADD CONSTRAINT messages_original_message_fkey FOREIGN KEY (original_message) REFERENCES public.users(user_id);
+    ADD CONSTRAINT messages_original_message_fkey FOREIGN KEY (original_message) REFERENCES public.messages(id);
 
 
 --
@@ -586,11 +746,27 @@ ALTER TABLE ONLY public.messages
 
 
 --
--- Name: user_category_permissions permissions_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sent_invitations sent_invitations_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sent_invitations
+    ADD CONSTRAINT sent_invitations_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: user_category_permissions user_category_permissions_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.user_category_permissions
-    ADD CONSTRAINT permissions_id FOREIGN KEY (permission_id) REFERENCES public.permissions(permission_id);
+    ADD CONSTRAINT user_category_permissions_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.user_categories(categoryid);
+
+
+--
+-- Name: user_category_permissions user_category_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_category_permissions
+    ADD CONSTRAINT user_category_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES public.permissions(permission_id);
 
 
 --
@@ -607,6 +783,14 @@ ALTER TABLE ONLY public.user_group
 
 ALTER TABLE ONLY public.user_group
     ADD CONSTRAINT user_group_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: users users_categoryid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_categoryid_fkey FOREIGN KEY (categoryid) REFERENCES public.user_categories(categoryid);
 
 
 --
