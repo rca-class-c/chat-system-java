@@ -1,12 +1,15 @@
 package server.services;
+import server.models.Payment;
 import server.models.Subscription;
 import server.repositories.SubscriptionRepository;
+import server.services.PaymentService;
 import java.sql.SQLException;
+import utils.ValidSubscription;
 
 /**
  * @authors
  * Cyusa Keny
- * Irakoze Loraine Mukezwa
+ * Irakoze Loraine
  */
 public class SubscriptionService {
 private  final  SubscriptionRepository repository=new SubscriptionRepository();
@@ -22,5 +25,4 @@ public  int DeleteSubscription(int Id) throws SQLException {
 public Subscription GetSubscription(int Id) throws SQLException {
     return repository.GetSubscription(Id);
 }
-
 }
