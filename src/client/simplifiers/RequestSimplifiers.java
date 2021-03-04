@@ -2,6 +2,7 @@ package client.simplifiers;
 
 import client.interfaces.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Group;
 import server.models.Messages;
 import server.models.User;
 import utils.ChatBetweenTwo;
@@ -9,6 +10,7 @@ import utils.ChatBetweenTwo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 
 /***
@@ -46,6 +48,18 @@ public class RequestSimplifiers {
         }
         return null;
     }
+    public Group goGetGroup(int id) throws IOException {
+        String key= "groups/profile";
+        Request profileRequest = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(profileResponse.isSuccess()) {
+            return new GroupResponseDataDecoder().returnGroupDecoded(profileResponse.getData());
+        }
+        return null;
+    }
     public Messages goGetMessage(int id) throws IOException {
         String key= "messages/single";
         Request profileRequest = new Request(new ProfileRequestData(id),key);
@@ -66,6 +80,19 @@ public class RequestSimplifiers {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()) {
             return new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
+        }
+        return null;
+    }
+    public List<List> getDiallyMessages(String key) throws IOException {
+        Request reportRequest = new Request(null,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(reportRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder reportResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(reportResponse.isSuccess()) {
+            List reports = new ObjectMapper().readValue(reportResponse.getData(),List.class);
+            return reports;
+
         }
         return null;
     }

@@ -35,7 +35,7 @@ public class Authorization {
         while (resultSet.next()) {
             String name=resultSet.getString("name");
             int id= resultSet.getInt("permission_id");
-          System.out.println(name+" ID:"+id);
+            System.out.println(name+" ID:"+id);
             switch (name) {
                 case "DELETE_USER" -> id_DeleteUser = id;
                 case "CREATE_GROUP" -> id_createGroup = id;
@@ -46,10 +46,10 @@ public class Authorization {
             }
         }
 
-     System.out.println(id_SendMessage);
+        System.out.println(id_SendMessage);
     }
 
-// checking if the user is allowed  to delete another user, if the function returns true then the person is allowed else
+    // checking if the user is allowed  to delete another user, if the function returns true then the person is allowed else
     //user is unauthorized.
     public  boolean canDeleteUser(int cat_Id) throws SQLException {
         boolean allowed = false;
@@ -189,7 +189,7 @@ public class Authorization {
     //this function is for finding out if a person is a groupAdmin and which  group did he create
 
     public boolean groupCreater(int user_id, String groupName) throws SQLException {
-      boolean allowed=false;
+        boolean allowed=false;
         String sql = "select group_name from groups where group_creator=?";
         Connection connection = PostegresConfig.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -197,14 +197,14 @@ public class Authorization {
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-           String group_name=resultSet.getString("group_name");
-         if(group_name.equals(groupName)){
-             allowed=true;
-         }
+            String group_name=resultSet.getString("group_name");
+            if(group_name.equals(groupName)){
+                allowed=true;
+            }
 
         }
 
-       return allowed;
+        return allowed;
 
 
     }
