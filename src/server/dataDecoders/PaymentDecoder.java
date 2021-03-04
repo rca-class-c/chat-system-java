@@ -21,7 +21,6 @@ public class PaymentDecoder {
     public Payment createPaymentDecoder() throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode dataDecrypt = objectMapper.readTree(data);
-
         return new Payment(dataDecrypt.get("subId").asInt(),dataDecrypt.get("discount").asInt(),dataDecrypt.get("totalAmount").asInt());
     }
 

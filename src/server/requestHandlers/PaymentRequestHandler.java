@@ -20,7 +20,9 @@ import java.sql.SQLException;
 public class PaymentRequestHandler {
 
     public void HandleSavePayment(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException, SQLException {
-        Payment returned = new PaymentService().savePayment( new PaymentDecoder(data).createPaymentDecoder());
+        Payment payment=new PaymentDecoder(data).createPaymentDecoder();
+        payment.setTotalAmount(new utils.Discount().TotalAmount(payment.getDiscount(), payment.getTotalAmount()).getTotalAmount());
+        Payment returned = new PaymentService().savePayment(payment);
 
         if(returned == null){
             Response response = new Response(null, false);
