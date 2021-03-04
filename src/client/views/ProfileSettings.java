@@ -53,7 +53,8 @@ public class ProfileSettings {
             CommonUtil.addTabs(11, false);
             System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
-            choice  = scanner.nextInt();
+            choice  = Component.getChooseOptionChoice();
+
             if(choice == 1){
                 MyProfile();
             }

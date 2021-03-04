@@ -9,10 +9,7 @@ import server.models.Group;
 import server.models.Messages;
 import server.models.User;
 import server.models.enums.FileSizeTypeEnum;
-import utils.ChatBetweenTwo;
-import utils.CommonUtil;
-import utils.ConsoleColor;
-import utils.FileUtil;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +24,8 @@ public class SendMessageView {
     public PrintWriter writer;
     public BufferedReader reader;
     public int receiver;
+    public int group_receiver;
+    Group currentGroup;
     User current;
     User chattingWith;
     Scanner scanner = new Scanner(System.in);
@@ -35,6 +34,22 @@ public class SendMessageView {
         this.userId = userId;
         this.writer = writer;
         this.reader = reader;
+    }
+
+    public int getGroup_receiver() {
+        return group_receiver;
+    }
+
+    public void setGroup_receiver(int group_receiver) {
+        this.group_receiver = group_receiver;
+    }
+
+    public Group getCurrentGroup() {
+        return currentGroup;
+    }
+
+    public void setCurrentGroup(Group currentGroup) {
+        this.currentGroup = currentGroup;
     }
 
     public User getCurrent() {
@@ -209,7 +224,7 @@ public class SendMessageView {
             key = "messages/send/direct";
         }
         else if(reciever_type.equals("group")){
-            newMessage = new Messages(0,message,userId,receiver,0);
+            newMessage = new Messages(0,message,userId,group_receiver,0);
             key = "messages/send/group";
         }
         Request request = new Request(newMessage,key);
@@ -425,6 +440,8 @@ public class SendMessageView {
             }while(!ids.contains(choice));
             for (Group group : groups) {
                 if(group.getId() == choice){
+                    this.setGroup_receiver(group.getId());
+                    this.setCurrentGroup(group);
                     WriteMessageViewInGroup(group);
                 }
             }
@@ -452,6 +469,7 @@ public class SendMessageView {
                 System.out.println("");
                 for (Group group : groups) {
                     ids.add(group.getId());
+
                     CommonUtil.addTabs(10, false);
                     System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 }
@@ -466,6 +484,8 @@ public class SendMessageView {
                 }while(!ids.contains(choice));
                 for (Group group : groups) {
                     if(group.getId() == choice){
+                        this.setCurrentGroup(group);
+                        this.setGroup_receiver(group.getId());
                         WriteMessageViewInGroup(group);
                     }
                 }
@@ -488,6 +508,8 @@ public class SendMessageView {
         Component.pageTitleView("Group BY ID GETTING");
         if(response.isSuccess()){
             Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
+            this.setCurrentGroup(group);
+            this.setGroup_receiver(group.getId());
             WriteMessageViewInGroup(group);
         }else {
             Component.alertDangerErrorMessage(11, "Group not found");
@@ -729,15 +751,36 @@ public class SendMessageView {
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
+//            for (Messages message : messages) {
+//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+//
+//                System.out.print(user.getFname()+" "+user.getLname());
+//                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+//                System.out.println("\t at "+message.getSent_at());
+//                CommonUtil.resetColor();
+//                CommonUtil.addTabs(10, false);
+//                System.out.println("Message: "+message.getContent());
+//                CommonUtil.addTabs(10, true);
+//            }
             for (Messages message : messages) {
-                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                System.out.print(message.getSender());
-                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
-                System.out.println("\t at "+message.getSent_at());
+                User  user = new RequestSimplifiers(writer,reader).goGetUser(message.getSender());
+                CommonUtil.addTabs(11, true);
+                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
-                CommonUtil.addTabs(10, false);
-                System.out.println("Message: "+message.getContent());
-                CommonUtil.addTabs(10, true);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(message.getContent());
+
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("  (Date:  ");
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                System.out.print(message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(")");
+
+                CommonUtil.resetColor();
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
@@ -806,27 +849,43 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "messages/notifications";
-        Request request = new Request(new ProfileRequestData(userId),key);
+        String key = "messages/notifications";
+        Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if(response.isSuccess()){
-            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+        if (response.isSuccess()) {
+            GroupNotifications[] messageList = new MessageResponseDataDecoder().returnGroupNotifications(response.getData());
             CommonUtil.addTabs(10, true);
-            for (Messages messages : messageList) {
-                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
-                CommonUtil.addTabs(10, false);
+            if (messageList.length == 0) {
+                System.out.println("You don't have any group notification");
+            } else {
+                for (GroupNotifications messages : messageList) {
+                    Group group = new RequestSimplifiers(writer, reader).goGetGroup(messages.getGroup_id());
+                    System.out.print("You have "+messages.getMessage_count());
+                    if(messages.getMessage_count()!=1 && messages.getMessage_count()!=-1){
+                        System.out.print(" messages ");
+                    }
+                    else{
+                        System.out.print(" message ");
+                    }
+                    System.out.print("from " );
+                    if(group == null){
+                        System.out.println("Unknown group");
+                    }
+                    else{
+                        System.out.println(group.getName());
+                    }
+                    CommonUtil.addTabs(10, false);
+                }
             }
-        }else {
+        } else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = Component.getChooseOptionChoice();
+        int choice = Component.getChooseOptionChoice();
     }
-
-
     public void ViewNoti() throws IOException {
         Component.pageTitleView("My notifications");
         String  key= "messages/notifi";
@@ -837,9 +896,14 @@ public class SendMessageView {
         if(response.isSuccess()){
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
+            if(messageList.length == 0){
+                System.out.println("You don't have any direct message notification");
+            }else{
             for (Messages messages : messageList) {
-                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                User user = new RequestSimplifiers(writer,reader).goGetUser(messages.getSender());
+                System.out.println("You have a direct message from "+user.getFname()+" "+user.getFname());
                 CommonUtil.addTabs(10, false);
+            }
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");

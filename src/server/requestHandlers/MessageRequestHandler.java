@@ -9,6 +9,7 @@ import server.models.*;
 import server.services.*;
 import utils.DirectMessage;
 import utils.GroupMessage;
+import utils.GroupNotifications;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -204,7 +205,7 @@ public class MessageRequestHandler {
 //
 
     public void HandleGroupNotis(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
-        List<GroupMessage> messages = new MessagesService().viewUserNotis(new UserDecoder(data).GetProfileDecode());
+        List<GroupNotifications> messages = new MessagesService().viewUserNotis(new UserDecoder(data).GetProfileDecode());
         //User returned = nHandleGroupNotisew UserService().getUserById(new UserDecoder(data).GetProfileDecode());
         if(messages == null){
             System.out.println("Query failed recheck your db");
