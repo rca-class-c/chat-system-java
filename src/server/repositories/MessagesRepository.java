@@ -193,6 +193,32 @@ public class MessagesRepository {
         conn.close();
         return messages;
     }
+    public List<Messages> getMessageReplies(int message_id) throws SQLException {
+        Connection conn = PostegresConfig.getConnection();
+        Statement statement = conn.createStatement();
+        List <Messages> messages = new ArrayList<Messages>();
+
+        String readQuery = String.format(
+                "SELECT * from messages where original_message = %d;", message_id);
+
+        ResultSet result = statement.executeQuery(readQuery);
+
+        while (result.next()){
+
+            Integer id = result.getInt(1);
+            String content = result.getString(2);
+            Integer sender = result.getInt(3);
+            Integer user_receiver = result.getInt(4);
+            Integer group_receiver = result.getInt(5);
+            Integer original_message = result.getInt(6);
+            java.sql.Date date = result.getDate(7);
+            Messages messages1 = new Messages(id,content,sender,user_receiver,group_receiver,original_message,date);
+            messages.add(messages1);
+        }
+
+        conn.close();
+        return messages;
+    }
     public List<Messages> GetReplies(int userId,int second) throws SQLException {
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
