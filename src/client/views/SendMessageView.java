@@ -92,10 +92,7 @@ public class SendMessageView {
                             System.out.println("Going back");
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
-                            System.exit(1);
+                            Component.closeUIView();
                         }
                         default -> {
                             choice = -1;
@@ -140,15 +137,10 @@ public class SendMessageView {
                             UserIdView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
                             break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
-                            System.exit(1);
+                            Component.closeUIView();
                             break;
                         }
                         default -> {
@@ -225,13 +217,11 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-
             CommonUtil.addTabs(10, true);
-            System.out.println("Message sent");
-
+            Component.alertSuccessMessage(11, "Message sent");
         }else {
             CommonUtil.addTabs(10, true);
-            System.out.println("Failed to send");
+            Component.alertDangerErrorMessage(11, "Failed to send");
         }
     }
     public void TypeMessageView(int og_message,String type) throws IOException {
@@ -257,13 +247,10 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-
-            CommonUtil.addTabs(10, true);
-            System.out.println("Reply sent successfully");
+            Component.alertSuccessMessage(11, "Reply sent successfully");
 
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to send");
+            Component.alertDangerErrorMessage(11, "Failed to send");
         }
     }
 
