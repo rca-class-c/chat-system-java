@@ -13,7 +13,9 @@ public class Payment {
     private int subId;
     private float Discount = 0;
     private float TotalAmount;
+public  Payment(){
 
+}
     public Payment(int payId, int subId, float discount, float totalAmount){
         this.payId = payId;
         this.subId = subId;
