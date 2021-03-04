@@ -88,9 +88,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("2. Message a group");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
 
                 choice = Component.getChooseOptionChoice();
@@ -103,14 +103,11 @@ public class SendMessageView {
                             GroupMessageView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
+                            break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
-                            System.exit(1);
+                            Component.closeUIView();
+                            System.exit(0);
                         }
                         default -> {
                             choice = -1;
@@ -135,9 +132,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("3. Enter a user ID");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
             Component.chooseOptionInputView("Choose an option: ");
 
@@ -155,16 +152,11 @@ public class SendMessageView {
                             UserIdView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
                             break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
-                            System.exit(1);
-                            break;
+                            Component.closeUIView();
+                            System.exit(0);
                         }
                         default -> {
                             Component.showErrorMessage("Enter a valid choice (1, 2): ");
@@ -240,14 +232,11 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-
-            CommonUtil.addTabs(10, true);
-            System.out.println("Message sent");
-
+            Component.alertSuccessMessage(11, "Message sent");
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to send");
+            Component.alertDangerErrorMessage(11, "Failed to send");
         }
+        WriteMessageView();
     }
     public void TypeMessageView(int og_message,String type) throws IOException {
         Component.pageTitleView("Type a reply");
@@ -272,13 +261,10 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-
-            CommonUtil.addTabs(10, true);
-            System.out.println("Reply sent successfully");
+            Component.alertSuccessMessage(11, "Reply sent successfully");
 
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to send");
+            Component.alertDangerErrorMessage(11, "Failed to send");
         }
     }
 
@@ -291,7 +277,8 @@ public class SendMessageView {
         String fileLocalPath = scanner.nextLine();
 
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
 
             String fileName = FileUtil.getFileNameFromFilePath(fileLocalPath);
             String fileType = FileUtil.getFileTypeFromFilePath(fileLocalPath);
@@ -299,20 +286,24 @@ public class SendMessageView {
             int fileSize = FileUtil.getFormattedFileSizeFromFileSize(FileUtil.getFileSizeFromPath(fileLocalPath), FileSizeTypeEnum.valueOf(fileSizeType));
 
 
-        File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
-        String key = "file/send";
-        Request request = new Request(file, key);
-        String requestAsString = objectMapper.writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if(response.isSuccess()){
-            Component.alertSuccessMessage(11, "File saved successfully");
-            //ageView(new User());
+            File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
+            String key = "file/send";
+            Request request = new Request(file, key);
+            String requestAsString = objectMapper.writeValueAsString(request);
+            writer.println(requestAsString);
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            if (response.isSuccess()) {
+                Component.alertSuccessMessage(11, "File saved successfully");
+                //ageView(new User());
+            } else {
+                Component.alertDangerErrorMessage(11, "File not saved, try again!");
+            }
+            WriteMessageView();
+            //View(new User());
+        } catch (Exception e) {
+            Component.alertDangerErrorMessage(11, "File not found");
+            WriteMessageView();
         }
-        else{
-            Component.alertDangerErrorMessage(11, "File not saved, try again!");
-        }
-        //View(new User());
     }
     public void EditMessageView() throws IOException {
         Component.pageTitleView("Edit a Message");
@@ -332,11 +323,11 @@ public class SendMessageView {
 
         if(response.isSuccess()){
             Component.alertSuccessMessage(11, "Message edited successfully");
-
         }
         else{
             Component.showErrorMessage("Message edit unsuccessful!");
         }
+        WriteMessageView();
     }
 
     public  void DeleteMessageView() throws IOException {
@@ -359,6 +350,7 @@ public class SendMessageView {
         else{
             Component.alertDangerErrorMessage(11, "Message not found!");
         }
+        WriteMessageView();
     }
 
     public void DeleteReplieView() throws IOException {
@@ -454,10 +446,6 @@ public class SendMessageView {
                 }
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
     }
@@ -533,11 +521,16 @@ public class SendMessageView {
         List ids = new ArrayList<Integer>();
             User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         if(users != null){
-            CommonUtil.addTabs(10, true);
             for (User user : users) {
                 ids.add(user.getUserID());
-                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + user.getUserID() + "] ");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.println(user.getFname() + " " + user.getLname());
+                CommonUtil.resetColor();
+
             }
             if(users.length == 0){
                 return null;
@@ -652,32 +645,37 @@ public class SendMessageView {
             for (Messages message : messages) {
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
-                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
+                    System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
                 }
                 else{
-                    System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
+                    System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
+                    CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                    System.out.print(" [You]");
+                    CommonUtil.resetColor();
                 }
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                System.out.print(message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(")");
+
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
+
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
                 System.out.print(message.getContent());
 
-                    CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                    System.out.print("  (Date:  ");
-                    CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
-                    System.out.print(message.getSent_at());
-                    CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                    System.out.println(")");
-
                 CommonUtil.resetColor();
+                System.out.println();
             }
             }
             else{
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
-                System.out.println("No messages sent yet");
+                Component.alertDangerErrorMessage(11, "No messages sent yet");
                 CommonUtil.resetColor();
             }
         }else {
@@ -696,7 +694,10 @@ public class SendMessageView {
         System.out.println("4. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("5. Replies");
-
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
@@ -719,7 +720,13 @@ public class SendMessageView {
                     case 5 -> {
                         MessageRepliesView();
                     }
-
+                    case 44 -> {
+                        break;
+                    }
+                    case 55 -> {
+                        Component.closeUIView();
+                        System.exit(0);
+                    }
                     default -> {
                         action = -1;
 
@@ -792,9 +799,9 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("5. Notifications");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -817,14 +824,11 @@ public class SendMessageView {
                         MessageRepliesView();
                     }
                     case 44->{
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
+                        break;
                     }
                     case 55->{
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
-                        System.exit(1);
+                        Component.closeUIView();
+                        System.exit(0);
                     }
                     default -> {
                         action = -1;
@@ -929,9 +933,9 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;

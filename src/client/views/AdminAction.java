@@ -319,14 +319,15 @@ public class AdminAction {
         Request request  = new Request(emails,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        CommonUtil.addTabs(10, false);
-        System.out.println("Sending emails ...");
+        CommonUtil.addTabs(11, false);
+        CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+        System.out.println("Sending emails");
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             Component.alertSuccessMessage(11, "Email sent successfully");
         }
         else{
-            Component.alertSuccessMessage(11, "Email failed to send.");
+            Component.alertDangerErrorMessage(11, "Email failed to send.");
         }
     }
 
