@@ -27,6 +27,8 @@ public class SendMessageView {
     public PrintWriter writer;
     public BufferedReader reader;
     public int receiver;
+    public int group_receiver;
+    Group currentGroup;
     User current;
     User chattingWith;
     Scanner scanner = new Scanner(System.in);
@@ -35,6 +37,22 @@ public class SendMessageView {
         this.userId = userId;
         this.writer = writer;
         this.reader = reader;
+    }
+
+    public int getGroup_receiver() {
+        return group_receiver;
+    }
+
+    public void setGroup_receiver(int group_receiver) {
+        this.group_receiver = group_receiver;
+    }
+
+    public Group getCurrentGroup() {
+        return currentGroup;
+    }
+
+    public void setCurrentGroup(Group currentGroup) {
+        this.currentGroup = currentGroup;
     }
 
     public User getCurrent() {
@@ -217,7 +235,7 @@ public class SendMessageView {
             key = "messages/send/direct";
         }
         else if(reciever_type.equals("group")){
-            newMessage = new Messages(0,message,userId,receiver,0);
+            newMessage = new Messages(0,message,userId,group_receiver,0);
             key = "messages/send/group";
         }
         Request request = new Request(newMessage,key);
@@ -433,6 +451,8 @@ public class SendMessageView {
             }while(!ids.contains(choice));
             for (Group group : groups) {
                 if(group.getId() == choice){
+                    this.setGroup_receiver(group.getId());
+                    this.setCurrentGroup(group);
                     WriteMessageViewInGroup(group);
                 }
             }
@@ -464,6 +484,7 @@ public class SendMessageView {
                 System.out.println("");
                 for (Group group : groups) {
                     ids.add(group.getId());
+
                     CommonUtil.addTabs(10, false);
                     System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 }
@@ -478,6 +499,8 @@ public class SendMessageView {
                 }while(!ids.contains(choice));
                 for (Group group : groups) {
                     if(group.getId() == choice){
+                        this.setCurrentGroup(group);
+                        this.setGroup_receiver(group.getId());
                         WriteMessageViewInGroup(group);
                     }
                 }
@@ -500,6 +523,8 @@ public class SendMessageView {
         Component.pageTitleView("Group BY ID GETTING");
         if(response.isSuccess()){
             Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
+            this.setCurrentGroup(group);
+            this.setGroup_receiver(group.getId());
             WriteMessageViewInGroup(group);
         }else {
             Component.alertDangerErrorMessage(11, "Group not found");
