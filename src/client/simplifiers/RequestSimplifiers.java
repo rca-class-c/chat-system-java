@@ -10,6 +10,7 @@ import utils.ChatBetweenTwo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 
 /***
@@ -79,6 +80,19 @@ public class RequestSimplifiers {
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()) {
             return new MessageResponseDataDecoder().returnDecodedReplies(response.getData());
+        }
+        return null;
+    }
+    public List<List> getDiallyMessages(String key) throws IOException {
+        Request reportRequest = new Request(null,key);
+        String requestAsString = new ObjectMapper().writeValueAsString(reportRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder reportResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(reportResponse.isSuccess()) {
+            List reports = new ObjectMapper().readValue(reportResponse.getData(),List.class);
+            return reports;
+
         }
         return null;
     }
