@@ -140,7 +140,7 @@ public class SendMessageView {
                         }
                         case 55->{
                             Component.closeUIView();
-                            break;
+                            System.exit(0);
                         }
                         default -> {
                             Component.showErrorMessage("Enter a valid choice (1, 2): ");
@@ -492,11 +492,11 @@ public class SendMessageView {
         List ids = new ArrayList<Integer>();
             User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         if(users != null){
-            CommonUtil.addTabs(10, true);
+            CommonUtil.addTabs(11, true);
             for (User user : users) {
                 ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
             }
             if(users.length == 0){
                 return null;
@@ -597,7 +597,10 @@ public class SendMessageView {
         System.out.println("4. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("5. Replies");
-
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
@@ -620,7 +623,13 @@ public class SendMessageView {
                     case 5 -> {
                         MessageRepliesView();
                     }
-
+                    case 44 -> {
+                        break;
+                    }
+                    case 55 -> {
+                        Component.closeUIView();
+                        System.exit(0);
+                    }
                     default -> {
                         action = -1;
 
@@ -701,6 +710,7 @@ public class SendMessageView {
                     }
                     case 55->{
                         Component.closeUIView();
+                        System.exit(0);
                     }
                     default -> {
                         action = -1;
