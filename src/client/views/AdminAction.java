@@ -177,16 +177,6 @@ public class AdminAction {
                             }else if (range.contains("groupReport")){
                                 reports =  new RequestSimplifiers(writer,reader).getDiallyMessages("stats/groups/daily");
                                 printStatistics(reports,"group:");
-                                //handnling comes tomorow//we can not also view files
-                                List<List> allStats = new ReportsServices().getMessageReport();
-                                printStatatics(allStats,"message:");
-
-                            } else if(range.contains("user report")) {
-                                List<List> allStats = new ReportsServices().getUserReport();
-                                printStatatics(allStats,"user:");
-                            }else{
-                                List<List> allStats = new ReportsServices().getGroupReport();
-                                printStatatics(allStats,"group:");
                             }
                             break;
                         case 2:
