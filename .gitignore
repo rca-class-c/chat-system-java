@@ -4,7 +4,7 @@ src/server/config/db.properties
 # ignoring production folder
 ./out
 
-
+.class
 #avoiding intelije idea deafult folders and files configs
 .idea
 *.iml
