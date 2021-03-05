@@ -1,6 +1,7 @@
 package client.views;
 
 import client.interfaces.UserResponseDataDecoder;
+import client.simplifiers.RequestSimplifiers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.User;
 import utils.CommonUtil;
@@ -52,7 +53,8 @@ public class ProfileSettings {
             CommonUtil.addTabs(11, false);
             System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
-            choice  = scanner.nextInt();
+            choice  = Component.getChooseOptionChoice();
+
             if(choice == 1){
                 MyProfile();
             }
@@ -98,7 +100,6 @@ public class ProfileSettings {
             CommonUtil.addTabs(11, false);
             Component.listItemView("Password", profile.getPassword());
 
-            viewProfileSettingsOptions();
         }
         else{
             Component.alertDangerErrorMessage(11, "No profile found!");
@@ -107,15 +108,8 @@ public class ProfileSettings {
 
     }
     public void updateUser(int userid) throws IOException{
-        String key= "users/profile";
-        Request profileRequest = new Request(new ProfileRequestData(userid),key);
-        String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Scanner scanner = new Scanner(System.in);
-
-        if(profileResponse.isSuccess()){
-            User profile = new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
+        User profile = new RequestSimplifiers(writer,reader).goGetUser(userid);
+        if(profile != null){
             Component.pageTitleView("Edit your PROFILE");
             CommonUtil.addTabs(12, false);
             CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
@@ -267,7 +261,6 @@ public class ProfileSettings {
             Component.alertDangerErrorMessage(11, "No profile found!");
 
         }
-        viewProfileSettingsOptions();
     }
 
 }

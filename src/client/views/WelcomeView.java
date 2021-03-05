@@ -32,7 +32,8 @@ public class WelcomeView {
         Scanner scanner = new Scanner(System.in);
         Component.pageTitleView("LOGIN TO CLASS_C CHAT");
 
-        CommonUtil.addTabs(11, false);
+
+        CommonUtil.addTabs(11, true);
         System.out.print("Your username: ");
         String userName = scanner.nextLine();
 

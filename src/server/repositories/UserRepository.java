@@ -100,10 +100,13 @@ public class UserRepository {
     public List<User> getUserSearchList(String search) throws SQLException {
         try{
             Connection connection = PostegresConfig.getConnection();
-            Statement statement =  connection.createStatement();
+            String query="SELECT * FROM users where first_name =? or last_name = ? or username = ? and status = 'ACTIVE' ORDER BY user_id ASC;";
+            PreparedStatement statement=connection.prepareStatement(query);
 
-            String query = String.format("SELECT * FROM users where first_name = '%s' or last_name = '%s' or username = '%s' and status = 'ACTIVE' ORDER BY user_id ASC;",search,search,search);
-            ResultSet rs = statement.executeQuery(query);
+            statement.setString(1, "%" + search + "%");
+            statement.setString(2,"%" + search + "%");
+            statement.setString(3, "%" + search + "%");
+            ResultSet rs=statement.executeQuery();
             List<User> users=new ArrayList<User>();
             while(rs.next()){
                 users.add(new User(rs.getInt("user_id"),rs.getString("first_name"),rs.getString("last_name"),

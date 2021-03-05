@@ -1,6 +1,7 @@
 package client.views;
 
 import client.interfaces.*;
+import client.simplifiers.RequestSimplifiers;
 import client.views.components.Component;
 import client.views.components.TableView;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -115,12 +116,12 @@ public class AdminAction {
                         case 2 -> {
                             System.out.flush();
                             CommonUtil.clearScreen();
-                            this.choosePeriod("user report");
+                            this.choosePeriod("userReport");
                         }
                         case 3 -> {
                             System.out.flush();
                             CommonUtil.clearScreen();
-                            this.choosePeriod("group report");
+                            this.choosePeriod("groupReport");
                         }
                         case 44->{
                             break;
@@ -164,37 +165,39 @@ public class AdminAction {
                 try {
                     Component.chooseOptionInputView("Choose an option: ");
                     choice  = scanner.nextInt();
+                    List<List> reports = null;
                     switch(choice) {
                         case 1:
                             if (range.contains("messaging")) {
-                                List<List> allStats = new ReportsServices().getMessageReport();
-                                printStatatics(allStats,"message:");
-
-                            } else if(range.contains("user report")) {
-                                List<List> allStats = new ReportsServices().getUserReport();
-                                printStatatics(allStats,"user:");
-                            }else{
-                                List<List> allStats = new ReportsServices().getGroupReport();
-                                printStatatics(allStats,"group:");
+                               reports =  new RequestSimplifiers(writer,reader).getDiallyMessages("stats/messages/daily");
+                                printStatistics(reports,"message:");
+                            } else if(range.contains("userReport")) {
+                               reports =  new RequestSimplifiers(writer,reader).getDiallyMessages("stats/user/daily");
+                                printStatistics(reports,"user:");
+                            }else if (range.contains("groupReport")){
+                                reports =  new RequestSimplifiers(writer,reader).getDiallyMessages("stats/groups/daily");
+                                printStatistics(reports,"group:");
                             }
                             break;
                         case 2:
-//                            if (range.contains("messaging")) {
-//                                List<List> allStats = new ReportsServices().getMessageReport();
-//                                printStatatics(allStats);
-//                            } else {
-//                                List<List> allStat = new ReportsServices().getUserReport();
-//                                printStatatics(allStat);
-//                            }
+                          CommonUtil.addTabs(12, true);
+                          CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+                          System.out.println("--------------------------------");
+                          CommonUtil.addTabs(12, false);
+                          System.out.println("|  Monthly report Coming soon   |");
+                          CommonUtil.addTabs(12, false);
+                          System.out.println("---------------------------------");
+                          CommonUtil.resetColor();
                             break;
                         case 3:
-                            if (range.contains("messaging")) {
-                                List<List> allStats = new ReportsServices().getGroupReport();
-                                printStatatics(allStats,"message:");
-                            } else {
-                                List<List> allStats = new ReportsServices().getGroupReport();
-                                printStatatics(allStats,"group");
-                            }
+                            CommonUtil.addTabs(12, true);
+                            CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
+                            System.out.println("--------------------------------");
+                            CommonUtil.addTabs(12, false);
+                            System.out.println("|   Yearly report Coming soon   |");
+                            CommonUtil.addTabs(12, false);
+                            System.out.println("---------------------------------");
+                            CommonUtil.resetColor();
                             break;
                         case 4:
                             this.starts();
@@ -316,14 +319,15 @@ public class AdminAction {
         Request request  = new Request(emails,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        CommonUtil.addTabs(10, false);
-        System.out.println("Sending emails ...");
+        CommonUtil.addTabs(11, false);
+        CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+        System.out.println("Sending emails");
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             Component.alertSuccessMessage(11, "Email sent successfully");
         }
         else{
-            Component.alertSuccessMessage(11, "Email failed to send.");
+            Component.alertDangerErrorMessage(11, "Email failed to send.");
         }
     }
 
@@ -332,8 +336,8 @@ public class AdminAction {
      * @param all
      * @param  trimStr {category of stastistics}
      */
-    private void printStatatics(List<List> all,String trimStr){
-        if(all.size() == 0){
+    private void printStatistics(List<List> all, String trimStr){
+        if(all.get(1).size() <= 0){
             CommonUtil.addTabs(12, false);
             CommonUtil.useColor(ConsoleColor.HighIntensityColor.CYAN_BRIGHT);
             System.out.println("Nothing to show");
@@ -342,9 +346,9 @@ public class AdminAction {
         }
         TableView st = new TableView();
         int i,sum=0;
-        //st.setRightAlign(true);//if true then cell text is right aligned
-        st.setShowVerticalLines(true);//if false (default) then no vertical lines are shown
-        st.setHeaders("number", "dates",trimStr.replace(":",""));//optional - if not used then there will be no header and horizontal lines
+
+        st.setShowVerticalLines(true);
+        st.setHeaders("number", "dates",trimStr.replace(":",""));
         for ( i = 0; i < all.get(0).size(); i++) {
             sum += Integer.parseInt(all.get(1).get(i).toString());
             st.addRow(Integer.toString(i+1), all.get(0).get(i).toString().replace(trimStr,""), all.get(1).get(i).toString());
@@ -352,14 +356,14 @@ public class AdminAction {
         st.addRow(Integer.toString(i+1),"total",String.valueOf(sum));
         st.print();
     }
-    private void overallStatics(){
+    private void overallStatics() throws IOException {
         TableView ovt = new TableView();
         ovt.setShowVerticalLines(true);
         ovt.setHeaders("number","property","total");
-        ovt.addRow("1","messages",String.valueOf(findSum(new ReportsServices().getMessageReport())));
-        ovt.addRow("2","groups",String.valueOf(findSum(new ReportsServices().getGroupReport())));
-        ovt.addRow("3","users",String.valueOf(findSum(new ReportsServices().getGroupReport())));
-        ovt.addRow("4","system Visits",String.valueOf(findSum(new ReportsServices().getVisitReport())));
+        ovt.addRow("1","messages",String.valueOf(findSum(new RequestSimplifiers(writer,reader).getDiallyMessages("stats/messages/daily"))));
+        ovt.addRow("2","groups",String.valueOf(findSum(new RequestSimplifiers(writer,reader).getDiallyMessages("stats/groups/daily"))));
+        ovt.addRow("3","users",String.valueOf(findSum(new RequestSimplifiers(writer,reader).getDiallyMessages("stats/user/daily"))));
+        ovt.addRow("4","system Visits",String.valueOf(findSum(new RequestSimplifiers(writer,reader).getDiallyMessages("stats/visit/daily"))));
 
         ovt.print();
     }
@@ -399,6 +403,7 @@ public class AdminAction {
             System.out.println("");
             Component.chooseOptionInputView("Type user id deactivate: ");
             choice  = Component.getChooseOptionChoice();
+            if (choice == -1) break;
             if(!ids.contains(choice)){
                 CommonUtil.addTabs(11, true);
                 Component.alertDangerErrorMessage(11, "User not found, try another!");

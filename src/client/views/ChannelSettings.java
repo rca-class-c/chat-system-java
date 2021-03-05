@@ -88,7 +88,7 @@ public class ChannelSettings {
             CommonUtil.addTabs(11, false);
             System.out.println("2. Search Channel");
             CommonUtil.addTabs(11, false);
-            System.out.println("3. ID Channel");
+            System.out.println("3. Use Channel by ID");
             CommonUtil.addTabs(11, false);
             System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
@@ -132,14 +132,15 @@ public class ChannelSettings {
 
     public void CreateChannel() throws IOException {
 
+        Scanner scan = new Scanner(System.in);
         Component.pageTitleView("CREATE Group IN CLASS_C CHAT");
 
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Group name: ");
-        String group_name = scanner.nextLine();
+        String group_name = scan.nextLine();
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Group description: ");
-        String group_desc = scanner.nextLine();
+        String group_desc = scan.nextLine();
 
         ObjectMapper objectMapper = new ObjectMapper();
         Group group = new Group(group_name, group_desc, userId);
@@ -166,20 +167,29 @@ public class ChannelSettings {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
+        System.out.println();
         List ids = new ArrayList<Integer>();
         if (response.isSuccess()) {
             Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
-            CommonUtil.addTabs(10, true);
             for (Group group : groups) {
+                CommonUtil.addTabs(11, false);
                 ids.add(group.getId());
-                System.out.println(group.getId() + ". " + group.getName() + " " + group.getDescription());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + group.getId() + "]\t\t");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(group.getName());
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+                System.out.println("\t\t|" +  group.getDescription() + "|");
+                CommonUtil.resetColor();
             }
             int choice = 0;
             do {
-                System.out.println("");
+                System.out.println();
                 Component.chooseOptionInputView("Type group id to work with: ");
                 choice = Component.getChooseOptionChoice();
+                if (choice == -1) break;
                 if (!ids.contains(choice)) {
                     CommonUtil.addTabs(11, true);
 
