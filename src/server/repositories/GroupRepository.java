@@ -149,10 +149,20 @@ public class GroupRepository  {
     public List<Group> getUserSearchList(String search){
         try{
             Connection connection = PostegresConfig.getConnection();
-            Statement statement =  connection.createStatement();
+//            Statement statement =  connection.createStatement();
+//            String query = String.format("SELECT * FROM groups where group_name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);
+//            ResultSet rs = statement.executeQuery(query);
 
-            String query = String.format("SELECT * FROM groups where group_name = '%s' or description = '%s' ORDER BY group_id ASC;",search,search);
-            ResultSet rs = statement.executeQuery(query);
+            String query="select * from groups " +
+                    "where group_name like ? or description like ?";
+            PreparedStatement statement=connection.prepareStatement(query);
+
+
+
+            statement.setString(1, "%" + search + "%");
+            statement.setString(2,"%" + search + "%");
+
+            ResultSet rs=statement.executeQuery();
             List<Group> groups=new ArrayList<Group>();
             while(rs.next()){
                 groups.add(new Group(rs.getInt("group_id"),rs.getString("group_name"),rs.getString("description"),
