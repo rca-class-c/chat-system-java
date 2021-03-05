@@ -17,7 +17,7 @@ public class StatisticsRoutes {
         this.objectMapper = objectMapper;
         this.request = request;
     }
-    public void Main() throws JsonProcessingException {
+    public void Main() throws Exception {
         if(request.equals("stats/messages/daily")){
             new StasticsRequestHandler().HandleReportsDaily(writer,objectMapper,"message");
         }
@@ -29,6 +29,9 @@ public class StatisticsRoutes {
         }
         else if(request.equals("stats/visit/daily")){
             new StasticsRequestHandler().HandleReportsDaily(writer,objectMapper,"visits");;
+        }else if(request.equals("stats/userLog")){
+            new StasticsRequestHandler().userLogsHandler(writer,objectMapper);
+
         }
     }
 

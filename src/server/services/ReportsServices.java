@@ -1,6 +1,8 @@
 package server.services;
 
+import server.models.UserLog;
 import server.repositories.ReportsManagementRepository;
+import  server.repositories.userLogAction;
 
 import java.util.List;
 
@@ -18,6 +20,19 @@ public class ReportsServices {
         new ReportsManagementRepository().insertMessageReport();
     }
 
+    /**
+     * @author hortance
+     * **/
+    public  void addUserLog(UserLog userLog) throws Exception {
+        new userLogAction().recordUserLogs(userLog);
+    }
+
+    /**
+    * @author hortance
+    * */
+    public List getUserLogs() throws Exception {
+        return new userLogAction().getAllUserLogs();
+    }
     /**
      * method to insert message report with detail per user
      * @param userId

@@ -52,4 +52,22 @@ public class StasticsRequestHandler {
         }
     }
 
+    /**
+     * @author hortance
+     * **/
+    public  void userLogsHandler(PrintWriter writer, ObjectMapper objectMapper) throws Exception {
+        List returned = new ReportsServices().getUserLogs();
+        if(returned == null){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+
+    }
+
 }
