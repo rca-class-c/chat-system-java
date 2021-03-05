@@ -49,20 +49,10 @@ public class ChatServer {
 
                 ExecutorService Pool = Executors.newFixedThreadPool(15);
                 Pool.execute(newUser);
-//                Pool.execute(job2);
-//                Pool.execute(job3);
-//                Pool.execute(job4);
-//                Pool.execute(job5);
 
-//                if(userThreads.add(newUser)) {
-//                    System.out.println();
-//                }
-//                newUser.start();
             }
         } catch (IOException ex) {
             Component.showErrorMessage(ex.getMessage());
-//            Pool.shutdown();
-
 
         }
     }
