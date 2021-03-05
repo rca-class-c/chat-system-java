@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.LinkedList;
 
 /**
- * @author  Cyusa Munezero Keny . Github : UnrealDriftij8
+ * @author  Cyusa Munezero Keny . Github : UnrealDrift
  */
 public class categoryRepository {
     public categories saveCategory(categories categories) throws SQLException {
@@ -17,9 +17,7 @@ public class categoryRepository {
         statement.setString(1, categories.getCategoryName());
         statement.setDate(2, categories.getCreated_at());
         statement.setDate(3, categories.getUpdated_at());
-
         int row = statement.executeUpdate();
-
         connection.close();
         return categories;
     }

@@ -9,10 +9,7 @@ import server.models.Group;
 import server.models.Messages;
 import server.models.User;
 import server.models.enums.FileSizeTypeEnum;
-import utils.ChatBetweenTwo;
-import utils.CommonUtil;
-import utils.ConsoleColor;
-import utils.FileUtil;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +24,8 @@ public class SendMessageView {
     public PrintWriter writer;
     public BufferedReader reader;
     public int receiver;
+    public int group_receiver;
+    Group currentGroup;
     User current;
     User chattingWith;
     Scanner scanner = new Scanner(System.in);
@@ -35,6 +34,22 @@ public class SendMessageView {
         this.userId = userId;
         this.writer = writer;
         this.reader = reader;
+    }
+
+    public int getGroup_receiver() {
+        return group_receiver;
+    }
+
+    public void setGroup_receiver(int group_receiver) {
+        this.group_receiver = group_receiver;
+    }
+
+    public Group getCurrentGroup() {
+        return currentGroup;
+    }
+
+    public void setCurrentGroup(Group currentGroup) {
+        this.currentGroup = currentGroup;
     }
 
     public User getCurrent() {
@@ -73,9 +88,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("2. Message a group");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
             Component.chooseOptionInputView("Choose an option: ");
 
                 choice = Component.getChooseOptionChoice();
@@ -88,14 +103,11 @@ public class SendMessageView {
                             GroupMessageView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
+                            break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
-                            System.exit(1);
+                            Component.closeUIView();
+                            System.exit(0);
                         }
                         default -> {
                             choice = -1;
@@ -120,9 +132,9 @@ public class SendMessageView {
             CommonUtil.addTabs(11, false);
             System.out.println("3. Enter a user ID");
             CommonUtil.addTabs(11, false);
-            System.out.println("44. Go back");
+            System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
             CommonUtil.addTabs(11, false);
-            System.out.println("55. Quit");
+            System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
             Component.chooseOptionInputView("Choose an option: ");
 
@@ -140,16 +152,11 @@ public class SendMessageView {
                             UserIdView();
                         }
                         case 44->{
-                            CommonUtil.addTabs(10, true);
-                            System.out.println("Going back");
                             break;
                         }
                         case 55->{
-                            CommonUtil.addTabs(10, true);
-                            CommonUtil.useColor("\u001b[1;31m");
-                            System.out.println("SYSTEM CLOSED !");
-                            System.exit(1);
-                            break;
+                            Component.closeUIView();
+                            System.exit(0);
                         }
                         default -> {
                             Component.showErrorMessage("Enter a valid choice (1, 2): ");
@@ -217,7 +224,7 @@ public class SendMessageView {
             key = "messages/send/direct";
         }
         else if(reciever_type.equals("group")){
-            newMessage = new Messages(0,message,userId,receiver,0);
+            newMessage = new Messages(0,message,userId,group_receiver,0);
             key = "messages/send/group";
         }
         Request request = new Request(newMessage,key);
@@ -225,14 +232,11 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-
-            CommonUtil.addTabs(10, true);
-            System.out.println("Message sent");
-
+            Component.alertSuccessMessage(11, "Message sent");
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to send");
+            Component.alertDangerErrorMessage(11, "Failed to send");
         }
+        WriteMessageView();
     }
     public void TypeMessageView(int og_message,String type) throws IOException {
         Component.pageTitleView("Type a reply");
@@ -257,13 +261,10 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
-
-            CommonUtil.addTabs(10, true);
-            System.out.println("Reply sent successfully");
+            Component.alertSuccessMessage(11, "Reply sent successfully");
 
         }else {
-            CommonUtil.addTabs(10, true);
-            System.out.println("Failed to send");
+            Component.alertDangerErrorMessage(11, "Failed to send");
         }
     }
 
@@ -276,7 +277,8 @@ public class SendMessageView {
         String fileLocalPath = scanner.nextLine();
 
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
 
             String fileName = FileUtil.getFileNameFromFilePath(fileLocalPath);
             String fileType = FileUtil.getFileTypeFromFilePath(fileLocalPath);
@@ -284,20 +286,24 @@ public class SendMessageView {
             int fileSize = FileUtil.getFormattedFileSizeFromFileSize(FileUtil.getFileSizeFromPath(fileLocalPath), FileSizeTypeEnum.valueOf(fileSizeType));
 
 
-        File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
-        String key = "file/send";
-        Request request = new Request(file, key);
-        String requestAsString = objectMapper.writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if(response.isSuccess()){
-            Component.alertSuccessMessage(11, "File saved successfully");
-            //ageView(new User());
+            File file = new File(fileLocalPath, fileName, fileType, fileSize, fileSizeType, userId);
+            String key = "file/send";
+            Request request = new Request(file, key);
+            String requestAsString = objectMapper.writeValueAsString(request);
+            writer.println(requestAsString);
+            ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+            if (response.isSuccess()) {
+                Component.alertSuccessMessage(11, "File saved successfully");
+                //ageView(new User());
+            } else {
+                Component.alertDangerErrorMessage(11, "File not saved, try again!");
+            }
+            WriteMessageView();
+            //View(new User());
+        } catch (Exception e) {
+            Component.alertDangerErrorMessage(11, "File not found");
+            WriteMessageView();
         }
-        else{
-            Component.alertDangerErrorMessage(11, "File not saved, try again!");
-        }
-        //View(new User());
     }
     public void EditMessageView() throws IOException {
         Component.pageTitleView("Edit a Message");
@@ -317,11 +323,11 @@ public class SendMessageView {
 
         if(response.isSuccess()){
             Component.alertSuccessMessage(11, "Message edited successfully");
-
         }
         else{
             Component.showErrorMessage("Message edit unsuccessful!");
         }
+        WriteMessageView();
     }
 
     public  void DeleteMessageView() throws IOException {
@@ -344,6 +350,7 @@ public class SendMessageView {
         else{
             Component.alertDangerErrorMessage(11, "Message not found!");
         }
+        WriteMessageView();
     }
 
     public void DeleteReplieView() throws IOException {
@@ -433,14 +440,12 @@ public class SendMessageView {
             }while(!ids.contains(choice));
             for (Group group : groups) {
                 if(group.getId() == choice){
+                    this.setGroup_receiver(group.getId());
+                    this.setCurrentGroup(group);
                     WriteMessageViewInGroup(group);
                 }
             }
         }else {
-            CommonUtil.addTabs(10, true);
-            CommonUtil.useColor(ConsoleColor.RegularColor.RED);
-            System.out.println("Failed to read users list, sorry for the inconvenience");
-            CommonUtil.resetColor();
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
     }
@@ -464,6 +469,7 @@ public class SendMessageView {
                 System.out.println("");
                 for (Group group : groups) {
                     ids.add(group.getId());
+
                     CommonUtil.addTabs(10, false);
                     System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
                 }
@@ -478,6 +484,8 @@ public class SendMessageView {
                 }while(!ids.contains(choice));
                 for (Group group : groups) {
                     if(group.getId() == choice){
+                        this.setCurrentGroup(group);
+                        this.setGroup_receiver(group.getId());
                         WriteMessageViewInGroup(group);
                     }
                 }
@@ -500,6 +508,8 @@ public class SendMessageView {
         Component.pageTitleView("Group BY ID GETTING");
         if(response.isSuccess()){
             Group group = new GroupResponseDataDecoder().returnGroupDecoded(response.getData());
+            this.setCurrentGroup(group);
+            this.setGroup_receiver(group.getId());
             WriteMessageViewInGroup(group);
         }else {
             Component.alertDangerErrorMessage(11, "Group not found");
@@ -511,11 +521,16 @@ public class SendMessageView {
         List ids = new ArrayList<Integer>();
             User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         if(users != null){
-            CommonUtil.addTabs(10, true);
             for (User user : users) {
                 ids.add(user.getUserID());
-                System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + user.getUserID() + "] ");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.println(user.getFname() + " " + user.getLname());
+                CommonUtil.resetColor();
+
             }
             if(users.length == 0){
                 return null;
@@ -561,30 +576,33 @@ public class SendMessageView {
         }
         }
     }
-    public  void WriteMessageView() throws IOException {
-        String key = "messages/direct";
-        Request request = new Request(new ChatBetweenTwo(userId,receiver), key);
-        String requestAsString = new ObjectMapper().writeValueAsString(request);
-        writer.println(requestAsString);
-        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        Component.pageTitleView("Your recent chat");
-        if(response.isSuccess()){
-            Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            System.out.println("");
-            for (Messages message : messages) {
-                CommonUtil.addTabs(11, true);
-                if(message.getSender() != userId){
-                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
-                }
-                else{
-                    System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
-                }
-                CommonUtil.addTabs(11, false);
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                System.out.print("[" + message.getId() + "] ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
-                System.out.print(message.getContent());
+    public void PrintMessageReplies() throws IOException {
+        Component.chooseOptionInputView("Enter message id to view replies: ");
+        int message_id = Component.getChooseOptionChoice();
+        Messages messageFound = new RequestSimplifiers(writer, reader).goGetMessage(message_id);
+        if(messageFound != null){
+        Messages[] messages = new RequestSimplifiers(writer,reader).goGetMessageReplies(message_id);
+        Component.pageTitleView("message replies");
+        CommonUtil.addTabs(11,false);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.GREEN_BOLD_BRIGHT);
+            System.out.print("OG message: [" + messageFound.getContent() + "] ");
+            CommonUtil.resetColor();
+        if(messages != null){
+            if(messages.length != 0){
+                for (Messages message : messages) {
+                    CommonUtil.addTabs(11, true);
+                    if(message.getSender() != userId){
+                        System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
+                    }
+                    else{
+                        System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
+                    }
+                    CommonUtil.addTabs(11, false);
+                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                    System.out.print("[" + message.getId() + "] ");
+                    CommonUtil.resetColor();
+                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                    System.out.print(message.getContent());
 
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                     System.out.print("  (Date:  ");
@@ -593,6 +611,71 @@ public class SendMessageView {
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                     System.out.println(")");
 
+                    CommonUtil.resetColor();
+                }
+            }
+            else{
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                System.out.println("No replies yet");
+                CommonUtil.resetColor();
+            }
+            Component.chooseOptionInputView("Type 1 to send reply on this message: ");
+            int option = Component.getChooseOptionChoice();
+            if(option == 1){
+                SendReplyView(message_id);
+            }
+
+        }else {
+            Component.alertDangerErrorMessage(11, "Failed to read replies list, sorry for the inconvenience");
+        }
+        }
+        else{
+            CommonUtil.addTabs(11,true);
+            CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+            System.out.println("Message not found");
+            CommonUtil.resetColor();
+        }
+    }
+    public  void WriteMessageView() throws IOException {
+        Messages[] messages = new RequestSimplifiers(writer,reader).goGetMessages(userId,receiver);
+        Component.pageTitleView("Your recent chat");
+        if(messages != null){
+            if(messages.length != 0){
+            for (Messages message : messages) {
+                CommonUtil.addTabs(11, true);
+                if(message.getSender() != userId){
+                    System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
+                }
+                else{
+                    System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
+                    CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                    System.out.print(" [You]");
+                    CommonUtil.resetColor();
+                }
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                System.out.print(message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(")");
+
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + message.getId() + "] ");
+                CommonUtil.resetColor();
+
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(message.getContent());
+
+                CommonUtil.resetColor();
+                System.out.println();
+            }
+            }
+            else{
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
+                Component.alertDangerErrorMessage(11, "No messages sent yet");
                 CommonUtil.resetColor();
             }
         }else {
@@ -611,7 +694,10 @@ public class SendMessageView {
         System.out.println("4. Delete a message");
         CommonUtil.addTabs(11, false);
         System.out.println("5. Replies");
-
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
+        CommonUtil.addTabs(11, false);
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
@@ -634,7 +720,13 @@ public class SendMessageView {
                     case 5 -> {
                         MessageRepliesView();
                     }
-
+                    case 44 -> {
+                        break;
+                    }
+                    case 55 -> {
+                        Component.closeUIView();
+                        System.exit(0);
+                    }
                     default -> {
                         action = -1;
 
@@ -659,15 +751,36 @@ public class SendMessageView {
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
+//            for (Messages message : messages) {
+//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+//
+//                System.out.print(user.getFname()+" "+user.getLname());
+//                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
+//                System.out.println("\t at "+message.getSent_at());
+//                CommonUtil.resetColor();
+//                CommonUtil.addTabs(10, false);
+//                System.out.println("Message: "+message.getContent());
+//                CommonUtil.addTabs(10, true);
+//            }
             for (Messages message : messages) {
-                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                System.out.print(message.getSender());
-                CommonUtil.useColor(ConsoleColor.RegularColor.YELLOW);
-                System.out.println("\t at "+message.getSent_at());
+                User  user = new RequestSimplifiers(writer,reader).goGetUser(message.getSender());
+                CommonUtil.addTabs(11, true);
+                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
-                CommonUtil.addTabs(10, false);
-                System.out.println("Message: "+message.getContent());
-                CommonUtil.addTabs(10, true);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(message.getContent());
+
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("  (Date:  ");
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                System.out.print(message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(")");
+
+                CommonUtil.resetColor();
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
@@ -686,9 +799,9 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("5. Notifications");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
 
 
         Component.chooseOptionInputView("Choose an option: ");
@@ -711,14 +824,11 @@ public class SendMessageView {
                         MessageRepliesView();
                     }
                     case 44->{
-                        CommonUtil.addTabs(10, true);
-                        System.out.println("Going back");
+                        break;
                     }
                     case 55->{
-                        CommonUtil.addTabs(10, true);
-                        CommonUtil.useColor("\u001b[1;31m");
-                        System.out.println("SYSTEM CLOSED !");
-                        System.exit(1);
+                        Component.closeUIView();
+                        System.exit(0);
                     }
                     default -> {
                         action = -1;
@@ -739,27 +849,43 @@ public class SendMessageView {
 
     public void ViewNotifications() throws IOException {
         Component.pageTitleView("My notifications");
-        String  key= "messages/notifications";
-        Request request = new Request(new ProfileRequestData(userId),key);
+        String key = "messages/notifications";
+        Request request = new Request(new ProfileRequestData(userId), key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
-        if(response.isSuccess()){
-            Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
+        if (response.isSuccess()) {
+            GroupNotifications[] messageList = new MessageResponseDataDecoder().returnGroupNotifications(response.getData());
             CommonUtil.addTabs(10, true);
-            for (Messages messages : messageList) {
-                System.out.println("New Notification from Group id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
-                CommonUtil.addTabs(10, false);
+            if (messageList.length == 0) {
+                System.out.println("You don't have any group notification");
+            } else {
+                for (GroupNotifications messages : messageList) {
+                    Group group = new RequestSimplifiers(writer, reader).goGetGroup(messages.getGroup_id());
+                    System.out.print("You have "+messages.getMessage_count());
+                    if(messages.getMessage_count()!=1 && messages.getMessage_count()!=-1){
+                        System.out.print(" messages ");
+                    }
+                    else{
+                        System.out.print(" message ");
+                    }
+                    System.out.print("from " );
+                    if(group == null){
+                        System.out.println("Unknown group");
+                    }
+                    else{
+                        System.out.println(group.getName());
+                    }
+                    CommonUtil.addTabs(10, false);
+                }
             }
-        }else {
+        } else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
         System.out.println("");
         Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = Component.getChooseOptionChoice();
+        int choice = Component.getChooseOptionChoice();
     }
-
-
     public void ViewNoti() throws IOException {
         Component.pageTitleView("My notifications");
         String  key= "messages/notifi";
@@ -770,9 +896,14 @@ public class SendMessageView {
         if(response.isSuccess()){
             Messages[] messageList = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
             CommonUtil.addTabs(10, true);
+            if(messageList.length == 0){
+                System.out.println("You don't have any direct message notification");
+            }else{
             for (Messages messages : messageList) {
-                System.out.println("New Notification from user id : "+messages.getSender()+". " +" "+"  Sent at : "+messages.getSent_at());
+                User user = new RequestSimplifiers(writer,reader).goGetUser(messages.getSender());
+                System.out.println("You have a direct message from "+user.getFname()+" "+user.getFname());
                 CommonUtil.addTabs(10, false);
+            }
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
@@ -785,19 +916,26 @@ public class SendMessageView {
 
 
 
-    public void SendReplyView() {
+    public void SendReplyView() throws IOException {
         Component.pageTitleView("Send reply");
 
         Component.chooseOptionInputView("Enter message id to reply: ");
         int message_id = Component.getChooseOptionChoice();
+        if(new RequestSimplifiers(writer,reader).goGetMessage(message_id) == null){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+            System.out.println("Message Not found");
+            CommonUtil.resetColor();
+        }
+        else{
         CommonUtil.addTabs(11, true);
         System.out.println("1. Write a message");
         CommonUtil.addTabs(11, false);
         System.out.println("2. Send a file");
         CommonUtil.addTabs(11, false);
-        System.out.println("44. Go back");
+        System.out.println(ConsoleColor.RegularColor.BLUE + "44" + ConsoleColor.RESET + ". Back");
         CommonUtil.addTabs(11, false);
-        System.out.println("55. Quit");
+        System.out.println(ConsoleColor.RegularColor.RED + "55" + ConsoleColor.RESET + ". Quit");
         Component.chooseOptionInputView("Choose an option: ");
 
         int action;
@@ -831,7 +969,64 @@ public class SendMessageView {
             } catch (Exception e) {
                 Component.showErrorMessage(e.getMessage());
             }
+
         } while (action == -1);
+        }
+    }
+    public void SendReplyView(int message_id) throws IOException {
+        Component.pageTitleView("Send reply");
+
+        if(new RequestSimplifiers(writer,reader).goGetMessage(message_id) == null){
+            CommonUtil.addTabs(10, true);
+            CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
+            System.out.println("Message Not found");
+            CommonUtil.resetColor();
+        }
+        else{
+            CommonUtil.addTabs(11, true);
+            System.out.println("1. Write a message");
+            CommonUtil.addTabs(11, false);
+            System.out.println("2. Send a file");
+            CommonUtil.addTabs(11, false);
+            System.out.println("44. Go back");
+            CommonUtil.addTabs(11, false);
+            System.out.println("55. Quit");
+            Component.chooseOptionInputView("Choose an option: ");
+
+            int action;
+            do {
+                action = Component.getChooseOptionChoice();
+                try {
+                    switch (action) {
+                        case 1 -> {
+                            TypeMessageView(message_id,"direct");
+                        }
+                        case 2 -> {
+                            SendFileView();
+                        }
+                        case 44->{
+                            CommonUtil.addTabs(10, true);
+                            System.out.println("Going back");
+                        }
+                        case 55->{
+                            CommonUtil.addTabs(10, true);
+                            CommonUtil.useColor("\u001b[1;31m");
+                            System.out.println("SYSTEM CLOSED !");
+                            System.exit(1);
+                        }
+
+                        default -> {
+                            action = -1;
+                            Component.showErrorMessage("Enter a valid choice (1, 2): ");
+
+                        }
+                    }
+                } catch (Exception e) {
+                    Component.showErrorMessage(e.getMessage());
+                }
+
+            } while (action == -1);
+        }
     }
 
     public  void ViewRepliesView() throws IOException {
@@ -891,9 +1086,11 @@ public class SendMessageView {
         CommonUtil.addTabs(11, false);
         System.out.println("1. Send a reply");
         CommonUtil.addTabs(11, false);
-        System.out.println("2. View replies");
+        System.out.println("2. View specific message reply");
         CommonUtil.addTabs(11, false);
-        System.out.println("3. Delete a reply");
+        System.out.println("3. View all replies");
+        CommonUtil.addTabs(11, false);
+        System.out.println("4. Delete a reply");
 
         Component.chooseOptionInputView("Choose an option: ");
 
@@ -905,20 +1102,19 @@ public class SendMessageView {
                     case 1 -> {
                         SendReplyView();
                     }
-                    case 2 -> {
-                        ViewRepliesView();
+                    case 2->{
+                        PrintMessageReplies();
                     }
                     case 3 -> {
+                        ViewRepliesView();
+                    }
+                    case 4 -> {
                         DeleteMessageView();
                     }
 
 
                     default -> {
                         action = -1;
-//                        CommonUtil.addTabs(10, false);
-//                        CommonUtil.useColor(ConsoleColor.BoldColor.RED_BOLD);
-//                        System.out.print("Enter a valid choice (1, 2): ");
-//                        CommonUtil.resetColor();
                         Component.showErrorMessage("Enter a valid choice (1, 2, 3): ");
 
                     }
