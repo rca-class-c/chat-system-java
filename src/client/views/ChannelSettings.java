@@ -132,14 +132,15 @@ public class ChannelSettings {
 
     public void CreateChannel() throws IOException {
 
+        Scanner scan = new Scanner(System.in);
         Component.pageTitleView("CREATE Group IN CLASS_C CHAT");
 
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Group name: ");
-        String group_name = scanner.nextLine();
+        String group_name = scan.nextLine();
         CommonUtil.addTabs(10, false);
         System.out.print("Enter your Group description: ");
-        String group_desc = scanner.nextLine();
+        String group_desc = scan.nextLine();
 
         ObjectMapper objectMapper = new ObjectMapper();
         Group group = new Group(group_name, group_desc, userId);
