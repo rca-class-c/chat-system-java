@@ -9,6 +9,7 @@ import utils.ConsoleColor;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalDateTime;
 
 /**
  * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
@@ -28,7 +29,6 @@ public class UserThread extends Thread {
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
-
 
             String clientMessage;
             do {

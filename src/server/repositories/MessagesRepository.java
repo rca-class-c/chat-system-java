@@ -6,6 +6,7 @@ import server.models.Messages;
 import server.services.ReportsServices;
 import utils.DirectMessage;
 import utils.GroupMessage;
+import utils.GroupNotifications;
 
 import java.sql.*;
 import java.util.Date;
@@ -86,26 +87,21 @@ public class MessagesRepository {
 
 
 
-    public List<GroupMessage> getNotis(int user_id)throws SQLException{
-        List<GroupMessage>  notis = new ArrayList<GroupMessage>();
+    public List<GroupNotifications> getNotis(int user_id)throws SQLException{
+        List<GroupNotifications>  notis = new ArrayList<GroupNotifications>();
         Connection conn = PostegresConfig.getConnection();
         Statement statement = conn.createStatement();
         ResultSet groups;
         groups = statement.executeQuery("select * from user_group where user_id="+user_id);
         ResultSet group_message = null;
         while(groups.next()) {
-//            group_message = statement.executeQuery("Select * from messages where user_receiver="+user_id+" and message_status='UNSEEN' and sender!="+user_id);
             group_message = statement.executeQuery("select username, messages.* from users join messages on user_id = sender where group_receiver = "+groups.getInt(1)+" and message_status= 'UNSEEN' and sender!="+user_id);
+            int message_count = 0;
             while(group_message.next()){
-                Integer id = group_message.getInt(2);
-                String content = group_message.getString(3);
-                Integer sender = group_message.getInt(4);
-                Integer group_receiver = group_message.getInt(5);
-                Integer original_message = group_message.getInt(7);
-                Date sent_at = group_message.getDate(8);
-                notis.add(new GroupMessage(content,sender,group_receiver,original_message,sent_at,id));
+                message_count++;
             }
-
+            notis.add(new GroupNotifications(groups.getInt(1),message_count));
+            System.out.println(message_count);
         }
         statement.close();
         conn.close();
@@ -340,5 +336,6 @@ public class MessagesRepository {
             return true;
         }
         return false;
+
     }
-    }
+}

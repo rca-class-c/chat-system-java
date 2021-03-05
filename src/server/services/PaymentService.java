@@ -1,11 +1,5 @@
 package server.services;
 
-import server.models.Payment;
-import server.repositories.PaymentRepository;
-
-import java.sql.SQLException;
-
-
 /**
  *
  * @authors:
@@ -14,12 +8,13 @@ import java.sql.SQLException;
  */
 
 public class PaymentService {
-    private final PaymentRepository paymentRepository = new PaymentRepository();
+    private final server.repositories.PaymentRepository paymentRepository = new server.repositories.PaymentRepository();
 
-    public Payment getPaymentDetails(int package_id) throws SQLException {
+    public server.models.Payment getPaymentDetails(int package_id) throws java.sql.SQLException {
         return paymentRepository.getPaymentDetails(package_id);
     }
-    public Payment savePackage(Payment payed) throws SQLException {
+    public server.models.Payment savePayment(server.models.Payment payed) throws java.sql.SQLException {
         return paymentRepository.savePayment(payed);
     }
+
 }

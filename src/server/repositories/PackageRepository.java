@@ -6,8 +6,6 @@ import server.models.Package;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
 /**
  *
  * @authors:
@@ -81,14 +79,14 @@ public class PackageRepository {
         return null;
     }
 
-    public boolean updatePackage(Package packages, int id) throws SQLException {
+    public boolean updatePackage(Package packages) throws SQLException {
         Connection connection = PostegresConfig.getConnection();
         String query = "UPDATE package SET packageName = ? ,period=?, price=? WHERE id=? ";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, packages.getPackageName());
         statement.setInt(2, packages.getPeriod());
         statement.setFloat(3, packages.getPrice());
-        statement.setInt(4, id);
+        statement.setInt(4, packages.getPackageId());
         boolean rowUpdated = statement.executeUpdate(query)>0;
         connection.close();
 
@@ -107,5 +105,19 @@ public class PackageRepository {
         connection.close();
 
         return rowDeleted;
+    }
+
+    public List<Package> getPackageListSearch(String search) throws SQLException{
+            Connection connection = PostegresConfig.getConnection();
+            Statement statement =  connection.createStatement();
+
+            String query = String.format("SELECT * FROM packages where package_name = '%s' or period = '%d' or price = '%f' ORDER BY package_id ASC;",search,search,search);
+            ResultSet rs = statement.executeQuery(query);
+            while(rs.next()){
+                packageList.add(new Package(rs.getInt("package_id"),rs.getString("package_name"),rs.getInt("period"),
+                        rs.getInt("price")));
+            }
+
+            return packageList;
     }
 }

@@ -169,7 +169,6 @@ public class AdminAction {
                     switch(choice) {
                         case 1:
                             if (range.contains("messaging")) {
-<<<<<<< HEAD
                                reports =  new RequestSimplifiers(writer,reader).getDiallyMessages("stats/messages/daily");
                                 printStatistics(reports,"message:");
                             } else if(range.contains("userReport")) {
@@ -178,7 +177,6 @@ public class AdminAction {
                             }else if (range.contains("groupReport")){
                                 reports =  new RequestSimplifiers(writer,reader).getDiallyMessages("stats/groups/daily");
                                 printStatistics(reports,"group:");
-=======
                                 //handnling comes tomorow//we can not also view files
                                 List<List> allStats = new ReportsServices().getMessageReport();
                                 printStatatics(allStats,"message:");
@@ -189,7 +187,6 @@ public class AdminAction {
                             }else{
                                 List<List> allStats = new ReportsServices().getGroupReport();
                                 printStatatics(allStats,"group:");
->>>>>>> master
                             }
                             break;
                         case 2:
@@ -332,14 +329,15 @@ public class AdminAction {
         Request request  = new Request(emails,key);
         String requestAsString = new ObjectMapper().writeValueAsString(request);
         writer.println(requestAsString);
-        CommonUtil.addTabs(10, false);
-        System.out.println("Sending emails ...");
+        CommonUtil.addTabs(11, false);
+        CommonUtil.useColor(ConsoleColor.RegularColor.BLUE);
+        System.out.println("Sending emails");
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         if(response.isSuccess()){
             Component.alertSuccessMessage(11, "Email sent successfully");
         }
         else{
-            Component.alertSuccessMessage(11, "Email failed to send.");
+            Component.alertDangerErrorMessage(11, "Email failed to send.");
         }
     }
 
@@ -392,17 +390,30 @@ public class AdminAction {
     }
     public int CheckUserExists(UsersList list) throws  IOException{
         if(list == null){
+            CommonUtil.addTabs(11, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+            System.out.println("Users list is null");
+            CommonUtil.resetColor();
             return -1;
         }
         int choice = 0;
         List ids = list.getIds();
         User[] users = list.getUsers();
+        if(users.length == 0){
+            CommonUtil.addTabs(11, true);
+            CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+            System.out.println("Users empty");
+            CommonUtil.resetColor();
+            return -1;
+        }
+        else{
 
 
         do{
             System.out.println("");
             Component.chooseOptionInputView("Type user id deactivate: ");
             choice  = Component.getChooseOptionChoice();
+            if (choice == -1) break;
             if(!ids.contains(choice)){
                 CommonUtil.addTabs(11, true);
                 Component.alertDangerErrorMessage(11, "User not found, try another!");
@@ -414,32 +425,35 @@ public class AdminAction {
                 return choice;
             }
         }
+        }
         return -1;
     }
     public UsersList allInactiveUsers() throws IOException {
-        User[] users = new RequestSimplifiers(writer,reader).goGetInactiveUsers(userId);
-        List<Integer> ids= new ArrayList<Integer>();
-        Component.pageTitleView("ALL INACTIVE USERS");
-        if(users != null){
-            if(users.length == 0){
-                CommonUtil.addTabs(11, true);
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.PURPLE_BOLD_BRIGHT);
-                System.out.println("There are no inactive users");
-                CommonUtil.resetColor();
-            }
-            else{
+        String  key= "users/inactive";
+        Request request = new Request(new ProfileRequestData(userId),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(request);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+        Component.pageTitleView("USERS LIST");
+        List ids = new ArrayList<Integer>();
+        if(response.isSuccess()){
+            User[] users = new UserResponseDataDecoder().returnUsersListDecoded(response.getData());
             CommonUtil.addTabs(11, true);
             for (User user : users) {
                 ids.add(user.getUserID());
                 System.out.println(user.getUserID()+". "+user.getFname()+" "+user.getLname());
                 CommonUtil.addTabs(11, false);
             }
-            return new UsersList(users,ids);
+            if(users.length == 0){
+                return null;
             }
+            return new UsersList(users,ids);
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
         }
+        System.out.println("");
         return null;
+
     }
     public void De_ActivateUser(int userId,String key) throws IOException {
         Request request = new Request(new ProfileRequestData(userId),key);

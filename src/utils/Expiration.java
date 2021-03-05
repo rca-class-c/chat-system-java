@@ -28,8 +28,4 @@ public class Expiration {
         return ExpirationDate;
     }
 
-    public static void main(String[] args) {
-        Expiration exp = new Expiration();
-        exp.expirationCalculator(30);
-    }
 }

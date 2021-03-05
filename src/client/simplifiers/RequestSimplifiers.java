@@ -1,15 +1,12 @@
 package client.simplifiers;
 
-<<<<<<< HEAD
 import client.interfaces.ProfileRequestData;
 import client.interfaces.Request;
 import client.interfaces.ResponseDataSuccessDecoder;
 import client.interfaces.UserResponseDataDecoder;
 import com.fasterxml.jackson.core.JsonProcessingException;
-=======
-import client.interfaces.*;
->>>>>>> master
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.models.Group;
 import server.models.Messages;
 import server.models.User;
 import utils.ChatBetweenTwo;
@@ -52,6 +49,18 @@ public class RequestSimplifiers {
 
         if(profileResponse.isSuccess()) {
             return new UserResponseDataDecoder().returnUserDecoded(profileResponse.getData());
+        }
+        return null;
+    }
+    public Group goGetGroup(int id) throws IOException {
+        String key= "groups/profile";
+        Request profileRequest = new Request(new ProfileRequestData(id),key);
+        String requestAsString = new ObjectMapper().writeValueAsString(profileRequest);
+        writer.println(requestAsString);
+        ResponseDataSuccessDecoder profileResponse = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+
+        if(profileResponse.isSuccess()) {
+            return new GroupResponseDataDecoder().returnGroupDecoded(profileResponse.getData());
         }
         return null;
     }

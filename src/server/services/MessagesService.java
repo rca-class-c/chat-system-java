@@ -6,6 +6,7 @@ import server.repositories.MessagesRepository;
 import utils.ChatBetweenTwo;
 import utils.DirectMessage;
 import utils.GroupMessage;
+import utils.GroupNotifications;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,7 @@ public class  MessagesService {
     public Set<ResultSet> viewUserNotifications(int user_id) throws Exception {
         return messagesRepository.getNotifications(user_id);
     }
-    public List<GroupMessage> viewUserNotis(int user_id) throws SQLException {
+    public List<GroupNotifications> viewUserNotis(int user_id) throws SQLException {
         return  messagesRepository.getNotis(user_id);
     }
     public List<DirectMessage> viewDirUserNotis(int user_id) throws SQLException {
