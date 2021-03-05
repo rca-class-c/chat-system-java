@@ -266,6 +266,7 @@ public class SendMessageView {
         }else {
             Component.alertDangerErrorMessage(11, "Failed to send");
         }
+        WriteMessageView();
     }
 
     public void SendFileView() throws IOException {
