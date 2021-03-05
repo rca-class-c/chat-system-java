@@ -13,6 +13,8 @@ import java.net.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This the main server that runs out to connect new users and calls the user thread
@@ -44,13 +46,23 @@ public class ChatServer {
 
                 // passing socket and server to the userthread
                 UserThread newUser = new UserThread(socket, this);
-                if(userThreads.add(newUser)) {
-                    System.out.println();
-                }
-                newUser.start();
+
+                ExecutorService Pool = Executors.newFixedThreadPool(15);
+                Pool.execute(newUser);
+//                Pool.execute(job2);
+//                Pool.execute(job3);
+//                Pool.execute(job4);
+//                Pool.execute(job5);
+
+//                if(userThreads.add(newUser)) {
+//                    System.out.println();
+//                }
+//                newUser.start();
             }
         } catch (IOException ex) {
             Component.showErrorMessage(ex.getMessage());
+//            Pool.shutdown();
+
 
         }
     }
