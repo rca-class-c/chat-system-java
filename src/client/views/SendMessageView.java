@@ -405,6 +405,7 @@ public class SendMessageView {
         int query = Component.getChooseOptionChoice();
         User returned = new RequestSimplifiers(writer,reader).goGetUser(query);
         if(returned != null){
+            this.setReceiver(query);
             this.setChattingWith(returned);
             WriteMessageView();
         }
