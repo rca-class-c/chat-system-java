@@ -34,6 +34,20 @@ public class MessageRequestHandler {
             writer.println(ResponseAsString);
         }
     }
+    public void HandleGetNotifications(String data, PrintWriter writer, ObjectMapper objectMapper) throws Exception {
+        Set<ResultSet> returned = new MessagesService().viewUserNotifications(new UserDecoder(data).GetProfileDecode());
+        if(returned == null){
+            Response response = new Response(null,false);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+        else{
+            System.out.println(returned);
+            Response response = new Response(returned,true);
+            String ResponseAsString = objectMapper.writeValueAsString(response);
+            writer.println(ResponseAsString);
+        }
+    }
     public void HandleMessageReplies(String data, PrintWriter writer, ObjectMapper objectMapper) throws JsonProcessingException,SQLException {
         List<Messages> returned = new MessagesService().getMessageReplies(new UserDecoder(data).GetProfileDecode());
         if(returned == null){

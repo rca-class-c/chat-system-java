@@ -1,10 +1,7 @@
 package client.views;
 
 import client.ChatClient;
-import client.interfaces.ProfileRequestData;
-import client.interfaces.UserResponseDataDecoder;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
+import client.interfaces.*;
 import client.views.components.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +54,13 @@ public class WelcomeView {
             client.setUserid(data.get("userID").asInt());
             Component.alertSuccessMessage(11, "Your login was successful");
 
+//            String urlNotify = "messages/tray";
+//            String trayString = objectMapper.writeValueAsString(new Request(new ProfileRequestData(client.getUserid()),urlNotify));
+//            writer.println(trayString);
+//            ResponseDataSuccessDecoder notifications = new UserResponseDataDecoder().decodedResponse(reader.readLine());
+//            if(notifications.isSuccess()){
+//                CommonUtil.displayTray(new NotificationDecoder().notificationsList(notifications.getData()));
+//            }
             MessagesService msg = new MessagesService();
             Set<ResultSet> notifications = msg.viewUserNotifications(client.getUserid());
             CommonUtil.displayTray(notifications);

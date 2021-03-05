@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 /**
  * This is a thread that allows many clients to the server as it handles one currently connected and when new one comes any
- * @Author: Didier Munezero
+ * @author: Didier Munezero
  */
 public class UserThread extends Thread {
     private Socket socket;

@@ -48,6 +48,9 @@ public class MessagesRoutes {
         else if(request.equals("messages/send/direct")){
             new MessageRequestHandler().HandleSaveMessageDirect(data,writer,objectMapper);
         }
+        else if(request.equals("messages/tray")){
+            new MessageRequestHandler().HandleGetNotifications(data,writer,objectMapper);
+        }
         else if(request.equals("messages/send/group")){
             new MessageRequestHandler().HandleSaveMessageInGroup(data,writer,objectMapper);
         }
