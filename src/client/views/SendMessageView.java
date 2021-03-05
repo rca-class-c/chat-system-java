@@ -423,11 +423,18 @@ public class SendMessageView {
         List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
-            CommonUtil.addTabs(10, true);
             for (Group group : groups) {
                 ids.add(group.getId());
-                System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + group.getId() + "] ");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(group.getName());
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.CYAN_BOLD_BRIGHT);
+                System.out.println("\t\t\t\t\t[" + group.getDescription() + "]");
+                CommonUtil.resetColor();
             }
             int choice = 0;
             do{
