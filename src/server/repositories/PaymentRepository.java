@@ -1,13 +1,5 @@
 package server.repositories;
 
-import server.config.PostegresConfig;
-import server.models.Payment;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /**
  *
  * @authors:
@@ -17,11 +9,11 @@ import java.sql.SQLException;
 
 public class PaymentRepository {
 
-    public Payment savePayment(Payment payment) throws SQLException {
-        Connection connection = PostegresConfig.getConnection();
+    public server.models.Payment savePayment(server.models.Payment payment) throws java.sql.SQLException {
+        java.sql.Connection connection = server.config.PostegresConfig.getConnection();
         String query = "INSERT INTO payment (sub_id, discount, total_amount) VALUES(?,?,?,?)";
 
-        PreparedStatement statement = connection.prepareStatement(query);
+        java.sql.PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, payment.getSubId());
         statement.setFloat(2, payment.getDiscount());
         statement.setFloat(3, payment.getTotalAmount());
@@ -33,14 +25,14 @@ public class PaymentRepository {
         return payment;
     }
 
-    public Payment getPaymentDetails(int payment_id) throws SQLException {
+    public server.models.Payment getPaymentDetails(int payment_id) throws java.sql.SQLException {
 
-        Connection connection= PostegresConfig.getConnection();
+        java.sql.Connection connection= server.config.PostegresConfig.getConnection();
         String query = "SELECT * from payment where pay_id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
+        java.sql.PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,payment_id);
 
-        ResultSet result = statement.executeQuery(query);
+        java.sql.ResultSet result = statement.executeQuery(query);
 
         if(result.next()){
 
@@ -49,7 +41,7 @@ public class PaymentRepository {
             float discount = result.getFloat(3);
             float totalAmount = result.getFloat(4);
 
-            return new Payment(payId, subId, discount, totalAmount);
+            return new server.models.Payment(payId, subId, discount, totalAmount);
         }
         statement.close();
         connection.close();

@@ -1,11 +1,5 @@
 package server.services;
 
-import server.models.Package;
-import server.repositories.PackageRepository;
-
-import java.sql.SQLException;
-import java.util.List;
-
 /**
  *
  * @authors:
@@ -15,22 +9,25 @@ import java.util.List;
  */
 
 public class PackageService {
-    private final PackageRepository packageRepository = new PackageRepository();
+    private final server.repositories.PackageRepository packageRepository = new server.repositories.PackageRepository();
 
-    public List<Package> getAllPackages() throws SQLException {
+    public java.util.List<server.models.Package> getAllPackages() throws java.sql.SQLException {
         return packageRepository.getAllPackages();
     }
 
-    public Package getPackageInfoById(int package_id) throws SQLException {
+    public server.models.Package getPackageInfoById(int package_id) throws java.sql.SQLException {
         return packageRepository.getPackageInfo(package_id);
     }
-    public Package savePackage(Package packages) throws SQLException {
+    public server.models.Package savePackage(server.models.Package packages) throws java.sql.SQLException {
         return packageRepository.savePackage(packages);
     }
-    public boolean updatePackage(Package packages, int id) throws SQLException {
-        return packageRepository.updatePackage(packages, id);
+    public boolean updatePackage(server.models.Package packages) throws java.sql.SQLException {
+        return packageRepository.updatePackage(packages);
     }
-    public boolean deletePackage(int id) throws SQLException {
+    public boolean deletePackage(int id) throws java.sql.SQLException {
         return packageRepository.deletePackage(id);
+    }
+    public java.util.List<server.models.Package> searchPackage(String search) throws java.sql.SQLException {
+        return packageRepository.getPackageListSearch(search);
     }
 }

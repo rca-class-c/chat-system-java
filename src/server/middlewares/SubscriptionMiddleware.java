@@ -1,8 +1,5 @@
 package server.middlewares;
 
-import server.models.Subscription;
-import utils.ValidSubscription;
-
 /**
  *
  * @authors:
@@ -12,9 +9,9 @@ import utils.ValidSubscription;
 
 public class SubscriptionMiddleware {
 
-    private final ValidSubscription validSubscription = new ValidSubscription();
+    private final utils.ValidSubscription validSubscription = new utils.ValidSubscription();
 
-    public boolean checkValid(Subscription subscribe){
+    public boolean checkValid(server.models.Subscription subscribe){
         return validSubscription.isValid(subscribe.getExpirationDate().toString());
     }
 }

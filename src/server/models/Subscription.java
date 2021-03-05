@@ -3,26 +3,23 @@
  */
 package server.models;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 public class Subscription {
     private int SubscriptionId;
     private int UserID;
     private int  PackageId;
-    private Timestamp SubscribedAt;
-    private Date ExpirationDate;
+    private java.sql.Timestamp SubscribedAt;
+    private java.sql.Date ExpirationDate;
     public Subscription(){
 
     }
-public Subscription(int subscriptionId, int userID, int packageId, Timestamp subscribedAt, Date ExpirationDate){
+public Subscription(int subscriptionId, int userID, int packageId, java.sql.Timestamp subscribedAt, java.sql.Date ExpirationDate){
     this.SubscriptionId=subscriptionId;
     this.UserID=userID;
     this.PackageId=packageId;
     this.SubscribedAt=subscribedAt;
     this.ExpirationDate=ExpirationDate;
 }
-Subscription(int userID,int packageId,Timestamp subscribedAt,Date ExpirationDate){
+Subscription(int userID, int packageId, java.sql.Timestamp subscribedAt, java.sql.Date ExpirationDate){
     this.UserID=userID;
     this.PackageId=packageId;
     this.SubscribedAt=subscribedAt;
@@ -59,19 +56,19 @@ Subscription(int userID,int packageId,Timestamp subscribedAt,Date ExpirationDate
         return UserID;
     }
 
-    public void setSubscribedAt(Timestamp subscribedAt) {
+    public void setSubscribedAt(java.sql.Timestamp subscribedAt) {
         SubscribedAt = subscribedAt;
     }
 
-    public Timestamp getSubscribedAt() {
+    public java.sql.Timestamp getSubscribedAt() {
         return SubscribedAt;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(java.sql.Date expirationDate) {
         ExpirationDate = expirationDate;
     }
 
-    public Date getExpirationDate() {
+    public java.sql.Date getExpirationDate() {
         return ExpirationDate;
     }
 }
