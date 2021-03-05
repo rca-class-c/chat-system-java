@@ -403,6 +403,7 @@ public class AdminAction {
             System.out.println("");
             Component.chooseOptionInputView("Type user id deactivate: ");
             choice  = Component.getChooseOptionChoice();
+            if (choice == -1) break;
             if(!ids.contains(choice)){
                 CommonUtil.addTabs(11, true);
                 Component.alertDangerErrorMessage(11, "User not found, try another!");

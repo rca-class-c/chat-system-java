@@ -420,20 +420,29 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
+        System.out.println();
         List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
-            CommonUtil.addTabs(10, true);
             for (Group group : groups) {
                 ids.add(group.getId());
-                System.out.println(group.getId()+". "+group.getName()+" "+group.getDescription());
-                CommonUtil.addTabs(10, false);
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + group.getId() + "]  ");
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(group.getName());
+                CommonUtil.resetColor();
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.CYAN_BOLD_BRIGHT);
+                System.out.println("\t\t[" + group.getDescription() + "]");
+                CommonUtil.resetColor();
             }
             int choice = 0;
             do{
                 System.out.println("");
                 Component.chooseOptionInputView("Type group id to chat in: ");
                 choice  = Component.getChooseOptionChoice();
+                if (choice == -1) break;
                 if(!ids.contains(choice)){
                     Component.alertDangerErrorMessage(11, "Invalid group id. Try again!");
                 }
@@ -518,6 +527,7 @@ public class SendMessageView {
     }
     public UsersList allActiveUsers() throws IOException {
         Component.pageTitleView("USERS LIST");
+        System.out.println();
         List ids = new ArrayList<Integer>();
             User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         if(users != null){
@@ -559,11 +569,13 @@ public class SendMessageView {
 
 
         do{
-            System.out.println("");
             Component.chooseOptionInputView("Type user id to chat with: ");
             choice  = Component.getChooseOptionChoice();
+            if (choice == -1) break;
             if(!ids.contains(choice)){
                 Component.alertDangerErrorMessage(11, "User not found, try another!");
+                System.out.println();
+                System.out.println();
             }
         }while(!ids.contains(choice));
         for (User user : users) {
@@ -592,26 +604,31 @@ public class SendMessageView {
                 for (Messages message : messages) {
                     CommonUtil.addTabs(11, true);
                     if(message.getSender() != userId){
-                        System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
+                        System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
                     }
                     else{
-                        System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
+                        System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
+                        CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                        System.out.print(" [You]");
+                        CommonUtil.resetColor();
                     }
-                    CommonUtil.addTabs(11, false);
-                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                    System.out.print("[" + message.getId() + "] ");
-                    CommonUtil.resetColor();
-                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
-                    System.out.print(message.getContent());
-
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                    System.out.print("  (Date:  ");
+                    System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
                     CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
                     System.out.print(message.getSent_at());
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                     System.out.println(")");
 
+                    CommonUtil.addTabs(11, false);
+                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                    System.out.print("[" + message.getId() + "] ");
                     CommonUtil.resetColor();
+
+                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                    System.out.print(message.getContent());
+
+                    CommonUtil.resetColor();
+                    System.out.println();
                 }
             }
             else{
@@ -636,6 +653,7 @@ public class SendMessageView {
             System.out.println("Message not found");
             CommonUtil.resetColor();
         }
+        WriteMessageView();
     }
     public  void WriteMessageView() throws IOException {
         Messages[] messages = new RequestSimplifiers(writer,reader).goGetMessages(userId,receiver);
@@ -750,7 +768,6 @@ public class SendMessageView {
         Component.pageTitleView("Your recent chat");
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            CommonUtil.addTabs(10, true);
 //            for (Messages message : messages) {
 //                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
 //
@@ -764,23 +781,48 @@ public class SendMessageView {
 //            }
             for (Messages message : messages) {
                 User  user = new RequestSimplifiers(writer,reader).goGetUser(message.getSender());
+//                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
                 CommonUtil.addTabs(11, true);
-                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
-                CommonUtil.addTabs(11, false);
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                System.out.print("[" + message.getId() + "] ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
-                System.out.print(message.getContent());
 
+
+                System.out.print(user.getFname() + " " + user.getLname());
+                if(message.getSender() != userId){
+                    CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                    System.out.print(" [You]");
+                    CommonUtil.resetColor();
+                }
+//                CommonUtil.addTabs(11, false);
+//                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+//                System.out.print("[" + message.getId() + "] ");
+//                CommonUtil.resetColor();
+//                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+//                System.out.print(message.getContent());
+//
+//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+//                System.out.print("  (Date:  ");
+//                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+//                System.out.print(message.getSent_at());
+//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+//                System.out.println(")");
+//
+//                CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                System.out.print("  (Date:  ");
+                System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
                 CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
                 System.out.print(message.getSent_at());
                 CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                 System.out.println(")");
 
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
+
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(message.getContent());
+
+                CommonUtil.resetColor();
+                System.out.println();
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
@@ -908,9 +950,6 @@ public class SendMessageView {
         }else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = Component.getChooseOptionChoice();
     }
 
 
@@ -1043,11 +1082,20 @@ public class SendMessageView {
             for (Messages message : messages) {
                 CommonUtil.addTabs(11, true);
                 if(message.getSender() != userId){
-                    System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
+                    System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
                 }
                 else{
-                    System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
+                    System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
+                    CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                    System.out.print(" [You]");
+                    CommonUtil.resetColor();
                 }
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
+                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+                System.out.print(message.getSent_at());
+                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+                System.out.println(")");
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
                 System.out.print("[" + message.getId() + "] ");
