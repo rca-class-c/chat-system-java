@@ -420,6 +420,7 @@ public class SendMessageView {
         writer.println(requestAsString);
         ResponseDataSuccessDecoder response = new UserResponseDataDecoder().decodedResponse(reader.readLine());
         Component.pageTitleView("Groups List");
+        System.out.println();
         List ids = new ArrayList<Integer>();
         if(response.isSuccess()){
             Group[] groups = new GroupResponseDataDecoder().returnGroupsListDecoded(response.getData());
@@ -427,7 +428,7 @@ public class SendMessageView {
                 ids.add(group.getId());
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                System.out.print("[" + group.getId() + "] ");
+                System.out.print("[" + group.getId() + "]\t\t\t\t\t");
                 CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
                 System.out.print(group.getName());
@@ -771,23 +772,48 @@ public class SendMessageView {
 //            }
             for (Messages message : messages) {
                 User  user = new RequestSimplifiers(writer,reader).goGetUser(message.getSender());
-                CommonUtil.addTabs(11, true);
-                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
-                CommonUtil.addTabs(11, false);
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                System.out.print("[" + message.getId() + "] ");
-                CommonUtil.resetColor();
-                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
-                System.out.print(message.getContent());
-
+//                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
+                if(message.getSender() != userId){
+                    System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
+                }
+                else{
+                    System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
+                    CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                    System.out.print(" [You]");
+                    CommonUtil.resetColor();
+                }
+//                CommonUtil.addTabs(11, false);
+//                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+//                System.out.print("[" + message.getId() + "] ");
+//                CommonUtil.resetColor();
+//                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+//                System.out.print(message.getContent());
+//
+//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+//                System.out.print("  (Date:  ");
+//                CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
+//                System.out.print(message.getSent_at());
+//                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
+//                System.out.println(")");
+//
+//                CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                System.out.print("  (Date:  ");
+                System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
                 CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
                 System.out.print(message.getSent_at());
                 CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                 System.out.println(")");
 
+                CommonUtil.addTabs(11, false);
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                System.out.print("[" + message.getId() + "] ");
                 CommonUtil.resetColor();
+
+                CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                System.out.print(message.getContent());
+
+                CommonUtil.resetColor();
+                System.out.println();
             }
         }else {
             Component.alertDangerErrorMessage(11, "Failed to read users list, sorry for the inconvenience");
