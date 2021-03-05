@@ -428,13 +428,13 @@ public class SendMessageView {
                 ids.add(group.getId());
                 CommonUtil.addTabs(11, false);
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                System.out.print("[" + group.getId() + "]\t\t\t\t\t");
+                System.out.print("[" + group.getId() + "]  ");
                 CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
                 System.out.print(group.getName());
                 CommonUtil.resetColor();
                 CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.CYAN_BOLD_BRIGHT);
-                System.out.println("\t\t\t\t\t[" + group.getDescription() + "]");
+                System.out.println("\t\t[" + group.getDescription() + "]");
                 CommonUtil.resetColor();
             }
             int choice = 0;
@@ -442,6 +442,7 @@ public class SendMessageView {
                 System.out.println("");
                 Component.chooseOptionInputView("Type group id to chat in: ");
                 choice  = Component.getChooseOptionChoice();
+                if (choice == -1) break;
                 if(!ids.contains(choice)){
                     Component.alertDangerErrorMessage(11, "Invalid group id. Try again!");
                 }
@@ -526,6 +527,7 @@ public class SendMessageView {
     }
     public UsersList allActiveUsers() throws IOException {
         Component.pageTitleView("USERS LIST");
+        System.out.println();
         List ids = new ArrayList<Integer>();
             User[] users = new RequestSimplifiers(writer,reader).goGetUsers(userId);
         if(users != null){
@@ -567,11 +569,13 @@ public class SendMessageView {
 
 
         do{
-            System.out.println("");
             Component.chooseOptionInputView("Type user id to chat with: ");
             choice  = Component.getChooseOptionChoice();
+            if (choice == -1) break;
             if(!ids.contains(choice)){
                 Component.alertDangerErrorMessage(11, "User not found, try another!");
+                System.out.println();
+                System.out.println();
             }
         }while(!ids.contains(choice));
         for (User user : users) {
