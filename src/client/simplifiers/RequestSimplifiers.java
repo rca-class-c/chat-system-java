@@ -1,10 +1,6 @@
 package client.simplifiers;
 
-import client.interfaces.ProfileRequestData;
-import client.interfaces.Request;
-import client.interfaces.ResponseDataSuccessDecoder;
-import client.interfaces.UserResponseDataDecoder;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import client.interfaces.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import server.models.Group;
 import server.models.Messages;
