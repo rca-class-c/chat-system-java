@@ -758,7 +758,6 @@ public class SendMessageView {
         Component.pageTitleView("Your recent chat");
         if(response.isSuccess()){
             Messages[] messages = new MessageResponseDataDecoder().returnMessagesNotificationsList(response.getData());
-            CommonUtil.addTabs(10, true);
 //            for (Messages message : messages) {
 //                CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
 //
@@ -773,11 +772,11 @@ public class SendMessageView {
             for (Messages message : messages) {
                 User  user = new RequestSimplifiers(writer,reader).goGetUser(message.getSender());
 //                    System.out.println("[ SENDER: " + user.getFname()+" "+ user.getLname()+ "] ");
+                CommonUtil.addTabs(11, true);
+
+
+                System.out.print(user.getFname() + " " + user.getLname());
                 if(message.getSender() != userId){
-                    System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
-                }
-                else{
-                    System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
                     CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
                     System.out.print(" [You]");
                     CommonUtil.resetColor();
