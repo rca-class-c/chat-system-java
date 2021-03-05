@@ -188,6 +188,7 @@ public class ChannelSettings {
                 System.out.println();
                 Component.chooseOptionInputView("Type group id to work with: ");
                 choice = Component.getChooseOptionChoice();
+                if (choice == -1) break;
                 if (!ids.contains(choice)) {
                     CommonUtil.addTabs(11, true);
 

@@ -604,26 +604,31 @@ public class SendMessageView {
                 for (Messages message : messages) {
                     CommonUtil.addTabs(11, true);
                     if(message.getSender() != userId){
-                        System.out.println("[ SENDER: " + this.getChattingWith().getFname()+" "+this.getChattingWith().getLname() + "] ");
+                        System.out.print(this.getChattingWith().getFname()+" "+this.getChattingWith().getLname());
                     }
                     else{
-                        System.out.println("[ SENDER: " + this.getCurrent().getFname()+" "+ this.getCurrent().getLname()+ "] ");
+                        System.out.print(this.getCurrent().getFname()+" "+ this.getCurrent().getLname());
+                        CommonUtil.useColor(ConsoleColor.RegularColor.CYAN);
+                        System.out.print(" [You]");
+                        CommonUtil.resetColor();
                     }
-                    CommonUtil.addTabs(11, false);
-                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
-                    System.out.print("[" + message.getId() + "] ");
-                    CommonUtil.resetColor();
-                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
-                    System.out.print(message.getContent());
-
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
-                    System.out.print("  (Date:  ");
+                    System.out.print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  (Sent on:  ");
                     CommonUtil.useColor(ConsoleColor.BoldColor.BLUE_BOLD);
                     System.out.print(message.getSent_at());
                     CommonUtil.useColor(ConsoleColor.RegularColor.PURPLE);
                     System.out.println(")");
 
+                    CommonUtil.addTabs(11, false);
+                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.YELLOW_BOLD_BRIGHT);
+                    System.out.print("[" + message.getId() + "] ");
                     CommonUtil.resetColor();
+
+                    CommonUtil.useColor(ConsoleColor.BoldHighIntensityColor.WHITE_BOLD_BRIGHT);
+                    System.out.print(message.getContent());
+
+                    CommonUtil.resetColor();
+                    System.out.println();
                 }
             }
             else{
@@ -944,9 +949,6 @@ public class SendMessageView {
         }else {
             Component.alertDangerErrorMessage(11, "Failed to get notifications, sorry for the inconvenience");
         }
-        System.out.println("");
-        Component.chooseOptionInputView("Type any number to go to main page: ");
-        int choice  = Component.getChooseOptionChoice();
     }
 
 
