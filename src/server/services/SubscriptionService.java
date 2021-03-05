@@ -1,10 +1,4 @@
 package server.services;
-import server.models.Payment;
-import server.models.Subscription;
-import server.repositories.SubscriptionRepository;
-import server.services.PaymentService;
-import java.sql.SQLException;
-import utils.ValidSubscription;
 
 /**
  * @authors
@@ -12,17 +6,17 @@ import utils.ValidSubscription;
  * Irakoze Loraine
  */
 public class SubscriptionService {
-private  final  SubscriptionRepository repository=new SubscriptionRepository();
-public  int AddNewSubscription(Subscription subscription) throws SQLException {
+private  final  server.repositories.SubscriptionRepository repository=new server.repositories.SubscriptionRepository();
+public  int AddNewSubscription(server.models.Subscription subscription) throws java.sql.SQLException {
     return repository.AddNewSubcription(subscription);
 }
-public int UpdateSubscription(Subscription subscription) throws SQLException {
+public int UpdateSubscription(server.models.Subscription subscription) throws java.sql.SQLException {
     return repository.UpdateSubscription(subscription);
 }
-public  int DeleteSubscription(int Id) throws SQLException {
+public  int DeleteSubscription(int Id) throws java.sql.SQLException {
     return repository.DeleteSubscription(Id);
 }
-public Subscription GetSubscription(int Id) throws SQLException {
+public server.models.Subscription GetSubscription(int Id) throws java.sql.SQLException {
     return repository.GetSubscription(Id);
 }
 }
