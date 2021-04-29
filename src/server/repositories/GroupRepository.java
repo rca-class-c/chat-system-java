@@ -1,6 +1,6 @@
 package server.repositories;
 
-import client.views.components.Component;
+import server.components.Component;
 import server.config.PostegresConfig;
 import server.models.Group;
 import server.services.ReportsServices;

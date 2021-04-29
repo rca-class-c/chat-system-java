@@ -1,4 +1,4 @@
-package client.interfaces;
+package server.components;
 
 public class MessageResponseDataFormat {
     int user;

@@ -1,7 +1,7 @@
 package server;
 
-import client.views.components.Component;
 import redis.clients.jedis.Jedis;
+import server.components.Component;
 import server.config.JedisConfig;
 import server.config.PostegresConfig;
 import server.models.ActiveUser;

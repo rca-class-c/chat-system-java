@@ -1,10 +1,10 @@
 package server.repositories;
 /*.;'l,kmjntygrfedxs*/
 
-import client.views.components.Component;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import server.components.Component;
 import server.config.PostegresConfig;
 import server.models.PasswordResets;
 import server.models.enums.PasswordResetsStatusesEnum;

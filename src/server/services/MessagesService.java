@@ -1,6 +1,6 @@
 package server.services;
 
-import client.interfaces.MessageResponseDataFormat;
+import server.components.MessageResponseDataFormat;
 import server.models.Messages;
 import server.repositories.MessagesRepository;
 import utils.ChatBetweenTwo;

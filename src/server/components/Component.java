@@ -1,4 +1,4 @@
-package client.views.components;
+package server.components;
 
 import utils.CommonUtil;
 import utils.ConsoleColor;

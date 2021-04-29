@@ -1,6 +1,6 @@
 package server.config;
-import client.views.components.Component;
 import redis.clients.jedis.Jedis;
+import server.components.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;

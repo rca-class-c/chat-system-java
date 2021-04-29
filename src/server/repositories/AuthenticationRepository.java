@@ -1,6 +1,7 @@
 package server.repositories;
 
-import client.views.components.Component;
+
+import server.components.Component;
 import server.config.PostegresConfig;
 import utils.Token;
 

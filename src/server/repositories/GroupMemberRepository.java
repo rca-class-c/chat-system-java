@@ -1,6 +1,7 @@
 package server.repositories;
 
-import client.interfaces.AddMemberRequestData;
+
+import server.components.AddMemberRequestData;
 import server.config.PostegresConfig;
 import server.models.GroupMember;
 import server.models.User;

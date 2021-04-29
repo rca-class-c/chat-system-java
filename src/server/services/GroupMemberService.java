@@ -1,6 +1,6 @@
 package server.services;
 
-import client.interfaces.AddMemberRequestData;
+import server.components.AddMemberRequestData;
 import server.models.GroupMember;
 import server.models.User;
 import server.repositories.GroupMemberRepository;

@@ -1,4 +1,4 @@
-package client.interfaces;
+package server.components;
 
 import java.util.List;
 

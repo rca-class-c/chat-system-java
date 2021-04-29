@@ -1,9 +1,9 @@
 package server.dataDecoders;
 
-import client.interfaces.MessageResponseDataFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.components.MessageResponseDataFormat;
 import server.models.Messages;
 import utils.ChatBetweenTwo;
 import utils.GroupMessage;
