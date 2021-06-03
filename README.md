@@ -7,7 +7,7 @@ This current version of the repo has a file structure implemented as per System 
 There is a sample for File Management of the messaging group:
 Here are simple details
 
-* ***src/client*** : This is where we have all our views that appear to the user of the app(Front-end).
+
 * ***src/server/models*** : Here we define our db like classes that have setters and getters of all db properies.
 * ***src/server/repositories*** : Here we define a Repository for our Model, here we define methods to reach directly to the db simply, aha niho dushyira our db queries check the FileRepositoryClass.
 * ***src/server/services*** : Here goes our logic, services join repositories to controllers, data from repository is manipulated here.  Check the FileService  Class. 
